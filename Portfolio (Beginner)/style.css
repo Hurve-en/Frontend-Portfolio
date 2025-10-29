@@ -1,17 +1,26 @@
+/* === Root Variables and Global Settings === */
 :root {
+  /* Reusable spacing and container width values */
   --gap: 1.25rem;
   --container: 1100px;
+
+  /* Base font size and color theme */
   font-size: 16px;
   color-scheme: dark;
 }
 
+/* Applies box-sizing to include padding and border in total element size */
 * {
   box-sizing: border-box;
 }
+
+/* Make sure html and body take full height */
 html,
 body {
   height: 100%;
 }
+
+/* === Base Body Styling === */
 body {
   margin: 0;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI",
@@ -27,30 +36,36 @@ body {
   line-height: 1.45;
 }
 
+/* Centers content and limits maximum width */
 .container {
   max-width: var(--container);
   margin: 0 auto;
   padding: 2rem;
 }
 
-/* Header */
+/* === Header and Navigation Bar === */
 .site-header {
   backdrop-filter: blur(6px);
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
   border-bottom: 1px solid var(--surface-border);
 }
+
 .nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 1rem 2rem;
 }
+
+/* Brand name or logo */
 .brand {
   font-weight: 700;
   text-decoration: none;
   color: var(--accent);
   letter-spacing: 0.6px;
 }
+
+/* Navigation links list */
 .nav-list {
   list-style: none;
   margin: 0;
@@ -58,12 +73,16 @@ body {
   display: flex;
   gap: 1rem;
 }
+
+/* Individual link styling */
 .nav-list a {
   color: var(--muted);
   text-decoration: none;
   padding: 0.35rem 0.6rem;
   border-radius: 10px;
 }
+
+/* Hover and focus effects on navigation links */
 .nav-list a:hover,
 .nav-list a:focus {
   color: #fff;
@@ -74,13 +93,15 @@ body {
   );
 }
 
-/* Hero */
+/* === Hero Section (About Me) === */
 .hero {
   display: flex;
   align-items: center;
   gap: var(--gap);
   padding: 4rem 0;
 }
+
+/* Profile image styling */
 .avatar {
   width: 120px;
   height: 120px;
@@ -89,23 +110,29 @@ body {
   border: 1px solid var(--surface-border);
   box-shadow: 0 6px 24px rgba(2, 6, 23, 0.6);
 }
+
+/* Main heading */
 .hero-content h1 {
   margin: 0;
   font-size: 2.25rem;
   letter-spacing: 0.4px;
 }
+
+/* Subtitle under name */
 .subtitle {
   margin: 0.4rem 0;
   color: var(--muted);
   font-weight: 600;
 }
+
+/* Short bio paragraph */
 .bio {
   margin-top: 0.8rem;
   color: var(--muted);
   max-width: 66ch;
 }
 
-/* Buttons style if you add later */
+/* === Button Style (Optional for later use) === */
 .btn {
   display: inline-block;
   padding: 0.5rem 0.9rem;
@@ -117,7 +144,7 @@ body {
   font-weight: 700;
 }
 
-/* Work */
+/* === Work / Projects Section === */
 .work {
   margin-top: 2.5rem;
   padding: 1.25rem;
@@ -125,10 +152,13 @@ body {
   border-radius: 12px;
   border: 1px solid var(--surface-border);
 }
+
 .work h2 {
   margin-top: 0;
   color: #dfe9ff;
 }
+
+/* Layout for project cards */
 .projects {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -137,6 +167,8 @@ body {
   padding: 0;
   margin: 0;
 }
+
+/* Individual project card design */
 .project-card {
   padding: 1.2rem;
   border-radius: 12px;
@@ -145,24 +177,29 @@ body {
   backdrop-filter: blur(4px);
   transition: transform 0.28s ease, box-shadow 0.28s ease;
 }
+
+/* Card hover animation */
 .project-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 10px 30px rgba(9, 10, 20, 0.6);
 }
+
 .project-card h3 {
   margin: 0 0 0.4rem 0;
 }
+
 .project-card p {
   margin: 0;
   color: var(--muted);
   font-size: 0.95rem;
 }
 
-/* Contact & Footer */
+/* === Contact and Footer === */
 .contact {
   margin-top: 1.5rem;
   padding: 1rem;
 }
+
 .site-footer {
   border-top: 1px solid var(--surface-border);
   padding: 1.25rem;
@@ -170,41 +207,49 @@ body {
   text-align: center;
 }
 
-/* Utilities & focus */
+/* === Accessibility and Focus Styles === */
 a:focus {
   outline: 3px solid rgba(124, 156, 255, 0.18);
   outline-offset: 4px;
 }
+
+/* Utility class to hide elements when needed */
 .hidden {
   display: none;
 }
 
-/* Responsive */
+/* === Responsive Design (for smaller screens) === */
 @media (max-width: 720px) {
+  /* Hide nav links on mobile (can be replaced by a menu later) */
   .nav-list {
     display: none;
   }
+
+  /* Stack hero section vertically */
   .hero {
     flex-direction: column;
     align-items: center;
     text-align: center;
   }
+
   .hero-content h1 {
     font-size: 1.6rem;
   }
+
   .container {
     padding: 1rem;
   }
 }
 
-/* Accessibility tweak for low-vision */
+/* === High Contrast Mode (Accessibility tweak) === */
 @media (prefers-contrast: high) {
   :root {
     --muted: #cbd5ff;
   }
+
   .project-card {
     border-color: rgba(255, 255, 255, 0.09);
   }
 }
 
-/* End of style.css */
+/* === End of style.css === */
