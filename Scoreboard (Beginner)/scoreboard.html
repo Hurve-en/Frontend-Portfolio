@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Event Scoreboard - 5 Groups</title>
+
+  <!-- Simple scoreboard structure using HTML only -->
+  <!-- CSS will handle the design, and JavaScript will make it interactive -->
+</head>
+<body>
+  <main id="app">
+
+    <!-- Title and short description -->
+    <head>
+        <h1>Event Scoreboard</h1>
+    </head>
+
+    <!-- Main scoreboard section -->
+    <section id="scoreboard">
+      
+      <!-- Group 1 -->
+      <div class="group-row" id="group-1" data-group="1">
+        <div class="group-name">Group 1</div>
+        <div class="group-score"></div>
+            <span id="score-1">0</span>
+      </div>
+
+        <!-- Controls (JS will listen to these buttons) -->
+        <div class="group-controls">
+            <button type="button" class="btn-add" data-group="1">+10</button>
+            <button type="button" class="btn-minus" data-group="1">-1</button>
+            <button type="button" class="btn-reset" data-group="1">Reset</button>
+        </div>
+
+
+      <!-- Group 2 -->
+      <div class="group-row" id="group-2" data-group="2">
+        <div class="group-name">Group 2</div>
+        <div class="group-score"></div>
+            <span id="score-2">0</span>
+      </div>
+
+        <!-- Controls (JS will listen to these buttons) -->
+        <div class="group-controls">
+            <button type="button" class="btn-add" data-group="2">+10</button>
+            <button type="button" class="btn-minus" data-group="2">-1</button>
+            <button type="button" class="btn-reset" data-group="2">Reset</button>
+        </div>
+
+      <!-- Group 3 -->
+      <div class="group-row" id="group-3" data-group="3">
+        <div class="group-name">Group 3</div>
+        <div class="group-score"></div>
+            <span id="score-3">0</span>
+      </div>
+
+        <!-- Controls (JS will listen to these buttons) -->
+        <div class="group-controls">
+            <button type="button" class="btn-add" data-group="3">+10</button>
+            <button type="button" class="btn-minus" data-group="3">-1</button>
+            <button type="button" class="btn-reset" data-group="3">Reset</button>
+        </div>
+
+
+      <!-- Group 4 -->
+      <div class="group-row" id="group-4" data-group="4">
+        <div class="group-name">Group 4</div>
+        <div class="group-score"></div>
+            <span id="score-3">0</span>
+      </div>
+
+        <!-- Controls (JS will listen to these buttons) -->
+        <div class="group-controls">
+            <button type="button" class="btn-add" data-group="4">+10</button>
+            <button type="button" class="btn-minus" data-group="4">-1</button>
+            <button type="button" class="btn-reset" data-group="4">Reset</button>
+        </div>
+
+
+      <!-- Group 5 -->
+      <div class="group-row" id="group-5" data-group="5">
+        <div class="group-name">Group 5</div>
+        <div class="group-score"></div>
+            <span id="score-5">0</span>
+      </div>
+
+        <!-- Controls (JS will listen to these buttons) -->
+        <div class="group-controls">
+            <button type="button" class="btn-add" data-group="5">+10</button>
+            <button type="button" class="btn-minus" data-group="5">-1</button>
+            <button type="button" class="btn-reset" data-group="5">Reset</button>
+        </div>
+
+    </section>
+
+    <!-- Button to reset all groups at once -->
+    
+
+  <!-- Notes for JavaScript:
+       - JS will change the number inside each <span id="score-N">
+       - Buttons will add or subtract points based on data-group
+       - The "Reset All" button will set all scores to 0
+  -->
+</body>
+</html>
