@@ -1,102 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Physicians Quote Generator</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="qoute.css">
-</head>
-<body>
-  <div class="card" role="region" aria-label="Random physician quote generator">
-    <header>
-      <h1>Physicians Quote Box</h1>
-      <p class="lead">A random selection of wise words from notable physicians — click to get a new one.</p>
-    </header>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Quote Generator</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&family=Playfair+Display:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="qoute.css" />
+  </head>
 
-    <div class="quote-box" id="quoteBox">
-      <p class="quote-text" id="quoteText">Loading quote…</p>
-      <p class="quote-author" id="quoteAuthor"></p>
-    </div>
+  <body>
+    <div
+      class="card"
+      role="region"
+      aria-label="Random physician quote generator"
+    >
+      <header>
+        <h1>Quote Box</h1>
+      </header>
 
-    <div class="controls">
-      <div class="left-controls">
-        <button class="btn-new" id="newQuoteBtn" aria-label="New quote">New Quote</button>
-        <button class="btn-copy" id="copyBtn" aria-label="Copy quote">Copy</button>
-        <button class="btn-tweet" id="tweetBtn" aria-label="Tweet quote">Tweet</button>
+      <div class="quote-box" id="quoteBox">
+        <p class="quote-text" id="quoteText">Loading quote…</p>
+        <p class="quote-author" id="quoteAuthor"></p>
       </div>
-      <div class="hint" id="hint">Quotes from Hippocrates, Osler, Virchow, Avicenna and more.</div>
+
+      <div class="controls">
+        <div class="left-controls">
+          <button class="btn-new" id="newQuoteBtn" aria-label="New quote">
+            New Quote
+          </button>
+          <button class="btn-copy" id="copyBtn" aria-label="Copy quote">
+            Copy
+          </button>
+          <button class="btn-tweet" id="tweetBtn" aria-label="Tweet quote">
+            Tweet
+          </button>
+        </div>
+        
+      </div>
+
+      <div class="credit">
+        Made for study & inspiration — quotes attributed to the listed
+        physicians.
+      </div>
     </div>
 
-    <div class="credit">Made for study & inspiration — quotes attributed to the listed physicians.</div>
-  </div>
-
-<script>
-/* Simple array of quotes by physicians.
+    <script>
+      /* Simple array of quotes by physicians.
    Each item has {text, author}. */
-const quotes = [
-  { text: "Life is like riding a bicycle. To keep your balance you must keep moving.", author: "Albert Einstein" },
-  { text: "Stay hungry, stay foolish.", author: "Steve Jobs" },
-  { text: "It always seems impossible until it's done.", author: "Nelson Mandela" },
-  { text: "Turn your wounds into wisdom.", author: "Oprah Winfrey" },
-  { text: "When something is important enough, you do it even if the odds are not in your favor.", author: "Elon Musk" },
-  { text: "Genius is one percent inspiration and ninety-nine percent perspiration.", author: "Thomas Edison" },
-  { text: "Don't compare yourself with anyone in this world.", author: "Bill Gates" },
-  { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
-  { text: "Success usually comes to those who are too busy to be looking for it.", author: "Henry David Thoreau" },
-  { text: "You miss 100% of the shots you don't take.", author: "Wayne Gretzky" },
-  { text: "The best way out is always through.", author: "Robert Frost" },
-  { text: "Action is the foundational key to all success.", author: "Pablo Picasso" }
-];
+      const quotes = [
+        {
+          text: "Life is like riding a bicycle. To keep your balance you must keep moving.",
+          author: "Albert Einstein",
+        },
+        { text: "Stay hungry, stay foolish.", author: "Steve Jobs" },
+        {
+          text: "It always seems impossible until it's done.",
+          author: "Nelson Mandela",
+        },
+        { text: "Turn your wounds into wisdom.", author: "Oprah Winfrey" },
+        {
+          text: "When something is important enough, you do it even if the odds are not in your favor.",
+          author: "Elon Musk",
+        },
+        {
+          text: "Genius is one percent inspiration and ninety-nine percent perspiration.",
+          author: "Thomas Edison",
+        },
+        {
+          text: "Don't compare yourself with anyone in this world.",
+          author: "Bill Gates",
+        },
+        {
+          text: "The only way to do great work is to love what you do.",
+          author: "Steve Jobs",
+        },
+        {
+          text: "Success usually comes to those who are too busy to be looking for it.",
+          author: "Henry David Thoreau",
+        },
+        {
+          text: "You miss 100% of the shots you don't take.",
+          author: "Wayne Gretzky",
+        },
+        { text: "The best way out is always through.", author: "Robert Frost" },
+        {
+          text: "Action is the foundational key to all success.",
+          author: "Pablo Picasso",
+        },
+      ];
 
-/* pick a random quote object */
-function getRandomQuote() {
-  const i = Math.floor(Math.random() * quotes.length);
-  return quotes[i];
-}
+      /* pick a random quote object */
+      function getRandomQuote() {
+        const i = Math.floor(Math.random() * quotes.length);
+        return quotes[i];
+      }
 
-/* render a quote to the page */
-function renderQuote(q) {
-  document.getElementById('quoteText').textContent = `“${q.text}”`;
-  document.getElementById('quoteAuthor').textContent = `— ${q.author}`;
-}
+      /* render a quote to the page */
+      function renderQuote(q) {
+        document.getElementById("quoteText").textContent = `“${q.text}”`;
+        document.getElementById("quoteAuthor").textContent = `— ${q.author}`;
+      }
 
-/* initialize with one */
-renderQuote(getRandomQuote());
+      /* initialize with one */
+      renderQuote(getRandomQuote());
 
-/* New quote button */
-document.getElementById('newQuoteBtn').addEventListener('click', () => {
-  renderQuote(getRandomQuote());
-});
+      /* New quote button */
+      document.getElementById("newQuoteBtn").addEventListener("click", () => {
+        renderQuote(getRandomQuote());
+      });
 
-/* Copy button: copies quote + author to clipboard */
-document.getElementById('copyBtn').addEventListener('click', async () => {
-  const text = document.getElementById('quoteText').textContent + " " + document.getElementById('quoteAuthor').textContent;
-  try {
-    await navigator.clipboard.writeText(text);
-    const hint = document.getElementById('hint');
-    hint.textContent = 'Copied to clipboard!';
-    setTimeout(()=> hint.textContent = 'Quotes from Hippocrates, Osler, Virchow, Avicenna and more.', 1500);
-  } catch (e) {
-    alert('Copy failed — your browser may not allow it.');
-  }
-});
+      /* Copy button: copies quote + author to clipboard */
+      document.getElementById("copyBtn").addEventListener("click", async () => {
+        const text =
+          document.getElementById("quoteText").textContent +
+          " " +
+          document.getElementById("quoteAuthor").textContent;
+        try {
+          await navigator.clipboard.writeText(text);
+          const hint = document.getElementById("hint");
+          hint.textContent = "Copied to clipboard!";
+          setTimeout(
+            () =>
+              (hint.textContent =
+                "Quotes from Hippocrates, Osler, Virchow, Avicenna and more."),
+            1500
+          );
+        } catch (e) {
+          alert("Copy failed — your browser may not allow it.");
+        }
+      });
 
-/* Tweet button: opens Twitter share window */
-document.getElementById('tweetBtn').addEventListener('click', () => {
-  const quote = document.getElementById('quoteText').textContent;
-  const author = document.getElementById('quoteAuthor').textContent;
-  const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(quote + " " + author)}`;
-  window.open(url, '_blank', 'noopener');
-});
+      /* Tweet button: opens Twitter share window */
+      document.getElementById("tweetBtn").addEventListener("click", () => {
+        const quote = document.getElementById("quoteText").textContent;
+        const author = document.getElementById("quoteAuthor").textContent;
+        const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+          quote + " " + author
+        )}`;
+        window.open(url, "_blank", "noopener");
+      });
 
-/* Optional: press space or N to get new quote */
-document.addEventListener('keydown', (e) => {
-  if (e.key === ' ' || e.key.toLowerCase() === 'n') {
-    e.preventDefault();
-    renderQuote(getRandomQuote());
-  }
-});
-</script>
-</body>
+      /* Optional: press space or N to get new quote */
+      document.addEventListener("keydown", (e) => {
+        if (e.key === " " || e.key.toLowerCase() === "n") {
+          e.preventDefault();
+          renderQuote(getRandomQuote());
+        }
+      });
+    </script>
+  </body>
 </html>
