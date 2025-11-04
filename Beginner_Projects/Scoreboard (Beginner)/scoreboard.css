@@ -1,157 +1,235 @@
-/* ---------- Variables (easy to tweak) ---------- */
+/* Scoreboard.css
+   Theme: iACADEMY-like navy + white aesthetic
+   Works with class names from your HTML (supports underscores and hyphens).
+*/
+
+/* ---------- Colors & variables ---------- */
 :root{
-  --bg: #f4f7fb;
-  --card: #ffffff;
-  --accent: #0b74da;
-  --accent-600: #075fb8;
-  --plus: #16a34a;      /* green for add */
-  --minus: #dc2626;     /* red for subtract */
-  --muted: #6b7280;
-  --glass: rgba(11,116,218,0.06);
-  --radius: 12px;
-  --gap: 14px;
-  --container: 960px;
-  --shadow: 0 8px 30px rgba(16,24,40,0.06);
+  --navy-900: #071842;   /* deep navy */
+  --navy-800: #0b2b58;
+  --accent:    #ffcf40;  /* warm accent (gold) */
+  --card:      #ffffff;
+  --muted:     #99a0b3;
+  --danger:    #e03a3a;
+  --ok:        #16a34a;
+  --radius:    14px;
+  --container: 980px;
+  --shadow:    0 12px 40px rgba(6,10,25,0.45);
 }
 
-/* ---------- Page layout ---------- */
+/* ---------- Reset & layout ---------- */
 * { box-sizing: border-box; }
-html,body { height:100%; margin:0; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial; background:var(--bg); color:#0f172a; -webkit-font-smoothing:antialiased; }
-main#app { max-width:var(--container); margin:28px auto; padding:20px; }
+html, body { height: 100%; margin: 0; }
+body{
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  background:
+    radial-gradient(700px 400px at 12% 18%, rgba(79,112,188,0.08), transparent 10%),
+    radial-gradient(500px 300px at 90% 82%, rgba(11,116,218,0.04), transparent 10%),
+    linear-gradient(180deg, var(--navy-900), var(--navy-800));
+  color: #eef6ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px;
+}
 
-/* ---------- App card ---------- */
-header { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:14px; }
-header h1 { margin:0; font-size:20px; }
-header p { margin:0; color:var(--muted); font-size:13px; }
+/* Center app wrapper */
+main#app {
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 18px;
+}
 
-/* container for scoreboard rows */
-#scoreboard {
-  background: linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0.9));
+/* ---------- Header / Title ---------- */
+/* Support both Title_Scoreboard and h1 inside header */
+.Title_Scoreboard,
+header h1 {
+  font-size: 20px;
+  margin: 0;
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+/* small subtitle if present */
+header .lead,
+p.lead {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* ---------- Scoreboard container ----------
+   Support both Main_Scoreboard and #scoreboard id
+*/
+#scoreboard,
+.Main_Scoreboard {
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
   border-radius: var(--radius);
-  padding:18px;
+  padding: 18px;
   box-shadow: var(--shadow);
-  border: 1px solid rgba(15,23,42,0.03);
-  display:grid;
-  gap:var(--gap);
+  border: 1px solid rgba(255,255,255,0.04);
+  display: grid;
+  gap: 14px;
 }
 
-/* each group row */
-.group-row{
-  display:flex;
-  align-items:center;
-  gap:16px;
-  padding:12px;
-  border-radius:10px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.98));
-  border:1px solid rgba(11,116,218,0.04);
-  transition: transform .18s ease, box-shadow .18s ease;
+/* ---------- Group row cards ----------
+   Support both .group-row and .group_row class names
+*/
+.group-row,
+.group_row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.03);
+  transition: transform .16s ease, box-shadow .16s ease;
 }
 
-/* subtle lift on hover */
-.group-row:hover{ transform: translateY(-4px); box-shadow: 0 12px 30px rgba(8,12,30,0.06); }
+/* hover lift */
+.group-row:hover,
+.group_row:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(8,12,30,0.35);
+}
 
 /* group name */
-.group-name{
-  min-width:110px;
-  font-weight:700;
-  font-size:16px;
-  color:#0b1730;
+.group-name {
+  min-width: 120px;
+  font-weight: 700;
+  color: #f5fbff;
+  font-size: 15px;
 }
 
 /* score display area */
-.group-score{
-  flex:1 1 auto;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-.group-score span{
-  display:inline-block;
-  min-width:96px;
-  padding:10px 14px;
-  font-size:28px;
-  font-weight:800;
-  text-align:center;
-  border-radius:10px;
-  background: linear-gradient(180deg, rgba(11,116,218,0.06), rgba(255,255,255,0.6));
-  border:1px solid rgba(11,116,218,0.08);
-  box-shadow: 0 6px 18px rgba(9,10,30,0.04);
+.group-score {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* controls group */
-.group-controls{
-  display:flex;
-  gap:8px;
-  align-items:center;
+/* score number styling - targets span inside group-score */
+.group-score span,
+.group_score span {
+  display: inline-block;
+  min-width: 100px;
+  padding: 12px 16px;
+  font-size: 28px;
+  font-weight: 800;
+  text-align: center;
+  color: var(--navy-900);
+  border-radius: 12px;
+  background: linear-gradient(180deg, #ffffff, #f2f6ff);
+  border: 1px solid rgba(11,116,218,0.06);
+  box-shadow: 0 8px 26px rgba(6,10,25,0.06);
 }
 
-/* button base style */
+/* ---------- Controls (buttons) ----------
+   Support both .group-controls and .group_controls
+*/
+.group-controls,
+.group_controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* button base */
 .group-controls button,
-#reset-all {
-  cursor:pointer;
-  border:0;
-  padding:8px 12px;
-  border-radius:8px;
-  font-weight:700;
-  font-size:14px;
+.group_controls button,
+#reset-all,
+.New_Group,
+.NewGroup,
+button.btn-add,
+button.btn-minus,
+button.btn-reset {
+  cursor: pointer;
+  border: 0;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 14px;
   transition: transform .08s ease, box-shadow .08s ease, opacity .12s;
-  box-shadow: 0 3px 10px rgba(8,12,30,0.04);
 }
 
-/* add button (+10) - green */
-.btn-add{
-  background: linear-gradient(90deg, var(--plus), #3bd06a);
-  color:#062214;
-  border:1px solid rgba(22,163,74,0.12);
+/* add button (gold accent) - supports .btn-add or .btn_add */
+.btn-add, .btn_add {
+  background: linear-gradient(90deg, var(--accent), #ffd85a);
+  color: #072033;
+  border: 1px solid rgba(0,0,0,0.06);
 }
-.btn-add:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(22,163,74,0.08); }
+.btn-add:hover, .btn_add:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(255,207,64,0.12); }
 
-/* subtract button (-1) - red */
-.btn-minus{
-  background: linear-gradient(90deg, #ff7b7b, var(--minus));
-  color:white;
-  border:1px solid rgba(220,38,38,0.12);
+/* minus button (subtle dark) - supports .btn-minus and .btn_minus */
+.btn-minus, .btn_minus {
+  background: linear-gradient(90deg, rgba(10,20,40,0.06), rgba(10,20,40,0.02));
+  color: var(--muted);
+  border: 1px solid rgba(255,255,255,0.03);
 }
-.btn-minus:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(220,38,38,0.06); }
+.btn-minus:hover, .btn_minus:hover { transform: translateY(-2px); }
 
-/* reset button - neutral */
-.btn-reset{
+/* reset button */
+.btn-reset, .btn_reset {
   background: transparent;
-  color:var(--muted);
-  border:1px solid rgba(15,23,42,0.04);
+  color: var(--muted);
+  border: 1px solid rgba(255,255,255,0.03);
 }
-.btn-reset:hover { background: rgba(11,116,218,0.03); color:var(--accent); transform: translateY(-2px); }
+.btn-reset:hover, .btn_reset:hover { color: #fff; background: rgba(255,255,255,0.02); }
 
-/* Reset All button style (global control) */
-#reset-all{
-  margin-top:12px;
-  background: linear-gradient(90deg, var(--accent), var(--accent-600));
-  color:white;
-  border-radius:10px;
-  padding:10px 14px;
-  border: 1px solid rgba(11,116,218,0.08);
-}
-
-/* small-screen responsive layout */
-@media (max-width:720px){
-  .group-row{ flex-direction:column; align-items:stretch; gap:10px; padding:12px; }
-  .group-name{ min-width:unset; text-align:center; }
-  .group-score{ order:2; }
-  .group-controls{ order:3; justify-content:center; }
-  #scoreboard{ padding:12px; }
+/* ---------- Add Groups area ----------
+   Support .Add_Groups and .add-groups and .New_Group
+*/
+.Add_Groups, .add-groups {
+  margin-top: 8px;
+  display: flex;
+  justify-content: flex-start;
 }
 
-/* accessibility: keyboard focus */
-button:focus { outline: 3px solid rgba(11,116,218,0.14); outline-offset:3px; }
+.New_Group, .new-group, .NewGroup {
+  cursor: pointer;
+  border: 0;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-weight: 700;
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid rgba(255,255,255,0.03);
+}
+.New_Group:hover, .new-group:hover { color: #fff; background: rgba(255,255,255,0.02); }
 
-/* utility: highlight leading group when JS adds class "leading" */
-.group-row.leading{
-  border: 2px solid rgba(11,116,218,0.18);
-  box-shadow: 0 18px 40px rgba(11,116,218,0.06);
-  transform: translateY(-6px);
+/* Global Reset All button (if present) */
+#reset-all {
+  margin-top: 12px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.04);
+  padding: 10px 14px;
+  border-radius: 10px;
 }
 
-/* small tweak for negative numbers (if allowed) */
-.group-score .negative {
-  color: var(--minus);
+/* ---------- Responsive adjustments ---------- */
+@media (max-width: 720px) {
+  .group-row, .group_row { flex-direction: column; align-items: stretch; gap: 8px; padding: 12px; }
+  .group-name { min-width: unset; text-align: center; }
+  .group-score { order: 2; }
+  .group-controls, .group_controls { order: 3; justify-content: center; }
+  #scoreboard, .Main_Scoreboard { padding: 12px; }
 }
+
+/* ---------- Leading indicator (highest score) ----------
+   Support both class styles 
+*/
+.group-row.leading, .group_row.leading {
+  outline: 3px solid rgba(255,207,64,0.14);
+  background: linear-gradient(180deg, rgba(255,250,230,0.02), rgba(255,255,255,0.01));
+  transform: translateY(-8px);
+  box-shadow: 0 22px 48px rgba(8,12,30,0.45);
+}
+
+/* ---------- Utility ---------- */
+.hidden { display: none; }
+.small { font-size: 13px; color: var(--muted); }
