@@ -1,235 +1,72 @@
-/* Scoreboard.css
-   Theme: iACADEMY-like navy + white aesthetic
-   Works with class names from your HTML (supports underscores and hyphens).
-*/
-
-/* ---------- Colors & variables ---------- */
 :root{
-  --navy-900: #071842;   /* deep navy */
+  --navy-900: #071842;
   --navy-800: #0b2b58;
-  --accent:    #ffcf40;  /* warm accent (gold) */
+  --accent:    #ffcf40;
   --card:      #ffffff;
   --muted:     #99a0b3;
-  --danger:    #e03a3a;
-  --ok:        #16a34a;
   --radius:    14px;
-  --container: 980px;
-  --shadow:    0 12px 40px rgba(6,10,25,0.45);
+  --container: 1200px;
 }
-
-/* ---------- Reset & layout ---------- */
-* { box-sizing: border-box; }
-html, body { height: 100%; margin: 0; }
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
 body{
   font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-  background:
-    radial-gradient(700px 400px at 12% 18%, rgba(79,112,188,0.08), transparent 10%),
-    radial-gradient(500px 300px at 90% 82%, rgba(11,116,218,0.04), transparent 10%),
-    linear-gradient(180deg, var(--navy-900), var(--navy-800));
-  color: #eef6ff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 28px;
+  background: linear-gradient(180deg,var(--navy-900),var(--navy-800));
+  color:#eef6ff;
+  padding:18px;
+  display:flex;flex-direction:column;gap:18px;align-items:center;
+}
+main{width:100%;max-width:var(--container)}
+
+header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+header h1{margin:0;font-size:20px}
+.controls{display:flex;gap:8px;align-items:center}
+.controls button{padding:8px 12px;border-radius:10px;border:0;font-weight:700;cursor:pointer}
+.btn-primary{background:linear-gradient(90deg,var(--accent),#ffd85a);color:#072033}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.04)}
+
+#board{
+  display:flex;
+  flex-wrap:wrap;
+  gap:16px;
+  margin-top:16px;
+  align-items:flex-start;
 }
 
-/* Center app wrapper */
-main#app {
-  width: 100%;
-  max-width: var(--container);
-  margin: 0 auto;
-  padding: 18px;
+.group-box{
+  width: 260px;
+  min-height: 160px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+  border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:10px;border:1px solid rgba(255,255,255,0.04);
 }
 
-/* ---------- Header / Title ---------- */
-/* Support both Title_Scoreboard and h1 inside header */
-.Title_Scoreboard,
-header h1 {
-  font-size: 20px;
-  margin: 0;
-  color: #fff;
-  font-weight: 700;
-  letter-spacing: 0.3px;
+.group-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.group-name{font-weight:800;color:#fff;font-size:16px}
+.group-actions{display:flex;gap:6px}
+.icon-btn{background:transparent;border:0;color:var(--muted);cursor:pointer;font-weight:700}
+
+.group-score{flex:1;display:flex;align-items:center;justify-content:center}
+.group-score .value{
+  font-weight:900;
+  font-size:72px;
+  line-height:1;color:var(--navy-900);background:#fff;padding:8px 12px;border-radius:10px;min-width:120px;text-align:center;box-shadow:0 8px 26px rgba(6,10,25,0.06);
 }
 
-/* small subtitle if present */
-header .lead,
-p.lead {
-  margin: 0;
-  color: var(--muted);
-  font-size: 13px;
-}
+.group-controls{display:flex;gap:8px;justify-content:center}
+.group-controls button{padding:8px 10px;border-radius:8px;border:0;cursor:pointer;font-weight:800}
+.btn-add{background:linear-gradient(90deg,var(--accent),#ffd85a);color:#072033}
+.btn-minus{background:rgba(255,255,255,0.04);color:var(--muted)}
+.btn-reset{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.03)}
 
-/* ---------- Scoreboard container ----------
-   Support both Main_Scoreboard and #scoreboard id
-*/
-#scoreboard,
-.Main_Scoreboard {
-  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
-  border-radius: var(--radius);
-  padding: 18px;
-  box-shadow: var(--shadow);
-  border: 1px solid rgba(255,255,255,0.04);
-  display: grid;
-  gap: 14px;
-}
+.group-box.leading{outline:4px solid rgba(255,207,64,0.14);transform:translateY(-6px)}
 
-/* ---------- Group row cards ----------
-   Support both .group-row and .group_row class names
-*/
-.group-row,
-.group_row {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 12px;
-  border-radius: 12px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-  border: 1px solid rgba(255,255,255,0.03);
-  transition: transform .16s ease, box-shadow .16s ease;
-}
+@media (max-width:980px){.group-box{width:45%}.group-score .value{font-size:56px}}
+@media (max-width:600px){.group-box{width:100%}.group-score .value{font-size:48px}}
 
-/* hover lift */
-.group-row:hover,
-.group_row:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 18px 40px rgba(8,12,30,0.35);
-}
+.present .group-box{flex:1 1 20%;min-width:200px;width:auto;min-height:220px}
+.present .group-score .value{font-size:120px;padding:20px}
+.present header, .present .controls .small{display:none}
 
-/* group name */
-.group-name {
-  min-width: 120px;
-  font-weight: 700;
-  color: #f5fbff;
-  font-size: 15px;
-}
+.name-input{background:transparent;border:0;color:#fff;font-weight:800;font-size:16px}
+.name-input:focus{outline:none}
 
-/* score display area */
-.group-score {
-  flex: 1 1 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* score number styling - targets span inside group-score */
-.group-score span,
-.group_score span {
-  display: inline-block;
-  min-width: 100px;
-  padding: 12px 16px;
-  font-size: 28px;
-  font-weight: 800;
-  text-align: center;
-  color: var(--navy-900);
-  border-radius: 12px;
-  background: linear-gradient(180deg, #ffffff, #f2f6ff);
-  border: 1px solid rgba(11,116,218,0.06);
-  box-shadow: 0 8px 26px rgba(6,10,25,0.06);
-}
-
-/* ---------- Controls (buttons) ----------
-   Support both .group-controls and .group_controls
-*/
-.group-controls,
-.group_controls {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
-/* button base */
-.group-controls button,
-.group_controls button,
-#reset-all,
-.New_Group,
-.NewGroup,
-button.btn-add,
-button.btn-minus,
-button.btn-reset {
-  cursor: pointer;
-  border: 0;
-  padding: 8px 12px;
-  border-radius: 10px;
-  font-weight: 700;
-  font-size: 14px;
-  transition: transform .08s ease, box-shadow .08s ease, opacity .12s;
-}
-
-/* add button (gold accent) - supports .btn-add or .btn_add */
-.btn-add, .btn_add {
-  background: linear-gradient(90deg, var(--accent), #ffd85a);
-  color: #072033;
-  border: 1px solid rgba(0,0,0,0.06);
-}
-.btn-add:hover, .btn_add:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(255,207,64,0.12); }
-
-/* minus button (subtle dark) - supports .btn-minus and .btn_minus */
-.btn-minus, .btn_minus {
-  background: linear-gradient(90deg, rgba(10,20,40,0.06), rgba(10,20,40,0.02));
-  color: var(--muted);
-  border: 1px solid rgba(255,255,255,0.03);
-}
-.btn-minus:hover, .btn_minus:hover { transform: translateY(-2px); }
-
-/* reset button */
-.btn-reset, .btn_reset {
-  background: transparent;
-  color: var(--muted);
-  border: 1px solid rgba(255,255,255,0.03);
-}
-.btn-reset:hover, .btn_reset:hover { color: #fff; background: rgba(255,255,255,0.02); }
-
-/* ---------- Add Groups area ----------
-   Support .Add_Groups and .add-groups and .New_Group
-*/
-.Add_Groups, .add-groups {
-  margin-top: 8px;
-  display: flex;
-  justify-content: flex-start;
-}
-
-.New_Group, .new-group, .NewGroup {
-  cursor: pointer;
-  border: 0;
-  padding: 8px 12px;
-  border-radius: 10px;
-  font-weight: 700;
-  background: transparent;
-  color: var(--muted);
-  border: 1px solid rgba(255,255,255,0.03);
-}
-.New_Group:hover, .new-group:hover { color: #fff; background: rgba(255,255,255,0.02); }
-
-/* Global Reset All button (if present) */
-#reset-all {
-  margin-top: 12px;
-  background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
-  color: #fff;
-  border: 1px solid rgba(255,255,255,0.04);
-  padding: 10px 14px;
-  border-radius: 10px;
-}
-
-/* ---------- Responsive adjustments ---------- */
-@media (max-width: 720px) {
-  .group-row, .group_row { flex-direction: column; align-items: stretch; gap: 8px; padding: 12px; }
-  .group-name { min-width: unset; text-align: center; }
-  .group-score { order: 2; }
-  .group-controls, .group_controls { order: 3; justify-content: center; }
-  #scoreboard, .Main_Scoreboard { padding: 12px; }
-}
-
-/* ---------- Leading indicator (highest score) ----------
-   Support both class styles 
-*/
-.group-row.leading, .group_row.leading {
-  outline: 3px solid rgba(255,207,64,0.14);
-  background: linear-gradient(180deg, rgba(255,250,230,0.02), rgba(255,255,255,0.01));
-  transform: translateY(-8px);
-  box-shadow: 0 22px 48px rgba(8,12,30,0.45);
-}
-
-/* ---------- Utility ---------- */
-.hidden { display: none; }
-.small { font-size: 13px; color: var(--muted); }

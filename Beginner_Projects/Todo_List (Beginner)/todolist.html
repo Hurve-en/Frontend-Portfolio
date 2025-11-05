@@ -1,189 +1,128 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Minimal Todo — Simple & Aesthetic</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet"/>
+    <title>Todo List — Simple & Aesthetic</title>
+
+    <!-- Optional: Google Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- External stylesheet -->
     <link rel="stylesheet" href="todolist.css" />
   </head>
-  <body>
-    <div class="app" role="application" aria-label="Todo list">
-      <header>
-        <div>
-          <h1>Todo-List</h1>
+
+  <body class="school-theme">
+    <div class="app" role="application" aria-label="Todo list app">
+      <header class="app-header">
+        <div class="title-wrap">
+          <h1 class="app-title">Todo List</h1>
           <p class="lead">
             Add tasks, check when done — you’ll be asked if you want to remove
             it.
           </p>
         </div>
+
+        <!-- Quick stats -->
+        <div class="header-actions">
+          <div class="counters" aria-live="polite">
+            <span id="totalCount" class="counter">0 total</span>
+            <span id="doneCount" class="counter">0 done</span>
+          </div>
+          <div class="quick-controls">
+            <button id="presentBtn" class="btn-ghost small">Present</button>
+          </div>
+        </div>
       </header>
 
-      <!-- Input -->
-      <div class="input-row">
-        <input
-          id="taskInput"
-          type="text"
-          placeholder="Add a task and press Enter"
-          aria-label="New task"
-        />
-        <button id="addBtn" class="add">Add</button>
-      </div>
+      <!-- Input section -->
+      <section class="input-area" aria-label="Add new task">
+        <div class="input-row">
+          <input
+            id="taskInput"
+            type="text"
+            placeholder="E.g. Finish homework"
+            aria-label="New task"
+            autocomplete="off"
+          />
+
+          <!-- Priority selector -->
+          <select id="prioritySelect" aria-label="Priority">
+            <option value="normal">Normal</option>
+            <option value="high">High</option>
+            <option value="low">Low</option>
+          </select>
+
+          <button id="addBtn" class="add" aria-label="Add task">Add</button>
+        </div>
+
+        <div class="input-help small">
+          Press <kbd>Enter</kbd> to add a task. Click a checkbox to mark done.
+        </div>
+      </section>
 
       <!-- Task list -->
-      <div id="list" class="list" aria-live="polite"></div>
-      <div id="empty" class="empty">No tasks yet — add your first task.</div>
+      <main>
+        <section id="listPanel" class="list-panel" aria-label="Task list">
+          <div id="list" class="list" aria-live="polite"></div>
+          <div id="empty" class="empty" role="status">
+            No tasks yet — add your first task.
+          </div>
+        </section>
+      </main>
 
-      <!-- Footer controls -->
-      <div class="footer">
-        <button id="clearDone" class="btn-ghost">Remove All Done</button>
-        <div>
+      <!-- Footer -->
+      <footer class="footer">
+        <div class="left-controls">
+          <button id="clearDone" class="btn-ghost">Remove All Done</button>
           <button id="clearAll" class="btn-ghost">Clear All</button>
         </div>
-      </div>
+
+        <div class="right-controls">
+          <select id="filterSelect" aria-label="Filter tasks">
+            <option value="all">All</option>
+            <option value="active">Active</option>
+            <option value="done">Done</option>
+          </select>
+
+          <select id="sortSelect" aria-label="Sort tasks">
+            <option value="recent">Newest</option>
+            <option value="oldest">Oldest</option>
+            <option value="priority">Priority</option>
+          </select>
+        </div>
+      </footer>
     </div>
 
-    <script>
-      /* Simple Todo app
-   - Add tasks
-   - Check a task -> confirm whether to remove it
-   - Remove button for each task
-   - Remove All Done and Clear All buttons
-   - Uses localStorage to persist tasks
-*/
+    <!-- Template for a single task -->
+    <template id="task-template">
+      <div class="item" data-id="" role="article" aria-label="task item">
+        <div class="left">
+          <input
+            type="checkbox"
+            class="task-checkbox"
+            aria-label="Mark task done"
+          />
+          <div class="meta">
+            <div class="text"></div>
+            <div class="meta-row">
+              <span class="priority tag"></span>
+              <time class="due tag" datetime=""></time>
+            </div>
+          </div>
+        </div>
 
-      /* ----- storage helpers ----- */
-      const STORAGE_KEY = "minimal_todo_v1";
-      function loadTasks() {
-        try {
-          return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-        } catch {
-          return [];
-        }
-      }
-      function saveTasks(tasks) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
-      }
+        <div class="item-actions">
+          <button class="edit small">Edit</button>
+          <button class="remove small">Remove</button>
+        </div>
+      </div>
+    </template>
 
-      /* ----- initial state ----- */
-      let tasks = loadTasks(); // array of {id, text, done}
-
-      /* ----- dom refs ----- */
-      const listEl = document.getElementById("list");
-      const inputEl = document.getElementById("taskInput");
-      const addBtn = document.getElementById("addBtn");
-      const emptyEl = document.getElementById("empty");
-      const clearDoneBtn = document.getElementById("clearDone");
-      const clearAllBtn = document.getElementById("clearAll");
-
-      /* ----- utilities ----- */
-      function uid() {
-        return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
-      }
-
-      /* ----- rendering ----- */
-      function render() {
-        listEl.innerHTML = "";
-        if (tasks.length === 0) {
-          emptyEl.style.display = "block";
-        } else {
-          emptyEl.style.display = "none";
-        }
-
-        tasks.forEach((task) => {
-          const item = document.createElement("div");
-          item.className = "item";
-          item.dataset.id = task.id;
-
-          // left: checkbox + text
-          const left = document.createElement("div");
-          left.className = "left";
-
-          const cb = document.createElement("input");
-          cb.type = "checkbox";
-          cb.checked = !!task.done;
-          cb.addEventListener("change", () => onToggle(task.id, cb.checked));
-
-          const txt = document.createElement("div");
-          txt.className = "text" + (task.done ? " done" : "");
-          txt.textContent = task.text;
-
-          left.appendChild(cb);
-          left.appendChild(txt);
-
-          // remove button
-          const removeBtn = document.createElement("button");
-          removeBtn.className = "remove";
-          removeBtn.textContent = "Remove";
-          removeBtn.addEventListener("click", () => onRemove(task.id));
-
-          item.appendChild(left);
-          item.appendChild(removeBtn);
-          listEl.appendChild(item);
-        });
-      }
-
-      /* ----- handlers ----- */
-      function addTask(text) {
-        const trimmed = text.trim();
-        if (!trimmed) return;
-        tasks.unshift({ id: uid(), text: trimmed, done: false });
-        saveTasks(tasks);
-        render();
-        inputEl.value = "";
-        inputEl.focus();
-      }
-
-      function onRemove(id) {
-        tasks = tasks.filter((t) => t.id !== id);
-        saveTasks(tasks);
-        render();
-      }
-
-      function onToggle(id, checked) {
-        // find task
-        const task = tasks.find((t) => t.id === id);
-        if (!task) return;
-        task.done = !!checked;
-
-        // ask user whether to remove
-        const remove = confirm(`Task "${task.text}" marked done. Remove it?`);
-        if (remove) {
-          tasks = tasks.filter((t) => t.id !== id);
-        }
-        saveTasks(tasks);
-        render();
-      }
-
-      /* remove all done */
-      function removeAllDone() {
-        const any = tasks.some((t) => t.done);
-        if (!any) return alert("No completed tasks to remove.");
-        if (!confirm("Remove all completed tasks?")) return;
-        tasks = tasks.filter((t) => !t.done);
-        saveTasks(tasks);
-        render();
-      }
-
-      /* clear all tasks */
-      function clearAll() {
-        if (tasks.length === 0) return;
-        if (!confirm("Clear ALL tasks? This cannot be undone.")) return;
-        tasks = [];
-        saveTasks(tasks);
-        render();
-      }
-
-      /* ----- events ----- */
-      addBtn.addEventListener("click", () => addTask(inputEl.value));
-      inputEl.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") addTask(inputEl.value);
-      });
-      clearDoneBtn.addEventListener("click", removeAllDone);
-      clearAllBtn.addEventListener("click", clearAll);
-
-      /* initial render */
-      render();
-    </script>
+    <!-- External JavaScript -->
+    <script src="todolist.js" defer></script>
   </body>
 </html>

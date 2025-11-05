@@ -1,231 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Event Scoreboard - 5 Groups</title>
-  <link rel="stylesheet" href="scoreboard.css">
-  <link rel="icon" href="iACAD_logo.png">
-  <!-- Simple scoreboard structure using HTML only -->
-  <!-- CSS will handle the design, and JavaScript will make it interactive -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dynamic Event Scoreboard</title>
+<link rel="icon" href="iACAD_logo.png">
+<!-- Link external stylesheet -->
+<link rel="stylesheet" href="scoreboard.css">
 </head>
 <body>
-  <main id="app">
-
-    <!-- Title and short description -->
-    <head>
-        <h1>Event Scoreboard</h1>
-    </head>
-
-    <!-- Main scoreboard section -->
-    <section id="scoreboard">
-      
-      <!-- Group 1 -->
-      <div class="group-row" id="group-1" data-group="1">
-        <div class="group-name">Group 1</div>
-        <div class="group-score"></div>
-            <span id="score-1">0</span>
-      </div>
-
-        <!-- Controls (JS will listen to these buttons) -->
-        <div class="group-controls">
-            <button type="button" class="btn-add" data-group="1">+10</button>
-            <button type="button" class="btn-minus" data-group="1">-1</button>
-            <button type="button" class="btn-reset" data-group="1">Reset</button>
-        </div>
+<main>
+<header>
+<div>
+<h1>Event Scoreboard</h1>
+<div class="small" style="color:var(--muted);font-size:12px">Add boxes, tap numbers to change, present mode for crowd</div>
+</div>
 
 
-      <!-- Group 2 -->
-      <div class="group-row" id="group-2" data-group="2">
-        <div class="group-name">Group 2</div>
-        <div class="group-score"></div>
-            <span id="score-2">0</span>
-      </div>
-
-        <!-- Controls (JS will listen to these buttons) -->
-        <div class="group-controls">
-            <button type="button" class="btn-add" data-group="2">+10</button>
-            <button type="button" class="btn-minus" data-group="2">-1</button>
-            <button type="button" class="btn-reset" data-group="2">Reset</button>
-        </div>
-
-      <!-- Group 3 -->
-      <div class="group-row" id="group-3" data-group="3">
-        <div class="group-name">Group 3</div>
-        <div class="group-score"></div>
-            <span id="score-3">0</span>
-      </div>
-
-        <!-- Controls (JS will listen to these buttons) -->
-        <div class="group-controls">
-            <button type="button" class="btn-add" data-group="3">+10</button>
-            <button type="button" class="btn-minus" data-group="3">-1</button>
-            <button type="button" class="btn-reset" data-group="3">Reset</button>
-        </div>
+<div class="controls">
+<button id="add-group" class="btn-primary">+ Add Group</button>
+<button id="reset-all" class="btn-ghost">Reset All</button>
+<button id="toggle-present" class="btn-ghost">Enter Present Mode</button>
+</div>
+</header>
 
 
-      <!-- Group 4 -->
-      <div class="group-row" id="group-4" data-group="4">
-        <div class="group-name">Group 4</div>
-        <div class="group-score"></div>
-            <span id="score-3">0</span>
-      </div>
-
-        <!-- Controls (JS will listen to these buttons) -->
-        <div class="group-controls">
-            <button type="button" class="btn-add" data-group="4">+10</button>
-            <button type="button" class="btn-minus" data-group="4">-1</button>
-            <button type="button" class="btn-reset" data-group="4">Reset</button>
-        </div>
+<section id="board" aria-live="polite">
+<!-- dynamic groups inserted here -->
+</section>
+</main>
 
 
-      <!-- Group 5 -->
-      <div class="group-row" id="group-5" data-group="5">
-        <div class="group-name">Group 5</div>
-        <div class="group-score"></div>
-            <span id="score-5">0</span>
-      </div>
-
-        <!-- Controls (JS will listen to these buttons) -->
-        <div class="group-controls">
-            <button type="button" class="btn-add" data-group="5">+10</button>
-            <button type="button" class="btn-minus" data-group="5">-1</button>
-            <button type="button" class="btn-reset" data-group="5">Reset</button>
-        </div>
-
-    </section>
-
-    <!-- Button to reset all groups at once -->
-    
-
-  <!-- Notes for JavaScript:
-       - JS will change the number inside each <span id="score-N">
-       - Buttons will add or subtract points based on data-group
-       - The "Reset All" button will set all scores to 0
-  -->
+<!-- External JS -->
+<script src="scoreboard.js" defer></script>
 </body>
 </html>
-
-<script>
-/*
-  Scoreboard controls script
-  - Works with my current HTML structure.
-  - Buttons use data-group="N" to know which group to update.
-  - Finds the score element for a group by id "score-N".
-  - If that id doesn't exist (in case HTML was placed differently),
-    it falls back to finding a <span> inside the group's .group-row.
-  - Prevents scores from going below 0.
-  - Adds class "leading" to the group-row with the highest score.
-*/
-
-// amount to add/subtract (easy to change)
-const ADD_AMOUNT = 10;
-const MINUS_AMOUNT = 1;
-
-// read all controls
-const addButtons = document.querySelectorAll('.btn-add');
-const minusButtons = document.querySelectorAll('.btn-minus');
-const resetButtons = document.querySelectorAll('.btn-reset');
-
-// helper: get the score span element for a group number (1..5)
-function getScoreElement(groupNum) {
-  // preferred: element with id="score-N"
-  const byId = document.getElementById(`score-${groupNum}`);
-  if (byId) return byId;
-
-  // fallback: find the group's row and then the first span inside it
-  const row = document.querySelector(`.group-row[data-group="${groupNum}"]`);
-  if (row) {
-    const span = row.querySelector('span');
-    if (span) return span;
-  }
-  return null;
-}
-
-// helper: read integer score (returns 0 if not parsable)
-function readScore(groupNum) {
-  const el = getScoreElement(groupNum);
-  if (!el) return 0;
-  const v = parseInt(el.textContent, 10);
-  return Number.isFinite(v) ? v : 0;
-}
-
-// helper: write score to DOM
-function writeScore(groupNum, value) {
-  const el = getScoreElement(groupNum);
-  if (!el) return;
-  el.textContent = String(value);
-  updateLeading(); // update highlight after any change
-}
-
-// prevent negative scores (you can remove this if negatives are OK)
-function clampScore(n) {
-  return n < 0 ? 0 : n;
-}
-
-// increase handler
-function handleAdd(ev) {
-  const group = ev.currentTarget.getAttribute('data-group');
-  if (!group) return;
-  const n = readScore(group);
-  const updated = clampScore(n + ADD_AMOUNT);
-  writeScore(group, updated);
-}
-
-// decrease handler
-function handleMinus(ev) {
-  const group = ev.currentTarget.getAttribute('data-group');
-  if (!group) return;
-  const n = readScore(group);
-  const updated = clampScore(n - MINUS_AMOUNT);
-  writeScore(group, updated);
-}
-
-// reset handler for a single group
-function handleReset(ev) {
-  const group = ev.currentTarget.getAttribute('data-group');
-  if (!group) return;
-  writeScore(group, 0);
-}
-
-// attach listeners
-addButtons.forEach(btn => btn.addEventListener('click', handleAdd));
-minusButtons.forEach(btn => btn.addEventListener('click', handleMinus));
-resetButtons.forEach(btn => btn.addEventListener('click', handleReset));
-
-// Highlight the group with the highest score by adding class "leading"
-function updateLeading() {
-  const rows = document.querySelectorAll('.group-row');
-  let max = -Infinity;
-  let leaders = [];
-
-  rows.forEach(r => {
-    const g = r.getAttribute('data-group');
-    const s = readScore(g);
-    if (s > max) {
-      max = s;
-      leaders = [r];
-    } else if (s === max) {
-      leaders.push(r);
-    }
-  });
-
-  rows.forEach(r => r.classList.remove('leading'));
-  // if max is non-negative, mark all leaders (handles ties)
-  if (max >= 0) leaders.forEach(r => r.classList.add('leading'));
-}
-
-// Optional: Reset all scores if you later add a #reset-all button
-const resetAllBtn = document.getElementById('reset-all');
-if (resetAllBtn) {
-  resetAllBtn.addEventListener('click', () => {
-    document.querySelectorAll('.group-row').forEach(row => {
-      const g = row.getAttribute('data-group');
-      writeScore(g, 0);
-    });
-  });
-}
-
-// initialize: ensure display matches (and highlight leading)
-updateLeading();
-</script>
