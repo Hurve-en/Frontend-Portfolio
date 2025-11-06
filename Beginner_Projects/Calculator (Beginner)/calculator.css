@@ -1,0 +1,172 @@
+/* styles.css - complete, explicit dark-mode rules so nothing is left bright */
+
+/* ---------- Variables (light mode default) ---------- */
+:root{
+  --bg: #eef2ff;
+  --page-bg: linear-gradient(180deg,#eef2ff,#f6f8fb);
+  --card: #ffffff;
+  --muted: #6b7280;
+  --accent: #6b8cff;
+  --accent-2: #ffcf40;
+  --danger: #e11d48;
+  --text: #0f172a;
+  --shadow: 0 8px 30px rgba(9,10,25,0.06);
+  --radius: 16px;
+  --key-size: min(76px, 16vw);
+  --key-gap: 10px;
+  --glass: rgba(255,255,255,0.85);
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  font-size: 16px;
+}
+
+/* apply page background */
+html { background: var(--page-bg); -webkit-font-smoothing:antialiased; }
+body { margin:0; color:var(--text); }
+
+/* center card */
+.calculator{
+  width: min(420px, 96%);
+  margin: 6vh auto 4vh;
+  max-width: 920px;
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 18px;
+  display:flex;
+  flex-direction:column;
+  gap: 12px;
+}
+
+/* header/topbar */
+.topbar{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:12px; padding:4px 6px;
+  border-bottom: 1px solid rgba(0,0,0,0.04);
+}
+.brand { font-weight:700; font-size:14px; color:var(--text) }
+.theme-area { display:flex; align-items:center; gap:8px; color:var(--muted) }
+
+/* switch */
+.switch{position:relative;display:inline-block;width:44px;height:26px}
+.switch input{opacity:0;width:0;height:0}
+.slider{position:absolute;top:0;left:0;right:0;bottom:0;background:#d2d6dd;border-radius:26px;transition:.18s}
+.slider:before{content:'';position:absolute;height:20px;width:20px;left:4px;top:3px;background:white;border-radius:50%;transition:.18s;box-shadow:0 2px 6px rgba(11,22,60,0.06)}
+.switch input:checked + .slider{background: linear-gradient(90deg,var(--accent),#5b77ff)}
+.switch input:checked + .slider:before{transform:translateX(18px)}
+
+/* displays */
+.display{padding:14px;border-radius:12px;background:linear-gradient(180deg,rgba(0,0,0,0.02),transparent);min-height:72px;display:flex;flex-direction:column;justify-content:center;gap:6px}
+.secondary{font-size:14px;color:var(--muted);min-height:18px}
+.primary{font-size:28px;font-weight:700;word-break:break-all;min-height:36px}
+.primary.error{color:var(--danger)}
+
+/* keys grid */
+.keys{
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--key-gap);
+  align-items:stretch;
+}
+
+/* key base */
+.key{
+  appearance:none;border:0;border-radius:12px;
+  background:linear-gradient(180deg,#fff,#fbfbff);
+  box-shadow: 0 8px 16px rgba(11,22,60,0.04);
+  min-height:var(--key-size);
+  display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;
+  cursor:pointer;transition: transform .08s ease, box-shadow .12s;
+  touch-action: manipulation;
+}
+.key:active{ transform: translateY(2px) scale(.998) }
+.key:focus{ outline: 3px solid rgba(99,102,241,0.18); outline-offset:2px }
+
+/* types */
+.key.op{ background: linear-gradient(180deg,#f4f6ff,#eef3ff); color:var(--accent-2); }
+.key.func{ background: linear-gradient(180deg,#fff5f6,#fff8f9); color:var(--danger); }
+.key.equal{ background: linear-gradient(90deg,var(--accent),#5b77ff); color:white; grid-column: 4 / 5; }
+.key.par{ background:linear-gradient(180deg,#fafafa,#fff); color:var(--muted); font-weight:700 }
+.key.zero{ grid-column: 1 / span 2; }
+
+/* hint */
+.hint{ font-size:12px;color:var(--muted);text-align:center;padding-top:6px }
+
+/* responsive */
+@media (max-width:420px){
+  :root{ --key-size: 64px; --key-gap:8px }
+  .primary{ font-size:22px }
+  .calculator{ padding:12px }
+}
+@media (min-width:1024px){
+  :root{ --key-size: 86px; --key-gap:14px }
+  .primary{ font-size:34px }
+}
+
+/* =============================
+   DARK MODE - applied via [data-theme="dark"] on <html>
+   (we set it early with the tiny inline script in index.html)
+   ============================= */
+html[data-theme="dark"], html[data-theme="dark"] body {
+  --page-bg: linear-gradient(180deg,#060713,#071022);
+  --card: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  --muted: #9fb0d4;
+  --accent: #6b8cff;
+  --accent-2: #ffd85a;
+  --danger: #ffb4b4;
+  --text: #e6eef8;
+  --shadow: none;
+  background: var(--page-bg);
+}
+
+/* dark-specific overrides for elements */
+html[data-theme="dark"] .calculator {
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,0.04);
+  box-shadow: none;
+}
+html[data-theme="dark"] .topbar {
+  border-bottom-color: rgba(255,255,255,0.03);
+}
+html[data-theme="dark"] .brand { color: var(--text) }
+html[data-theme="dark"] .theme-area { color: var(--muted) }
+
+html[data-theme="dark"] .display { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); }
+html[data-theme="dark"] .secondary { color: #93a6c1; }
+html[data-theme="dark"] .primary { color: #eaf4ff; }
+html[data-theme="dark"] .primary.error { color: var(--danger); }
+
+/* keys in dark */
+html[data-theme="dark"] .key {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  color: var(--text);
+  border: 1px solid rgba(255,255,255,0.03);
+  box-shadow: none;
+}
+html[data-theme="dark"] .key.op {
+  background: linear-gradient(180deg, rgba(107,140,255,0.06), rgba(91,119,255,0.04));
+  color: #fff6e6;
+}
+html[data-theme="dark"] .key.func {
+  background: linear-gradient(180deg, rgba(225,29,72,0.06), rgba(225,29,72,0.02));
+  color: #fff1f4;
+}
+html[data-theme="dark"] .key.equal {
+  background: linear-gradient(90deg,#4b63f2,#6b8cff);
+  color: white;
+  box-shadow: 0 10px 30px rgba(91,119,255,0.12);
+}
+html[data-theme="dark"] .key.par { color: #b8cbe6; }
+
+/* focus in dark */
+html[data-theme="dark"] .key:focus { outline: 3px solid rgba(99,102,241,0.22); outline-offset:2px }
+
+/* present mode (works in either theme) */
+body.present .calculator { transform: none; width: 100%; height: 100vh; border-radius:0; padding:36px; }
+body.present .primary { font-size: 64px; text-align:center }
+body.present .secondary{ display:none }
+body.present .keys, body.present .topbar, body.present .hint { display:none }
+
+/* forced-colors accessibility */
+@media (forced-colors: active) {
+  .key:focus { outline: 3px solid WindowText; }
+}

@@ -1,0 +1,97 @@
+/* clock.css - modern responsive clock design with light/dark themes */
+
+/* variables */
+:root{
+  --bg: #f4f7fb;
+  --card: #ffffff;
+  --text: #072033;
+  --muted: #5b6472;
+  --accent: #4b63f2;
+  --danger: #e11d48;
+  --radius: 12px;
+  --gap: 12px;
+  --control-size: 44px;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  font-size: 16px;
+}
+
+/* initial page */
+html { background: linear-gradient(180deg,#eef4ff,#f7fbff); }
+body { margin:0; color:var(--text); display:flex; align-items:center; justify-content:center; padding:20px; min-height:100vh; }
+
+/* container */
+.app { width:100%; max-width:980px; background:var(--card); border-radius:var(--radius); padding:18px; box-shadow: 0 10px 30px rgba(6,10,25,0.08); display:flex; flex-direction:column; gap:14px; }
+.app-header { display:flex; justify-content:space-between; align-items:center; gap:12px; }
+.brand { font-weight:800; font-size:18px; }
+.controls-row { display:flex; gap:8px; align-items:center; }
+
+/* switch */
+.switch { position:relative; width:46px; height:26px; display:inline-block; }
+.switch input { opacity:0; width:0; height:0; }
+.slider { position:absolute; left:0; right:0; top:0; bottom:0; background:#dfe6ff; border-radius:999px; transition:all .18s; }
+.slider::before { content:''; position:absolute; left:4px; top:3px; width:20px; height:20px; background:white; border-radius:50%; transition:all .18s; box-shadow:0 4px 10px rgba(11,22,60,0.06); }
+.switch input:checked + .slider { background:linear-gradient(90deg,var(--accent), #6b8cff); }
+.switch input:checked + .slider::before { transform: translateX(18px); }
+
+/* controls and buttons */
+.small-label { color:var(--muted); font-size:13px; margin-right:8px; }
+select, input[type="time"] { padding:8px 10px; border-radius:8px; border:1px solid rgba(6,10,25,0.06); background:transparent; min-width:120px; }
+select:focus, input[type="time"]:focus { outline:3px solid rgba(75,99,242,0.12); outline-offset:2px; }
+.btn { padding:8px 12px; border-radius:8px; background:linear-gradient(90deg,var(--accent), #6b8cff); color:white; border:0; cursor:pointer; min-height:var(--control-size); display:inline-flex; align-items:center; justify-content:center; }
+.btn.ghost { background:transparent; color:var(--muted); border:1px solid rgba(6,10,25,0.06); }
+.btn.danger { background:linear-gradient(90deg,#ff6b6b,#ff4b6b); }
+
+/* clock area */
+.clock-area { display:flex; gap:20px; align-items:center; justify-content:center; flex-wrap:wrap; padding:12px 0; }
+.time-block { display:flex; flex-direction:column; align-items:center; gap:6px; min-width:240px; }
+.time-display { font-weight:900; font-size:48px; letter-spacing:1px; }
+.date-display { color:var(--muted); font-size:14px; }
+.tz-label { color:var(--muted); font-size:13px; }
+
+/* analog */
+.analog-wrap { width:220px; height:220px; display:flex; align-items:center; justify-content:center; }
+svg { width:100%; height:100%; display:block; }
+.face { fill: none; stroke: rgba(6,10,25,0.06); stroke-width:1.2; }
+.hand { stroke: var(--text); stroke-width:2.6; transform-origin: center; transition: transform 0.2s linear; }
+.hand.hour { stroke-width:3.2; }
+.hand.second { stroke: #ff6b6b; stroke-width:1.6; }
+.hub { fill: var(--accent); }
+
+/* ticks */
+.tick { stroke: rgba(6,10,25,0.06); stroke-width:1.2; }
+
+/* alarm area */
+.alarm-area { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
+.alarm-controls { display:flex; gap:8px; align-items:center; }
+.alarm-state { display:flex; gap:12px; align-items:center; justify-content:center; padding:12px; border-radius:8px; background: linear-gradient(90deg,#fff6f6,#fff9f9); border:1px solid rgba(225,29,72,0.06); }
+.alarm-state .alarm-message { font-weight:800; color:var(--danger); }
+.alarm-actions .btn { min-width:88px; }
+
+/* footer */
+.app-footer { display:flex; justify-content:space-between; color:var(--muted); font-size:12px; }
+
+/* focus outlines for accessibility */
+button:focus, .btn:focus, select:focus, input:focus { outline:3px solid rgba(75,99,242,0.14); outline-offset:2px }
+
+/* minimal view mode adjustments */
+.app.minimal .analog-wrap { display:none; }
+.app.minimal .time-display { font-size:64px; }
+
+/* responsive fine-tuning */
+@media (max-width:540px) {
+  .clock-area { flex-direction:column; }
+  .analog-wrap { width:180px; height:180px; }
+  .time-display { font-size:40px; }
+}
+
+/* DARK THEME (html[data-theme="dark"]) - full overrides */
+html[data-theme="dark"] { background: linear-gradient(180deg,#03050a,#071022); color: #dfe9ff; }
+html[data-theme="dark"] .app { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); box-shadow:none; border:1px solid rgba(255,255,255,0.03); }
+html[data-theme="dark"] .brand { color:#eaf4ff; }
+html[data-theme="dark"] select, html[data-theme="dark"] input[type="time"] { background: rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.03); color:#e6eef8; }
+html[data-theme="dark"] .small-label, html[data-theme="dark"] .tz-label, html[data-theme="dark"] .date-display { color:#9fb0d4; }
+html[data-theme="dark"] .time-display { color:#eaf4ff; }
+html[data-theme="dark"] .face { stroke: rgba(255,255,255,0.02); }
+html[data-theme="dark"] .hand { stroke:#dfe9ff; }
+html[data-theme="dark"] .hand.second { stroke:#ff9b9b; }
+html[data-theme="dark"] .alarm-state { background: rgba(255, 58, 79, 0.06); border:1px solid rgba(255,58,79,0.08); }

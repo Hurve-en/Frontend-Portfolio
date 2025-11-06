@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Modern Calculator (Fixed Dark Mode)</title>
+
+    <!-- Tiny inline initializer: set theme BEFORE CSS loads to avoid flash/partial styling.
+       Only 6 lines and safe: reads 'calc_theme' from localStorage and sets data-theme on <html>.
+       This prevents the "bright header while rest is dark" flash. -->
+    <script>
+      (function () {
+        try {
+          const theme = localStorage.getItem("calc_theme");
+          if (theme === "dark")
+            document.documentElement.setAttribute("data-theme", "dark");
+        } catch (e) {}
+      })();
+    </script>
+
+    <link rel="stylesheet" href="calculator.css" />
+  </head>
+  <body>
+    <main class="calculator" role="application" aria-label="Calculator">
+      <header class="topbar">
+        <div class="brand">Calculator</div>
+        <div class="theme-area">
+          <label class="switch" title="Toggle dark theme">
+            <input
+              id="themeToggle"
+              type="checkbox"
+              aria-label="Toggle dark theme"
+            />
+            <span class="slider"></span>
+          </label>
+          <span class="theme-label">Dark</span>
+        </div>
+      </header>
+
+      <section class="display" aria-live="polite">
+        <div id="secondary" class="secondary" aria-label="Last result">—</div>
+        <div id="primary" class="primary" aria-label="Expression">0</div>
+      </section>
+
+      <section class="keys" role="group" aria-label="Calculator keys">
+        <button class="key func" data-action="clear" aria-label="Clear">
+          C
+        </button>
+        <button class="key func" data-action="back" aria-label="Backspace">
+          ⌫
+        </button>
+        <button class="key func" data-action="percent" aria-label="Percent">
+          %
+        </button>
+        <button class="key op" data-value="/" aria-label="Divide">÷</button>
+
+        <button class="key" data-value="7">7</button>
+        <button class="key" data-value="8">8</button>
+        <button class="key" data-value="9">9</button>
+        <button class="key op" data-value="*" aria-label="Multiply">×</button>
+
+        <button class="key" data-value="4">4</button>
+        <button class="key" data-value="5">5</button>
+        <button class="key" data-value="6">6</button>
+        <button class="key op" data-value="-" aria-label="Subtract">−</button>
+
+        <button class="key" data-value="1">1</button>
+        <button class="key" data-value="2">2</button>
+        <button class="key" data-value="3">3</button>
+        <button class="key op" data-value="+" aria-label="Add">+</button>
+
+        <button class="key zero" data-value="0">0</button>
+        <button class="key" data-value=".">.</button>
+        <button class="key equal" data-action="equals" aria-label="Equals">
+          =
+        </button>
+
+        <button class="key par" data-value="(" aria-label="Open parenthesis">
+          (
+        </button>
+        <button class="key par" data-value=")" aria-label="Close parenthesis">
+          )
+        </button>
+      </section>
+
+      <footer class="hint">
+        Keyboard: 0-9 . + - * / ( ) Enter = Backspace Esc (clear) %
+      </footer>
+    </main>
+
+    <script src="calculator.js" defer></script>
+  </body>
+</html>
