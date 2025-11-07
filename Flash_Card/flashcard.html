@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flashcards</title>
+    <link rel="stylesheet" href="flashcard.css" />
+</head>
+<body>
+    <header>
+        <h1>Flashcards</h1>
+        <div class="top-controls">
+            <button id="addCardBtn" title="Add new card">＋ New</button>
+            <button id="importBtn" title="Bulk import">📥 Import</button>
+            <button id="exportBtn" title="Export JSON">📤 Export</button>
+            <button id="studyBtn" title="Start study session">▶ Study</button>
+        </div>
+    </header>
+
+    <main>
+        <section id="cardFormSection" class="panel">
+            <h2>Create / Edit Card</h2>
+            <form id="cardForm">
+                <label>Question:</label>
+                <textarea id="questionInput" required></textarea>
+
+                <label>Answer:</label>
+                <textarea id="answerInput" required></textarea>
+
+                <div class="form-buttons">
+                    <button type="submit">💾 Save</button>
+                    <button type="button" id="cancelEditBtn">Cancel</button>
+                </div>
+            </form>
+        </section>
+
+        <section id="importSection" class="panel hidden">
+            <h2>Bulk Import</h2>
+            <p>Paste tab-separated or Q:/A: formatted text below.</p>
+            <textarea id="bulkInput" placeholder="Example:
+Q: What is 2+2?
+A: 4
+
+Q: Capital of France?
+A: Paris
+"></textarea>
+            <div class="form-buttons">
+                <button id="parseBtn">Parse</button>
+                <button id="importCancelBtn">Cancel</button>
+            </div>
+            <div id="importPreview"></div>
+        </section>
+
+        <section id="cardsList" class="panel">
+            <h2>All Cards</h2>
+            <div id="cardsContainer"></div>
+        </section>
+
+        <section id="studySection" class="panel hidden">
+            <h2>Study Mode</h2>
+            <div id="studyCard">
+                <div id="studyQuestion" aria-live="polite"></div>
+                <div id="studyAnswer" class="hidden"></div>
+            </div>
+            <div class="study-controls">
+                <button id="revealBtn">Reveal</button>
+                <button id="nextBtn">Next</button>
+                <button id="endStudyBtn">End</button>
+            </div>
+            <div id="progress"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Dark Minimal Flashcard App • Local Storage • No Frameworks</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
