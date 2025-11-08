@@ -1,245 +1,221 @@
-/* =====================
-   GLOBAL THEME VARIABLES
-===================== */
 :root {
-  --bg-color: #111;
-  --text-color: #eee;
-  --panel-bg: #1a1a1a;
-  --accent: #4fc3f7;
-  --border: #333;
-  --button-bg: #222;
-  --button-hover: #333;
-  --error-color: #f44336;
-  --success-color: #81c784;
+  --bg-dark: #0b0c10;
+  --bg-panel: #1f2833;
+  --text-light: #c5c6c7;
+  --accent: #00e5ff;
+  --accent-hover: #66fcf1;
+  --danger: #ff5555;
+  --font-main: "JetBrains Mono", monospace;
 }
 
-/* Light theme variables */
-.light {
-  --bg-color: #f9f9f9;
-  --text-color: #111;
-  --panel-bg: #ffffff;
-  --accent: #2196f3;
-  --border: #ccc;
-  --button-bg: #e6e6e6;
-  --button-hover: #dcdcdc;
-}
-
-/* =====================
-   BASE STYLES
-===================== */
 body {
-  background: var(--bg-color);
-  color: var(--text-color);
-  font-family: 'Inter', system-ui, sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-light);
+  font-family: var(--font-main);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
   margin: 0;
-  padding: 0;
-  transition: background 0.4s, color 0.4s;
+  padding: 2rem;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
-header, footer {
-  text-align: center;
-  padding: 1rem;
-  border-bottom: 1px solid var(--border);
-}
-
-footer {
-  border-top: 1px solid var(--border);
-  font-size: 0.9rem;
-  opacity: 0.7;
-}
-
-h1, h2 {
-  margin: 0.5em 0;
-}
-
-main {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-/* =====================
-   PANELS & FORMS
-===================== */
-.panel {
-  background: var(--panel-bg);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 1rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-}
-
-textarea {
+.container {
   width: 100%;
-  min-height: 80px;
-  background: var(--button-bg);
-  color: var(--text-color);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 0.5rem;
-  resize: vertical;
-  font-size: 1rem;
+  max-width: 900px;
 }
 
-label {
-  display: block;
-  margin-top: 0.5rem;
-  font-weight: bold;
-}
-
-/* =====================
-   BUTTONS
-===================== */
-button {
-  background: var(--button-bg);
-  color: var(--text-color);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 0.6rem 1rem;
-  cursor: pointer;
-  transition: background 0.3s, transform 0.1s;
-  min-width: 44px;
-  min-height: 44px;
-}
-
-button:hover {
-  background: var(--button-hover);
-}
-
-button:active {
-  transform: scale(0.97);
-}
-
-button:focus {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-.form-buttons {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-}
-
-/* =====================
-   CARD LIST
-===================== */
-#cardsContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.card {
-  background: var(--button-bg);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 0.8rem;
+header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 1.5rem;
 }
 
-.card-content {
-  flex: 1;
+h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: 1px;
 }
 
-.card-buttons button {
-  margin-left: 0.5rem;
-}
-
-/* =====================
-   STUDY MODE
-===================== */
-#studyCard {
-  text-align: center;
-  margin: 1rem 0;
-  padding: 2rem;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--button-bg);
-  font-size: 1.8rem;
-  transition: background 0.3s ease;
-}
-
-#studyAnswer {
-  margin-top: 1rem;
+.neon {
   color: var(--accent);
-  font-size: 1.6rem;
-  opacity: 0;
-  transition: opacity 0.4s ease;
+  text-shadow: 0 0 5px var(--accent), 0 0 10px var(--accent-hover);
 }
 
-#studyAnswer.visible {
-  opacity: 1;
+#themeToggle {
+  background: none;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  border-radius: 8px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.3rem 0.6rem;
+  transition: all 0.3s ease;
 }
 
-/* =====================
-   HEADER CONTROLS
-===================== */
-.top-controls {
+#themeToggle:hover {
+  background: var(--accent);
+  color: var(--bg-dark);
+}
+
+main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.panel {
+  background-color: var(--bg-panel);
+  padding: 1rem 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.panel:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
+}
+
+h2 {
+  color: var(--accent);
+  margin-bottom: 0.8rem;
+}
+
+input {
+  width: 100%;
+  padding: 0.7rem;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+  background-color: #121417;
+  color: var(--text-light);
+  margin-bottom: 0.6rem;
+  font-size: 0.95rem;
+}
+
+input:focus {
+  box-shadow: 0 0 6px var(--accent);
+}
+
+button {
+  background-color: var(--accent);
+  color: var(--bg-dark);
+  border: none;
+  border-radius: 6px;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: var(--accent-hover);
+}
+
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn-row {
   display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
+  gap: 0.6rem;
   margin-top: 0.5rem;
 }
 
-/* =====================
-   MISC
-===================== */
+/* Card List */
+#cardList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.card-item {
+  background: #14171a;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  padding: 0.7rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.3s ease;
+}
+
+.card-item:hover {
+  background: rgba(0, 229, 255, 0.08);
+}
+
+.card-actions button {
+  background: none;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  padding: 0.3rem 0.6rem;
+  margin-left: 0.3rem;
+}
+
+.card-actions button:hover {
+  background: var(--accent);
+  color: var(--bg-dark);
+}
+
+/* Study Section */
 .hidden {
   display: none;
 }
 
+#studyCard {
+  background: #14171a;
+  border: 1px solid var(--accent);
+  border-radius: 10px;
+  padding: 1.5rem;
+  text-align: center;
+  margin-bottom: 1rem;
+  min-height: 150px;
+  transition: all 0.4s ease;
+}
+
+#studyCard .question {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+#studyCard .answer {
+  font-size: 1.2rem;
+  color: var(--accent);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+#studyCard.show-answer .answer {
+  opacity: 1;
+}
+
+.study-controls {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
 #progress {
   text-align: center;
-  margin-top: 0.5rem;
-  font-size: 1rem;
-  opacity: 0.8;
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-top: 0.7rem;
 }
 
-/* =====================
-   THEME TOGGLE BUTTON
-===================== */
-#themeToggle {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  background: var(--button-bg);
-  color: var(--text-color);
-  border-radius: 50%;
-  border: 1px solid var(--border);
-  width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-#themeToggle:hover {
-  background: var(--button-hover);
-}
-
-/* =====================
-   RESPONSIVE
-===================== */
-@media (min-width: 800px) {
-  main {
-    flex-direction: row;
-    align-items: flex-start;
-  }
-
-  #cardsList {
-    flex: 1;
-  }
-
-  #cardFormSection, #importSection {
-    flex: 1;
-  }
+/* LIGHT MODE */
+body.light {
+  --bg-dark: #f8f9fa;
+  --bg-panel: #ffffff;
+  --text-light: #111;
+  --accent: #00bcd4;
+  --accent-hover: #0099b9;
+  color: var(--text-light);
+  background: var(--bg-dark);
 }
