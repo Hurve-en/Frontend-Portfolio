@@ -1,221 +1,157 @@
 :root {
-  --bg-dark: #0b0c10;
-  --bg-panel: #1f2833;
-  --text-light: #c5c6c7;
-  --accent: #00e5ff;
-  --accent-hover: #66fcf1;
-  --danger: #ff5555;
-  --font-main: "JetBrains Mono", monospace;
+  --bg-color: #121212;
+  --text-color: #ffffff;
+  --accent-color: #00bcd4;
+  --card-bg: #1e1e1e;
+}
+
+.light-theme {
+  --bg-color: #f5f5f5;
+  --text-color: #222;
+  --accent-color: #00796b;
+  --card-bg: #ffffff;
 }
 
 body {
-  background-color: var(--bg-dark);
-  color: var(--text-light);
-  font-family: var(--font-main);
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  min-height: 100vh;
   margin: 0;
-  padding: 2rem;
-  transition: background-color 0.4s ease, color 0.4s ease;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: var(--bg-color);
+  color: var(--text-color);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-.container {
-  width: 100%;
-  max-width: 900px;
-}
-
-header {
+header, footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  padding: 1em;
+  background: var(--card-bg);
 }
 
 h1 {
-  font-size: 2rem;
-  font-weight: 600;
-  letter-spacing: 1px;
-}
-
-.neon {
-  color: var(--accent);
-  text-shadow: 0 0 5px var(--accent), 0 0 10px var(--accent-hover);
-}
-
-#themeToggle {
-  background: none;
-  border: 1px solid var(--accent);
-  color: var(--accent);
-  border-radius: 8px;
-  font-size: 1.2rem;
-  cursor: pointer;
-  padding: 0.3rem 0.6rem;
-  transition: all 0.3s ease;
-}
-
-#themeToggle:hover {
-  background: var(--accent);
-  color: var(--bg-dark);
+  margin: 0;
+  font-size: 1.5em;
 }
 
 main {
+  flex: 1;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
+  gap: 1em;
+  padding: 1em;
 }
 
-.panel {
-  background-color: var(--bg-panel);
-  padding: 1rem 1.5rem;
+.card {
+  background: var(--card-bg);
+  padding: 1em;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
-  transition: transform 0.2s ease, box-shadow 0.3s ease;
 }
 
-.panel:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
-}
-
-h2 {
-  color: var(--accent);
-  margin-bottom: 0.8rem;
-}
-
-input {
-  width: 100%;
-  padding: 0.7rem;
-  border-radius: 6px;
-  border: none;
-  outline: none;
-  background-color: #121417;
-  color: var(--text-light);
-  margin-bottom: 0.6rem;
-  font-size: 0.95rem;
-}
-
-input:focus {
-  box-shadow: 0 0 6px var(--accent);
+.shadow {
+  box-shadow: 0 0 10px rgba(0,0,0,0.4);
 }
 
 button {
-  background-color: var(--accent);
-  color: var(--bg-dark);
+  background: var(--accent-color);
+  color: #fff;
   border: none;
+  padding: 0.6em 1em;
   border-radius: 6px;
-  padding: 0.6rem 1rem;
   cursor: pointer;
-  font-weight: 600;
-  transition: all 0.3s ease;
+  font-size: 1em;
+  transition: 0.2s ease;
 }
 
 button:hover {
-  background-color: var(--accent-hover);
+  opacity: 0.8;
 }
 
-button:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-.btn-row {
-  display: flex;
-  gap: 0.6rem;
-  margin-top: 0.5rem;
-}
-
-/* Card List */
-#cardList {
-  display: flex;
-  flex-direction: column;
-  gap: 0.7rem;
-  max-height: 60vh;
-  overflow-y: auto;
-}
-
-.card-item {
-  background: #14171a;
-  border: 1px solid var(--accent);
-  border-radius: 8px;
-  padding: 0.7rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: background 0.3s ease;
-}
-
-.card-item:hover {
-  background: rgba(0, 229, 255, 0.08);
-}
-
-.card-actions button {
-  background: none;
-  border: 1px solid var(--accent);
-  color: var(--accent);
-  padding: 0.3rem 0.6rem;
-  margin-left: 0.3rem;
-}
-
-.card-actions button:hover {
-  background: var(--accent);
-  color: var(--bg-dark);
-}
-
-/* Study Section */
-.hidden {
+button.hidden, .hidden {
   display: none;
 }
 
-#studyCard {
-  background: #14171a;
-  border: 1px solid var(--accent);
-  border-radius: 10px;
-  padding: 1.5rem;
-  text-align: center;
-  margin-bottom: 1rem;
-  min-height: 150px;
-  transition: all 0.4s ease;
+input, textarea {
+  width: 100%;
+  padding: 0.5em;
+  margin: 0.4em 0;
+  background: transparent;
+  border: 1px solid var(--accent-color);
+  border-radius: 6px;
+  color: var(--text-color);
+  font-size: 1em;
 }
 
-#studyCard .question {
-  font-size: 1.4rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
+ul {
+  list-style: none;
+  padding: 0;
 }
 
-#studyCard .answer {
-  font-size: 1.2rem;
-  color: var(--accent);
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-
-#studyCard.show-answer .answer {
-  opacity: 1;
+ul li {
+  background: var(--bg-color);
+  padding: 0.7em;
+  margin-bottom: 0.4em;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .study-controls {
+  margin-top: 1em;
   display: flex;
-  justify-content: space-between;
-  gap: 0.5rem;
+  gap: 0.5em;
+  flex-wrap: wrap;
 }
 
-#progress {
+#studyDisplay {
   text-align: center;
-  font-size: 0.9rem;
-  color: var(--text-light);
-  margin-top: 0.7rem;
 }
 
-/* LIGHT MODE */
-body.light {
-  --bg-dark: #f8f9fa;
-  --bg-panel: #ffffff;
-  --text-light: #111;
-  --accent: #00bcd4;
-  --accent-hover: #0099b9;
-  color: var(--text-light);
-  background: var(--bg-dark);
+#studyQuestion {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 0.5em 0;
+}
+
+#studyAnswer {
+  font-size: 1.2em;
+  color: var(--accent-color);
+}
+
+h2{
+  text-align: center;
+}
+
+/* Center the study buttons neatly */
+.study-controls {
+  margin-top: 1.5em;
+  display: flex;
+  justify-content: center;   /* Centers buttons horizontally */
+  align-items: center;       /* Centers them vertically if they wrap */
+  gap: 0.8em;                /* Space between buttons */
+  flex-wrap: wrap;           /* So they stack nicely on small screens */
+}
+
+/* Make important buttons slightly larger and smoother */
+.study-controls button {
+  min-width: 120px;
+  padding: 0.7em 1.2em;
+  font-size: 1rem;
+  border-radius: 8px;
+  transition: transform 0.1s ease, opacity 0.2s ease;
+}
+
+/* Add a small visual press animation */
+.study-controls button:active {
+  transform: scale(0.97);
+  opacity: 0.9;
+}
+
+/* Optional: center the question and answer text better */
+#studyDisplay {
+  text-align: center;
+  margin-top: 1em;
 }

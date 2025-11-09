@@ -1,54 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Neon Flashcards</title>
-    <link rel="stylesheet" href="flashcard.css" />
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-  </head>
-  <body>
-    <div class="container">
-      <header>
-        <h1><span class="neon">FLASH</span>CARDS</h1>
-        <button id="themeToggle" aria-label="Toggle Light/Dark Mode">🌗</button>
-      </header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flashcard App</title>
+  <link rel="stylesheet" href="flashcard.css" />
+</head>
+<body>
+  <header>
+    <h1>Flashcard App</h1>
+    <button id="themeToggle" title="Toggle Light/Dark Mode">🌙</button>
+  </header>
 
-      <main>
-        <!-- Card Creation -->
-        <section id="cardSection" class="panel">
-          <h2>Create a Card</h2>
-          <input type="text" id="questionInput" placeholder="Question" />
-          <input type="text" id="answerInput" placeholder="Answer" />
-          <div class="btn-row">
-            <button id="saveCard">Save</button>
-            <button id="startStudy">Study Mode ▶</button>
-          </div>
-        </section>
+  <main>
+    <section id="create-section" class="card shadow">
+      <h2>Create a Flashcard</h2>
+      <input id="questionInput" type="text" placeholder="Enter question" />
+      <textarea id="answerInput" placeholder="Enter answer"></textarea>
+      <button id="saveBtn">Save Flashcard</button>
+    </section>
 
-        <!-- Card List -->
-        <section id="listSection" class="panel">
-          <h2>My Cards</h2>
-          <div id="cardList"></div>
-        </section>
+    <section id="list-section" class="card shadow">
+      <h2>Your Flashcards</h2>
+      <ul id="cardList"></ul>
+    </section>
 
-        <!-- Study Section -->
-        <section id="studySection" class="panel hidden">
-          <div id="studyCard">
-            <div class="question"></div>
-            <div class="answer"></div>
-          </div>
-          <div class="study-controls">
-            <button id="showAnswer">Show Answer</button>
-            <button id="markCorrect">✔ Correct</button>
-            <button id="markWrong">✖ Wrong</button>
-            <button id="endStudy">⏹ End</button>
-          </div>
-          <div id="progress"></div>
-        </section>
-      </main>
-    </div>
+    <section id="study-section" class="card shadow hidden">
+      <h2>Study Mode</h2>
+      <div id="studyDisplay">
+        <p id="studyQuestion"></p>
+        <p id="studyAnswer" class="hidden"></p>
+      </div>
+      <div class="study-controls">
+        <button id="showAnswerBtn">Show Answer</button>
+        <button id="correctBtn" class="hidden">✅ Correct</button>
+        <button id="wrongBtn" class="hidden">❌ Wrong</button>
+        <button id="exitStudyBtn">Exit Study</button>
+      </div>
+    </section>
+  </main>
 
-    <script src="flashcard.js"></script>
-  </body>
+  <footer>
+    <button id="startStudyBtn">Start Studying</button>
+  </footer>
+
+  <script src="flashcard.js"></script>
+</body>
 </html>
