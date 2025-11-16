@@ -1,37 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Dynamic Event Scoreboard</title>
-<link rel="icon" href="iACAD_logo.png">
-<!-- Link external stylesheet -->
-<link rel="stylesheet" href="scoreboard.css">
-</head>
-<body>
-<main>
-<header>
-<div>
-<h1>Event Scoreboard</h1>
-<div class="small" style="color:var(--muted);font-size:12px">Add boxes, tap numbers to change, present mode for crowd</div>
-</div>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dynamic Event Scoreboard</title>
+    <link rel="icon" href="iACAD_logo.png" />
+    <!-- Link external stylesheet -->
+    <link rel="stylesheet" href="scoreboard.css" />
+  </head>
+  <body>
+    <main>
+      <header>
+        <div>
+          <h1>Event Scoreboard</h1>
+          <div class="small" style="color: var(--muted); font-size: 12px">
+            Add boxes, tap numbers to change, present mode for crowd
+          </div>
+        </div>
 
+        <div class="controls">
+          <button id="add-group" class="btn-primary">+ Add Group</button>
+          <button id="reset-all" class="btn-ghost">Reset All</button>
 
-<div class="controls">
-<button id="add-group" class="btn-primary">+ Add Group</button>
-<button id="reset-all" class="btn-ghost">Reset All</button>
-<button id="toggle-present" class="btn-ghost">Enter Present Mode</button>
-</div>
-</header>
+          <!-- NEW toggle switch -->
+          <button id="toggle-present" class="btn-ghost toggle-switch">
+            <span class="label">Presentation: OFF</span>
+            <span class="switch"></span>
+          </button>
+        </div>
+      </header>
 
+      <section id="board" aria-live="polite">
+        <!-- dynamic groups inserted here -->
+      </section>
+    </main>
 
-<section id="board" aria-live="polite">
-<!-- dynamic groups inserted here -->
-</section>
-</main>
-
-
-<!-- External JS -->
-<script src="scoreboard.js" defer></script>
-</body>
+    <!-- External JS -->
+    <script src="scoreboard.js" defer></script>
+  </body>
 </html>

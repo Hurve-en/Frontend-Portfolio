@@ -1,9 +1,9 @@
 Minimal Portfolio — Starter
 
 Files:
-- index.html
-- styles.css
-- scripts.js
+- protfolio.html
+- portfolio.css
+- portfolio.js
 - /assets/* (images, favicon, resume sample)
 
 Features:
