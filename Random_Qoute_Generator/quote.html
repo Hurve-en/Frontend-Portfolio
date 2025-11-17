@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Quote Generator</title>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&family=Playfair+Display:wght@600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Your CSS -->
+    <link rel="stylesheet" href="quote.css" />
+  </head>
+
+  <body>
+    <div class="card" role="region" aria-label="Random quote generator">
+      <header>
+        <h1>Quote Box</h1>
+      </header>
+
+      <!-- QUOTE DISPLAY -->
+      <div class="quote-box" id="quoteBox">
+        <p class="quote-text" id="quoteText">Loading quote…</p>
+        <p class="quote-author" id="quoteAuthor"></p>
+      </div>
+
+      <!-- BUTTON CONTROLS -->
+      <div class="controls">
+        <div class="left-controls">
+          <button class="btn-new" id="newQuoteBtn" aria-label="New quote">
+            New Quote
+          </button>
+          <button class="btn-copy" id="copyBtn" aria-label="Copy quote">
+            Copy
+          </button>
+          <button class="btn-tweet" id="tweetBtn" aria-label="Tweet quote">
+            Tweet
+          </button>
+        </div>
+      </div>
+
+
+      <div class="credit">
+        Made for study & inspiration — quotes attributed to their authors.
+      </div>
+    </div>
+
+    <!-- External JS file -->
+    <script src="quote.js"></script>
+  </body>
+</html>

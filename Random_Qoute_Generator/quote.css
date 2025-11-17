@@ -1,0 +1,187 @@
+/* qoute.css (improved)
+   Modern, calm palette, smooth micro-interactions, responsive.
+*/
+
+:root {
+  --bg1: #0f172a;
+  --bg2: #07102b;
+  --glass: rgba(255, 255, 255, 0.06);
+  --accent: #8ab6ff;
+  --card-glow: rgba(138, 182, 255, 0.08);
+  --card: rgba(255, 255, 255, 0.02);
+  --muted: rgba(255, 255, 255, 0.78);
+  --accent-2: #ffd6a5;
+  --radius: 16px;
+  --max-width: 760px;
+  --transition: 180ms;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  :root { --transition: 0ms; }
+}
+
+/* Page layout */
+* { box-sizing: border-box; }
+html,body { height:100%; margin:0; }
+body{
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  background:
+    radial-gradient(800px 500px at 10% 20%, rgba(72,61,139,0.12), transparent 10%),
+    radial-gradient(700px 400px at 90% 80%, rgba(11,116,218,0.06), transparent 15%),
+    linear-gradient(180deg, var(--bg1), var(--bg2));
+  color: var(--muted);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:28px;
+}
+
+/* Card */
+.card{
+  width:100%;
+  max-width:var(--max-width);
+  border-radius:var(--radius);
+  padding:28px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  box-shadow: 0 12px 40px rgba(2,6,23,0.6);
+  position:relative;
+  overflow:hidden;
+  transition: box-shadow var(--transition), transform var(--transition);
+}
+.card:hover{ box-shadow: 0 20px 60px rgba(2,6,23,0.75); transform: translateY(-2px); }
+
+/* Decorative blurs */
+.card::before{
+  content:"";
+  position:absolute; right:-120px; top:-80px; width:360px; height:360px;
+  background: radial-gradient(circle at 30% 30%, rgba(138,182,255,0.14), transparent 30%);
+  filter: blur(36px); pointer-events:none; opacity:0.95;
+}
+.card::after{
+  content:"";
+  position:absolute; left:-120px; bottom:-90px; width:320px; height:320px;
+  background: radial-gradient(circle at 40% 60%, rgba(255,214,165,0.06), transparent 30%);
+  filter: blur(28px); pointer-events:none; opacity:0.9;
+}
+
+/* Header */
+header h1{
+  font-family: "Playfair Display", serif;
+  font-size:28px;
+  color:#f8fafc;
+  margin:0 0 6px 0;
+  letter-spacing:0.2px;
+}
+header p.lead{
+  margin:0 0 18px 0;
+  color: rgba(255,255,255,0.75);
+  font-size:14px;
+}
+
+/* Quote box */
+.quote-box{
+  padding:22px;
+  border-radius:12px;
+  background: rgba(0,0,0,0.22);
+  border: 1px solid rgba(255,255,255,0.03);
+  min-height:140px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:12px;
+  transition: background var(--transition), transform var(--transition);
+  will-change: transform, opacity;
+}
+.quote-box.fade-out{ opacity: 0; transform: translateY(8px); transition: opacity 180ms ease, transform 180ms ease; }
+.quote-box.fade-in{ opacity: 1; transform: translateY(0); transition: opacity 280ms cubic-bezier(.2,.9,.2,1), transform 280ms cubic-bezier(.2,.9,.2,1); }
+
+/* Text & author */
+.quote-text{
+  font-size:20px;
+  line-height:1.45;
+  color:#ffffff;
+  margin:0;
+  font-weight:500;
+  transition: color var(--transition);
+}
+.quote-author{
+  margin:0;
+  font-size:14px;
+  color: var(--accent-2);
+  font-weight:600;
+  text-align:right;
+}
+
+/* Animating the text itself for pop */
+.quote-text.pop{ animation: quotePop 420ms cubic-bezier(.2,.9,.2,1); }
+@keyframes quotePop {
+  0%{ transform: translateY(6px); opacity:0; }
+  40%{ transform: translateY(-6px); opacity:1; }
+  100%{ transform: translateY(0); opacity:1; }
+}
+
+/* Controls */
+.controls{
+  margin-top:18px;
+  display:flex;
+  gap:12px;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+}
+.left-controls{ display:flex; gap:10px; align-items:center; }
+
+/* Buttons */
+button{
+  border:0; padding:10px 14px; border-radius:10px; font-weight:600; cursor:pointer;
+  background: rgba(255,255,255,0.04); color:var(--muted);
+  transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+}
+button:hover{ transform: translateY(-3px); background: rgba(255,255,255,0.06); box-shadow: 0 8px 20px rgba(2,6,23,0.35); }
+button:active{ transform: translateY(-1px) scale(0.995); }
+
+/* Primary & special */
+.btn-new{
+  background: linear-gradient(90deg, var(--accent), #5f92ff);
+  color: #07102b;
+  box-shadow: 0 8px 24px rgba(11,116,218,0.12);
+}
+.btn-copy{ background: transparent; border:1px solid rgba(255,255,255,0.04); color:var(--muted); }
+.btn-tweet{ background: linear-gradient(90deg,#1da1f2,#0d8bf2); color:white; }
+
+/* Add-quote form */
+.add-quote-wrap{
+  display:flex; gap:8px; align-items:center;
+  background: rgba(255,255,255,0.02); padding:8px; border-radius:10px;
+  border:1px solid rgba(255,255,255,0.02);
+}
+.add-quote-wrap input[type="text"]{
+  background:transparent; border:0; color:var(--muted); padding:8px; min-width:160px;
+  outline:none; font-size:14px;
+}
+.add-quote-wrap input::placeholder{ color: rgba(255,255,255,0.42); }
+.add-quote-wrap button{ padding:8px 10px; border-radius:8px; }
+
+/* Hint / toast */
+#hint{
+  margin-top:12px; font-size:13px; color: rgba(255,255,255,0.6);
+  min-height:18px;
+}
+
+/* Footer credit */
+.credit{
+  margin-top:14px;
+  font-size:12px;
+  color: rgba(255,255,255,0.55);
+}
+
+/* Responsive */
+@media (max-width: 560px){
+  .quote-text{ font-size:18px; }
+  header h1{ font-size:20px; }
+  .controls{ gap:8px; }
+  .left-controls{ width:100%; justify-content:space-between; }
+  .add-quote-wrap{ flex-direction:column; align-items:stretch; gap:6px; }
+  .add-quote-wrap input[type="text"]{ width:100%; }
+}
