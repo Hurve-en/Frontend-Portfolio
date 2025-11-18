@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Todo List — Simple & Aesthetic</title>
 
-    <!-- Optional: Google Font -->
+    <!-- Fonts -->
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap"
       rel="stylesheet"
     />
 
-    <!-- External stylesheet -->
+    <!-- Stylesheet (must be in same folder) -->
     <link rel="stylesheet" href="todolist.css" />
   </head>
 
@@ -21,19 +21,27 @@
         <div class="title-wrap">
           <h1 class="app-title">Todo List</h1>
           <p class="lead">
-            Add tasks, check when done — you’ll be asked if you want to remove
-            it.
+            Add tasks, check when done — press <kbd>Enter</kbd> to add. Use the
+            Present toggle for large display.
           </p>
+
+          <!-- progress bar under title (visual) -->
+          <div class="header-progress" aria-hidden="true">
+            <div class="bar" id="progressBar" style="width:0%"></div>
+          </div>
         </div>
 
-        <!-- Quick stats -->
+        <!-- Quick stats + controls -->
         <div class="header-actions">
           <div class="counters" aria-live="polite">
             <span id="totalCount" class="counter">0 total</span>
             <span id="doneCount" class="counter">0 done</span>
           </div>
+
           <div class="quick-controls">
-            <button id="presentBtn" class="btn-ghost small">Present</button>
+            <button id="presentBtn" class="btn-ghost small" aria-pressed="false">
+              Presentation
+            </button>
           </div>
         </div>
       </header>
@@ -44,7 +52,7 @@
           <input
             id="taskInput"
             type="text"
-            placeholder="E.g. Finish homework"
+            placeholder="e.g. Finish homework — press Enter to add"
             aria-label="New task"
             autocomplete="off"
           />
@@ -56,18 +64,20 @@
             <option value="low">Low</option>
           </select>
 
-          <button id="addBtn" class="add" aria-label="Add task">Add</button>
+          <button id="addBtn" class="add" aria-label="Add task" aria-disabled="false">
+            Add
+          </button>
         </div>
 
         <div class="input-help small">
-          Press <kbd>Enter</kbd> to add a task. Click a checkbox to mark done.
+          Tip: press <kbd>Enter</kbd> to add. Use the filters in the footer to view completed tasks.
         </div>
       </section>
 
       <!-- Task list -->
       <main>
         <section id="listPanel" class="list-panel" aria-label="Task list">
-          <div id="list" class="list" aria-live="polite"></div>
+          <div id="list" class="list" aria-live="polite" aria-atomic="false"></div>
           <div id="empty" class="empty" role="status">
             No tasks yet — add your first task.
           </div>
@@ -75,13 +85,14 @@
       </main>
 
       <!-- Footer -->
-      <footer class="footer">
+      <footer class="footer" role="contentinfo">
         <div class="left-controls">
           <button id="clearDone" class="btn-ghost">Remove All Done</button>
           <button id="clearAll" class="btn-ghost">Clear All</button>
         </div>
 
         <div class="right-controls">
+          <!-- Keep the select for simplicity (JS recognizes it) -->
           <select id="filterSelect" aria-label="Filter tasks">
             <option value="all">All</option>
             <option value="active">Active</option>
@@ -99,7 +110,7 @@
 
     <!-- Template for a single task -->
     <template id="task-template">
-      <div class="item" data-id="" role="article" aria-label="task item">
+      <div class="item" data-id="" role="article" aria-label="task item" tabindex="-1">
         <div class="left">
           <input
             type="checkbox"
@@ -109,20 +120,22 @@
           <div class="meta">
             <div class="text"></div>
             <div class="meta-row">
-              <span class="priority tag"></span>
-              <time class="due tag" datetime=""></time>
+              <span class="priority tag" aria-hidden="true"></span>
+              <time class="due tag" datetime="" aria-hidden="true"></time>
             </div>
           </div>
         </div>
 
         <div class="item-actions">
-          <button class="edit small">Edit</button>
-          <button class="remove small">Remove</button>
+          <button class="edit small" aria-label="Edit task">Edit</button>
+          <button class="remove small" aria-label="Remove task">Remove</button>
         </div>
       </div>
     </template>
 
-    <!-- External JavaScript -->
+    <!-- Undo toast container is created dynamically by JS -->
+
+    <!-- External JavaScript (must be same folder) -->
     <script src="todolist.js" defer></script>
   </body>
 </html>
