@@ -1,0 +1,205 @@
+/* styles.css
+   Aesthetic Chat Simulator — design system & themes
+   - Drop-in CSS. Keep filename as is (styles.css).
+   - Uses CSS variables for theme tokens; switch by changing [data-theme].
+   - Respects prefers-reduced-motion.
+*/
+
+/* -------------------------
+   Base tokens and reset
+   ------------------------- */
+:root{
+  --container-w: 1200px;
+  --gap: 14px;
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+
+  /* typographic scale */
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  --heading-font: "Playfair Display", serif;
+
+  /* default theme (light) tokens */
+  --bg: #f6f8fb;
+  --panel: #ffffff;
+  --muted: #6b7280;
+  --text: #0b1220;
+  --muted-2: rgba(11,18,32,0.06);
+  --accent: linear-gradient(135deg,#ffcfb3,#ffd6a5);
+  --accent-solid: #7cc5ff;
+  --glass: rgba(255,255,255,0.6);
+  --shadow-1: 0 6px 24px rgba(9,10,18,0.06);
+  --shadow-2: 0 10px 40px rgba(9,10,18,0.08);
+  --max-width: var(--container-w);
+  --ui-trans: 220ms;
+}
+
+/* -------------------------
+   Theme variations
+   (data-theme attribute on body)
+   ------------------------- */
+
+/* Light (default) already set. Add dark + pastel + neon */
+body[data-theme="dark"]{
+  --bg: linear-gradient(180deg,#0f1724,#071025);
+  --panel: rgba(10,14,20,0.55);
+  --muted: #9aa3ad;
+  --text: #e6eef6;
+  --muted-2: rgba(255,255,255,0.03);
+  --accent: linear-gradient(135deg,#6be4b4,#7cc5ff);
+  --accent-solid: #6be4b4;
+  --shadow-1: 0 8px 30px rgba(2,6,12,0.6);
+  --shadow-2: 0 18px 60px rgba(2,6,12,0.7);
+}
+
+/* Pastel pink */
+body[data-theme="pastel-pink"]{
+  --bg: linear-gradient(180deg,#fff6f8,#fff0f3);
+  --panel: #ffffff;
+  --text: #33242a;
+  --muted: #7c6974;
+  --accent: linear-gradient(135deg,#ffd0df,#ffe9f2);
+  --accent-solid: #ffb6c1;
+}
+
+/* Blue neon */
+body[data-theme="blue-neon"]{
+  --bg: linear-gradient(180deg,#071022,#031025);
+  --panel: rgba(6,10,20,0.6);
+  --text: #eaf6ff;
+  --muted: #a8c9ff;
+  --accent: linear-gradient(135deg,#6be4b4,#7cc5ff);
+  --accent-solid: #5f92ff;
+}
+
+/* Sunset gradient */
+body[data-theme="sunset"]{
+  --bg: linear-gradient(180deg,#fff6e8,#fff0e0);
+  --panel: #fff;
+  --text: #35220f;
+  --muted: #735a48;
+  --accent: linear-gradient(135deg,#ffd6a5,#ffcf72);
+  --accent-solid: #ffcf72;
+}
+
+/* -------------------------
+   Base layout
+   ------------------------- */
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:var(--font-sans);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+#app{ max-width:var(--max-width); margin:28px auto; display:grid; grid-template-columns: 320px 1fr 320px; gap:20px; padding:24px; align-items:start; }
+
+/* Panels */
+.panel{
+  background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.4));
+  background-clip: padding-box;
+  border-radius:var(--radius-lg);
+  padding:14px;
+  box-shadow: var(--shadow-1);
+  border:1px solid var(--muted-2);
+}
+
+/* make panels more glassy in dark */
+body[data-theme="dark"] .panel{ background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); }
+
+/* Left (contacts) */
+.panel-left { height: calc(100vh - 160px); display:flex; flex-direction:column; gap:12px; padding:12px; }
+.panel-header { display:flex; flex-direction:column; gap:10px; }
+.search-wrap { display:flex; gap:8px; align-items:center; }
+.search { flex:1; padding:10px 12px; border-radius:12px; border:1px solid var(--muted-2); background:transparent; color:var(--text); box-shadow:none; }
+.icon-btn { background:transparent; border:0; padding:8px; border-radius:10px; cursor:pointer; color:var(--muted); transition: transform var(--ui-trans); }
+.icon-btn:hover{ transform:translateY(-3px); color:var(--text); }
+.btn-ghost { background:transparent; border:1px solid var(--muted-2); padding:8px 10px; border-radius:10px; cursor:pointer; color:var(--muted); }
+
+/* filters segmented */
+.filters { display:flex; gap:8px; }
+.seg-btn { padding:8px 10px; border-radius:999px; border:1px solid var(--muted-2); background:transparent; cursor:pointer; color:var(--muted); font-weight:600; }
+.seg-btn.active, .seg-btn[aria-pressed="true"] { background:var(--accent); color:var(--text); transform:translateY(-2px); box-shadow:var(--shadow-1); }
+
+/* contacts list */
+.contacts { overflow:auto; display:flex; flex-direction:column; gap:10px; padding-right:6px; }
+.contact{ display:flex; gap:12px; padding:10px; align-items:center; border-radius:12px; cursor:pointer; transition: background var(--ui-trans), transform var(--ui-trans); }
+.contact:hover{ background: linear-gradient(90deg, rgba(0,0,0,0.02), rgba(0,0,0,0.01)); transform: translateY(-4px); }
+.contact .avatar{ width:48px; height:48px; border-radius:12px; background:linear-gradient(135deg,#f7e6ff,#ffd6a5); flex-shrink:0; box-shadow: var(--shadow-1); }
+
+/* contact meta */
+.contact .meta{ display:flex; flex-direction:column; min-width:0; }
+.name-row{ display:flex; justify-content:space-between; gap:10px; align-items:center; }
+.name{ font-weight:700; font-size:15px; color:var(--text) }
+.time{ font-size:12px; color:var(--muted) }
+.preview{ font-size:13px; color:var(--muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:190px; }
+
+/* footer small */
+.panel-footer{ display:flex; justify-content:space-between; gap:8px; padding-top:6px }
+
+/* Center: Chat area */
+.panel-center{ display:flex; flex-direction:column; height: calc(100vh - 160px); padding:0; overflow:hidden; position:relative; }
+.chat-header{ display:flex; justify-content:space-between; align-items:center; gap:12px; padding:14px 18px; border-bottom:1px solid var(--muted-2); background:transparent; }
+.chat-left{ display:flex; gap:12px; align-items:center; }
+.avatar-lg{ width:44px; height:44px; border-radius:10px; background:linear-gradient(135deg,#fff,#fff0); box-shadow:var(--shadow-1) }
+.chat-meta .chat-name{ font-weight:700; font-size:16px }
+.chat-status{ font-size:13px; color:var(--muted) }
+.chat-actions{ display:flex; gap:8px; align-items:center; }
+
+/* messages area */
+.messages-wrap{ flex:1; padding:18px; overflow:auto; background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent); }
+.messages-empty{ color:var(--muted); text-align:center; margin-top:60px }
+
+/* message bubble styles */
+.message { display:flex; gap:10px; margin:10px 0; align-items:flex-end; max-width:70%; }
+.message .bubble{ padding:12px 14px; border-radius:14px; box-shadow: var(--shadow-1); background:var(--panel); color:var(--text); line-height:1.35; font-size:15px; }
+.message .meta-time{ font-size:12px; color:var(--muted); margin-top:6px; text-align:right; }
+
+/* left (contact) */
+.message.contact { justify-content:flex-start; }
+.message.contact .bubble{ border-bottom-left-radius:6px; background:rgba(255,255,255,0.95); }
+
+/* right (you) */
+.message.you{ margin-left:auto; justify-content:flex-end; }
+.message.you .bubble{ background: linear-gradient(135deg,var(--accent), var(--accent-solid)); color: #06202a; border-bottom-right-radius:6px; }
+
+/* subtle appear animation */
+.message.enter { animation: msgEnter 360ms cubic-bezier(.2,.9,.2,1); }
+@keyframes msgEnter{ from { opacity:0; transform: translateY(10px) scale(.995)} to{ opacity:1; transform:translateY(0) scale(1)} }
+
+/* composer */
+.composer{ display:flex; gap:10px; align-items:center; padding:12px 14px; border-top:1px solid var(--muted-2); background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent); }
+.composer-input{ flex:1; padding:10px 12px; border-radius:999px; border:1px solid var(--muted-2); background:transparent; font-size:15px; color:var(--text); outline:none; }
+.btn-primary{ padding:10px 14px; border-radius:999px; border:0; background:var(--accent); color:var(--text); font-weight:700; cursor:pointer; box-shadow:var(--shadow-1); transition: transform var(--ui-trans); }
+.btn-primary:active{ transform:translateY(1px) }
+
+/* Right panel (themes & settings) */
+.panel-right{ height: calc(100vh - 160px); overflow:auto; padding:14px; }
+.panel-scroll{ display:flex; flex-direction:column; gap:12px; }
+.panel-title{ margin:0 0 6px 0; font-weight:700; color:var(--text) }
+.theme-grid{ display:grid; grid-template-columns: repeat(2,1fr); gap:10px; margin-bottom:6px; }
+.theme-card{ border-radius:12px; padding:12px; background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); border:1px solid var(--muted-2); cursor:pointer; transition: transform var(--ui-trans), box-shadow var(--ui-trans); }
+.theme-card:hover{ transform:translateY(-6px); box-shadow:var(--shadow-2) }
+.theme-swatch{ height:56px; border-radius:8px; margin-bottom:8px; box-shadow: inset 0 -6px 20px rgba(0,0,0,0.04) }
+
+/* settings */
+.setting-row{ display:flex; justify-content:space-between; align-items:center; gap:8px; padding:10px 0; border-bottom:1px dashed rgba(0,0,0,0.03) }
+.label{ font-weight:600 }
+.desc{ font-size:13px; color:var(--muted) }
+
+/* switch */
+.switch{ display:inline-block; width:44px; height:26px; background:var(--muted-2); border-radius:999px; position:relative; }
+.switch input{ display:none }
+.switch span{ position:absolute; left:4px; top:4px; width:18px; height:18px; background:white; border-radius:50%; transition:left var(--ui-trans) }
+.switch input:checked + span{ left:22px }
+
+/* small utility */
+.full{ width:100% }
+.muted{ color:var(--muted); }
+
+/* responsive */
+@media (max-width: 1100px){
+  #app{ grid-template-columns: 1fr; padding:12px; gap:12px; }
+  .panel-left, .panel-right{ display:none } /* hide side panels on narrow screens; theme/settings accessible via header buttons if needed */
+  .panel-center{ height:auto; }
+}
+
+/* reduced motion */
+@media (prefers-reduced-motion: reduce){
+  * { transition:none !important; animation:none !important; }
+}
