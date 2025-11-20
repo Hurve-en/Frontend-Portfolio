@@ -6,7 +6,7 @@ It displays inspirational quotes and allows users to copy or tweet them instantl
 ---
 
 ##  Project Files
-- `index.html` — Main structure of the app  
+- `quote.html` — Main structure of the app  
 - `quote.css` — Styling, layout, gradients, fonts  
 - *(Inline JS in HTML)* — Logic for generating, copying, and tweeting quotes  
 
@@ -14,7 +14,7 @@ It displays inspirational quotes and allows users to copy or tweet them instantl
 
 ##  How to Run
 1. Put all files in the same folder.  
-2. Open **index.html** in any browser.  
+2. Open **quote.html** in any browser.  
 3. Done — no installation required.
 
 ---

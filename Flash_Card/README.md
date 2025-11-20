@@ -1,14 +1,14 @@
 # Minimal Flashcard Study App
 
 Files:
-- `index.html` — main HTML structure  
-- `styles.css` — styling (light/dark themes, layout)  
-- `app.js` — behavior (card creation, study mode, local storage)
+- `flashcard.html` — main HTML structure  
+- `flashcard.css` — styling (light/dark themes, layout)  
+- `flashcard.js` — behavior (card creation, study mode, local storage)
 
 ---
 
 ## How to run
-Open `index.html` in any modern browser (double-click file or use `File → Open`).  
+Open `flashcard.html` in any modern browser (double-click file or use `File → Open`).  
 No build tools or servers required.
 
 ---

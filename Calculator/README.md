@@ -1,12 +1,12 @@
 # Simple Modern Calculator
 
 Files:
-- `index.html` — UI/structure
-- `styles.css` — styles (responsive, light/dark themes)
-- `app.js` — behavior (safe expression parser & evaluator)
+- `calculator.html` — UI/structure
+- `calculator.css` — styles (responsive, light/dark themes)
+- `calculator.js` — behavior (safe expression parser & evaluator)
 
 ## How to run
-Open `index.html` in a browser (double-click or `File → Open` in browser). No server required.
+Open `calculator.html` in a browser (double-click or `File → Open` in browser). No server required.
 
 ## Features
 - Basic arithmetic: `+ - × * ÷ /`

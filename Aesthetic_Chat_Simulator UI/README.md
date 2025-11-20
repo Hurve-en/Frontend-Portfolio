@@ -45,11 +45,11 @@ Works beautifully on:
 ## 📁 Project Structure
 
 /project
-│── index.html # Home screen + chat UI
+│── chat.html # Home screen + chat UI
 │── theme.html # Theme selector UI
-│── settings.html # Settings UI
-│── styles.css # All aesthetic styles + themes
-│── script.js # Chat simulation, animations, theme handling
+│── setting.html # Settings UI
+│── chat.css # All aesthetic styles + themes
+│── chat.js # Chat simulation, animations, theme handling
 │── assets/
 │ ├── icons/ # UI icons
 │ ├── avatars/ # Contact images

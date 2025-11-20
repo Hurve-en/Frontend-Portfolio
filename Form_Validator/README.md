@@ -1,15 +1,15 @@
 # Form Validator
 
 Files:
-- `index.html` — main form structure
-- `styles.css` — layout, colors, transitions, and theme styles
-- `app.js` — real-time validation logic and event handling
+- `form.html` — main form structure
+- `form.css` — layout, colors, transitions, and theme styles
+- `form.js` — real-time validation logic and event handling
 
 ---
 
 ## How to Run
-1. Download all three files (`index.html`, `styles.css`, `app.js`) into the same folder.  
-2. Open `index.html` in any modern browser (double-click it or open via **File → Open**).  
+1. Download all three files (`form.html`, `form.css`, `form.js`) into the same folder.  
+2. Open `form.html` in any modern browser (double-click it or open via **File → Open**).  
 3. No installation or build tools needed — runs fully offline.
 
 ---

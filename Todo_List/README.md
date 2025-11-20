@@ -8,7 +8,7 @@ This project is intentionally small, dependency-free, and easy to customize. The
 
 ## Contents
 
-- `index.html` — markup, templates, and asset references.
+- `todolist.html` — markup, templates, and asset references.
 - `todolist.css` — styles (school / chalkboard look, responsive, present mode).
 - `todolist.js` — app logic (rendering, add/edit/remove, filters, sort, present mode).
 - `assets/` — (optional) images, icons, resume, etc.
