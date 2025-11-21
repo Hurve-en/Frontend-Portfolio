@@ -1,0 +1,145 @@
+/* styles.css
+   Emoji Mood Logger — aesthetic UI
+   - Rounded corners, soft pastel tokens
+   - Light/dark themes via [data-theme] on body
+   - Respect prefers-reduced-motion
+*/
+
+/* -------------------------
+   Variables (tokens)
+   ------------------------- */
+:root{
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+  --gap: 14px;
+  --card-pad: 16px;
+
+  --bg: #f6f8fb;
+  --panel: #ffffff;
+  --muted: #718096;
+  --text: #0b1220;
+  --accent-1: #ffd6a5; /* warm */
+  --accent-2: #c7d8ff; /* cool */
+  --shadow-1: 0 8px 30px rgba(9,10,18,0.06);
+  --glass: rgba(255,255,255,0.6);
+
+  --font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  --ui-duration: 220ms;
+  --max-width: 1100px;
+}
+
+/* Dark theme override */
+body[data-theme="dark"]{
+  --bg: linear-gradient(180deg,#071025,#071022);
+  --panel: rgba(8,12,20,0.65);
+  --muted: #9aa3ad;
+  --text: #e6eef6;
+  --accent-1: linear-gradient(135deg,#6be4b4,#7cc5ff);
+  --accent-2: #6be4b4;
+  --shadow-1: 0 10px 40px rgba(2,6,12,0.6);
+}
+
+/* Pastel theme */
+body[data-theme="pastel"]{
+  --bg: linear-gradient(180deg,#fff8fb,#fff5f8);
+  --panel: #ffffff;
+  --muted: #9aa3a1;
+  --text: #2b2b2b;
+  --accent-1: linear-gradient(135deg,#ffd6e0,#ffdbe8);
+  --accent-2: #ffb6c1;
+}
+
+/* -------------------------
+   Reset & base
+   ------------------------- */
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:var(--font-family);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+.app-shell{ max-width:var(--max-width); margin:32px auto; padding:12px; }
+
+/* Topbar */
+.topbar{ display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:16px }
+.brand{ display:flex; gap:12px; align-items:center }
+.logo{ width:54px; height:54px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:22px; background:var(--accent-1); box-shadow:var(--shadow-1) }
+.title{ font-weight:700; font-size:18px }
+.subtitle{ font-size:13px; color:var(--muted) }
+
+/* Buttons */
+.btn-ghost{ background:transparent; border:1px solid rgba(0,0,0,0.06); padding:8px 12px; border-radius:10px; cursor:pointer; color:var(--text) }
+.btn-primary{ background:var(--accent-1); padding:10px 14px; border-radius:12px; border:0; cursor:pointer; font-weight:700; color:var(--text) }
+.btn-icon{ background:transparent; border:0; font-size:18px; padding:8px; border-radius:10px; cursor:pointer }
+
+/* Grid layout */
+.grid{ display:grid; grid-template-columns: 1fr 1fr 300px; gap:16px; align-items:start; }
+
+/* Cards */
+.card{ background:var(--panel); border-radius:var(--radius-lg); padding:var(--card-pad); box-shadow:var(--shadow-1); border:1px solid rgba(0,0,0,0.03) }
+
+/* Dashboard: emoji pad */
+.mood-pad{ display:flex; gap:12px; flex-wrap:wrap; margin:12px 0 }
+.mood-btn{
+  width:72px; height:72px; border-radius:14px; display:flex; align-items:center; justify-content:center;
+  font-size:28px; cursor:pointer; transition: transform var(--ui-duration), box-shadow var(--ui-duration);
+  background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.4));
+  border:1px solid rgba(0,0,0,0.04);
+  box-shadow: 0 6px 18px rgba(8,12,24,0.04);
+}
+.mood-btn:hover{ transform:scale(1.05); box-shadow:0 14px 30px rgba(8,12,24,0.08) }
+.mood-btn.active{ outline: 3px solid rgba(124,197,255,0.18); transform:scale(1.06) }
+
+/* Today summary */
+.today-summary{ margin-top:12px; padding:12px; border-radius:12px; background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); min-height:72px; display:flex; align-items:center; gap:12px }
+.empty{ color:var(--muted) }
+.summary-emoji{ font-size:36px; width:60px; height:60px; border-radius:12px; display:flex; align-items:center; justify-content:center; background:var(--accent-2); box-shadow:var(--shadow-1) }
+.summary-text{ font-weight:700 }
+
+/* Note area */
+.note-area{ margin-top:12px }
+.note-area textarea, #modalNote{ width:100%; min-height:80px; padding:10px; border-radius:12px; border:1px solid rgba(0,0,0,0.06); resize:vertical; font-size:14px }
+
+/* Controls row */
+.controls-row{ display:flex; gap:10px; margin-top:12px; align-items:center }
+
+/* History preview (horizontal scroll) */
+.history-preview{ display:flex; gap:10px; overflow:auto; padding:12px 4px }
+.history-day{ min-width:84px; height:84px; border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; padding:8px; cursor:pointer; transition:transform var(--ui-duration), box-shadow var(--ui-duration) }
+.history-day:hover{ transform: translateY(-6px); box-shadow: 0 18px 40px rgba(8,12,24,0.06) }
+.history-day .day{ font-size:12px; color:var(--muted) }
+
+/* Trend section */
+.trend-section{ margin-top:12px }
+.trend-header{ display:flex; justify-content:space-between; align-items:center; gap:8px }
+
+/* Side quick */
+.side-row{ display:flex; justify-content:space-between; align-items:center; gap:8px; padding:10px 0 }
+.side-actions{ display:flex; gap:8px; margin-top:12px; align-items:center }
+.fab{ width:56px; height:56px; border-radius:999px; background:var(--accent-1); border:0; font-size:22px; box-shadow:var(--shadow-1); cursor:pointer }
+
+/* Modal (dialog element) */
+.modal{ border:none; border-radius:14px; padding:18px; width:min(840px,94vw); background:var(--panel); box-shadow: 0 30px 80px rgba(8,12,24,0.16) }
+.modal::backdrop{ background: rgba(4,8,12,0.35) }
+
+/* Calendar grid */
+.calendar{ display:grid; grid-template-columns: repeat(7, 1fr); gap:8px; }
+.calendar-day{ min-height:72px; border-radius:12px; padding:8px; display:flex; flex-direction:column; justify-content:space-between; border:1px dashed rgba(0,0,0,0.04); background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent); cursor:pointer }
+.calendar-day:hover{ transform:translateY(-6px); box-shadow: 0 20px 40px rgba(8,12,24,0.06) }
+
+/* Toast */
+.toast{ position:fixed; left:20px; bottom:20px; padding:10px 14px; border-radius:10px; background:var(--panel); box-shadow:var(--shadow-1); opacity:0; transform:translateY(12px); transition:all 180ms ease; pointer-events:none }
+.toast.show{ opacity:1; transform:translateY(0); pointer-events:auto }
+
+/* Focus & accessibility */
+:focus{ outline: none; box-shadow: 0 8px 22px rgba(11,116,218,0.08); border-radius:10px }
+
+/* Responsive */
+@media (max-width:960px){
+  .grid{ grid-template-columns: 1fr; }
+  .side{ order:3 }
+  .dashboard{ order:1 }
+  .history{ order:2 }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  * { transition:none !important; animation:none !important; transform:none !important; }
+}

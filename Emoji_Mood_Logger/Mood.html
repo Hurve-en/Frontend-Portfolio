@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Emoji Mood Logger — Aesthetic UI</title>
+  <meta name="description" content="Aesthetic Emoji Mood Logger — record daily mood with emoji, notes, and see trends." />
+  <link rel="stylesheet" href="Mood.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body data-theme="light" class="reduced-motion-check">
+  <div id="app" class="app-shell">
+
+    <!-- TOP NAV -->
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">😊</div>
+        <div>
+          <div class="title">MoodLogger</div>
+          <div class="subtitle muted">A gentle place to track your feelings</div>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <button id="themeToggle" class="btn-icon" aria-label="Toggle theme">🌗</button>
+        <button id="openSettings" class="btn-ghost">Settings</button>
+      </div>
+    </header>
+
+    <!-- MAIN GRID -->
+    <main class="grid">
+      <!-- LEFT: Dashboard (Mood entry + today summary) -->
+      <section class="card dashboard" aria-labelledby="todayTitle">
+        <div class="card-header">
+          <h2 id="todayTitle">Today's Mood</h2>
+          <div class="small muted">Tap an emoji to record</div>
+        </div>
+
+        <div class="mood-pad" role="list" aria-label="Emoji mood choices">
+          <!-- Emoji buttons injected by JS -->
+        </div>
+
+        <div class="today-summary" id="todaySummary" aria-live="polite">
+          <!-- today's mood summary rendered by JS -->
+          <div class="empty">No mood recorded today — pick an emoji above.</div>
+        </div>
+
+        <div class="note-area">
+          <label for="noteInput" class="label muted">Add a short note (optional)</label>
+          <textarea id="noteInput" placeholder="Why do you feel this way? (private)"></textarea>
+        </div>
+
+        <div class="controls-row">
+          <button id="saveToday" class="btn-primary">Save Mood</button>
+          <button id="openEditModal" class="btn-ghost">Edit Recent</button>
+        </div>
+      </section>
+
+      <!-- CENTER: History preview + Trend -->
+      <section class="card history" aria-labelledby="historyTitle">
+        <div class="card-header">
+          <h2 id="historyTitle">Mood History</h2>
+          <div class="small muted">Swipe or scroll →</div>
+        </div>
+
+        <div class="history-preview" id="historyPreview" aria-label="Mood history (recent days)">
+          <!-- horizontal scroll days injected by JS -->
+        </div>
+
+        <div class="trend-section">
+          <div class="trend-header">
+            <div class="label">7-day trend</div>
+            <div class="muted small">Quick snapshot</div>
+          </div>
+          <canvas id="trendCanvas" width="560" height="120" aria-hidden="true"></canvas>
+        </div>
+
+        <div class="history-actions">
+          <button id="openHistory" class="btn-ghost">Open Full History</button>
+          <div class="muted small">Filter:</div>
+          <select id="filterMood">
+            <option value="all">All</option>
+            <option value="happy">😊 Happy</option>
+            <option value="neutral">😐 Neutral</option>
+            <option value="sad">😢 Sad</option>
+            <option value="angry">😡 Angry</option>
+            <option value="excited">🤩 Excited</option>
+            <option value="tired">😴 Tired</option>
+          </select>
+        </div>
+      </section>
+
+      <!-- RIGHT: Settings summary + quick actions -->
+      <aside class="card side" aria-labelledby="settingsTitle">
+        <div class="card-header">
+          <h3 id="settingsTitle">Quick Settings</h3>
+        </div>
+
+        <div class="side-row">
+          <div>
+            <div class="label">Dark mode</div>
+            <div class="muted small">Switch theme</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="darkMode" aria-label="Enable dark mode">
+            <span></span>
+          </label>
+        </div>
+
+        <div class="side-row">
+          <div>
+            <div class="label">Show charts</div>
+            <div class="muted small">Enable trend charts</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="showCharts" checked>
+            <span></span>
+          </label>
+        </div>
+
+        <div class="side-row">
+          <div>
+            <div class="label">Font size</div>
+            <div class="muted small">Comfortable reading</div>
+          </div>
+          <select id="fontSize">
+            <option value="14">14px</option>
+            <option value="15" selected>15px</option>
+            <option value="16">16px</option>
+            <option value="18">18px</option>
+          </select>
+        </div>
+
+        <div class="side-actions">
+          <button id="addMoodFab" class="fab" aria-label="Add mood">➕</button>
+          <button id="clearAll" class="btn-ghost">Clear All</button>
+        </div>
+      </aside>
+    </main>
+
+    <!-- FULLSCREEN HISTORY MODAL -->
+    <dialog id="historyModal" class="modal" aria-labelledby="historyModalTitle">
+      <h3 id="historyModalTitle">Full Mood History</h3>
+      <div class="modal-body">
+        <div class="calendar" id="calendarGrid" role="grid" aria-label="Mood calendar">
+          <!-- calendar days injected by JS -->
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button id="closeHistory" class="btn-ghost">Close</button>
+      </div>
+    </dialog>
+
+    <!-- ADD / EDIT MOOD MODAL -->
+    <dialog id="moodModal" class="modal" aria-labelledby="moodModalTitle">
+      <h3 id="moodModalTitle">Add / Edit Mood</h3>
+      <div class="modal-body">
+        <div class="mood-pad modal-pad" id="modalMoodPad" role="list"></div>
+        <label for="modalNote" class="label muted">Note (optional)</label>
+        <textarea id="modalNote" placeholder="Write a short note…"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button id="saveModal" class="btn-primary">Save</button>
+        <button id="cancelModal" class="btn-ghost">Cancel</button>
+      </div>
+    </dialog>
+
+    <!-- TOAST -->
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  </div>
+
+  <!-- App script -->
+  <script src="Mood.js"></script>
+</body>
+</html>
