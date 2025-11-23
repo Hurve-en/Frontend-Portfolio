@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Daily Journal — Mindful Journaling</title>
+  <meta name="description" content="A calm, accessible daily journal app with mood tagging, search, and PDF export." />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="Journal_App.css" />
+
+  <!-- Fonts (system fallback included) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <!-- jsPDF for PDF export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+  <!-- dayjs (optional small helper for dates) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.11/dayjs.min.js" defer></script>
+</head>
+<body data-theme="light">
+  <div id="app" class="app-shell" role="application" aria-label="Daily Journal">
+
+    <!-- Header -->
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">📝</div>
+        <div>
+          <div class="headline" id="greeting">Good morning</div>
+          <div class="muted" id="todayDate"></div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button id="newEntryBtn" class="btn-primary" title="New Entry (N)">New Entry ⌘N</button>
+        <button id="exportAllBtn" class="btn-ghost" title="Export filtered entries to PDF">Export → PDF</button>
+        <input id="importInput" type="file" accept="application/json" class="visually-hidden" />
+        <button id="importBtn" class="btn-ghost" title="Import JSON backup">Import</button>
+        <button id="downloadJsonBtn" class="btn-ghost" title="Export JSON backup">Backup</button>
+        <button id="themeBtn" class="btn-icon" aria-pressed="false" title="Toggle theme">🌗</button>
+      </div>
+    </header>
+
+    <!-- Layout: list (left) + editor/detail (right) -->
+    <main class="layout">
+      <!-- LEFT: Controls + Search + Filters + List -->
+      <aside class="panel list-panel" aria-label="Entries list">
+        <div class="panel-row">
+          <input id="searchInput" type="search" placeholder="Search title or content — press /" aria-label="Search entries" />
+        </div>
+
+        <div class="panel-row filters">
+          <select id="quickFilter" aria-label="Quick filter">
+            <option value="all">All</option>
+            <option value="today">Today</option>
+            <option value="7days">Last 7 days</option>
+            <option value="month">This month</option>
+          </select>
+
+          <input id="dateFrom" type="date" aria-label="Date from" />
+          <input id="dateTo" type="date" aria-label="Date to" />
+        </div>
+
+        <div class="panel-row mood-filters" aria-label="Mood filters">
+          <!-- mood chips injected -->
+        </div>
+
+        <div id="entriesList" class="entries-list" aria-live="polite"></div>
+      </aside>
+
+      <!-- RIGHT: Editor / Detail -->
+      <section class="panel editor-panel" aria-label="Editor and detail">
+        <div id="editorHeader" class="editor-header">
+          <div class="editor-title">Entry</div>
+          <div class="editor-actions">
+            <button id="saveBtn" class="btn-primary">Save</button>
+            <button id="cancelBtn" class="btn-ghost">Cancel</button>
+            <button id="deleteBtn" class="btn-danger" title="Delete entry">Delete</button>
+            <button id="exportEntryBtn" class="btn-ghost" title="Export this entry">Export PDF</button>
+          </div>
+        </div>
+
+        <form id="entryForm" class="entry-form" novalidate>
+          <label class="label">Title
+            <input id="titleInput" type="text" placeholder="Short title" autocomplete="off" />
+          </label>
+
+          <div class="row">
+            <label class="label">Date & time
+              <input id="dateInput" type="datetime-local" />
+            </label>
+
+            <label class="label">Mood
+              <div id="moodSelector" class="mood-selector" role="listbox" aria-label="Select mood"></div>
+            </label>
+          </div>
+
+          <label class="label">Tags (comma separated)
+            <input id="tagsInput" type="text" placeholder="reflection, work, gratitude" />
+          </label>
+
+          <label class="label">Body
+            <textarea id="bodyInput" rows="10" placeholder="Write your journal entry..."></textarea>
+          </label>
+
+          <div class="meta-row">
+            <div class="muted small" id="wordCount">0 words • 0 chars</div>
+            <div class="muted small">Auto-save: <span id="autoSaveStatus">off</span></div>
+          </div>
+
+          <div class="form-actions">
+            <button id="saveBtnBottom" class="btn-primary">Save</button>
+            <button id="cancelBtnBottom" class="btn-ghost">Cancel</button>
+          </div>
+        </form>
+
+        <!-- Detail view (read-only) -->
+        <article id="detailView" class="detail-view hidden" aria-live="polite">
+          <header class="detail-header">
+            <div class="detail-title" id="detailTitle"></div>
+            <div class="detail-meta" id="detailMeta"></div>
+          </header>
+          <div class="detail-body" id="detailBody"></div>
+          <div class="detail-tags muted" id="detailTags"></div>
+        </article>
+      </section>
+    </main>
+
+    <!-- Toast -->
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  </div>
+
+  <!-- App script -->
+  <script src="Journal_App.js" defer></script>
+</body>
+</html>
