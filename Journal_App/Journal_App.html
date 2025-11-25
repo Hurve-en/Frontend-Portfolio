@@ -9,13 +9,15 @@
   <!-- Styles -->
   <link rel="stylesheet" href="Journal_App.css" />
 
-  <!-- Fonts (system fallback included) -->
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-  <!-- jsPDF for PDF export -->
+  <!-- jsPDF for PDF export (deferred) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
-  <!-- dayjs (optional small helper for dates) -->
+  <!-- dayjs (optional) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.11/dayjs.min.js" defer></script>
+  <!-- App script (deferred) -->
+  <script src="Journal_App.js" defer></script>
 </head>
 <body data-theme="light">
   <div id="app" class="app-shell" role="application" aria-label="Daily Journal">
@@ -25,13 +27,13 @@
       <div class="brand">
         <div class="logo" aria-hidden="true">📝</div>
         <div>
-          <div class="headline" id="greeting">Good morning</div>
-          <div class="muted" id="todayDate"></div>
+          <div id="greeting" class="headline">Good morning</div>
+          <div id="todayDate" class="muted">—</div>
         </div>
       </div>
 
       <div class="header-actions">
-        <button id="newEntryBtn" class="btn-primary" title="New Entry (N)">New Entry ⌘N</button>
+        <button id="newEntryBtn" class="btn-primary" title="New Entry (N)">New Entry</button>
         <button id="exportAllBtn" class="btn-ghost" title="Export filtered entries to PDF">Export → PDF</button>
         <input id="importInput" type="file" accept="application/json" class="visually-hidden" />
         <button id="importBtn" class="btn-ghost" title="Import JSON backup">Import</button>
@@ -41,7 +43,7 @@
     </header>
 
     <!-- Layout: list (left) + editor/detail (right) -->
-    <main class="layout">
+    <main class="layout" id="layoutRoot">
       <!-- LEFT: Controls + Search + Filters + List -->
       <aside class="panel list-panel" aria-label="Entries list">
         <div class="panel-row">
@@ -128,8 +130,5 @@
     <!-- Toast -->
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
   </div>
-
-  <!-- App script -->
-  <script src="Journal_App.js" defer></script>
 </body>
 </html>
