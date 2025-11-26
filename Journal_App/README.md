@@ -1,63 +1,128 @@
-# Daily Journal App — Project Plan & Starter Guide
+# Daily Journal — Mindful Journaling App
 
-A calm, aesthetic **Daily Journal App**: editable entries, mood tagging, search & filter by date, soft typography & page transitions, and export-to-PDF. This document gives a clear spec, file structure, UI/UX guidance, and starter code snippets you can copy/paste to begin implementation.
-
----
-
-## Project Summary
-
-Build a front-end only journal web app where users can add daily entries, tag each entry with a mood emoji, edit entries, search/filter by date or text, and export selected entries (or an entry) as a PDF. Use `localStorage` for persistence. Focus on a soft, minimalist aesthetic and accessible interactions.
+A calm, accessible, front-end **Daily Journal** web app for mindful writing.  
+Soft, minimalist UI, mood tagging, search & filters, auto-save drafts, JSON backup/restore, and PDF export. Built with plain HTML, CSS and vanilla JavaScript — no build tools required.
 
 ---
 
-## Core Features
+## 🚀 Highlights
 
-- Create / Edit / Delete journal entries
-- Mood tagging (emoji) per entry
-- Search by text and filter by date range or mood
-- Sort entries (newest / oldest)
-- Entry detail view with edit mode
-- Export entry or filtered set to PDF (via `jsPDF` or `html2pdf`)
-- Soft transitions and micro-interactions
-- Responsive layout and accessible controls
-- Persistence using `localStorage`
-
----
-
-## Design & UX Notes
-
-- **Style**: soft pastels or muted gradient background, rounded cards (12–18px), subtle shadows.
-- **Typography**: Inter or Poppins for body; larger, readable heading scale.
-- **Spacing**: consistent spacing tokens (`--space-sm`, `--space-md`, `--space-lg`).
-- **Micro-interactions**: button hover scale, card elevation on hover, smooth fades for modal and list updates.
-- **Reduced motion**: respect `prefers-reduced-motion`.
-- **Accessibility**: visible focus styles, labels for inputs, keyboard operability, `aria-live` for transient messages.
+- Create, edit, delete journal entries
+- Mood tagging (emoji) with a default palette and easy extension
+- Search (title + body) and multi-mode filters (date range, quick filters, mood chips)
+- Auto-save drafts while typing (localStorage)
+- Export a single entry or filtered set to **PDF** (uses `jsPDF`)
+- Backup / Restore full journal via JSON
+- Light / Dark theme toggle (persisted)
+- Keyboard shortcuts:  
+  - `N` — new entry  
+  - `/` — focus search
+- Responsive layout (mobile-first) and accessibility-friendly (ARIA hints, visible focus, prefers-reduced-motion)
 
 ---
 
-## Data Model (client-side)
-
-Store an array of entries in localStorage under key `journal:entries:v1`.
-
-Each entry:
-```json
-{
-  "id": "2025-11-23T13:45:21-uuid",
-  "date": "2025-11-23",         // YYYY-MM-DD for filtering/calendar
-  "createdAt": 1660000000000,   // epoch ms
-  "updatedAt": 1660001000000,   // epoch ms
-  "mood": "😊",                 // emoji or mood id
-  "title": "Short title",
-  "content": "Long text markdown / plain text",
-  "tags": ["work", "reflection"]
-}
+## 📁 Files (what you should have)
 
 /daily-journal
-├─ index.html         # Main UI + modal markup
-├─ styles.css         # All styles, CSS variables, responsive
-├─ app.js             # App logic: CRUD, search, filter, export
-├─ libs/
-│   └─ jspdf.umd.min.js   # jsPDF (or html2pdf) for PDF export
-└─ assets/
-   └─ icons, images
+├─ index.html # Main UI (list + editor + detail)
+├─ styles.css # Visual design, tokens, responsive rules
+└─ app.js # App behavior: CRUD, filters, auto-save, export
 
+
+> `jsPDF` is loaded from CDN in `index.html` for PDF export. No other dependencies.
+
+---
+
+## 🛠️ Quick start (local)
+
+1. Put `Journal.html`, `Journal.css`, and `Journal.js` in the same folder.
+2. Open `Journal.html` in a modern browser (Chrome / Firefox / Edge / Safari).
+3. (Optional) Serve with a tiny static server for better file handling:
+```bash
+python -m http.server 8000
+# visit http://localhost:8000
+
+✍️ How to use
+
+Click New Entry (or press N) to open the editor.
+Fill Title, pick a Mood, add Tags (comma-separated), and write the Body.
+Click Save to persist the entry (saved to localStorage).
+Click an entry in the left list to view details or edit it.
+Use the search box (/ to focus) and filters to narrow results.
+Use Export → PDF to export currently filtered entries, or export a single entry from the detail view.
+Use Backup to download all entries as JSON; use Import to restore a JSON backup.
+
+🔐 Data & persistence
+
+All data is stored locally in your browser under the key: daily-journal-v1.
+Draft auto-saves are stored under daily-journal-draft.
+No server is used; data never leaves your device unless you export or share it.
+
+⚙️ Configuration & customization
+Change moods
+
+Edit the moods array inside app.js to add/remove moods:
+
+const moods = [
+  { id: 'happy', emoji: '😊', label: 'Happy' },
+  { id: 'sad', emoji: '😢', label: 'Sad' },
+  // add your own...
+];
+
+Adjust UI tokens
+
+Open styles.css and change the CSS variables at the top:
+
+:root {
+  --accent: #ffd6a5;
+  --radius-lg: 14px;
+  --shadow: 0 8px 30px rgba(8,12,24,0.06);
+}
+
+📦 Export / Backup formats
+
+PDF export: Uses jsPDF to generate plain-text PDFs containing title, date, mood, body and tags.
+JSON backup: Full dataset exported as journal-backup.json (useful for manual restore or migration).
+
+♿ Accessibility
+
+Semantic HTML (buttons, inputs, lists) and ARIA hints where helpful.
+Keyboard support (N, /).
+Visible focus styles for interactive controls.
+Respects prefers-reduced-motion — animations are reduced/disabled when the user prefers.
+aria-live region used for toasts and transient messages.
+
+🧪 Tests & known limitations
+
+Tested on: latest Chrome and Firefox.
+Known limitations:
+
+PDF export is plain text layout (for richer styling use html2pdf or server-side rendering).
+Date handling is simplified; advanced timezone or i18n handling can be added with dayjs.
+No user accounts — data is device-local only.
+
+✅ Suggested next improvements
+
+Add calendar heatmap and weekly/monthly analytics (Chart.js / lightweight SVG).
+Improve PDF styling with html2pdf for WYSIWYG export.
+Add optional encryption / passphrase for stored entries.
+Add Markdown support with preview (e.g., marked.js).
+Implement optional cloud sync (requires backend + auth).
+
+🧾 Developer notes (quick API)
+
+localStorage keys:
+Entries: daily-journal-v1
+Draft: daily-journal-draft
+Theme: journal-theme
+Useful functions exposed on window.JournalApp (for debugging in browser console):
+JournalApp.createEntry(data)
+JournalApp.updateEntry(id, updates)
+JournalApp.deleteEntry(id)
+JournalApp.exportEntriesToPDF(list)
+
+💬 Troubleshooting
+
+Buttons not responding — ensure app.js is included and that scripts load after DOM (use defer).
+PDF export fails — check console for jsPDF errors; confirm CDN loaded before attempting export.
+Data missing after reinstall — backups must be re-imported; localStorage is browser & device specific.
