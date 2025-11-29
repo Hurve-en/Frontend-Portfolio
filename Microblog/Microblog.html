@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Microblog — Minimal</title>
+  <meta name="description" content="A minimal microblog app (client-side) with localStorage persistence." />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Script -->
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="app">
+    <!-- Header -->
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">✦</div>
+        <div>
+          <div class="title">Microblog</div>
+          <div class="subtitle muted">Short thoughts — local only</div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <div class="search-wrap">
+          <input id="searchInput" type="search" placeholder="Search posts or hashtags..." aria-label="Search posts">
+        </div>
+
+        <div class="actions-right">
+          <select id="moodFilter" aria-label="Filter by mood">
+            <option value="all">All moods</option>
+          </select>
+
+          <button id="themeBtn" class="btn ghost" aria-pressed="false" title="Toggle theme">Theme</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="layout">
+      <!-- Profile Sidebar -->
+      <aside class="sidebar" id="sidebar" aria-label="Profile sidebar">
+        <div class="profile-card">
+          <div class="avatar" aria-hidden="true">🙂</div>
+          <div class="profile-info">
+            <div class="username" contenteditable="true" id="username">You</div>
+            <div class="bio muted" id="bio">A minimal microblogger</div>
+          </div>
+        </div>
+
+        <div class="stats">
+          <div><strong id="postCount">0</strong><div class="muted">posts</div></div>
+        </div>
+
+        <div class="sidebar-actions">
+          <button id="composeBtn" class="btn primary">Compose</button>
+          <button id="exportBtn" class="btn ghost">Export JSON</button>
+          <button id="importBtn" class="btn ghost">Import</button>
+          <input id="importInput" type="file" accept="application/json" class="visually-hidden">
+        </div>
+      </aside>
+
+      <!-- Main column -->
+      <section class="main-col">
+        <!-- Compose box -->
+        <div class="compose-card" id="composeCard">
+          <textarea id="composeTxt" maxlength="300" placeholder="What's happening? (max 300 chars)" aria-label="Compose post"></textarea>
+
+          <div class="compose-row">
+            <div class="left">
+              <div class="emoji-picker" id="emojiPicker" role="listbox" aria-label="Pick mood">
+                <!-- emojis injected -->
+              </div>
+              <div class="char-counter" id="charCounter">0 / 300</div>
+            </div>
+
+            <div class="right">
+              <button id="postBtn" class="btn primary">Post</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Post feed -->
+        <div id="feed" class="feed" aria-live="polite" aria-label="Post feed">
+          <!-- posts injected here -->
+        </div>
+
+        <!-- Scroll to top -->
+        <button id="scrollTop" class="btn circle hidden" title="Scroll to top">↑</button>
+      </section>
+    </main>
+
+    <!-- Delete confirmation modal -->
+    <div id="modalOverlay" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-hidden="true">
+      <div class="modal">
+        <div class="modal-body">
+          <p>Delete this post? This can't be undone.</p>
+        </div>
+        <div class="modal-actions">
+          <button id="confirmDelete" class="btn danger">Delete</button>
+          <button id="cancelDelete" class="btn ghost">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- small file import helper (invisible) -->
+    <input id="fileImport" type="file" accept="application/json" class="visually-hidden">
+
+  </div>
+</body>
+</html>
