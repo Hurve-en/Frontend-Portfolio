@@ -29,21 +29,21 @@
 
   // Sample data (contacts + messages)
   const seedContacts = [
-    { id:'c-1', name:'Babi :> ', preview:'Sure — I’ll send the photos soon.', time:'2:18 PM', avatarColor:'linear-gradient(135deg,#ffd6e7,#fff2f9)', online:true,
+    { id:'c-1', name:'Babi :> ', preview:'I love you babi wabi <3.', time:'2:18 PM', avatarColor:'linear-gradient(135deg,#ffd6e7,#fff2f9)', online:true,
       messages:[
-        { who:'contact', text:'Hey! Did you get the photos from yesterday?', time:'2:12 PM' },
-        { who:'you', text:'Not yet — send them when free!', time:'2:15 PM' },
-        { who:'contact', text:'Sure — I’ll send the photos soon.', time:'2:18 PM' }
+        { who:'contact', text:'Why waka send photo nato?', time:'2:12 PM' },
+        { who:'you', text:'Send nako when free ko drive pako', time:'2:15 PM' },
+        { who:'contact', text:'Soon sendi wendy?', time:'2:18 PM' }
       ]
     },
-    { id:'c-2', name:'Rheynel Gen', preview:'On my way ✨', time:'Yesterday', avatarColor:'linear-gradient(135deg,#d6f2ff,#f0fbff)', online:false,
+    { id:'c-2', name:'Rheynel Gen', preview:'Dung nako bai ', time:'Yesterday', avatarColor:'linear-gradient(135deg,#d6f2ff,#f0fbff)', online:false,
       messages:[
-        { who:'contact', text:'On my way ✨', time:'Yesterday' }
+        { who:'contact', text:'Dung nako bai ', time:'Yesterday' }
       ]
     },
-    { id:'c-3', name:'Aj Mozart', preview:'Let’s meet 4pm?', time:'Mon', avatarColor:'linear-gradient(135deg,#fff7d6,#fff0cc)', online:true,
+    { id:'c-3', name:'Aj Mozart', preview:'asa man ta kita lol', time:'Mon', avatarColor:'linear-gradient(135deg,#fff7d6,#fff0cc)', online:true,
       messages:[
-        { who:'contact', text:'Let’s meet 4pm?', time:'Mon' }
+        { who:'contact', text:'asa man ta kita? lol', time:'Mon' }
       ]
     }
   ];
