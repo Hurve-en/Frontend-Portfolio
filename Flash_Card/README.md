@@ -136,10 +136,9 @@ The **Leitner System** is a spaced repetition technique that improves memory ret
 | 4 | Every 7 Days | Strongly remembered |
 | 5 | Every 14 Days | Mastered cards |
 
--------------------------------------------------------------------------------------------
+
 
 ## Credits
 Developed as a minimalist, dark-themed flashcard app for **active recall and self-study**.  
 Built with plain **HTML, CSS, and JavaScript**, without any frameworks.
 
--------------------------------------------------------------------------------------------
