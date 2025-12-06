@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PF Dashboard — Local</title>
+  <!-- Chart.js (CDN) and dayjs -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.9/dayjs.min.js"></script>
+  <link rel="stylesheet" href="Finance_Dashboard.css" />
+</head>
+<body>
+  <div id="app" class="app">
+    <header class="topbar">
+      <h1 class="app-title">Personal Finance Dashboard</h1>
+      <div class="top-actions">
+        <button id="btn-export-json" class="btn">Export JSON</button>
+        <button id="btn-import-json" class="btn">Import JSON</button>
+        <button id="btn-add-transaction" class="btn primary">Add Transaction</button>
+      </div>
+    </header>
+
+    <main class="container">
+      <!-- Dashboard KPIs -->
+      <section id="dashboard" class="dashboard">
+        <div class="kpis">
+          <div class="kpi card">
+            <div class="kpi-label">Balance</div>
+            <div id="kpi-balance" class="kpi-value">₱0.00</div>
+            <canvas id="spark-balance" class="spark" width="120" height="30" aria-hidden="true"></canvas>
+          </div>
+          <div class="kpi card">
+            <div class="kpi-label">Monthly Income</div>
+            <div id="kpi-income" class="kpi-value">₱0.00</div>
+            <canvas id="spark-income" class="spark" width="120" height="30" aria-hidden="true"></canvas>
+          </div>
+          <div class="kpi card">
+            <div class="kpi-label">Monthly Expenses</div>
+            <div id="kpi-expenses" class="kpi-value">₱0.00</div>
+            <canvas id="spark-expenses" class="spark" width="120" height="30" aria-hidden="true"></canvas>
+          </div>
+          <div class="kpi card">
+            <div class="kpi-label">Savings Rate</div>
+            <div id="kpi-savings-rate" class="kpi-value">0%</div>
+            <canvas id="spark-savings" class="spark" width="120" height="30" aria-hidden="true"></canvas>
+          </div>
+          <div class="kpi card">
+            <div class="kpi-label">Budget Remaining</div>
+            <div id="kpi-budget-remaining" class="kpi-value">₱0.00</div>
+            <canvas id="spark-budget" class="spark" width="120" height="30" aria-hidden="true"></canvas>
+          </div>
+        </div>
+
+        <div class="recent card">
+          <h2>Recent Activity</h2>
+          <ul id="recent-list" class="recent-list" aria-live="polite"></ul>
+        </div>
+      </section>
+
+      <!-- Tabs / Panels -->
+      <section class="panels">
+        <nav class="tabs">
+          <button data-panel="transactions" class="tab active">Transactions</button>
+          <button data-panel="accounts" class="tab">Accounts</button>
+          <button data-panel="budgets" class="tab">Budgets</button>
+          <button data-panel="analytics" class="tab">Analytics</button>
+          <button data-panel="networth" class="tab">Net Worth</button>
+        </nav>
+
+        <div class="panel" id="panel-transactions">
+          <div class="panel-header">
+            <div class="filters">
+              <input id="search-transactions" placeholder="Search transactions..." />
+              <input id="date-from" type="date" />
+              <input id="date-to" type="date" />
+              <button id="btn-import-csv" class="btn">Import CSV</button>
+            </div>
+          </div>
+
+          <div id="transactions-list" class="transactions card" role="list"></div>
+          <div id="pagination" class="pagination"></div>
+        </div>
+
+        <div class="panel hidden" id="panel-accounts">
+          <div class="card">
+            <h2>Accounts</h2>
+            <div id="accounts-list"></div>
+            <button id="btn-add-account" class="btn primary">Add Account</button>
+          </div>
+        </div>
+
+        <div class="panel hidden" id="panel-budgets">
+          <div class="card">
+            <h2>Budgets</h2>
+            <div id="budgets-list"></div>
+            <button id="btn-add-budget" class="btn primary">Add Budget</button>
+          </div>
+        </div>
+
+        <div class="panel hidden" id="panel-analytics">
+          <div class="card charts">
+            <h2>Analytics</h2>
+            <canvas id="chart-income-expenses" height="120" aria-hidden="true"></canvas>
+            <canvas id="chart-expense-pie" height="120" aria-hidden="true"></canvas>
+            <canvas id="chart-networth" height="120" aria-hidden="true"></canvas>
+          </div>
+        </div>
+
+        <div class="panel hidden" id="panel-networth">
+          <div class="card">
+            <h2>Net Worth</h2>
+            <div id="networth-list"></div>
+            <canvas id="chart-networth-small" height="80" aria-hidden="true"></canvas>
+            <button id="btn-add-net" class="btn primary">Add Asset / Liability</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Modals (hidden by default) -->
+    <div id="modal" class="modal hidden" role="dialog" aria-modal="true"></div>
+
+    <!-- Toast area -->
+    <div id="toasts" aria-live="polite" class="toasts"></div>
+
+    <input id="file-input-json" type="file" accept="application/json" class="hidden" />
+    <input id="file-input-csv" type="file" accept="text/csv" class="hidden" />
+
+    <script src="Finance_Dashboard.js" defer></script>
+  </div>
+</body>
+</html>
