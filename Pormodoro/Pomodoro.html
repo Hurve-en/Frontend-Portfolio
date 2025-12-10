@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Vibe Pomodoro — Focus Timer</title>
+  <link rel="stylesheet" href="Pormodoro.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- Ambient background shapes -->
+    <div class="ambient">
+      <div class="blob b1" aria-hidden="true"></div>
+      <div class="blob b2" aria-hidden="true"></div>
+      <div class="blob b3" aria-hidden="true"></div>
+    </div>
+
+    <header class="topbar">
+      <div class="brand">
+        <h1>Vibe Pomodoro</h1>
+        <p class="muted">Minimal. Calm. Focus.</p>
+      </div>
+
+      <div class="controls">
+        <button id="mode-toggle" class="icon-btn" aria-pressed="false" title="Toggle light / dark">
+          <span class="sr-only">Toggle theme</span>
+          🌗
+        </button>
+        <button id="open-settings" class="icon-btn" title="Settings">⚙️</button>
+      </div>
+    </header>
+
+    <main class="main">
+      <section class="timer-card card" role="region" aria-label="Pomodoro timer">
+        <div class="session-tabs" role="tablist" aria-label="Session types">
+          <button class="tab active" data-mode="focus" role="tab">Focus</button>
+          <button class="tab" data-mode="short" role="tab">Short Break</button>
+          <button class="tab" data-mode="long" role="tab">Long Break</button>
+        </div>
+
+        <div class="clock-wrap">
+          <!-- SVG circular progress -->
+          <svg class="progress-ring" width="220" height="220" viewBox="0 0 120 120" aria-hidden="true">
+            <defs></defs>
+            <g transform="rotate(-90 60 60)">
+              <circle class="ring-bg" cx="60" cy="60" r="48" />
+              <circle class="ring" cx="60" cy="60" r="48" stroke-linecap="round" />
+            </g>
+          </svg>
+
+          <div class="clock" aria-live="polite">
+            <div id="time-display" class="time">25:00</div>
+            <div id="session-label" class="label">Focus</div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button id="start-btn" class="btn primary">Start</button>
+          <button id="pause-btn" class="btn" disabled>Pause</button>
+          <button id="reset-btn" class="btn" disabled>Reset</button>
+        </div>
+
+        <div class="meta-row">
+          <div class="stat">
+            <div class="stat-value" id="counter-done">0</div>
+            <div class="stat-label">Pomodoros today</div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-value" id="task-progress">0%</div>
+            <div class="stat-label">Task completion</div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="side panel">
+        <div class="tasks card">
+          <div class="tasks-header">
+            <h3>Tasks</h3>
+            <button id="clear-completed" class="btn small">Clear done</button>
+          </div>
+
+          <form id="task-form" class="task-form" aria-label="Add task">
+            <input id="task-input" type="text" placeholder="Add a task (press Enter)" aria-label="Task" />
+          </form>
+
+          <ul id="task-list" class="task-list" aria-live="polite"></ul>
+        </div>
+
+        <div class="settings-card card">
+          <h3>Quick Controls</h3>
+          <div class="quick">
+            <label class="quick-item">
+              <input type="radio" name="quick-mode" value="focus" checked /> Focus
+            </label>
+            <label class="quick-item">
+              <input type="radio" name="quick-mode" value="short" /> Short Break
+            </label>
+            <label class="quick-item">
+              <input type="radio" name="quick-mode" value="long" /> Long Break
+            </label>
+          </div>
+          <button id="add-pomodoro" class="btn full">Mark Pomodoro Done</button>
+        </div>
+      </aside>
+    </main>
+
+    <!-- Settings modal -->
+    <div id="settings-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+      <div class="modal-card card">
+        <h2 id="settings-title">Timer Settings</h2>
+
+        <form id="settings-form" class="settings-form">
+          <label>Focus duration (minutes)
+            <input id="setting-focus" type="number" min="1" max="180" step="1" value="25" />
+          </label>
+
+          <label>Short break (minutes)
+            <input id="setting-short" type="number" min="1" max="60" step="1" value="5" />
+          </label>
+
+          <label>Long break (minutes)
+            <input id="setting-long" type="number" min="1" max="180" step="1" value="15" />
+          </label>
+
+          <label>Auto-reset to Focus after break
+            <input id="setting-auto" type="checkbox" checked />
+          </label>
+
+          <div class="modal-actions">
+            <button id="save-settings" class="btn primary">Save</button>
+            <button id="close-settings" class="btn">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <footer class="footer muted">Made for calm focused sessions — breathe ✨</footer>
+  </div>
+
+  <script src="Pormodoro.js"></script>
+</body>
+</html>
