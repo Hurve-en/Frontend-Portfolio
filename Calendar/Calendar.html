@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Minimalist Calendar — Planner</title>
+  <link rel="stylesheet" href="Calendar.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <h1>Minimalist Planner</h1>
+        <p class="muted"></p>
+      </div>
+
+      <div class="top-controls">
+        <button id="today-btn" class="btn">Today</button>
+        <div class="nav">
+          <button id="prev-month" class="icon-btn" aria-label="Previous month">‹</button>
+          <div id="current-month" class="month-label" aria-live="polite"></div>
+          <button id="next-month" class="icon-btn" aria-label="Next month">›</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="main">
+      <section class="calendar card" aria-label="Monthly calendar">
+        <div class="weekdays">
+          <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+        </div>
+
+        <div id="days-grid" class="days-grid" role="grid" aria-label="Days of month"></div>
+      </section>
+
+      <aside class="panel card" aria-label="Day details">
+        <div class="panel-header">
+          <div>
+            <div class="selected-date" id="selected-date">—</div>
+            <div class="muted" id="selected-weekday">Select a day</div>
+          </div>
+          <button id="add-event" class="btn primary">+ Add</button>
+        </div>
+
+        <div id="events-list" class="events-list" aria-live="polite">
+          <p class="muted small">No day selected — choose a day on the calendar or click +Add to create an event.</p>
+        </div>
+
+        <div class="panel-footer muted small">All data stored locally in your browser.</div>
+      </aside>
+    </main>
+
+    <!-- Event modal -->
+    <div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-card card">
+        <h2 id="modal-title">Add Event</h2>
+        <form id="event-form" class="event-form">
+          <label>Title
+            <input id="evt-title" type="text" required maxlength="100" placeholder="Event title" />
+          </label>
+
+          <label>Time
+            <input id="evt-time" type="time" />
+          </label>
+
+          <label>Description
+            <textarea id="evt-desc" rows="3" placeholder="Optional notes"></textarea>
+          </label>
+
+          <input id="evt-date" type="date" required style="display:none" />
+
+          <div class="modal-actions">
+            <button id="save-event" class="btn primary" type="submit">Save</button>
+            <button id="cancel-event" class="btn" type="button">Cancel</button>
+            <button id="delete-event" class="btn danger hidden" type="button">Delete</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <footer class="footer muted">Tip: use arrow keys for month navigation when calendar is focused.</footer>
+  </div>
+
+  <script src="Calendar.js"></script>
+</body>
+</html>
