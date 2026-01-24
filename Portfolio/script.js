@@ -1,29 +1,4 @@
 // ============================================
-// ADVANCED TEXT SPLITTING & ANIMATION
-// ============================================
-
-function splitTextIntoSpans(element) {
-  const text = element.innerText;
-  const words = text.split(" ");
-
-  element.innerHTML = words
-    .map((word) => {
-      const chars = word.split("");
-      return `<span class="word">${chars.map((char) => `<span class="char">${char}</span>`).join("")}</span>`;
-    })
-    .join('<span class="space"> </span>');
-}
-
-// Split text on page load for hero title
-const heroTitle = document.querySelector(".hero h1");
-if (heroTitle) {
-  const spans = heroTitle.querySelectorAll("span");
-  spans.forEach((span, index) => {
-    span.style.display = "inline-block";
-  });
-}
-
-// ============================================
 // SMOOTH NAVIGATION
 // ============================================
 
@@ -54,7 +29,6 @@ window.addEventListener(
   () => {
     let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-    // Add scrolled class with threshold
     if (scrollTop > 100 && !lastNavbarState) {
       navbar.classList.add("scrolled");
       lastNavbarState = true;
@@ -80,24 +54,7 @@ const observerOptions = {
 const observer = new IntersectionObserver(function (entries) {
   entries.forEach((entry) => {
     if (entry.isIntersecting) {
-      // Add in-view class to trigger animation
       entry.target.classList.add("in-view");
-
-      // Trigger staggered animations for child elements
-      if (entry.target.classList.contains("project-item")) {
-        const category = entry.target.querySelector(".project-category");
-        const title = entry.target.querySelector(".project-title");
-        const description = entry.target.querySelector(".project-description");
-        const tags = entry.target.querySelector(".project-tags");
-
-        // Stagger animations
-        if (category)
-          setTimeout(() => {
-            category.style.animation = "fadeInUp 0.8s ease-out 0.2s forwards";
-            category.style.opacity = "0";
-          }, 0);
-      }
-
       observer.unobserve(entry.target);
     }
   });
@@ -115,10 +72,6 @@ document
 // ============================================
 // ADVANCED PARALLAX SCROLL EFFECT
 // ============================================
-
-const parallaxElements = document.querySelectorAll(
-  ".hero::before, .hero::after",
-);
 
 window.addEventListener(
   "scroll",
@@ -169,8 +122,8 @@ document.querySelectorAll(".project-item").forEach((item) => {
     }
 
     // Enhanced border and shadow
-    visualElement.style.borderColor = "rgba(107, 142, 127, 0.3)";
-    visualElement.style.boxShadow = "0 30px 60px rgba(107, 142, 127, 0.15)";
+    visualElement.style.borderColor = "rgba(45, 106, 79, 0.35)";
+    visualElement.style.boxShadow = "0 30px 60px rgba(45, 106, 79, 0.15)";
 
     // Stagger tag animations
     const tags = this.querySelectorAll(".tag");
@@ -186,7 +139,7 @@ document.querySelectorAll(".project-item").forEach((item) => {
       imageElement.style.transform = "scale(1)";
     }
 
-    visualElement.style.borderColor = "rgba(107, 142, 127, 0.15)";
+    visualElement.style.borderColor = "rgba(45, 106, 79, 0.2)";
     visualElement.style.boxShadow = "none";
 
     // Reset tags
@@ -204,17 +157,17 @@ document.querySelectorAll(".project-item").forEach((item) => {
 document.querySelectorAll(".tag").forEach((tag) => {
   tag.addEventListener("mouseenter", function () {
     this.style.transform = "translateY(-4px) scale(1.1)";
-    this.style.background = "#6b8e7f";
-    this.style.color = "#faf8f3";
-    this.style.borderColor = "#6b8e7f";
-    this.style.boxShadow = "0 8px 20px rgba(107, 142, 127, 0.2)";
+    this.style.background = "#2d6a4f";
+    this.style.color = "#f0f9ff";
+    this.style.borderColor = "#2d6a4f";
+    this.style.boxShadow = "0 8px 20px rgba(45, 106, 79, 0.2)";
   });
 
   tag.addEventListener("mouseleave", function () {
     this.style.transform = "translateY(0) scale(1)";
-    this.style.background = "rgba(107, 142, 127, 0.08)";
+    this.style.background = "rgba(45, 106, 79, 0.1)";
     this.style.color = "";
-    this.style.borderColor = "rgba(107, 142, 127, 0.2)";
+    this.style.borderColor = "rgba(45, 106, 79, 0.25)";
     this.style.boxShadow = "none";
   });
 });
@@ -240,7 +193,7 @@ window.addEventListener(
       link.classList.remove("active");
       if (link.getAttribute("href") === `#${current}`) {
         link.classList.add("active");
-        link.style.color = "#6b8e7f";
+        link.style.color = "#2d6a4f";
       } else {
         link.style.color = "";
       }
@@ -388,7 +341,7 @@ document.addEventListener("mousemove", (e) => {
 
 document.querySelectorAll("a, button").forEach((element) => {
   element.addEventListener("focus", function () {
-    this.style.outline = "2px solid #6b8e7f";
+    this.style.outline = "2px solid #2d6a4f";
     this.style.outlineOffset = "4px";
   });
 
