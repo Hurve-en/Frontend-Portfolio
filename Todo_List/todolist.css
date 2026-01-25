@@ -1,250 +1,227 @@
-/* todolist.css
-   Improved UI/UX: animations, progress bar, undo toast, focus states
-   Keep file name `todolist.css`
-*/
-
-/* ---------- Palette & variables ---------- */
-:root{
-  --bg-1: #f6f7fb;
-  --card: #fffefc;
-  --chalk: #f2f6f9;
-  --board: #0e2a1f;
-  --accent: #ffcf40;
-  --accent-2: #6b8cff;
-  --muted: #5b6472;
-  --danger: #e11d48;
-  --ok: #16a34a;
-  --radius: 14px;
-  --shadow: 0 12px 30px rgba(8,12,24,0.08);
-  --max-width: 760px;
-  --gutter: 16px;
-
-  /* animation tokens */
-  --ux-transition: 220ms;
-  --ux-ease: cubic-bezier(.2,.9,.2,1);
+:root {
+  --primary: #7c83fd;
+  --accent: #f2c6de;
+  --bg: #0e0f1a;
+  --glass: rgba(255, 255, 255, 0.08);
+  --text: #f5f6ff;
+  --muted: rgba(255, 255, 255, 0.6);
 }
 
-/* ---------- Base reset ---------- */
-*{box-sizing:border-box}
-html,body{height:100%;margin:0}
-body{
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+* {
+  box-sizing: border-box;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* ambient glow */
+.ambient-bg {
+  position: fixed;
+  inset: 0;
   background:
-    linear-gradient(transparent 0 56px, rgba(0,0,0,0.02) 56px, transparent 56px),
-    radial-gradient(1200px 400px at 10% 10%, rgba(255,255,255,0.02), transparent 12%),
-    linear-gradient(180deg, #e8f2ea, #f6f7fb 60%);
-  -webkit-font-smoothing:antialiased;
-  color: #071024;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:28px;
+    radial-gradient(circle at 20% 20%, var(--primary), transparent 40%),
+    radial-gradient(circle at 80% 70%, var(--accent), transparent 45%);
+  opacity: 0.25;
+  filter: blur(120px);
+  z-index: -1;
 }
 
-/* school-theme body hook */
-body.school-theme {
-  background:
-    radial-gradient(900px 300px at 10% 12%, rgba(12,30,18,0.03), transparent 14%),
-    linear-gradient(180deg, rgba(4,32,27,0.02), rgba(6,48,38,0.01)),
-    #f6f7fb;
-}
-
-/* ---------- App card ---------- */
-.app{
-  width:100%;
-  max-width:var(--max-width);
-  background:var(--card);
-  border-radius:var(--radius);
-  padding:20px;
-  box-shadow:var(--shadow);
-  border: 1px solid rgba(8,12,24,0.04);
+.app {
+  max-width: 900px;
+  margin: auto;
+  padding: 40px 24px;
 }
 
 /* header */
-.app-header{
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:12px;
-  margin-bottom:12px;
-  padding-bottom:8px;
-  border-bottom: 1px dashed rgba(8,12,24,0.04);
-}
-.title-wrap { max-width: 60%; }
-.app-title { margin:0; font-size:20px; letter-spacing:0.2px; font-weight:800; color:#07102a; }
-.lead { margin:6px 0 0 0; color:var(--muted); font-size:13px; }
-
-/* progress bar (small) */
-.header-progress{ height:8px; width:100%; max-width:220px; background: linear-gradient(90deg, rgba(0,0,0,0.03), rgba(0,0,0,0.02)); border-radius:999px; overflow:hidden; margin-top:8px; }
-.header-progress .bar{ height:100%; width:0%; background: linear-gradient(90deg, var(--accent-2), var(--accent)); transition: width 420ms var(--ux-ease); }
-
-/* header actions */
-.header-actions { display:flex; gap:12px; align-items:center; }
-.counters { display:flex; gap:8px; align-items:center; }
-.counter { font-size:13px; color:var(--muted); background:var(--chalk); padding:6px 8px; border-radius:8px; border:1px solid rgba(0,0,0,0.03) }
-.quick-controls .btn-ghost { padding:6px 10px; }
-
-/* ---------- Input row ---------- */
-.input-area { margin-top:12px; }
-.input-row{
-  display:flex;
-  gap:8px;
-  align-items:center;
-  margin-bottom:8px;
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-/* text input */
-#taskInput{
-  flex:1;
-  padding:12px 14px;
-  border-radius:10px;
-  border:1px solid rgba(8,12,24,0.06);
-  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(250,250,252,0.98));
-  outline:none;
-  font-size:15px;
-  transition: box-shadow .14s ease, border-color .12s ease;
-}
-#taskInput:focus{
-  box-shadow: 0 8px 22px rgba(11,116,218,0.06);
-  border-color: var(--accent-2);
+.top h1 {
+  font-size: 42px;
+  margin: 0;
+  letter-spacing: -1px;
 }
 
-/* selects */
-.input-row select{
-  padding:10px 12px;
-  border-radius:10px;
-  border:1px solid rgba(8,12,24,0.06);
-  background:transparent;
-  font-size:14px;
+.top p {
+  color: var(--muted);
+  font-size: 14px;
 }
 
-/* add button */
-button.add{
-  background: linear-gradient(90deg, var(--accent-2), #5b77ff);
-  color: white;
-  border:0;
-  padding:10px 14px;
-  border-radius:10px;
-  font-weight:800;
-  cursor:pointer;
-  box-shadow: 0 8px 20px rgba(91,119,255,0.08);
-  transition: transform .06s ease;
-  position:relative;
-  overflow:hidden;
-}
-button.add[aria-disabled="true"]{ opacity:0.48; cursor:not-allowed; transform:none; }
-button.add:active{ transform: translateY(1px); }
-
-/* helper text */
-.input-help { color:var(--muted); font-size:13px; margin-top:6px; }
-
-/* ---------- List / items ---------- */
-.list-panel { margin-top:8px; }
-.list{
-  margin-top:8px;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  max-height:52vh;
-  overflow:auto;
-  padding-right:6px;
+.present-btn {
+  background: transparent;
+  border: 1px solid var(--glass);
+  color: var(--text);
+  padding: 10px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-/* Empty state */
-.empty{
-  margin-top:12px;
-  color:var(--muted);
-  text-align:center;
-  font-size:14px;
-  padding:18px;
-  border-radius:10px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.9));
-  border:1px dashed rgba(8,12,24,0.03);
+.present-btn:hover {
+  background: var(--glass);
+  transform: translateY(-1px);
 }
 
-/* each task item */
-.item{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:12px;
-  border-radius:10px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(250,250,252,0.95));
-  border:1px solid rgba(8,12,24,0.03);
-  transition: transform .12s ease, box-shadow .12s ease;
-  will-change: transform, opacity;
-}
-.item:hover{ transform: translateY(-4px); box-shadow: 0 12px 36px rgba(8,12,30,0.06); }
-
-/* enter/exit animations (UX) */
-.item.item-enter{ animation: itemEnter var(--ux-transition) var(--ux-ease) both; }
-@keyframes itemEnter{ 0%{opacity:0; transform:translateY(8px) scale(.995);} 60%{opacity:1; transform:translateY(-6px) scale(1.01);} 100%{transform:translateY(0) scale(1);} }
-.item.item-exit{ animation: itemExit 240ms ease forwards; }
-@keyframes itemExit{ to { opacity:0; transform:translateY(-10px) scale(.985); height:0; margin:0; padding:0; } }
-
-/* left area: checkbox + meta */
-.left { display:flex; align-items:flex-start; gap:12px; flex:1; }
-.task-checkbox { width:18px; height:18px; cursor:pointer; margin-top:6px; transition: transform var(--ux-transition) var(--ux-ease); }
-
-/* meta: text and small row for tags */
-.meta { display:flex; flex-direction:column; gap:6px; min-width:0; }
-.text { font-size:15px; color:#07102a; word-break:break-word; }
-.text.done { text-decoration:line-through; color:var(--muted); opacity:0.85; }
-
-/* tags */
-.meta-row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
-.tag { font-size:12px; padding:4px 8px; border-radius:999px; border:1px solid rgba(8,12,24,0.04); background:var(--card); color:var(--muted); }
-
-/* item actions */
-.item-actions { display:flex; gap:8px; align-items:center; }
-.item-actions .small{ padding:6px 10px; border-radius:8px; border:1px solid rgba(8,12,24,0.04); background:transparent; cursor:pointer; font-weight:700; color:var(--muted); }
-.item-actions .remove{ color:var(--danger); border-color: rgba(225,29,72,0.06) }
-.item-actions .remove:hover{ background: rgba(225,29,72,0.04) }
-
-/* completed state modifications */
-.item.done { opacity: 0.95; }
-.item.done .task-checkbox { transform: scale(1.12) rotate(-6deg); }
-
-/* ---------- Footer controls ---------- */
-.footer{ display:flex; justify-content:space-between; align-items:center; margin-top:14px; gap:10px; }
-.btn-ghost{ background:transparent; border:1px solid rgba(8,12,24,0.04); padding:8px 10px; border-radius:8px; cursor:pointer; color:var(--muted); font-weight:700; }
-
-/* filter / sort selects (right side) */
-.right-controls select{ padding:8px 10px; border-radius:8px; border:1px solid rgba(8,12,24,0.06) }
-
-/* ---------- Undo toast (global) ---------- */
-.undo-toast{ position:fixed; left:18px; bottom:18px; background:var(--card); color:#07102a; padding:10px 12px; border-radius:10px; box-shadow: 0 10px 30px rgba(8,12,24,0.12); display:flex; gap:10px; align-items:center; z-index:9999; opacity:0; transform:translateY(12px); transition: transform 180ms ease, opacity 180ms ease; pointer-events:none; }
-.undo-toast.show{ opacity:1; transform:translateY(0); pointer-events:auto; }
-.undo-toast .undo-btn{ background:transparent; border:1px solid rgba(8,12,24,0.06); padding:6px 8px; border-radius:8px; cursor:pointer; font-weight:700; }
-
-/* ---------- Present Mode (big, audience-friendly) ---------- */
-body.present .app { max-width: 1200px; transform: scale(1.03); }
-body.present .item { padding: 28px; border-radius:18px; }
-body.present .meta .text { font-size: 40px; font-weight:900; color:#072033 }
-body.present .task-checkbox { transform: scale(1.6) }
-body.present .app-header, body.present .input-area, body.present .footer { display:none }
-
-/* ---------- Accessibility & focus styles ---------- */
-:focus { outline: none; }
-input:focus, select:focus, button:focus { box-shadow: 0 8px 22px rgba(11,116,218,0.08); border-radius: 10px; }
-
-/* ---------- Responsive tweaks ---------- */
-@media (max-width:720px){
-  .app-header { flex-direction:column; align-items:flex-start }
-  .title-wrap { max-width:100% }
-  .input-row{ flex-direction:column; align-items:stretch }
-  .input-row select{ width:100% }
-  .input-row button.add{ width:100% }
-  .right-controls { display:flex; gap:8px }
-  .meta .text { font-size:16px }
+/* controls */
+.controls {
+  margin-top: 40px;
+  display: flex;
+  gap: 12px;
 }
 
-@media (max-width:480px){
-  .meta .text { font-size:15px }
-  .header-actions { width:100%; display:flex; justify-content:space-between }
+.controls input,
+.controls select {
+  flex: 1;
+  padding: 14px;
+  border-radius: 12px;
+  background: var(--glass);
+  border: none;
+  color: var(--text);
 }
 
-/* Respect reduced motion */
-@media (prefers-reduced-motion: reduce){
-  .item, .item-enter, .item-exit, .header-progress .bar { animation: none !important; transition: none !important; }
+.controls button {
+  padding: 14px 22px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  border: none;
+  border-radius: 12px;
+  color: #000;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.controls button:hover {
+  transform: translateY(-2px);
+}
+
+/* meta */
+.meta {
+  margin: 30px 0;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.progress {
+  flex: 1;
+  height: 6px;
+  background: var(--glass);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+#progressBar {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  transition: width 0.4s ease;
+}
+
+/* list */
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px;
+  margin-bottom: 14px;
+  background: var(--glass);
+  border-radius: 18px;
+  backdrop-filter: blur(12px);
+  transition:
+    transform 0.35s ease,
+    opacity 0.35s ease;
+}
+
+.item:hover {
+  transform: translateY(-3px);
+}
+
+/* checkbox */
+.check input {
+  display: none;
+}
+
+.check span {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 1px solid var(--muted);
+  display: inline-block;
+  cursor: pointer;
+}
+
+.task-checkbox:checked + span {
+  background: var(--primary);
+  border-color: transparent;
+}
+
+/* text */
+.text {
+  flex: 1;
+  font-size: 18px;
+}
+
+/* priority */
+.priority {
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* actions */
+.actions button {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* animations */
+.item-enter {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: enter 0.6s ease forwards;
+}
+
+@keyframes enter {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* present mode */
+body.present .app {
+  max-width: none;
+}
+
+body.present .item {
+  font-size: 32px;
+  padding: 30px;
+}
+
+/* empty */
+.empty {
+  text-align: center;
+  color: var(--muted);
+  margin-top: 60px;
 }
