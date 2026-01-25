@@ -1,141 +1,65 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Todo List — Simple & Aesthetic</title>
-
-    <!-- Fonts -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap"
-      rel="stylesheet"
-    />
-
-    <!-- Stylesheet (must be in same folder) -->
-    <link rel="stylesheet" href="Todolist.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Live Scoreboard</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
+  <body>
+    <div class="ambient-bg"></div>
 
-  <body class="school-theme">
-    <div class="app" role="application" aria-label="Todo list app">
-      <header class="app-header">
-        <div class="title-wrap">
-          <h1 class="app-title">Todo List</h1>
-          <p class="lead">
-            Add tasks, check when done — press <kbd>Enter</kbd> to add. Use the
-            Present toggle for large display.
-          </p>
-
-          <!-- progress bar under title (visual) -->
-          <div class="header-progress" aria-hidden="true">
-            <div class="bar" id="progressBar" style="width:0%"></div>
-          </div>
+    <main class="app">
+      <header class="top">
+        <div>
+          <h1>Live Scoreboard</h1>
+          <p>Tap to interact · Press P for present mode</p>
         </div>
 
-        <!-- Quick stats + controls -->
-        <div class="header-actions">
-          <div class="counters" aria-live="polite">
-            <span id="totalCount" class="counter">0 total</span>
-            <span id="doneCount" class="counter">0 done</span>
-          </div>
-
-          <div class="quick-controls">
-            <button id="presentBtn" class="btn-ghost small" aria-pressed="false">
-              Presentation
-            </button>
-          </div>
-        </div>
+        <button id="presentBtn" class="present-btn">Present</button>
       </header>
 
-      <!-- Input section -->
-      <section class="input-area" aria-label="Add new task">
-        <div class="input-row">
-          <input
-            id="taskInput"
-            type="text"
-            placeholder="e.g. Finish homework — press Enter to add"
-            aria-label="New task"
-            autocomplete="off"
-          />
+      <section class="controls">
+        <input id="taskInput" placeholder="Add team or entry..." />
+        <select id="prioritySelect">
+          <option value="high">High</option>
+          <option value="normal" selected>Normal</option>
+          <option value="low">Low</option>
+        </select>
+        <button id="addBtn">Add</button>
+      </section>
 
-          <!-- Priority selector -->
-          <select id="prioritySelect" aria-label="Priority">
-            <option value="normal">Normal</option>
-            <option value="high">High</option>
-            <option value="low">Low</option>
-          </select>
-
-          <button id="addBtn" class="add" aria-label="Add task" aria-disabled="false">
-            Add
-          </button>
-        </div>
-
-        <div class="input-help small">
-          Tip: press <kbd>Enter</kbd> to add. Use the filters in the footer to view completed tasks.
+      <section class="meta">
+        <span id="totalCount">0 total</span>
+        <span id="doneCount">0 done</span>
+        <div class="progress">
+          <div id="progressBar"></div>
         </div>
       </section>
 
-      <!-- Task list -->
-      <main>
-        <section id="listPanel" class="list-panel" aria-label="Task list">
-          <div id="list" class="list" aria-live="polite" aria-atomic="false"></div>
-          <div id="empty" class="empty" role="status">
-            No tasks yet — add your first task.
+      <ul id="list" class="list"></ul>
+
+      <p id="empty" class="empty">No entries yet</p>
+
+      <template id="task-template">
+        <li class="item">
+          <label class="check">
+            <input type="checkbox" class="task-checkbox" />
+            <span></span>
+          </label>
+
+          <div class="text"></div>
+
+          <span class="priority"></span>
+
+          <div class="actions">
+            <button class="edit">✎</button>
+            <button class="remove">✕</button>
           </div>
-        </section>
-      </main>
+        </li>
+      </template>
+    </main>
 
-      <!-- Footer -->
-      <footer class="footer" role="contentinfo">
-        <div class="left-controls">
-          <button id="clearDone" class="btn-ghost">Remove All Done</button>
-          <button id="clearAll" class="btn-ghost">Clear All</button>
-        </div>
-
-        <div class="right-controls">
-          <!-- Keep the select for simplicity (JS recognizes it) -->
-          <select id="filterSelect" aria-label="Filter tasks">
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="done">Done</option>
-          </select>
-
-          <select id="sortSelect" aria-label="Sort tasks">
-            <option value="recent">Newest</option>
-            <option value="oldest">Oldest</option>
-            <option value="priority">Priority</option>
-          </select>
-        </div>
-      </footer>
-    </div>
-
-    <!-- Template for a single task -->
-    <template id="task-template">
-      <div class="item" data-id="" role="article" aria-label="task item" tabindex="-1">
-        <div class="left">
-          <input
-            type="checkbox"
-            class="task-checkbox"
-            aria-label="Mark task done"
-          />
-          <div class="meta">
-            <div class="text"></div>
-            <div class="meta-row">
-              <span class="priority tag" aria-hidden="true"></span>
-              <time class="due tag" datetime="" aria-hidden="true"></time>
-            </div>
-          </div>
-        </div>
-
-        <div class="item-actions">
-          <button class="edit small" aria-label="Edit task">Edit</button>
-          <button class="remove small" aria-label="Remove task">Remove</button>
-        </div>
-      </div>
-    </template>
-
-    <!-- Undo toast container is created dynamically by JS -->
-
-    <!-- External JavaScript (must be same folder) -->
-    <script src="Todolist.js" defer></script>
+    <script src="todolist.js"></script>
   </body>
 </html>
