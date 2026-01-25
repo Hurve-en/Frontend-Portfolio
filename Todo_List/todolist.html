@@ -3,30 +3,31 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Live Scoreboard</title>
+    <title>Focus Board</title>
+
     <link rel="stylesheet" href="Todolist.css" />
   </head>
   <body>
-    <div class="ambient-bg"></div>
+    <div class="bg"></div>
 
     <main class="app">
-      <header class="top">
+      <header class="header">
         <div>
-          <h1>Live Scoreboard</h1>
-          <p>Tap to interact · Press P for present mode</p>
+          <h1>Focus Board</h1>
+          <p>Tasks · Presentation · Pomodoro</p>
         </div>
 
-        <button id="presentBtn" class="present-btn">Present</button>
+        <button id="presentBtn" class="ghost">Presentation</button>
       </header>
 
-      <section class="controls">
-        <input id="taskInput" placeholder="Add team or entry..." />
+      <section class="input-row">
+        <input id="taskInput" placeholder="Add a task…" />
         <select id="prioritySelect">
           <option value="high">High</option>
           <option value="normal" selected>Normal</option>
           <option value="low">Low</option>
         </select>
-        <button id="addBtn">Add</button>
+        <button id="addBtn" class="primary">Add</button>
       </section>
 
       <section class="meta">
@@ -38,27 +39,35 @@
       </section>
 
       <ul id="list" class="list"></ul>
-
-      <p id="empty" class="empty">No entries yet</p>
-
-      <template id="task-template">
-        <li class="item">
-          <label class="check">
-            <input type="checkbox" class="task-checkbox" />
-            <span></span>
-          </label>
-
-          <div class="text"></div>
-
-          <span class="priority"></span>
-
-          <div class="actions">
-            <button class="edit">✎</button>
-            <button class="remove">✕</button>
-          </div>
-        </li>
-      </template>
+      <p id="empty" class="empty">No tasks yet</p>
     </main>
+
+    <!-- Pomodoro (presentation mode only) -->
+    <aside id="pomodoro" class="pomodoro">
+      <h2>Pomodoro</h2>
+
+      <div class="time">
+        <input id="minutesInput" type="number" min="1" value="25" />
+        <span>:</span>
+        <input id="secondsInput" type="number" min="0" max="59" value="00" />
+      </div>
+
+      <div id="timerDisplay" class="display">25:00</div>
+
+      <div class="pomodoro-controls">
+        <button id="startTimer">Start</button>
+        <button id="resetTimer">Reset</button>
+      </div>
+    </aside>
+
+    <template id="task-template">
+      <li class="item">
+        <input type="checkbox" class="task-checkbox" />
+        <span class="text"></span>
+        <span class="priority"></span>
+        <button class="remove">✕</button>
+      </li>
+    </template>
 
     <script src="Todolist.js"></script>
   </body>

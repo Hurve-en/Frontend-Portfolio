@@ -1,115 +1,102 @@
 :root {
-  --primary: #7c83fd;
-  --accent: #f2c6de;
-  --bg: #0e0f1a;
+  --primary: #1c1f2e;
+  --accent: #e6d8c3;
   --glass: rgba(255, 255, 255, 0.08);
-  --text: #f5f6ff;
+  --text: #f5f5f5;
   --muted: rgba(255, 255, 255, 0.6);
 }
 
 * {
   box-sizing: border-box;
-  font-family: Inter, system-ui, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
-  background: var(--bg);
+  background: var(--primary);
   color: var(--text);
   overflow-x: hidden;
 }
 
-/* ambient glow */
-.ambient-bg {
+.bg {
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(circle at 20% 20%, var(--primary), transparent 40%),
-    radial-gradient(circle at 80% 70%, var(--accent), transparent 45%);
-  opacity: 0.25;
+    radial-gradient(circle at 30% 20%, var(--accent), transparent 40%),
+    radial-gradient(circle at 70% 80%, var(--accent), transparent 45%);
+  opacity: 0.15;
   filter: blur(120px);
   z-index: -1;
 }
 
 .app {
-  max-width: 900px;
+  max-width: 860px;
   margin: auto;
-  padding: 40px 24px;
+  padding: 48px 24px;
+  transition: margin-right 0.6s ease;
 }
 
-/* header */
-.top {
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.top h1 {
-  font-size: 42px;
+h1 {
+  font-size: 44px;
   margin: 0;
   letter-spacing: -1px;
 }
 
-.top p {
+p {
+  margin: 4px 0 0;
   color: var(--muted);
-  font-size: 14px;
 }
 
-.present-btn {
+.ghost {
   background: transparent;
   border: 1px solid var(--glass);
   color: var(--text);
   padding: 10px 18px;
   border-radius: 999px;
   cursor: pointer;
-  transition: all 0.3s ease;
 }
 
-.present-btn:hover {
-  background: var(--glass);
-  transform: translateY(-1px);
-}
-
-/* controls */
-.controls {
-  margin-top: 40px;
+.input-row {
   display: flex;
   gap: 12px;
+  margin-top: 40px;
 }
 
-.controls input,
-.controls select {
+.input-row input,
+.input-row select {
   flex: 1;
   padding: 14px;
-  border-radius: 12px;
-  background: var(--glass);
+  border-radius: 14px;
   border: none;
+  background: var(--glass);
   color: var(--text);
 }
 
-.controls button {
-  padding: 14px 22px;
-  background: linear-gradient(135deg, var(--primary), var(--accent));
-  border: none;
-  border-radius: 12px;
+.primary {
+  background: var(--accent);
   color: #000;
   font-weight: 600;
+  border: none;
+  border-radius: 14px;
+  padding: 14px 22px;
   cursor: pointer;
-  transition: transform 0.3s ease;
 }
 
-.controls button:hover {
-  transform: translateY(-2px);
-}
-
-/* meta */
 .meta {
-  margin: 30px 0;
   display: flex;
   align-items: center;
-  gap: 20px;
-  font-size: 14px;
+  gap: 18px;
+  margin: 30px 0;
   color: var(--muted);
 }
 
@@ -118,17 +105,15 @@ body {
   height: 6px;
   background: var(--glass);
   border-radius: 999px;
-  overflow: hidden;
 }
 
 #progressBar {
   height: 100%;
-  width: 0;
-  background: linear-gradient(90deg, var(--primary), var(--accent));
+  width: 0%;
+  background: var(--accent);
   transition: width 0.4s ease;
 }
 
-/* list */
 .list {
   list-style: none;
   padding: 0;
@@ -139,55 +124,31 @@ body {
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 18px;
+  padding: 20px;
   margin-bottom: 14px;
   background: var(--glass);
   border-radius: 18px;
-  backdrop-filter: blur(12px);
-  transition:
-    transform 0.35s ease,
-    opacity 0.35s ease;
+  backdrop-filter: blur(14px);
+  transition: transform 0.3s ease;
 }
 
 .item:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
 }
 
-/* checkbox */
-.check input {
-  display: none;
-}
-
-.check span {
-  width: 20px;
-  height: 20px;
-  border-radius: 6px;
-  border: 1px solid var(--muted);
-  display: inline-block;
-  cursor: pointer;
-}
-
-.task-checkbox:checked + span {
-  background: var(--primary);
-  border-color: transparent;
-}
-
-/* text */
-.text {
+.item .text {
   flex: 1;
   font-size: 18px;
 }
 
-/* priority */
 .priority {
   font-size: 12px;
   padding: 6px 10px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.15);
 }
 
-/* actions */
-.actions button {
+.remove {
   background: none;
   border: none;
   color: var(--muted);
@@ -195,33 +156,69 @@ body {
   cursor: pointer;
 }
 
-/* animations */
-.item-enter {
-  opacity: 0;
-  transform: translateY(10px);
-  animation: enter 0.6s ease forwards;
-}
-
-@keyframes enter {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* present mode */
-body.present .app {
-  max-width: none;
-}
-
-body.present .item {
-  font-size: 32px;
-  padding: 30px;
-}
-
-/* empty */
 .empty {
   text-align: center;
   color: var(--muted);
   margin-top: 60px;
+}
+
+/* PRESENT MODE */
+body.present .app {
+  margin-right: 340px;
+}
+
+.pomodoro {
+  position: fixed;
+  top: 0;
+  right: -340px;
+  width: 320px;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(20px);
+  padding: 32px;
+  transition: right 0.6s ease;
+}
+
+body.present .pomodoro {
+  right: 0;
+}
+
+.pomodoro h2 {
+  margin-top: 0;
+  font-size: 28px;
+}
+
+.time {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.time input {
+  width: 70px;
+  padding: 10px;
+  font-size: 20px;
+  text-align: center;
+  border-radius: 12px;
+  border: none;
+}
+
+.display {
+  font-size: 48px;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.pomodoro-controls {
+  display: flex;
+  gap: 12px;
+}
+
+.pomodoro-controls button {
+  flex: 1;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
 }
