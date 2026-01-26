@@ -1,130 +1,434 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>PF Dashboard — Local</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WealthFlow - Personal Finance Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link rel="stylesheet" href="Finance_Dashboard.css" />
+  </head>
+  <body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+      <div class="gradient-orb gradient-orb-1"></div>
+      <div class="gradient-orb gradient-orb-2"></div>
+      <div class="gradient-orb gradient-orb-3"></div>
+    </div>
 
-  <!-- Chart.js and dayjs (optional; included for charts/date formatting) -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.9/dayjs.min.js"></script>
-
-  <link rel="stylesheet" href="Finance_Dashboard.css" />
-</head>
-<body>
-  <div id="app" class="app">
-    <header class="topbar">
-      <h1 class="app-title">Personal Finance Dashboard</h1>
-      <div class="top-actions">
-        <button id="btn-export-json" class="btn">Export JSON</button>
-        <button id="btn-import-json" class="btn">Import JSON</button>
-        <button id="btn-add-transaction" class="btn primary">Add Transaction</button>
-      </div>
-    </header>
-
-    <main class="container">
-      <!-- Dashboard -->
-      <section id="dashboard" class="dashboard">
-        <div class="kpis">
-          <div class="kpi card">
-            <div class="kpi-label">Balance</div>
-            <div id="kpi-balance" class="kpi-value">₱0.00</div>
+    <!-- Main Container -->
+    <div class="container">
+      <!-- Sidebar Navigation -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="logo">
+            <span class="logo-icon">💰</span>
+            <h1>WealthFlow</h1>
           </div>
-          <div class="kpi card">
-            <div class="kpi-label">Monthly Income</div>
-            <div id="kpi-income" class="kpi-value">₱0.00</div>
-          </div>
-          <div class="kpi card">
-            <div class="kpi-label">Monthly Expenses</div>
-            <div id="kpi-expenses" class="kpi-value">₱0.00</div>
-          </div>
-          <div class="kpi card">
-            <div class="kpi-label">Savings Rate</div>
-            <div id="kpi-savings-rate" class="kpi-value">0%</div>
-          </div>
-          <div class="kpi card">
-            <div class="kpi-label">Budget Remaining</div>
-            <div id="kpi-budget-remaining" class="kpi-value">₱0.00</div>
-          </div>
+          <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+            ☰
+          </button>
         </div>
 
-        <div class="recent card">
-          <h2>Recent Activity</h2>
-          <ul id="recent-list" class="recent-list" aria-live="polite"></ul>
-        </div>
-      </section>
-
-      <!-- Tabs / Panels -->
-      <section class="panels">
-        <nav class="tabs" role="tablist">
-          <button data-panel="transactions" class="tab active" role="tab">Transactions</button>
-          <button data-panel="accounts" class="tab" role="tab">Accounts</button>
-          <button data-panel="budgets" class="tab" role="tab">Budgets</button>
-          <button data-panel="analytics" class="tab" role="tab">Analytics</button>
-          <button data-panel="networth" class="tab" role="tab">Net Worth</button>
+        <nav class="nav-menu">
+          <a href="#" class="nav-item active" data-section="dashboard">
+            <span class="nav-icon">📊</span>
+            <span class="nav-label">Dashboard</span>
+          </a>
+          <a href="#" class="nav-item" data-section="transactions">
+            <span class="nav-icon">💳</span>
+            <span class="nav-label">Transactions</span>
+          </a>
+          <a href="#" class="nav-item" data-section="budget">
+            <span class="nav-icon">📈</span>
+            <span class="nav-label">Budget</span>
+          </a>
+          <a href="#" class="nav-item" data-section="goals">
+            <span class="nav-icon">🎯</span>
+            <span class="nav-label">Goals</span>
+          </a>
+          <a href="#" class="nav-item" data-section="analytics">
+            <span class="nav-icon">📉</span>
+            <span class="nav-label">Analytics</span>
+          </a>
         </nav>
 
-        <div class="panel" id="panel-transactions">
-          <div class="panel-header">
-            <div class="filters">
-              <input id="search-transactions" placeholder="Search transactions..." />
-              <input id="date-from" type="date" />
-              <input id="date-to" type="date" />
-              <button id="btn-import-csv" class="btn">Import CSV</button>
+        <div class="sidebar-footer">
+          <div class="user-card">
+            <div class="user-avatar">👤</div>
+            <div class="user-info">
+              <p class="user-name">Hurveen Veloso</p>
+              <p class="user-email">velosohurveenrayford@gmail.com</p>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Header -->
+        <header class="header">
+          <div class="header-content">
+            <div>
+              <h2 class="page-title" id="pageTitle">Dashboard</h2>
+              <p class="page-subtitle" id="pageSubtitle">
+                Welcome back! Here's your financial overview.
+              </p>
+            </div>
+            <div class="header-actions">
+              <button
+                class="btn-icon"
+                id="notificationBtn"
+                aria-label="Notifications"
+              >
+                🔔
+                <span class="notification-badge">3</span>
+              </button>
+              <button class="btn-icon" id="settingsBtn" aria-label="Settings">
+                ⚙️
+              </button>
+            </div>
+          </div>
+        </header>
+
+        <!-- Dashboard Section -->
+        <section class="dashboard-section" id="dashboardSection">
+          <!-- Key Metrics -->
+          <div class="metrics-grid">
+            <div class="metric-card fade-in-1">
+              <div class="metric-header">
+                <span class="metric-icon">💵</span>
+                <span class="metric-label">Total Balance</span>
+              </div>
+              <div class="metric-value" id="totalBalance">$0.00</div>
+              <div class="metric-change positive">
+                <span>↑</span>
+                <span id="balanceChange">+12.5%</span>
+              </div>
+            </div>
+
+            <div class="metric-card fade-in-2">
+              <div class="metric-header">
+                <span class="metric-icon">📥</span>
+                <span class="metric-label">Total Income</span>
+              </div>
+              <div class="metric-value" id="totalIncome">$0.00</div>
+              <div class="metric-change positive">
+                <span>↑</span>
+                <span id="incomeChange">+8.3%</span>
+              </div>
+            </div>
+
+            <div class="metric-card fade-in-3">
+              <div class="metric-header">
+                <span class="metric-icon">📤</span>
+                <span class="metric-label">Total Expenses</span>
+              </div>
+              <div class="metric-value" id="totalExpenses">$0.00</div>
+              <div class="metric-change negative">
+                <span>↓</span>
+                <span id="expenseChange">-5.2%</span>
+              </div>
+            </div>
+
+            <div class="metric-card fade-in-4">
+              <div class="metric-header">
+                <span class="metric-icon">📊</span>
+                <span class="metric-label">Savings Rate</span>
+              </div>
+              <div class="metric-value" id="savingsRate">0%</div>
+              <div class="metric-change positive">
+                <span>↑</span>
+                <span id="savingsChange">+3.1%</span>
+              </div>
             </div>
           </div>
 
-          <div id="transactions-list" class="transactions card" role="list"></div>
-          <div id="pagination" class="pagination"></div>
-        </div>
+          <!-- Charts Section -->
+          <div class="charts-grid">
+            <!-- Expense Breakdown Chart -->
+            <div class="chart-card slide-in-1">
+              <div class="chart-header">
+                <h3>Expense Breakdown</h3>
+                <div class="chart-controls">
+                  <select class="chart-filter" id="expenseFilter">
+                    <option value="month">This Month</option>
+                    <option value="quarter">This Quarter</option>
+                    <option value="year">This Year</option>
+                  </select>
+                </div>
+              </div>
+              <div class="chart-container">
+                <canvas id="expenseChart"></canvas>
+              </div>
+            </div>
 
-        <div class="panel hidden" id="panel-accounts">
-          <div class="card">
-            <h2>Accounts</h2>
-            <div id="accounts-list"></div>
-            <button id="btn-add-account" class="btn primary">Add Account</button>
+            <!-- Income vs Expenses Chart -->
+            <div class="chart-card slide-in-2">
+              <div class="chart-header">
+                <h3>Income vs Expenses</h3>
+                <div class="chart-controls">
+                  <select class="chart-filter" id="incomeExpenseFilter">
+                    <option value="6months">Last 6 Months</option>
+                    <option value="year">Last Year</option>
+                    <option value="3months">Last 3 Months</option>
+                  </select>
+                </div>
+              </div>
+              <div class="chart-container">
+                <canvas id="incomeExpenseChart"></canvas>
+              </div>
+            </div>
           </div>
-        </div>
 
-        <div class="panel hidden" id="panel-budgets">
-          <div class="card">
-            <h2>Budgets</h2>
-            <div id="budgets-list"></div>
-            <button id="btn-add-budget" class="btn primary">Add Budget</button>
+          <!-- Recent Transactions & Account Overview -->
+          <div class="bottom-grid">
+            <!-- Recent Transactions -->
+            <div class="card slide-in-3">
+              <div class="card-header">
+                <h3>Recent Transactions</h3>
+                <a href="#" class="link-btn">View All</a>
+              </div>
+              <div class="transactions-list" id="recentTransactions">
+                <!-- Populated by JavaScript -->
+              </div>
+            </div>
+
+            <!-- Accounts Overview -->
+            <div class="card slide-in-4">
+              <div class="card-header">
+                <h3>Your Accounts</h3>
+                <button class="btn-icon" id="addAccountBtn">➕</button>
+              </div>
+              <div class="accounts-list" id="accountsList">
+                <!-- Populated by JavaScript -->
+              </div>
+            </div>
           </div>
-        </div>
+        </section>
 
-        <div class="panel hidden" id="panel-analytics">
-          <div class="card charts">
-            <h2>Analytics</h2>
-            <canvas id="chart-income-expenses" height="160" aria-hidden="true"></canvas>
-            <canvas id="chart-expense-pie" height="160" aria-hidden="true"></canvas>
-            <canvas id="chart-networth" height="160" aria-hidden="true"></canvas>
+        <!-- Transactions Section -->
+        <section class="section" id="transactionsSection" style="display: none">
+          <div class="section-header">
+            <div>
+              <h3>All Transactions</h3>
+              <p>Manage and track all your financial transactions</p>
+            </div>
+            <button class="btn-primary" id="addTransactionBtn">
+              + Add Transaction
+            </button>
           </div>
-        </div>
 
-        <div class="panel hidden" id="panel-networth">
-          <div class="card">
-            <h2>Net Worth</h2>
-            <div id="networth-list"></div>
-            <canvas id="chart-networth-small" height="80" aria-hidden="true"></canvas>
-            <button id="btn-add-net" class="btn primary">Add Asset / Liability</button>
+          <!-- Transaction Filters -->
+          <div class="transaction-filters">
+            <input
+              type="text"
+              class="filter-input"
+              id="searchTransactions"
+              placeholder="Search transactions..."
+            />
+            <select class="filter-select" id="typeFilter">
+              <option value="">All Types</option>
+              <option value="income">Income</option>
+              <option value="expense">Expense</option>
+            </select>
+            <select class="filter-select" id="categoryFilter">
+              <option value="">All Categories</option>
+              <option value="salary">Salary</option>
+              <option value="food">Food & Dining</option>
+              <option value="transport">Transport</option>
+              <option value="utilities">Utilities</option>
+              <option value="entertainment">Entertainment</option>
+            </select>
+            <input type="date" class="filter-input" id="dateFilter" />
           </div>
+
+          <!-- Transactions Table -->
+          <div class="transactions-table-wrapper">
+            <table class="transactions-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Description</th>
+                  <th>Category</th>
+                  <th>Type</th>
+                  <th>Amount</th>
+                  <th>Balance</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="transactionsTableBody">
+                <!-- Populated by JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Budget Section -->
+        <section class="section" id="budgetSection" style="display: none">
+          <div class="section-header">
+            <div>
+              <h3>Budget Management</h3>
+              <p>Set and track spending limits by category</p>
+            </div>
+            <button class="btn-primary" id="addBudgetBtn">+ New Budget</button>
+          </div>
+
+          <div class="budget-grid" id="budgetGrid">
+            <!-- Populated by JavaScript -->
+          </div>
+        </section>
+
+        <!-- Goals Section -->
+        <section class="section" id="goalsSection" style="display: none">
+          <div class="section-header">
+            <div>
+              <h3>Financial Goals</h3>
+              <p>Track your savings goals and milestones</p>
+            </div>
+            <button class="btn-primary" id="addGoalBtn">+ New Goal</button>
+          </div>
+
+          <div class="goals-grid" id="goalsGrid">
+            <!-- Populated by JavaScript -->
+          </div>
+        </section>
+
+        <!-- Analytics Section -->
+        <section class="section" id="analyticsSection" style="display: none">
+          <div class="section-header">
+            <h3>Financial Analytics</h3>
+            <p>Deep insights into your spending patterns</p>
+          </div>
+
+          <div class="analytics-grid">
+            <!-- Spending Trends -->
+            <div class="chart-card slide-in-1">
+              <div class="chart-header">
+                <h3>Spending Trends</h3>
+              </div>
+              <div class="chart-container">
+                <canvas id="spendingTrendsChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Category Distribution -->
+            <div class="chart-card slide-in-2">
+              <div class="chart-header">
+                <h3>Category Distribution</h3>
+              </div>
+              <div class="chart-container">
+                <canvas id="categoryDistributionChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Cash Flow -->
+            <div class="chart-card slide-in-3">
+              <div class="chart-header">
+                <h3>Monthly Cash Flow</h3>
+              </div>
+              <div class="chart-container">
+                <canvas id="cashFlowChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Financial Summary -->
+            <div class="chart-card slide-in-4">
+              <div class="chart-header">
+                <h3>Financial Health</h3>
+              </div>
+              <div class="health-metrics">
+                <div class="health-item">
+                  <span class="health-label">Emergency Fund</span>
+                  <div class="health-progress">
+                    <div class="health-bar" style="width: 75%"></div>
+                  </div>
+                  <span class="health-text">3 months covered</span>
+                </div>
+                <div class="health-item">
+                  <span class="health-label">Debt Ratio</span>
+                  <div class="health-progress">
+                    <div class="health-bar" style="width: 35%"></div>
+                  </div>
+                  <span class="health-text">35% of income</span>
+                </div>
+                <div class="health-item">
+                  <span class="health-label">Investment Ratio</span>
+                  <div class="health-progress">
+                    <div class="health-bar" style="width: 60%"></div>
+                  </div>
+                  <span class="health-text">12% of income</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Add Transaction Modal -->
+    <div class="modal" id="transactionModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Add Transaction</h2>
+          <button class="modal-close" id="closeTransactionModal">✕</button>
         </div>
-      </section>
-    </main>
+        <form class="modal-form" id="transactionForm">
+          <div class="form-group">
+            <label>Type</label>
+            <div class="form-radio-group">
+              <label class="radio-label">
+                <input type="radio" name="type" value="income" required />
+                Income
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="type" value="expense" required />
+                Expense
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="txAmount">Amount</label>
+            <input
+              type="number"
+              id="txAmount"
+              placeholder="0.00"
+              step="0.01"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="txCategory">Category</label>
+            <select id="txCategory" required>
+              <option value="">Select category</option>
+              <option value="salary">Salary</option>
+              <option value="food">Food & Dining</option>
+              <option value="transport">Transport</option>
+              <option value="utilities">Utilities</option>
+              <option value="entertainment">Entertainment</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="txDescription">Description</label>
+            <input
+              type="text"
+              id="txDescription"
+              placeholder="Transaction description"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="txDate">Date</label>
+            <input type="date" id="txDate" required />
+          </div>
+          <button type="submit" class="btn-primary">Add Transaction</button>
+        </form>
+      </div>
+    </div>
 
-    <!-- Modals -->
-    <div id="modal" class="modal hidden" role="dialog" aria-modal="true"></div>
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
 
-    <!-- Toast area -->
-    <div id="toasts" aria-live="polite" class="toasts"></div>
-
-    <!-- Hidden file inputs for import -->
-    <input id="file-input-json" type="file" accept="application/json" class="hidden" />
-    <input id="file-input-csv" type="file" accept=".csv,text/csv" class="hidden" />
-
-    <script src="Finance_Dashboard.js" defer></script>
-  </div>
-</body>
+    <script src="Finance_Dashboard.js"></script>
+  </body>
 </html>
