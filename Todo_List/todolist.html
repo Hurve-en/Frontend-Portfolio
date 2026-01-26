@@ -3,72 +3,268 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Focus Board</title>
-
-    <link rel="stylesheet" href="Todolist.css" />
+    <title>Momentum - Advanced Todo & Pomodoro</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="bg"></div>
+    <!-- Gradient Background Animation -->
+    <div class="gradient-bg"></div>
 
-    <main class="app">
+    <!-- Main Container -->
+    <div class="container">
+      <!-- Header Section -->
       <header class="header">
-        <div>
-          <h1>Focus Board</h1>
-          <p>Tasks · Presentation · Pomodoro</p>
+        <div class="header-content">
+          <div class="logo-section">
+            <div class="logo-icon">🎯</div>
+            <h1 class="app-title">Momentum</h1>
+            <p class="app-subtitle">Focus. Achieve. Repeat.</p>
+          </div>
+          <div class="header-stats">
+            <div class="stat-item fade-in-delay-1">
+              <span class="stat-label">Tasks</span>
+              <span class="stat-value" id="taskCount">0</span>
+            </div>
+            <div class="stat-item fade-in-delay-2">
+              <span class="stat-label">Completed</span>
+              <span class="stat-value" id="completedCount">0</span>
+            </div>
+            <div class="stat-item fade-in-delay-3">
+              <span class="stat-label">Sessions</span>
+              <span class="stat-value" id="sessionCount">0</span>
+            </div>
+          </div>
         </div>
-
-        <button id="presentBtn" class="ghost">Presentation</button>
       </header>
 
-      <section class="input-row">
-        <input id="taskInput" placeholder="Add a task…" />
-        <select id="prioritySelect">
-          <option value="high">High</option>
-          <option value="normal" selected>Normal</option>
-          <option value="low">Low</option>
-        </select>
-        <button id="addBtn" class="primary">Add</button>
-      </section>
+      <!-- Main Content Grid -->
+      <div class="main-grid">
+        <!-- Left Panel: Pomodoro Section -->
+        <aside class="pomodoro-panel">
+          <div class="pomodoro-card">
+            <div class="pomodoro-header">
+              <h2>Pomodoro Timer</h2>
+              <div class="pomodoro-mode-toggle">
+                <button
+                  class="mode-btn active"
+                  data-mode="work"
+                  aria-label="Work mode"
+                >
+                  Work
+                </button>
+                <button
+                  class="mode-btn"
+                  data-mode="break"
+                  aria-label="Break mode"
+                >
+                  Break
+                </button>
+              </div>
+            </div>
 
-      <section class="meta">
-        <span id="totalCount">0 total</span>
-        <span id="doneCount">0 done</span>
-        <div class="progress">
-          <div id="progressBar"></div>
+            <!-- Timer Display -->
+            <div class="timer-container">
+              <div class="timer-circle">
+                <svg class="timer-progress" viewBox="0 0 200 200">
+                  <circle class="timer-bg" cx="100" cy="100" r="95"></circle>
+                  <circle class="timer-fill" cx="100" cy="100" r="95"></circle>
+                </svg>
+                <div class="timer-display">
+                  <span class="timer-time" id="timerDisplay">25:00</span>
+                  <span class="timer-label" id="timerLabel"
+                    >Ready to focus?</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Timer Controls -->
+            <div class="timer-controls">
+              <button
+                class="control-btn play-btn"
+                id="playBtn"
+                aria-label="Start timer"
+              >
+                <span class="btn-icon">▶</span>
+                <span class="btn-text">Start</span>
+              </button>
+              <button
+                class="control-btn pause-btn"
+                id="pauseBtn"
+                disabled
+                aria-label="Pause timer"
+              >
+                <span class="btn-icon">⏸</span>
+                <span class="btn-text">Pause</span>
+              </button>
+              <button
+                class="control-btn reset-btn"
+                id="resetBtn"
+                aria-label="Reset timer"
+              >
+                <span class="btn-icon">↻</span>
+                <span class="btn-text">Reset</span>
+              </button>
+            </div>
+
+            <!-- Duration Settings -->
+            <div class="timer-settings">
+              <div class="setting-group">
+                <label for="workDuration">Work Duration (min)</label>
+                <input
+                  type="number"
+                  id="workDuration"
+                  min="1"
+                  max="60"
+                  value="25"
+                  aria-label="Work duration"
+                />
+              </div>
+              <div class="setting-group">
+                <label for="breakDuration">Break Duration (min)</label>
+                <input
+                  type="number"
+                  id="breakDuration"
+                  min="1"
+                  max="30"
+                  value="5"
+                  aria-label="Break duration"
+                />
+              </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="timer-stats">
+              <div class="timer-stat">
+                <span class="stat-name">Focus Time</span>
+                <span class="stat-number" id="totalFocusTime">0h</span>
+              </div>
+              <div class="timer-stat">
+                <span class="stat-name">This Session</span>
+                <span class="stat-number" id="sessionFocusTime">0m</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Right Panel: Todo List Section -->
+        <main class="todo-panel">
+          <!-- Input Section -->
+          <div class="input-section">
+            <div class="input-wrapper">
+              <input
+                type="text"
+                id="todoInput"
+                class="todo-input"
+                placeholder="What's your next focus?"
+                aria-label="Add new todo"
+              />
+              <button class="add-btn" id="addBtn" aria-label="Add todo">
+                <span class="add-icon">+</span>
+              </button>
+            </div>
+            <div class="input-hints">
+              <span class="hint-tag" data-filter="all">All</span>
+              <span class="hint-tag" data-filter="active">Active</span>
+              <span class="hint-tag" data-filter="completed">Done</span>
+            </div>
+          </div>
+
+          <!-- Filters -->
+          <div class="filter-section">
+            <button class="filter-btn active" data-filter="all">
+              All Tasks
+            </button>
+            <button class="filter-btn" data-filter="active">Active</button>
+            <button class="filter-btn" data-filter="completed">
+              Completed
+            </button>
+            <button class="filter-btn" data-filter="today">Today</button>
+          </div>
+
+          <!-- Todo List -->
+          <div class="todo-list" id="todoList">
+            <div class="empty-state">
+              <div class="empty-icon">✨</div>
+              <p>No tasks yet. Create one to get started!</p>
+            </div>
+          </div>
+
+          <!-- Clear Completed -->
+          <div class="list-actions">
+            <button class="clear-btn" id="clearCompleted" disabled>
+              Clear Completed
+            </button>
+          </div>
+        </main>
+      </div>
+
+      <!-- Statistics Section -->
+      <section class="stats-section">
+        <div class="stats-header">
+          <h2>Your Progress</h2>
+          <div class="time-period-selector">
+            <button class="period-btn active" data-period="today">Today</button>
+            <button class="period-btn" data-period="week">Week</button>
+            <button class="period-btn" data-period="month">Month</button>
+          </div>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card slide-in-1">
+            <div class="stat-label-box">
+              <span class="stat-icon">📊</span>
+              <span class="stat-title">Completion Rate</span>
+            </div>
+            <div class="stat-chart">
+              <div class="progress-ring">
+                <svg viewBox="0 0 100 100">
+                  <circle class="progress-bg" cx="50" cy="50" r="45"></circle>
+                  <circle
+                    class="progress-fill"
+                    cx="50"
+                    cy="50"
+                    r="45"
+                    id="completionRing"
+                  ></circle>
+                </svg>
+                <span class="progress-value" id="completionRate">0%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="stat-card slide-in-2">
+            <div class="stat-label-box">
+              <span class="stat-icon">⏱️</span>
+              <span class="stat-title">Total Focus</span>
+            </div>
+            <div class="stat-value-large" id="totalFocusHours">0h 0m</div>
+          </div>
+
+          <div class="stat-card slide-in-3">
+            <div class="stat-label-box">
+              <span class="stat-icon">🎯</span>
+              <span class="stat-title">Tasks Completed</span>
+            </div>
+            <div class="stat-value-large" id="totalCompleted">0</div>
+          </div>
+
+          <div class="stat-card slide-in-4">
+            <div class="stat-label-box">
+              <span class="stat-icon">🔥</span>
+              <span class="stat-title">Current Streak</span>
+            </div>
+            <div class="stat-value-large" id="currentStreak">0 days</div>
+          </div>
         </div>
       </section>
+    </div>
 
-      <ul id="list" class="list"></ul>
-      <p id="empty" class="empty">No tasks yet</p>
-    </main>
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
 
-    <!-- Pomodoro (presentation mode only) -->
-    <aside id="pomodoro" class="pomodoro">
-      <h2>Pomodoro</h2>
+    <!-- Floating Action Button for Mobile -->
+    <button class="fab" id="fab" aria-label="Quick actions">⚙️</button>
 
-      <div class="time">
-        <input id="minutesInput" type="number" min="1" value="25" />
-        <span>:</span>
-        <input id="secondsInput" type="number" min="0" max="59" value="00" />
-      </div>
-
-      <div id="timerDisplay" class="display">25:00</div>
-
-      <div class="pomodoro-controls">
-        <button id="startTimer">Start</button>
-        <button id="resetTimer">Reset</button>
-      </div>
-    </aside>
-
-    <template id="task-template">
-      <li class="item">
-        <input type="checkbox" class="task-checkbox" />
-        <span class="text"></span>
-        <span class="priority"></span>
-        <button class="remove">✕</button>
-      </li>
-    </template>
-
-    <script src="Todolist.js"></script>
+    <script src="script.js"></script>
   </body>
 </html>
