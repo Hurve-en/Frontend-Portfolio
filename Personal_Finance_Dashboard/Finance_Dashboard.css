@@ -16,12 +16,15 @@
 
   --accent: #ffffff;
   --border-color: #2a2a2a;
+  --green: #4ade80;
+  --red: #f87171;
 
   --transition: 300ms ease;
 }
 
 html {
   font-size: 16px;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -53,6 +56,7 @@ body {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+  z-index: 100;
 }
 
 .sidebar-brand {
@@ -79,22 +83,34 @@ body {
   flex: 1;
 }
 
+.nav-list li {
+  margin-bottom: 0;
+}
+
 .nav-link {
   display: block;
-  padding: 12px 0;
+  padding: 12px 16px;
   font-size: 14px;
   color: var(--text-secondary);
   text-decoration: none;
   font-weight: 500;
-  transition: color var(--transition);
+  transition: all var(--transition);
   border-left: 2px solid transparent;
-  padding-left: 16px;
+  margin-bottom: 8px;
 }
 
-.nav-link:hover,
+.nav-link:hover {
+  color: var(--text-primary);
+  border-left-color: var(--text-secondary);
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+}
+
 .nav-link.active {
   color: var(--text-primary);
   border-left-color: var(--text-primary);
+  background: var(--bg-tertiary);
+  border-radius: 4px;
 }
 
 .sidebar-footer {
@@ -118,6 +134,7 @@ body {
 .main {
   margin-left: 240px;
   padding: 60px 80px;
+  background: var(--bg-primary);
 }
 
 .header {
@@ -150,26 +167,42 @@ body {
   font-size: 18px;
   cursor: pointer;
   transition: all var(--transition);
+  color: var(--text-secondary);
 }
 
 .btn-icon:hover {
   background: var(--bg-secondary);
   border-color: var(--text-secondary);
+  color: var(--text-primary);
 }
 
-/* ==================== HERO SECTION ==================== */
-.hero {
+/* ==================== OVERVIEW SECTION ==================== */
+.overview-section {
   margin-bottom: 80px;
 }
 
+.hero {
+  margin-bottom: 60px;
+}
+
 .hero-card {
-  padding: 40px;
+  padding: 48px;
   border: 1px solid var(--border-color);
-  border-radius: 0;
+  border-radius: 8px;
   background: linear-gradient(
     135deg,
     var(--bg-secondary) 0%,
     var(--bg-tertiary) 100%
+  );
+  transition: all var(--transition);
+}
+
+.hero-card:hover {
+  border-color: var(--text-secondary);
+  background: linear-gradient(
+    135deg,
+    var(--bg-tertiary) 0%,
+    var(--bg-secondary) 100%
   );
 }
 
@@ -187,7 +220,7 @@ body {
   font-weight: 300;
   letter-spacing: -1px;
   margin-bottom: 16px;
-  font-family: "Courier New", monospace;
+  font-family: "Courier New", "Monaco", monospace;
 }
 
 .change {
@@ -196,25 +229,25 @@ body {
 }
 
 .change.positive {
-  color: #4ade80;
+  color: var(--green);
 }
 
 .change.negative {
-  color: #f87171;
+  color: var(--red);
 }
 
 /* ==================== METRICS GRID ==================== */
 .metrics {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 24px;
-  margin-bottom: 80px;
+  margin-bottom: 0;
 }
 
 .metric {
   padding: 24px;
   border: 1px solid var(--border-color);
-  border-radius: 0;
+  border-radius: 8px;
   background: var(--bg-secondary);
   transition: all var(--transition);
 }
@@ -238,12 +271,12 @@ body {
   font-weight: 300;
   letter-spacing: -0.5px;
   margin-bottom: 8px;
-  font-family: "Courier New", monospace;
+  font-family: "Courier New", "Monaco", monospace;
 }
 
 .metric-change {
   font-size: 12px;
-  color: #4ade80;
+  color: var(--green);
 }
 
 /* ==================== ACCOUNTS SECTION ==================== */
@@ -253,23 +286,25 @@ body {
 
 .accounts-section h3,
 .transactions-section h3,
-.insights-section h3 {
+.insights-section h3,
+.settings-section h3 {
   font-size: 20px;
   font-weight: 400;
   letter-spacing: -0.5px;
   margin-bottom: 32px;
+  color: var(--text-primary);
 }
 
 .accounts-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 24px;
 }
 
 .account-card {
   padding: 24px;
   border: 1px solid var(--border-color);
-  border-radius: 0;
+  border-radius: 8px;
   background: var(--bg-secondary);
   transition: all var(--transition);
 }
@@ -309,11 +344,11 @@ body {
   font-weight: 300;
   letter-spacing: -0.5px;
   margin-bottom: 12px;
-  font-family: "Courier New", monospace;
+  font-family: "Courier New", "Monaco", monospace;
 }
 
 .card-value.negative {
-  color: #f87171;
+  color: var(--red);
 }
 
 .card-meta {
@@ -328,8 +363,9 @@ body {
 
 .transaction-list {
   border: 1px solid var(--border-color);
-  border-radius: 0;
+  border-radius: 8px;
   overflow: hidden;
+  background: var(--bg-secondary);
 }
 
 .transaction-item {
@@ -338,7 +374,6 @@ body {
   gap: 20px;
   padding: 20px 24px;
   border-bottom: 1px solid var(--border-color);
-  background: var(--bg-secondary);
   transition: background var(--transition);
 }
 
@@ -382,28 +417,28 @@ body {
   font-size: 14px;
   font-weight: 500;
   color: var(--text-secondary);
-  font-family: "Courier New", monospace;
+  font-family: "Courier New", "Monaco", monospace;
 }
 
 .tx-amount.positive {
-  color: #4ade80;
+  color: var(--green);
 }
 
 /* ==================== INSIGHTS SECTION ==================== */
 .insights-section {
-  margin-bottom: 60px;
+  margin-bottom: 80px;
 }
 
 .insights-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 24px;
 }
 
 .insight-card {
   padding: 24px;
   border: 1px solid var(--border-color);
-  border-radius: 0;
+  border-radius: 8px;
   background: var(--bg-secondary);
   transition: all var(--transition);
 }
@@ -427,12 +462,74 @@ body {
   font-weight: 400;
   letter-spacing: -0.5px;
   margin-bottom: 8px;
-  font-family: "Courier New", monospace;
+  font-family: "Courier New", "Monaco", monospace;
+  color: var(--text-primary);
 }
 
 .insight-meta {
   font-size: 12px;
   color: var(--text-tertiary);
+}
+
+/* ==================== SETTINGS SECTION ==================== */
+.settings-section {
+  margin-bottom: 60px;
+}
+
+.setting-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+}
+
+.setting-card {
+  padding: 24px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-secondary);
+  transition: all var(--transition);
+  cursor: pointer;
+}
+
+.setting-card:hover {
+  border-color: var(--text-secondary);
+  background: var(--bg-tertiary);
+}
+
+.setting-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.setting-desc {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+/* ==================== SCROLLBAR ==================== */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-tertiary);
+}
+
+/* ==================== SELECTION ==================== */
+::selection {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
 }
 
 /* ==================== RESPONSIVE ==================== */
@@ -441,12 +538,10 @@ body {
     padding: 40px 60px;
   }
 
-  .metrics {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
+  .metrics,
   .accounts-grid,
-  .insights-grid {
+  .insights-grid,
+  .setting-cards {
     grid-template-columns: repeat(2, 1fr);
   }
 }
@@ -463,7 +558,11 @@ body {
     border-right: none;
     border-bottom: 1px solid var(--border-color);
     padding: 24px;
-    margin-bottom: 0;
+    display: none;
+  }
+
+  .sidebar.active {
+    display: flex;
   }
 
   .main {
@@ -473,7 +572,8 @@ body {
 
   .metrics,
   .accounts-grid,
-  .insights-grid {
+  .insights-grid,
+  .setting-cards {
     grid-template-columns: 1fr;
   }
 
@@ -486,30 +586,26 @@ body {
   }
 }
 
-/* ==================== SMOOTH SCROLL ==================== */
-html {
-  scroll-behavior: smooth;
-}
+@media (max-width: 480px) {
+  .main {
+    padding: 24px 16px;
+  }
 
-/* ==================== SELECTION ==================== */
-::selection {
-  background: var(--bg-tertiary);
-  color: var(--text-primary);
-}
+  .header h2 {
+    font-size: 20px;
+  }
 
-::-webkit-scrollbar {
-  width: 8px;
-}
+  .amount {
+    font-size: 28px;
+  }
 
-::-webkit-scrollbar-track {
-  background: var(--bg-primary);
-}
+  .metric-value,
+  .card-value,
+  .insight-value {
+    font-size: 18px;
+  }
 
-::-webkit-scrollbar-thumb {
-  background: var(--border-color);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--text-tertiary);
+  .hero-card {
+    padding: 24px;
+  }
 }

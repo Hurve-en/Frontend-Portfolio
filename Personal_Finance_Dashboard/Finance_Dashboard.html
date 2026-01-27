@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Fintech — Financial Intelligence Platform</title>
-    <link rel="stylesheet" href="Finance_Dashboard.css" />
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <div class="viewport">
@@ -42,41 +42,44 @@
           </div>
         </header>
 
-        <!-- Hero Section -->
-        <section class="hero">
-          <div class="hero-card">
-            <p class="label">Total Assets</p>
-            <h1 class="amount">$847,250.00</h1>
-            <p class="change positive">↑ 12.5% from last month</p>
+        <!-- Overview Section -->
+        <section id="overview" class="overview-section">
+          <!-- Hero Section -->
+          <div class="hero">
+            <div class="hero-card">
+              <p class="label">Total Assets</p>
+              <h1 class="amount">$847,250.00</h1>
+              <p class="change positive">↑ 12.5% from last month</p>
+            </div>
+          </div>
+
+          <!-- Key Metrics Grid -->
+          <div class="metrics">
+            <div class="metric">
+              <p class="metric-label">Liquid Assets</p>
+              <p class="metric-value">$285,000</p>
+              <p class="metric-change">↑ 5.2%</p>
+            </div>
+            <div class="metric">
+              <p class="metric-label">Investments</p>
+              <p class="metric-value">$450,000</p>
+              <p class="metric-change">↑ 18.3%</p>
+            </div>
+            <div class="metric">
+              <p class="metric-label">Monthly Income</p>
+              <p class="metric-value">$12,500</p>
+              <p class="metric-change">↑ 8.1%</p>
+            </div>
+            <div class="metric">
+              <p class="metric-label">Savings Rate</p>
+              <p class="metric-value">32%</p>
+              <p class="metric-change">↑ 2.4%</p>
+            </div>
           </div>
         </section>
 
-        <!-- Key Metrics Grid -->
-        <section class="metrics">
-          <div class="metric">
-            <p class="metric-label">Liquid Assets</p>
-            <p class="metric-value">$285,000</p>
-            <p class="metric-change">↑ 5.2%</p>
-          </div>
-          <div class="metric">
-            <p class="metric-label">Investments</p>
-            <p class="metric-value">$450,000</p>
-            <p class="metric-change">↑ 18.3%</p>
-          </div>
-          <div class="metric">
-            <p class="metric-label">Monthly Income</p>
-            <p class="metric-value">$12,500</p>
-            <p class="metric-change">↑ 8.1%</p>
-          </div>
-          <div class="metric">
-            <p class="metric-label">Savings Rate</p>
-            <p class="metric-value">32%</p>
-            <p class="metric-change">↑ 2.4%</p>
-          </div>
-        </section>
-
-        <!-- Account Cards -->
-        <section class="accounts-section">
+        <!-- Accounts Section -->
+        <section id="accounts" class="accounts-section">
           <h3>Accounts</h3>
           <div class="accounts-grid">
             <div class="account-card">
@@ -117,8 +120,8 @@
           </div>
         </section>
 
-        <!-- Recent Transactions -->
-        <section class="transactions-section">
+        <!-- Transactions Section -->
+        <section id="transactions" class="transactions-section">
           <h3>Recent Transactions</h3>
           <div class="transaction-list">
             <div class="transaction-item">
@@ -159,8 +162,8 @@
           </div>
         </section>
 
-        <!-- Insights Section -->
-        <section class="insights-section">
+        <!-- Analytics Section -->
+        <section id="analytics" class="insights-section">
           <h3>Financial Insights</h3>
           <div class="insights-grid">
             <div class="insight-card">
@@ -188,9 +191,34 @@
             </div>
           </div>
         </section>
+
+        <!-- Settings Section (Placeholder) -->
+        <section id="settings" class="settings-section">
+          <h3>Settings</h3>
+          <div class="setting-cards">
+            <div class="setting-card">
+              <p class="setting-label">Account Settings</p>
+              <p class="setting-desc">Manage your profile and preferences</p>
+            </div>
+            <div class="setting-card">
+              <p class="setting-label">Security</p>
+              <p class="setting-desc">
+                Two-factor authentication and passwords
+              </p>
+            </div>
+            <div class="setting-card">
+              <p class="setting-label">Notifications</p>
+              <p class="setting-desc">Configure alerts and email preferences</p>
+            </div>
+            <div class="setting-card">
+              <p class="setting-label">Export Data</p>
+              <p class="setting-desc">Download your financial data</p>
+            </div>
+          </div>
+        </section>
       </main>
     </div>
 
-    <script src="Finance_Dashboard.js"></script>
+    <script src="script.js"></script>
   </body>
 </html>
