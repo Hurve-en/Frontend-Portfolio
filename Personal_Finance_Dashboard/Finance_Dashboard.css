@@ -181,12 +181,14 @@ body {
   margin-bottom: 80px;
 }
 
+/* ==================== HERO SECTION ==================== */
 .hero {
   margin-bottom: 60px;
+  width: 100%;
 }
 
 .hero-card {
-  padding: 48px;
+  padding: 60px 80px;
   border: 1px solid var(--border-color);
   border-radius: 8px;
   background: linear-gradient(
@@ -195,6 +197,10 @@ body {
     var(--bg-tertiary) 100%
   );
   transition: all var(--transition);
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .hero-card:hover {
@@ -207,25 +213,28 @@ body {
 }
 
 .label {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-tertiary);
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 16px;
+  letter-spacing: 1.5px;
+  margin-bottom: 24px;
 }
 
 .amount {
-  font-size: 56px;
+  font-size: 72px;
   font-weight: 300;
-  letter-spacing: -1px;
-  margin-bottom: 16px;
+  letter-spacing: -2px;
+  margin-bottom: 24px;
   font-family: "Courier New", "Monaco", monospace;
+  color: var(--text-primary);
+  line-height: 1.1;
 }
 
 .change {
   font-size: 14px;
   color: var(--text-secondary);
+  font-weight: 500;
 }
 
 .change.positive {
@@ -239,13 +248,13 @@ body {
 /* ==================== METRICS GRID ==================== */
 .metrics {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 24px;
   margin-bottom: 0;
 }
 
 .metric {
-  padding: 24px;
+  padding: 32px;
   border: 1px solid var(--border-color);
   border-radius: 8px;
   background: var(--bg-secondary);
@@ -262,21 +271,23 @@ body {
   color: var(--text-tertiary);
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 12px;
+  letter-spacing: 0.8px;
+  margin-bottom: 16px;
 }
 
 .metric-value {
-  font-size: 28px;
+  font-size: 32px;
   font-weight: 300;
   letter-spacing: -0.5px;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
   font-family: "Courier New", "Monaco", monospace;
+  color: var(--text-primary);
 }
 
 .metric-change {
   font-size: 12px;
   color: var(--green);
+  font-weight: 500;
 }
 
 /* ==================== ACCOUNTS SECTION ==================== */
@@ -297,12 +308,12 @@ body {
 
 .accounts-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 24px;
 }
 
 .account-card {
-  padding: 24px;
+  padding: 32px;
   border: 1px solid var(--border-color);
   border-radius: 8px;
   background: var(--bg-secondary);
@@ -318,7 +329,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .account-name {
@@ -340,11 +351,12 @@ body {
 }
 
 .card-value {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 300;
   letter-spacing: -0.5px;
   margin-bottom: 12px;
   font-family: "Courier New", "Monaco", monospace;
+  color: var(--text-primary);
 }
 
 .card-value.negative {
@@ -372,7 +384,7 @@ body {
   display: flex;
   align-items: center;
   gap: 20px;
-  padding: 20px 24px;
+  padding: 24px;
   border-bottom: 1px solid var(--border-color);
   transition: background var(--transition);
 }
@@ -387,8 +399,8 @@ body {
 
 .tx-icon {
   font-size: 20px;
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -431,12 +443,12 @@ body {
 
 .insights-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 24px;
 }
 
 .insight-card {
-  padding: 24px;
+  padding: 32px;
   border: 1px solid var(--border-color);
   border-radius: 8px;
   background: var(--bg-secondary);
@@ -453,12 +465,12 @@ body {
   color: var(--text-tertiary);
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 12px;
+  letter-spacing: 0.8px;
+  margin-bottom: 16px;
 }
 
 .insight-value {
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 400;
   letter-spacing: -0.5px;
   margin-bottom: 8px;
@@ -478,12 +490,12 @@ body {
 
 .setting-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 24px;
 }
 
 .setting-card {
-  padding: 24px;
+  padding: 32px;
   border: 1px solid var(--border-color);
   border-radius: 8px;
   background: var(--bg-secondary);
@@ -533,9 +545,23 @@ body {
 }
 
 /* ==================== RESPONSIVE ==================== */
-@media (max-width: 1200px) {
+@media (max-width: 1400px) {
   .main {
     padding: 40px 60px;
+  }
+
+  .hero-card {
+    padding: 48px 60px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .main {
+    padding: 40px 40px;
+  }
+
+  .hero-card {
+    padding: 40px 40px;
   }
 
   .metrics,
@@ -558,11 +584,6 @@ body {
     border-right: none;
     border-bottom: 1px solid var(--border-color);
     padding: 24px;
-    display: none;
-  }
-
-  .sidebar.active {
-    display: flex;
   }
 
   .main {
@@ -570,19 +591,24 @@ body {
     padding: 40px 24px;
   }
 
+  .header h2 {
+    font-size: 24px;
+  }
+
+  .hero-card {
+    padding: 32px 24px;
+    min-height: 250px;
+  }
+
+  .amount {
+    font-size: 48px;
+  }
+
   .metrics,
   .accounts-grid,
   .insights-grid,
   .setting-cards {
     grid-template-columns: 1fr;
-  }
-
-  .header h2 {
-    font-size: 24px;
-  }
-
-  .amount {
-    font-size: 36px;
   }
 }
 
@@ -595,17 +621,47 @@ body {
     font-size: 20px;
   }
 
+  .header-controls {
+    gap: 8px;
+  }
+
+  .btn-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+
+  .hero-card {
+    padding: 24px 16px;
+    min-height: 200px;
+  }
+
   .amount {
-    font-size: 28px;
+    font-size: 36px;
+  }
+
+  .label {
+    font-size: 11px;
   }
 
   .metric-value,
   .card-value,
   .insight-value {
-    font-size: 18px;
+    font-size: 22px;
   }
 
-  .hero-card {
-    padding: 24px;
+  .metric {
+    padding: 20px;
+  }
+
+  .account-card,
+  .insight-card,
+  .setting-card {
+    padding: 20px;
+  }
+
+  .transaction-item {
+    padding: 16px;
+    gap: 12px;
   }
 }
