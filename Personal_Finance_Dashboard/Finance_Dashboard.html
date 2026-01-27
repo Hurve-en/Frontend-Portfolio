@@ -3,222 +3,157 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Fintech — Financial Intelligence Platform</title>
+    <title>Fintech Dashboard</title>
     <link rel="stylesheet" href="Finance_Dashboard.css" />
   </head>
   <body>
-    <div class="viewport">
-      <!-- Sidebar Navigation -->
-      <nav class="sidebar">
-        <div class="sidebar-brand">
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="logo">
           <h1>Fintech</h1>
-          <span class="version">v2.0</span>
+          <p>Dashboard</p>
         </div>
-
-        <ul class="nav-list">
-          <li><a href="#overview" class="nav-link active">Overview</a></li>
-          <li><a href="#accounts" class="nav-link">Accounts</a></li>
-          <li><a href="#transactions" class="nav-link">Transactions</a></li>
-          <li><a href="#analytics" class="nav-link">Analytics</a></li>
-          <li><a href="#settings" class="nav-link">Settings</a></li>
-        </ul>
-
-        <div class="sidebar-footer">
-          <p class="user-name">Alex Chen</p>
-          <p class="user-role">Premium Member</p>
+        <nav class="menu">
+          <a href="#" class="menu-item active">Overview</a>
+          <a href="#" class="menu-item">Accounts</a>
+          <a href="#" class="menu-item">Transactions</a>
+          <a href="#" class="menu-item">Analytics</a>
+          <a href="#" class="menu-item">Settings</a>
+        </nav>
+        <div class="user-info">
+          <p>Alex Chen</p>
+          <small>Premium</small>
         </div>
-      </nav>
+      </aside>
 
-      <!-- Main Content -->
-      <main class="main">
-        <!-- Header -->
-        <header class="header">
-          <div class="header-content">
-            <h2>Financial Overview</h2>
-            <div class="header-controls">
-              <button class="btn-icon">⚙️</button>
-              <button class="btn-icon">👤</button>
-            </div>
+      <div class="content">
+        <header class="top-bar">
+          <h2>Dashboard</h2>
+          <div class="controls">
+            <button>⚙️</button>
+            <button>👤</button>
           </div>
         </header>
 
-        <!-- Overview Section -->
-        <section id="overview" class="overview-section">
-          <!-- Hero Section -->
+        <main class="dashboard">
           <div class="hero">
-            <div class="hero-card">
-              <p class="label">Total Assets</p>
-              <h1 class="amount">$847,250.00</h1>
-              <p class="change positive">↑ 12.5% from last month</p>
+            <div class="hero-label">Total Assets</div>
+            <div class="hero-amount">$847,250.00</div>
+            <div class="hero-change">↑ 12.5% from last month</div>
+          </div>
+
+          <div class="cards-grid">
+            <div class="card">
+              <div class="card-label">Liquid Assets</div>
+              <div class="card-value">$285,000</div>
+              <div class="card-stat">↑ 5.2%</div>
+            </div>
+            <div class="card">
+              <div class="card-label">Investments</div>
+              <div class="card-value">$450,000</div>
+              <div class="card-stat">↑ 18.3%</div>
+            </div>
+            <div class="card">
+              <div class="card-label">Monthly Income</div>
+              <div class="card-value">$12,500</div>
+              <div class="card-stat">↑ 8.1%</div>
+            </div>
+            <div class="card">
+              <div class="card-label">Savings Rate</div>
+              <div class="card-value">32%</div>
+              <div class="card-stat">↑ 2.4%</div>
             </div>
           </div>
 
-          <!-- Key Metrics Grid -->
-          <div class="metrics">
-            <div class="metric">
-              <p class="metric-label">Liquid Assets</p>
-              <p class="metric-value">$285,000</p>
-              <p class="metric-change">↑ 5.2%</p>
-            </div>
-            <div class="metric">
-              <p class="metric-label">Investments</p>
-              <p class="metric-value">$450,000</p>
-              <p class="metric-change">↑ 18.3%</p>
-            </div>
-            <div class="metric">
-              <p class="metric-label">Monthly Income</p>
-              <p class="metric-value">$12,500</p>
-              <p class="metric-change">↑ 8.1%</p>
-            </div>
-            <div class="metric">
-              <p class="metric-label">Savings Rate</p>
-              <p class="metric-value">32%</p>
-              <p class="metric-change">↑ 2.4%</p>
-            </div>
-          </div>
-        </section>
-
-        <!-- Accounts Section -->
-        <section id="accounts" class="accounts-section">
-          <h3>Accounts</h3>
+          <h3 class="section-heading">Accounts</h3>
           <div class="accounts-grid">
-            <div class="account-card">
-              <div class="card-header">
-                <p class="account-name">Checking</p>
-                <span class="badge">Primary</span>
-              </div>
-              <p class="card-value">$45,250.00</p>
-              <p class="card-meta">Updated 2 hours ago</p>
+            <div class="account-item">
+              <div class="account-name">Checking</div>
+              <div class="account-badge">Primary</div>
+              <div class="amount-large">$45,250.00</div>
+              <div class="timestamp">Updated 2h ago</div>
             </div>
-
-            <div class="account-card">
-              <div class="card-header">
-                <p class="account-name">Savings</p>
-                <span class="badge">High-Yield</span>
-              </div>
-              <p class="card-value">$240,000.00</p>
-              <p class="card-meta">Updated 2 hours ago</p>
+            <div class="account-item">
+              <div class="account-name">Savings</div>
+              <div class="account-badge">High-Yield</div>
+              <div class="amount-large">$240,000.00</div>
+              <div class="timestamp">Updated 2h ago</div>
             </div>
-
-            <div class="account-card">
-              <div class="card-header">
-                <p class="account-name">Investment</p>
-                <span class="badge">Portfolio</span>
-              </div>
-              <p class="card-value">$450,000.00</p>
-              <p class="card-meta">Updated 1 hour ago</p>
+            <div class="account-item">
+              <div class="account-name">Investment</div>
+              <div class="account-badge">Portfolio</div>
+              <div class="amount-large">$450,000.00</div>
+              <div class="timestamp">Updated 1h ago</div>
             </div>
-
-            <div class="account-card">
-              <div class="card-header">
-                <p class="account-name">Credit Card</p>
-                <span class="badge">Mastercard</span>
-              </div>
-              <p class="card-value negative">-$2,150.00</p>
-              <p class="card-meta">Updated just now</p>
+            <div class="account-item">
+              <div class="account-name">Credit Card</div>
+              <div class="account-badge">Mastercard</div>
+              <div class="amount-large negative">-$2,150.00</div>
+              <div class="timestamp">Updated now</div>
             </div>
           </div>
-        </section>
 
-        <!-- Transactions Section -->
-        <section id="transactions" class="transactions-section">
-          <h3>Recent Transactions</h3>
-          <div class="transaction-list">
-            <div class="transaction-item">
+          <h3 class="section-heading">Transactions</h3>
+          <div class="transactions">
+            <div class="transaction">
               <div class="tx-icon">💳</div>
-              <div class="tx-details">
-                <p class="tx-name">Whole Foods</p>
-                <p class="tx-meta">Grocery • Today</p>
+              <div class="tx-info">
+                <div class="tx-name">Whole Foods</div>
+                <div class="tx-meta">Grocery • Today</div>
               </div>
-              <p class="tx-amount">-$127.45</p>
+              <div class="tx-amount">-$127.45</div>
             </div>
-
-            <div class="transaction-item">
+            <div class="transaction">
               <div class="tx-icon">💰</div>
-              <div class="tx-details">
-                <p class="tx-name">Salary Deposit</p>
-                <p class="tx-meta">Income • Yesterday</p>
+              <div class="tx-info">
+                <div class="tx-name">Salary Deposit</div>
+                <div class="tx-meta">Income • Yesterday</div>
               </div>
-              <p class="tx-amount positive">+$5,000.00</p>
+              <div class="tx-amount positive">+$5,000.00</div>
             </div>
-
-            <div class="transaction-item">
+            <div class="transaction">
               <div class="tx-icon">🏨</div>
-              <div class="tx-details">
-                <p class="tx-name">The Plaza Hotel</p>
-                <p class="tx-meta">Travel • 2 days ago</p>
+              <div class="tx-info">
+                <div class="tx-name">The Plaza Hotel</div>
+                <div class="tx-meta">Travel • 2 days ago</div>
               </div>
-              <p class="tx-amount">-$850.00</p>
+              <div class="tx-amount">-$850.00</div>
             </div>
-
-            <div class="transaction-item">
+            <div class="transaction">
               <div class="tx-icon">🎬</div>
-              <div class="tx-details">
-                <p class="tx-name">Netflix</p>
-                <p class="tx-meta">Subscription • 5 days ago</p>
+              <div class="tx-info">
+                <div class="tx-name">Netflix</div>
+                <div class="tx-meta">Subscription • 5 days ago</div>
               </div>
-              <p class="tx-amount">-$15.99</p>
+              <div class="tx-amount">-$15.99</div>
             </div>
           </div>
-        </section>
 
-        <!-- Analytics Section -->
-        <section id="analytics" class="insights-section">
-          <h3>Financial Insights</h3>
+          <h3 class="section-heading">Insights</h3>
           <div class="insights-grid">
-            <div class="insight-card">
-              <p class="insight-label">Spending Pattern</p>
-              <p class="insight-value">Food & Dining</p>
-              <p class="insight-meta">32% of monthly expenses</p>
+            <div class="insight">
+              <div class="insight-label">Spending</div>
+              <div class="insight-value">Food & Dining</div>
+              <div class="insight-detail">32% of expenses</div>
             </div>
-
-            <div class="insight-card">
-              <p class="insight-label">Savings Goal</p>
-              <p class="insight-value">87% Complete</p>
-              <p class="insight-meta">$13K of $15K saved</p>
+            <div class="insight">
+              <div class="insight-label">Goals</div>
+              <div class="insight-value">87% Complete</div>
+              <div class="insight-detail">$13K of $15K</div>
             </div>
-
-            <div class="insight-card">
-              <p class="insight-label">Portfolio Return</p>
-              <p class="insight-value">+$38,450</p>
-              <p class="insight-meta">Year-to-date gains</p>
+            <div class="insight">
+              <div class="insight-label">Returns</div>
+              <div class="insight-value">+$38,450</div>
+              <div class="insight-detail">Year-to-date</div>
             </div>
-
-            <div class="insight-card">
-              <p class="insight-label">Next Payment</p>
-              <p class="insight-value">$2,150</p>
-              <p class="insight-meta">Credit card • Due in 15 days</p>
+            <div class="insight">
+              <div class="insight-label">Payment</div>
+              <div class="insight-value">$2,150</div>
+              <div class="insight-detail">Due in 15 days</div>
             </div>
           </div>
-        </section>
-
-        <!-- Settings Section (Placeholder) -->
-        <section id="settings" class="settings-section">
-          <h3>Settings</h3>
-          <div class="setting-cards">
-            <div class="setting-card">
-              <p class="setting-label">Account Settings</p>
-              <p class="setting-desc">Manage your profile and preferences</p>
-            </div>
-            <div class="setting-card">
-              <p class="setting-label">Security</p>
-              <p class="setting-desc">
-                Two-factor authentication and passwords
-              </p>
-            </div>
-            <div class="setting-card">
-              <p class="setting-label">Notifications</p>
-              <p class="setting-desc">Configure alerts and email preferences</p>
-            </div>
-            <div class="setting-card">
-              <p class="setting-label">Export Data</p>
-              <p class="setting-desc">Download your financial data</p>
-            </div>
-          </div>
-        </section>
-      </main>
+        </main>
+      </div>
     </div>
-
-    <script src="Finance_Dashboard.js"></script>
   </body>
 </html>
