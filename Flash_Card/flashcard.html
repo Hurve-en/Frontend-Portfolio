@@ -1,49 +1,85 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Flashcard App</title>
-  <link rel="stylesheet" href="Flashcard.css" />
-</head>
-<body>
-  <header>
-    <h1>Flashcard App</h1>
-    <button id="themeToggle" title="Toggle Light/Dark Mode">🌙</button>
-  </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flashcard Study - Aesthetic Learning</title>
+    <link rel="stylesheet" href="flashcard.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="header">
+        <div class="header-left">
+          <h1 class="title">Study</h1>
+          <p class="subtitle">Master your subjects</p>
+        </div>
+        <div class="header-right">
+          <div class="progress">
+            <span class="current-card" id="cardCount">1</span>
+            <span class="divider">/</span>
+            <span class="total-cards" id="totalCards">10</span>
+          </div>
+        </div>
+      </header>
 
-  <main>
-    <section id="create-section" class="card shadow">
-      <h2>Create a Flashcard</h2>
-      <input id="questionInput" type="text" placeholder="Enter question" />
-      <textarea id="answerInput" placeholder="Enter answer"></textarea>
-      <button id="saveBtn">Save Flashcard</button>
-    </section>
+      <main class="container">
+        <div class="cards-wrapper">
+          <div class="card-container">
+            <div class="flip-card" id="mainCard">
+              <div class="flip-card-inner">
+                <div class="flip-card-front">
+                  <div class="card-content">
+                    <span class="card-label">Question</span>
+                    <p class="card-text" id="questionText">
+                      What is the capital of France?
+                    </p>
+                  </div>
+                </div>
+                <div class="flip-card-back">
+                  <div class="card-content">
+                    <span class="card-label">Answer</span>
+                    <p class="card-text" id="answerText">Paris</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
-    <section id="list-section" class="card shadow">
-      <h2>Your Flashcards</h2>
-      <ul id="cardList"></ul>
-    </section>
+          <div class="hint">
+            <p>Click card to reveal answer</p>
+          </div>
+        </div>
 
-    <section id="study-section" class="card shadow hidden">
-      <h2>Study Mode</h2>
-      <div id="studyDisplay">
-        <p id="studyQuestion"></p>
-        <p id="studyAnswer" class="hidden"></p>
-      </div>
-      <div class="study-controls">
-        <button id="showAnswerBtn">Show Answer</button>
-        <button id="correctBtn" class="hidden">✅ Correct</button>
-        <button id="wrongBtn" class="hidden">❌ Wrong</button>
-        <button id="exitStudyBtn">Exit Study</button>
-      </div>
-    </section>
-  </main>
+        <div class="controls">
+          <button class="btn btn-skip" id="skipBtn">
+            <span>Skip</span>
+          </button>
+          <button class="btn btn-primary" id="masterBtn">
+            <span>Mastered</span>
+          </button>
+        </div>
 
-  <footer>
-    <button id="startStudyBtn">Start Studying</button>
-  </footer>
+        <div class="study-stats">
+          <div class="stat">
+            <div class="stat-value" id="masteredCount">0</div>
+            <div class="stat-label">Mastered</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value" id="remainingCount">10</div>
+            <div class="stat-label">Remaining</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value" id="accuracy">0%</div>
+            <div class="stat-label">Accuracy</div>
+          </div>
+        </div>
+      </main>
 
-  <script src="Flashcard.js"></script>
-</body>
+      <footer class="footer">
+        <p>Keep going! You're doing great 💪</p>
+      </footer>
+    </div>
+
+    <script src="flashcard.js"></script>
+  </body>
 </html>
