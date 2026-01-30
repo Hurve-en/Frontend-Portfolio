@@ -145,6 +145,12 @@ body {
 .card:nth-child(8) {
   animation-delay: 0.7s;
 }
+.card:nth-child(9) {
+  animation-delay: 0.8s;
+}
+.card:nth-child(10) {
+  animation-delay: 0.9s;
+}
 
 .card::before {
   content: "";
@@ -175,11 +181,6 @@ body {
 
 .card.hero-card:hover {
   box-shadow: 0 20px 60px rgba(0, 217, 255, 0.25);
-}
-
-.card.villain-card:hover {
-  box-shadow: 0 20px 60px rgba(255, 0, 110, 0.25);
-  border-color: var(--secondary);
 }
 
 /* CARD IMAGE */
@@ -305,12 +306,6 @@ body {
   background: rgba(0, 217, 255, 0.15);
   border-color: var(--primary);
   color: var(--primary);
-}
-
-.villain-card .power:hover {
-  background: rgba(255, 0, 110, 0.15);
-  border-color: var(--secondary);
-  color: var(--secondary);
 }
 
 /* FOOTER */
