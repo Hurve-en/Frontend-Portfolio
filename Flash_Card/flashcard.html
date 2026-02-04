@@ -3,173 +3,171 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="Advanced Flashcard Study App - Learn Smarter"
-    />
-    <title>FlashLearn - Advanced Study App</title>
+    <meta name="description" content="Dynamic Flashcard Study App" />
+    <title>StudyFlow - Dynamic Flashcard App</title>
     <link rel="stylesheet" href="Flashcard.css" />
   </head>
   <body>
-    <!-- NAVIGATION -->
-    <nav class="navbar">
-      <div class="nav-container">
-        <div class="nav-logo">
-          <a href="#home">FlashLearn</a>
+    <!-- LEFT SIDEBAR - DECKS -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <h1>StudyFlow</h1>
+        <button class="btn-new-deck" id="newDeckBtn">+ New Deck</button>
+      </div>
+
+      <div class="decks-container">
+        <div id="decksList" class="decks-list">
+          <p class="empty-decks">No decks yet</p>
         </div>
-        <ul class="nav-menu">
-          <li><a href="#create">Create Deck</a></li>
-          <li><a href="#study">Study</a></li>
-        </ul>
-      </div>
-    </nav>
-
-    <!-- HERO SECTION -->
-    <section class="hero" id="home">
-      <div class="hero-content">
-        <h1>
-          <span>Master</span>
-          <span>Any</span>
-          <span>Subject</span>
-          <span>Faster.</span>
-        </h1>
-        <p class="hero-subtitle">
-          Create flashcards, study smarter, and unlock your learning potential
-          with beautiful, distraction-free design
-        </p>
-        <a href="#create" class="scroll-cta">Start Studying</a>
-      </div>
-    </section>
-
-    <!-- CREATE DECK SECTION -->
-    <section class="create-section" id="create">
-      <div class="section-header">
-        <h2>Create Your Study Deck</h2>
-        <p>Build powerful flashcards in seconds</p>
       </div>
 
-      <div class="create-container">
-        <div class="deck-form">
-          <div class="form-group">
-            <label for="deckName">Deck Name</label>
-            <input
-              type="text"
-              id="deckName"
-              placeholder="e.g., Spanish Vocabulary, Biology 101"
-            />
+      <div class="sidebar-footer">
+        <p>&copy; 2024 StudyFlow</p>
+      </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+      <!-- DECK VIEW -->
+      <div id="deckView" class="deck-view hidden">
+        <div class="deck-header">
+          <button class="btn-back" id="backBtn">← Back</button>
+          <div class="deck-title-section">
+            <h2 id="deckNameDisplay">Untitled Deck</h2>
+            <span id="cardCountDisplay" class="card-count">0 cards</span>
+          </div>
+          <button class="btn-delete-deck" id="deleteDeckBtn">🗑️ Delete</button>
+        </div>
+
+        <!-- ADD QUESTION FORM -->
+        <div class="add-card-form">
+          <div class="form-header">
+            <h3>Add Question</h3>
           </div>
 
           <div class="form-group">
-            <label for="question">Question / Front</label>
+            <label for="questionInput">Question</label>
             <textarea
-              id="question"
-              placeholder="What is the capital of France?"
-              rows="3"
+              id="questionInput"
+              placeholder="Type your question here..."
+              rows="4"
             ></textarea>
           </div>
 
           <div class="form-group">
-            <label for="answer">Answer / Back</label>
-            <textarea id="answer" placeholder="Paris" rows="3"></textarea>
+            <label for="answerInput">Answer</label>
+            <textarea
+              id="answerInput"
+              placeholder="Type your answer here..."
+              rows="4"
+            ></textarea>
           </div>
 
-          <div class="form-buttons">
-            <button id="addCardBtn" class="btn btn-primary">Add Card</button>
-            <button id="createDeckBtn" class="btn btn-secondary">
-              Create Deck
-            </button>
-          </div>
+          <button id="addCardBtn" class="btn-add-card">+ Add Card</button>
         </div>
 
-        <div class="cards-preview">
-          <h3>Cards Preview</h3>
-          <div id="cardsPreview" class="cards-list">
-            <p class="empty-state">No cards added yet</p>
+        <!-- CARDS DISPLAY -->
+        <div class="cards-display">
+          <div class="display-header">
+            <h3>Cards in Deck</h3>
+            <button id="startStudyBtn" class="btn-study">Start Study</button>
+          </div>
+
+          <div id="cardsList" class="cards-grid">
+            <p class="empty-cards">No cards yet. Add your first card above!</p>
           </div>
         </div>
       </div>
-    </section>
 
-    <!-- STUDY SECTION -->
-    <section class="study-section" id="study">
-      <div class="section-header">
-        <h2>Study Mode</h2>
-        <p>Select a deck to begin studying</p>
-      </div>
-
-      <div class="study-container">
-        <div class="decks-list">
-          <h3>Your Decks</h3>
-          <div id="decksList" class="decks-grid">
-            <p class="empty-state">
-              No decks created yet. Create one to get started!
-            </p>
+      <!-- STUDY MODE -->
+      <div id="studyMode" class="study-mode hidden">
+        <div class="study-header">
+          <button class="btn-back" id="exitStudyBtn">← Exit Study</button>
+          <div class="study-progress">
+            <span id="studyProgress">1 / 10</span>
+            <div class="progress-bar">
+              <div id="progressFill" class="progress-fill"></div>
+            </div>
           </div>
         </div>
 
-        <div id="studyMode" class="study-mode" style="display: none">
-          <div class="study-header">
-            <h3 id="deckTitle">Deck Name</h3>
-            <div class="progress-info">
-              <span id="cardProgress">1 / 10</span>
-              <div class="progress-bar">
-                <div id="progressFill" class="progress-fill"></div>
+        <div class="flashcard-main">
+          <div id="flashcard" class="flashcard">
+            <div class="flashcard-inner">
+              <div class="flashcard-front">
+                <p id="studyQuestion">Question</p>
+                <span class="flip-hint">Click to reveal answer</span>
+              </div>
+              <div class="flashcard-back">
+                <p id="studyAnswer">Answer</p>
               </div>
             </div>
           </div>
+        </div>
 
-          <div class="flashcard-container">
-            <div id="flashcard" class="flashcard">
-              <div class="flashcard-inner">
-                <div class="flashcard-front">
-                  <p id="cardQuestion">Question goes here</p>
-                  <span class="card-hint">Click to reveal answer</span>
-                </div>
-                <div class="flashcard-back">
-                  <p id="cardAnswer">Answer goes here</p>
-                </div>
-              </div>
-            </div>
+        <div class="study-controls">
+          <button id="prevCardBtn" class="btn-control">Previous</button>
+          <button id="flipCardBtn" class="btn-flip">Flip Card</button>
+          <button id="nextCardBtn" class="btn-control">Next</button>
+        </div>
+
+        <div class="study-feedback">
+          <button id="markGoodBtn" class="btn-good">Good ✓</button>
+          <button id="markNeedHelpBtn" class="btn-help">Need Help</button>
+          <button id="markHardBtn" class="btn-hard">Hard ✗</button>
+        </div>
+
+        <div class="study-stats">
+          <div class="stat">
+            <span class="stat-label">Good</span>
+            <span id="goodCount" class="stat-value">0</span>
           </div>
-
-          <div class="study-controls">
-            <button id="prevBtn" class="btn btn-secondary">← Previous</button>
-            <button id="flipBtn" class="btn btn-primary">Flip Card</button>
-            <button id="nextBtn" class="btn btn-secondary">Next →</button>
+          <div class="stat">
+            <span class="stat-label">Need Help</span>
+            <span id="helpCount" class="stat-value">0</span>
           </div>
-
-          <div class="study-actions">
-            <button id="markCorrectBtn" class="btn btn-success">
-              Correct ✓
-            </button>
-            <button id="markWrongBtn" class="btn btn-danger">Wrong ✗</button>
-            <button id="exitStudyBtn" class="btn btn-secondary">
-              Exit Study
-            </button>
-          </div>
-
-          <div class="study-stats">
-            <div class="stat-item">
-              <span class="stat-label">Correct</span>
-              <span id="correctCount" class="stat-value">0</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-label">Wrong</span>
-              <span id="wrongCount" class="stat-value">0</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-label">Accuracy</span>
-              <span id="accuracy" class="stat-value">0%</span>
-            </div>
+          <div class="stat">
+            <span class="stat-label">Hard</span>
+            <span id="hardCount" class="stat-value">0</span>
           </div>
         </div>
       </div>
-    </section>
 
-    <!-- FOOTER -->
-    <footer class="footer">
-      <p>&copy; 2024 FlashLearn. Master your learning journey.</p>
-    </footer>
+      <!-- NEW DECK MODAL -->
+      <div id="newDeckModal" class="modal hidden">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2>Create New Deck</h2>
+            <button class="btn-close" id="closeModalBtn">×</button>
+          </div>
+
+          <div class="form-group">
+            <label for="newDeckName">Deck Name</label>
+            <input
+              type="text"
+              id="newDeckName"
+              placeholder="e.g., Spanish Vocab, Biology 101"
+            />
+          </div>
+
+          <div class="modal-buttons">
+            <button id="cancelDeckBtn" class="btn-secondary">Cancel</button>
+            <button id="confirmDeckBtn" class="btn-primary">Create Deck</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- EMPTY STATE -->
+      <div id="emptyState" class="empty-state">
+        <div class="empty-content">
+          <h2>Welcome to StudyFlow</h2>
+          <p>Create your first deck to get started with powerful studying</p>
+          <button id="createFirstDeckBtn" class="btn-primary">
+            Create First Deck
+          </button>
+        </div>
+      </div>
+    </div>
 
     <script src="Flashcard.js"></script>
   </body>
