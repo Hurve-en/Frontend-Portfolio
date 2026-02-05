@@ -1,83 +1,355 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Form Validator</title>
-  <link rel="stylesheet" href="Form.css" />
-</head>
-<body>
-  <div class="container">
-    <h1>Form Validator</h1>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Premium Form Validator - Beautiful & Powerful"
+    />
+    <title>FormVault - Professional Form Validator</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- BACKGROUND ANIMATION -->
+    <div class="animated-bg">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <div class="blob blob-3"></div>
+    </div>
 
-    <form id="userForm" novalidate>
-      <!-- Full Name -->
-      <div class="form-group">
-        <label for="fullName">Full Name <span>*</span></label>
-        <input type="text" id="fullName" name="fullName" required aria-describedby="nameError" />
-        <small id="nameError" class="error-message"></small>
-      </div>
-
-      <!-- Email -->
-      <div class="form-group">
-        <label for="email">Email <span>*</span></label>
-        <input type="email" id="email" name="email" required aria-describedby="emailError" />
-        <small id="emailError" class="error-message"></small>
-      </div>
-
-      <!-- Password -->
-      <div class="form-group">
-        <label for="password">Password <span>*</span></label>
-        <div class="password-wrapper">
-          <input type="password" id="password" name="password" required aria-describedby="passwordError" />
-          <button type="button" class="toggle-password" aria-label="Show password">👁️</button>
+    <!-- NAVIGATION -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="nav-logo">
+          <span class="logo-icon">✓</span>
+          <span class="logo-text">FormVault</span>
         </div>
-        <small id="passwordError" class="error-message"></small>
-        <div id="passwordStrength" class="strength-meter"></div>
+        <ul class="nav-menu">
+          <li><a href="#features">Features</a></li>
+          <li><a href="#validator">Validator</a></li>
+          <li><a href="#rules">Rules</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero" id="home">
+      <div class="hero-content">
+        <h1 class="hero-title">
+          <span>Powerful</span>
+          <span>Form</span>
+          <span>Validation</span>
+          <span>Made</span>
+          <span>Beautiful.</span>
+        </h1>
+        <p class="hero-subtitle">
+          Real-time validation with stunning animations and instant feedback.
+          Perfect for modern web applications.
+        </p>
+        <div class="cta-buttons">
+          <a href="#validator" class="btn btn-primary">Try Now</a>
+          <a href="#features" class="btn btn-secondary">Learn More</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="form-preview">
+          <div class="preview-input"></div>
+          <div class="preview-input"></div>
+          <div class="preview-input"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES SECTION -->
+    <section class="features-section" id="features">
+      <div class="section-header">
+        <h2>Why FormVault?</h2>
+        <p>Everything you need for professional form validation</p>
       </div>
 
-      <!-- Confirm Password -->
-      <div class="form-group">
-        <label for="confirmPassword">Confirm Password <span>*</span></label>
-        <input type="password" id="confirmPassword" name="confirmPassword" required aria-describedby="confirmError" />
-        <small id="confirmError" class="error-message"></small>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>Real-Time Validation</h3>
+          <p>Instant feedback as users type. No delays, pure responsiveness.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🎨</div>
+          <h3>Beautiful Animations</h3>
+          <p>Smooth transitions and visual feedback that feels premium.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔒</div>
+          <h3>Secure</h3>
+          <p>Password strength checking and pattern validation.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📱</div>
+          <h3>Responsive</h3>
+          <p>Works perfectly on all devices and screen sizes.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- VALIDATOR SECTION -->
+    <section class="validator-section" id="validator">
+      <div class="section-header">
+        <h2>Try FormVault</h2>
+        <p>Fill out the form below and watch real-time validation in action</p>
       </div>
 
-      <!-- Age -->
-      <div class="form-group">
-        <label for="age">Age (optional)</label>
-        <input type="number" id="age" name="age" aria-describedby="ageError" />
-        <small id="ageError" class="error-message"></small>
+      <div class="validator-container">
+        <form id="validationForm" class="validation-form">
+          <!-- Full Name -->
+          <div class="form-group">
+            <label for="fullName">Full Name</label>
+            <div class="input-wrapper">
+              <input
+                type="text"
+                id="fullName"
+                name="fullName"
+                placeholder="John Doe"
+                class="form-input"
+                data-validation="name"
+              />
+              <span class="input-icon"></span>
+            </div>
+            <div class="validation-message"></div>
+          </div>
+
+          <!-- Email -->
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <div class="input-wrapper">
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="john@example.com"
+                class="form-input"
+                data-validation="email"
+              />
+              <span class="input-icon"></span>
+            </div>
+            <div class="validation-message"></div>
+          </div>
+
+          <!-- Phone -->
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <div class="input-wrapper">
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                placeholder="+1 (555) 123-4567"
+                class="form-input"
+                data-validation="phone"
+              />
+              <span class="input-icon"></span>
+            </div>
+            <div class="validation-message"></div>
+          </div>
+
+          <!-- Password -->
+          <div class="form-group">
+            <label for="password">
+              Password
+              <span class="strength-indicator">
+                <span class="strength-bar weak"></span>
+                <span class="strength-text">Too weak</span>
+              </span>
+            </label>
+            <div class="input-wrapper">
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter secure password"
+                class="form-input"
+                data-validation="password"
+              />
+              <span class="input-icon toggle-password" role="button">👁️</span>
+            </div>
+            <div class="validation-message"></div>
+            <div class="password-requirements">
+              <div class="requirement" data-requirement="length">
+                <span class="requirement-icon">○</span>
+                <span>At least 8 characters</span>
+              </div>
+              <div class="requirement" data-requirement="uppercase">
+                <span class="requirement-icon">○</span>
+                <span>One uppercase letter</span>
+              </div>
+              <div class="requirement" data-requirement="lowercase">
+                <span class="requirement-icon">○</span>
+                <span>One lowercase letter</span>
+              </div>
+              <div class="requirement" data-requirement="number">
+                <span class="requirement-icon">○</span>
+                <span>One number</span>
+              </div>
+              <div class="requirement" data-requirement="special">
+                <span class="requirement-icon">○</span>
+                <span>One special character</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <div class="input-wrapper">
+              <input
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
+                placeholder="Confirm your password"
+                class="form-input"
+                data-validation="match"
+                data-match="password"
+              />
+              <span class="input-icon"></span>
+            </div>
+            <div class="validation-message"></div>
+          </div>
+
+          <!-- Age -->
+          <div class="form-group">
+            <label for="age">Age</label>
+            <div class="input-wrapper">
+              <input
+                type="number"
+                id="age"
+                name="age"
+                placeholder="18"
+                class="form-input"
+                data-validation="age"
+                min="0"
+                max="150"
+              />
+              <span class="input-icon"></span>
+            </div>
+            <div class="validation-message"></div>
+          </div>
+
+          <!-- Website -->
+          <div class="form-group">
+            <label for="website">Website (Optional)</label>
+            <div class="input-wrapper">
+              <input
+                type="url"
+                id="website"
+                name="website"
+                placeholder="https://example.com"
+                class="form-input"
+                data-validation="url"
+                required="false"
+              />
+              <span class="input-icon"></span>
+            </div>
+            <div class="validation-message"></div>
+          </div>
+
+          <!-- Message -->
+          <div class="form-group">
+            <label for="message">Message</label>
+            <div class="input-wrapper textarea-wrapper">
+              <textarea
+                id="message"
+                name="message"
+                placeholder="Tell us something..."
+                class="form-input"
+                data-validation="text"
+                rows="4"
+              ></textarea>
+            </div>
+            <div class="validation-message"></div>
+          </div>
+
+          <!-- Agree to terms -->
+          <div class="form-group checkbox-group">
+            <label for="terms" class="checkbox-label">
+              <input
+                type="checkbox"
+                id="terms"
+                name="terms"
+                class="form-checkbox"
+                data-validation="checkbox"
+              />
+              <span>I agree to the Terms and Conditions</span>
+            </label>
+            <div class="validation-message"></div>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="btn btn-submit">
+            <span class="btn-text">Submit Form</span>
+            <span class="btn-loader"></span>
+          </button>
+        </form>
+
+        <!-- Form Status -->
+        <div id="formStatus" class="form-status hidden">
+          <div class="status-icon">✓</div>
+          <h3>Form Submitted Successfully!</h3>
+          <p>All validations passed. Your data is secure.</p>
+          <button onclick="resetForm()" class="btn btn-secondary">
+            Submit Another
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- VALIDATION RULES SECTION -->
+    <section class="rules-section" id="rules">
+      <div class="section-header">
+        <h2>Validation Rules</h2>
+        <p>Built-in validation patterns and requirements</p>
       </div>
 
-      <!-- Website -->
-      <div class="form-group">
-        <label for="website">Website (optional)</label>
-        <input type="url" id="website" name="website" aria-describedby="websiteError" />
-        <small id="websiteError" class="error-message"></small>
+      <div class="rules-grid">
+        <div class="rule-card">
+          <h4>Full Name</h4>
+          <ul>
+            <li>Minimum 2 characters</li>
+            <li>Only letters and spaces</li>
+            <li>At least first and last name</li>
+          </ul>
+        </div>
+        <div class="rule-card">
+          <h4>Email</h4>
+          <ul>
+            <li>Valid email format</li>
+            <li>Must contain @</li>
+            <li>Valid domain name</li>
+          </ul>
+        </div>
+        <div class="rule-card">
+          <h4>Phone</h4>
+          <ul>
+            <li>10+ digits</li>
+            <li>Standard phone formats</li>
+            <li>International support</li>
+          </ul>
+        </div>
+        <div class="rule-card">
+          <h4>Password</h4>
+          <ul>
+            <li>8+ characters</li>
+            <li>Mixed case letters</li>
+            <li>Numbers & special chars</li>
+          </ul>
+        </div>
       </div>
+    </section>
 
-      <!-- Terms -->
-      <div class="form-group checkbox-group">
-        <input type="checkbox" id="terms" name="terms" required aria-describedby="termsError" />
-        <label for="terms">I agree to the Terms and Conditions <span>*</span></label>
-        <small id="termsError" class="error-message"></small>
-      </div>
+    <!-- FOOTER -->
+    <footer class="footer">
+      <p>&copy; 2024 FormVault. Professional Form Validation.</p>
+    </footer>
 
-      <!-- Buttons -->
-      <div class="form-buttons">
-        <button type="submit">Submit</button>
-        <button type="reset" id="resetBtn">Reset</button>
-      </div>
-    </form>
-
-    <!-- Summary -->
-    <div id="summary" class="summary hidden" aria-live="polite"></div>
-
-    <!-- Theme toggle (optional) -->
-    <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">🌙</button>
-  </div>
-
-  <script src="Form.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
