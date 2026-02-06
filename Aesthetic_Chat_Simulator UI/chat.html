@@ -1,165 +1,108 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Aesthetic Chat Simulator</title>
-  <meta name="description" content="Aesthetic Chat Simulator — clean, calming chat UI with light/dark themes and smooth micro-interactions." />
-
-  <!-- Link CSS -->
-  <link rel="stylesheet" href="Chat.css" />
-
-  <!-- Use system font stack for speed & calm feel -->
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
-</head>
-<body class="theme-light" data-theme="light">
-
-  <div id="app" class="app" role="application" aria-label="Aesthetic Chat Simulator">
-    <!-- Left: Contacts -->
-    <aside class="panel panel-left" aria-label="Contacts panel">
-      <div class="panel-header">
-        <div class="search-wrap" role="search">
-          <input id="searchInput" class="search" type="search" placeholder="Search chats or people…" aria-label="Search chats" />
-          <button id="newChatBtn" class="icon-btn" title="New chat" aria-label="New chat">✚</button>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Aesthetic Chat Simulator" />
+    <title>ChatFlow - Beautiful Messaging App</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- MAIN CONTAINER -->
+    <div class="chat-container">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="logo">
+            <span class="logo-icon">💬</span>
+            <span class="logo-text">ChatFlow</span>
+          </div>
+          <button class="btn-new-chat" id="newChatBtn">+</button>
         </div>
-        <div class="filters" role="group" aria-label="Filters">
-          <button class="seg-btn active" data-filter="all" aria-pressed="true">All</button>
-          <button class="seg-btn" data-filter="fav" aria-pressed="false" title="Favorites">★</button>
-          <button class="seg-btn" data-filter="arch" aria-pressed="false" title="Archived">⤓</button>
-        </div>
-      </div>
 
-      <div class="contacts" id="contactsList" role="list" aria-label="Conversation list">
-        <!-- sample items inserted by JS; fallback static example -->
-        <div class="contact" role="button" tabindex="0" data-id="c-1" aria-label="Open chat with Lena">
-          <img class="avatar" src="" alt="" aria-hidden="true" />
-          <div class="meta">
-            <div class="name-row">
-              <div class="name">Babi :> </div>
-              <div class="time">2:18 PM</div>
+        <div class="search-box">
+          <input
+            type="text"
+            placeholder="Search conversations..."
+            id="searchInput"
+            class="search-input"
+          />
+          <span class="search-icon">🔍</span>
+        </div>
+
+        <div class="conversations-list" id="conversationsList">
+          <!-- Will be populated dynamically -->
+        </div>
+
+        <div class="sidebar-footer">
+          <div class="user-profile">
+            <div class="user-avatar">👤</div>
+            <div class="user-info">
+              <p class="user-name">You</p>
+              <p class="user-status">Online</p>
             </div>
-            <div class="preview">Sure — I’ll send the photos soon.</div>
           </div>
         </div>
+      </aside>
 
-        <div class="contact" role="button" tabindex="0" data-id="c-2" aria-label="Open chat with Mateo">
-          <img class="avatar" src="" alt="" aria-hidden="true" />
-          <div class="meta">
-            <div class="name-row">
-              <div class="name">Rheynel Gen</div>
-              <div class="time">Yesterday</div>
-            </div>
-            <div class="preview muted">On my way ✨</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="panel-footer">
-        <button id="openThemes" class="btn-ghost" aria-haspopup="dialog">Themes</button>
-        <button id="openSettings" class="btn-ghost">Settings</button>
-      </div>
-    </aside>
-
-    <!-- Center: Chat -->
-    <main class="panel panel-center" aria-live="polite">
-      <header class="chat-header" id="chatHeader" aria-hidden="true">
-        <div class="chat-left">
-          <button id="backBtn" class="icon-btn subtle" title="Back to list" aria-label="Back">←</button>
-          <img id="chatAvatar" class="avatar-lg" src="" alt="" />
-          <div class="chat-meta">
-            <div id="chatName" class="chat-name">Select a chat</div>
-            <div id="chatStatus" class="chat-status">—</div>
+      <!-- CHAT AREA -->
+      <main class="chat-area">
+        <!-- NO CHAT SELECTED -->
+        <div id="noChatSelected" class="no-chat-selected">
+          <div class="empty-state">
+            <div class="empty-icon">💬</div>
+            <h2>Select a conversation</h2>
+            <p>Choose a chat to start messaging</p>
           </div>
         </div>
 
-        <div class="chat-actions">
-          <button class="icon-btn" title="Favorite">☆</button>
-          <button class="icon-btn" title="Archive">⤓</button>
-          <button id="presentToggle" class="btn-ghost" aria-pressed="false">Present</button>
+        <!-- ACTIVE CHAT -->
+        <div id="activeChat" class="active-chat hidden">
+          <!-- CHAT HEADER -->
+          <div class="chat-header">
+            <div class="header-info">
+              <div class="header-avatar" id="headerAvatar">👤</div>
+              <div class="header-details">
+                <h3 id="chatTitle">Chat Title</h3>
+                <p id="chatStatus" class="chat-status">Online</p>
+              </div>
+            </div>
+            <div class="header-actions">
+              <button class="icon-btn">📞</button>
+              <button class="icon-btn">📹</button>
+              <button class="icon-btn">ℹ️</button>
+            </div>
+          </div>
+
+          <!-- DIVIDER -->
+          <div class="divider"></div>
+
+          <!-- MESSAGES AREA -->
+          <div class="messages-area" id="messagesArea">
+            <!-- Messages will be populated here -->
+          </div>
+
+          <!-- MESSAGE INPUT -->
+          <div class="message-input-area">
+            <div class="input-actions">
+              <button class="action-btn" title="Attach file">📎</button>
+              <button class="action-btn" title="Emoji">😊</button>
+            </div>
+
+            <div class="input-wrapper">
+              <input
+                type="text"
+                id="messageInput"
+                class="message-input"
+                placeholder="Type a message..."
+              />
+              <button class="send-btn" id="sendBtn">➤</button>
+            </div>
+          </div>
         </div>
-      </header>
+      </main>
+    </div>
 
-      <section id="messagesWrap" class="messages-wrap" tabindex="0" aria-label="Messages">
-        <!-- messages appended by JS -->
-        <div class="messages-empty">Open a conversation to start chatting — gentle practice messages included.</div>
-      </section>
-
-      <div class="composer" aria-label="Message composer">
-        <button id="emojiBtn" class="icon-btn" aria-label="Insert emoji">😊</button>
-        <input id="composerInput" class="composer-input" type="text" placeholder="Type a message…" aria-label="Message input" />
-        <button id="attachBtn" class="icon-btn" title="Attach">⤓</button>
-        <button id="sendBtn" class="btn-primary" aria-label="Send message">Send</button>
-      </div>
-    </main>
-
-    <!-- Right: Themes / Settings -->
-    <aside class="panel panel-right" aria-label="Theme and settings">
-      <div class="panel-scroll">
-        <section id="themesPanel" class="themes-panel" aria-hidden="false">
-          <h3 class="panel-title">Themes</h3>
-          <div class="theme-grid" id="themeGrid" role="list">
-            <!-- theme cards created by JS -->
-          </div>
-        </section>
-
-        <section id="settingsPanel" class="settings-panel" aria-hidden="true">
-          <h3 class="panel-title">Settings</h3>
-
-          <div class="setting-row">
-            <div>
-              <div class="label">Notifications</div>
-              <div class="desc">Sound & desktop notifications</div>
-            </div>
-            <div><label class="switch"><input type="checkbox" id="notifToggle" checked /><span></span></label></div>
-          </div>
-
-          <div class="setting-row">
-            <div>
-              <div class="label">Show animations</div>
-              <div class="desc">Enable subtle motion</div>
-            </div>
-            <div><label class="switch"><input type="checkbox" id="animToggle" checked /><span></span></label></div>
-          </div>
-
-          <div class="setting-row">
-            <div>
-              <div class="label">Bubble style</div>
-              <div class="desc">Soft / Rounded</div>
-            </div>
-            <div>
-              <select id="bubbleStyle">
-                <option value="soft">Soft</option>
-                <option value="pill">Pill</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="setting-row">
-            <div>
-              <div class="label">Font size</div>
-              <div class="desc">Adjust text size</div>
-            </div>
-            <div>
-              <select id="fontSize">
-                <option value="14">14px</option>
-                <option value="15" selected>15px</option>
-                <option value="16">16px</option>
-                <option value="18">18px</option>
-              </select>
-            </div>
-          </div>
-
-          <div style="height:16px"></div>
-          <button id="saveSettings" class="btn-primary full">Save</button>
-        </section>
-      </div>
-    </aside>
-  </div>
-
-  <!-- Minimal icons: Inline SVG sprite for small icons (optional) -->
-  <!-- Scripts -->
-  <script src="Chat.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
-
