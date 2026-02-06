@@ -7,43 +7,43 @@ const conversations = [
   {
     id: 1,
     name: "Keziah",
-    avatar: "👨‍💼",
+    avatar: "",
     status: "Online",
     lastMessage: "That sounds amazing! Let me know when you're free",
     timestamp: "2 min ago",
     messages: [
       {
         sender: "Keziah",
-        avatar: "👨‍💼",
-        text: "Hey! How's your day going?",
+        avatar: "",
+        text: "Morning Babi :) How are you doing?",
         timestamp: "10:30 AM",
         own: false,
       },
       {
         sender: "You",
         avatar: "👤",
-        text: "Pretty good! Just finished a project",
+        text: "MORNING WORNING!!! Just finished a project",
         timestamp: "10:32 AM",
         own: true,
       },
       {
         sender: "Keziah",
-        avatar: "👨‍💼",
-        text: "Oh nice! What kind of project?",
+        avatar: "",
+        text: "Wow Onsa man na Project?",
         timestamp: "10:33 AM",
         own: false,
       },
       {
         sender: "You",
         avatar: "👤",
-        text: "A web design portfolio with animations",
+        text: "Himo ko Robot paras ako Lobot",
         timestamp: "10:34 AM",
         own: true,
       },
       {
         sender: "Keziah",
-        avatar: "👨‍💼",
-        text: "That sounds amazing! Let me know when you're free",
+        avatar: "",
+        text: "Bruh",
         timestamp: "10:35 AM",
         own: false,
       },
@@ -52,14 +52,14 @@ const conversations = [
   {
     id: 2,
     name: "Rheynel",
-    avatar: "👩‍💻",
+    avatar: "",
     status: "Online",
     lastMessage: "Let's grab coffee tomorrow!",
     timestamp: "1 hour ago",
     messages: [
       {
         sender: "Rheynel",
-        avatar: "👩‍💻",
+        avatar: "",
         text: "Good morning! ☀️",
         timestamp: "9:00 AM",
         own: false,
@@ -73,7 +73,7 @@ const conversations = [
       },
       {
         sender: "Rheynel",
-        avatar: "👩‍💻",
+        avatar: "",
         text: "Wanna catch up soon?",
         timestamp: "9:20 AM",
         own: false,
@@ -87,7 +87,7 @@ const conversations = [
       },
       {
         sender: "Rheynel",
-        avatar: "👩‍💻",
+        avatar: "",
         text: "Let's grab coffee tomorrow!",
         timestamp: "9:30 AM",
         own: false,
@@ -97,14 +97,14 @@ const conversations = [
   {
     id: 3,
     name: "Aj",
-    avatar: "👨‍🎨",
+    avatar: "",
     status: "Away",
     lastMessage: "Check out the new design mockups!",
     timestamp: "30 min ago",
     messages: [
       {
         sender: "Aj",
-        avatar: "👨‍🎨",
+        avatar: "",
         text: "Just finished something cool",
         timestamp: "11:00 AM",
         own: false,
@@ -118,7 +118,7 @@ const conversations = [
       },
       {
         sender: "Aj",
-        avatar: "👨‍🎨",
+        avatar: "",
         text: "Check out the new design mockups!",
         timestamp: "11:10 AM",
         own: false,
@@ -135,14 +135,14 @@ const conversations = [
   {
     id: 4,
     name: "Kendall",
-    avatar: "👩‍🚀",
+    avatar: "",
     status: "Online",
     lastMessage: "The meeting is at 3 PM",
     timestamp: "Just now",
     messages: [
       {
         sender: "Kendall",
-        avatar: "👩‍🚀",
+        avatar: "",
         text: "Don't forget about the meeting",
         timestamp: "12:30 PM",
         own: false,
@@ -156,7 +156,7 @@ const conversations = [
       },
       {
         sender: "Kendall",
-        avatar: "👩‍🚀",
+        avatar: "",
         text: "The meeting is at 3 PM",
         timestamp: "12:32 PM",
         own: false,
