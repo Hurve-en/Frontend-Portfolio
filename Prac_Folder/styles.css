@@ -19,7 +19,6 @@
   --purple: #a435f0;
   --purple-dark: #8710d8;
   --yellow: #e59819;
-  --yellow-light: #f4d078;
   --badge-bg: #eceb98;
   --badge-text: #3d3d3d;
   --header-h: 64px;
@@ -48,12 +47,12 @@ header {
   height: var(--header-h);
   display: flex;
   align-items: center;
-  padding: 0 24px;
-  gap: 16px;
+  padding: 0 32px;
+  gap: 20px;
 }
 
 .logo {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 900;
   color: var(--black);
   letter-spacing: -1px;
@@ -80,6 +79,7 @@ nav.categories:hover {
 
 .search-bar {
   flex: 1;
+  max-width: 680px;
   display: flex;
   align-items: center;
   border: 1px solid var(--black);
@@ -92,7 +92,7 @@ nav.categories:hover {
   flex: 1;
   border: none;
   outline: none;
-  padding: 10px 16px;
+  padding: 11px 18px;
   font-size: 14px;
   background: transparent;
 }
@@ -101,7 +101,7 @@ nav.categories:hover {
   background: var(--black);
   color: var(--white);
   border: none;
-  padding: 10px 20px;
+  padding: 11px 22px;
   cursor: pointer;
   font-size: 16px;
   display: flex;
@@ -109,9 +109,10 @@ nav.categories:hover {
 }
 
 .header-actions {
+  margin-left: auto;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
 
 .header-actions a {
@@ -124,7 +125,7 @@ nav.categories:hover {
 
 .btn-outline {
   border: 1.5px solid var(--black);
-  padding: 8px 14px;
+  padding: 8px 16px;
   border-radius: 4px;
   font-weight: 700;
   cursor: pointer;
@@ -136,7 +137,7 @@ nav.categories:hover {
   background: var(--purple);
   color: var(--white) !important;
   border: none;
-  padding: 9px 14px;
+  padding: 9px 16px;
   border-radius: 4px;
   font-weight: 700;
   cursor: pointer;
@@ -152,7 +153,7 @@ nav.categories:hover {
 .cart-icon .badge {
   position: absolute;
   top: -6px;
-  right: -6px;
+  right: -7px;
   background: var(--purple);
   color: var(--white);
   border-radius: 50%;
@@ -171,20 +172,20 @@ nav.categories:hover {
 main {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 32px 24px;
+  padding: 36px 40px;
 }
 
 /* ══════════════════════════════════════
    RECOMMENDATIONS SECTION
 ══════════════════════════════════════ */
 .recommendations {
-  margin-bottom: 28px;
+  margin-bottom: 30px;
 }
 
 .recommendations h1 {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 700;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
   color: var(--black);
 }
 
@@ -196,14 +197,14 @@ main {
 .pills {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 9px;
 }
 
 .pill {
   background: var(--white);
   border: 1px solid var(--black);
   border-radius: 20px;
-  padding: 6px 14px;
+  padding: 7px 16px;
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
@@ -225,13 +226,13 @@ main {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: 24px;
+  margin-bottom: 10px;
 }
 
 .filter-btn {
   border: 1px solid var(--gray-light);
   background: var(--white);
-  padding: 7px 14px;
+  padding: 8px 16px;
   border-radius: 4px;
   font-size: 13px;
   cursor: pointer;
@@ -255,88 +256,73 @@ main {
 .results-info {
   font-size: 13px;
   color: var(--gray-mid);
-  margin-bottom: 20px;
+  margin-bottom: 22px;
+  margin-top: 12px;
 }
 
 /* ══════════════════════════════════════
-   CARDS GRID
+   CARDS GRID — single card, left-aligned
 ══════════════════════════════════════ */
 .cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 20px;
+  display: flex;
 }
 
 /* ══════════════════════════════════════
    INDIVIDUAL CARD
 ══════════════════════════════════════ */
 .card {
+  width: 300px;
   border: 1px solid var(--gray-light);
   border-radius: 4px;
   overflow: hidden;
   background: var(--white);
   display: flex;
   flex-direction: column;
-  transition:
-    box-shadow 0.2s,
-    transform 0.2s;
-  cursor: pointer;
-}
-
-.card:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  transform: translateY(-2px);
 }
 
 .card-image {
   width: 100%;
-  aspect-ratio: 16 / 9;
+  height: 160px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 36px;
+  font-size: 28px;
   font-weight: 800;
-  color: rgba(255, 255, 255, 0.7);
-  letter-spacing: -1px;
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .card-body {
-  padding: 12px;
+  padding: 10px 12px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 5px;
   flex: 1;
 }
 
 .card-title {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
   color: var(--black);
-  line-height: 1.3;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  line-height: 1.35;
 }
 
 .card-desc {
   font-size: 12px;
   color: var(--gray-mid);
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  line-height: 1.45;
 }
 
 .card-instructor {
   font-size: 11px;
   color: var(--gray-mid);
+  margin-top: 1px;
 }
 
 .rating-row {
   display: flex;
   align-items: center;
   gap: 5px;
+  margin-top: 3px;
 }
 
 .rating-score {
@@ -366,6 +352,7 @@ main {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  margin-top: 2px;
 }
 
 .card-meta span {
@@ -379,16 +366,17 @@ main {
   color: var(--badge-text);
   font-size: 11px;
   font-weight: 700;
-  padding: 2px 8px;
+  padding: 3px 8px;
   border-radius: 3px;
   display: inline-block;
+  margin-top: 2px;
 }
 
 .price-row {
   display: flex;
   align-items: baseline;
   gap: 8px;
-  margin-top: auto;
+  margin-top: 6px;
 }
 
 .price-current {
@@ -404,7 +392,7 @@ main {
 }
 
 .btn-cart {
-  margin: 0 12px 12px;
+  margin: 8px 12px 12px;
   background: var(--purple);
   color: var(--white);
   border: none;
@@ -413,35 +401,8 @@ main {
   font-weight: 700;
   border-radius: 4px;
   cursor: pointer;
-  transition: background 0.15s;
 }
 
 .btn-cart:hover {
   background: var(--purple-dark);
-}
-
-/* ══════════════════════════════════════
-   RESPONSIVE
-══════════════════════════════════════ */
-@media (max-width: 600px) {
-  header {
-    padding: 0 12px;
-    gap: 10px;
-  }
-
-  nav.categories {
-    display: none;
-  }
-
-  .header-actions a:not(.btn-purple) {
-    display: none;
-  }
-
-  main {
-    padding: 20px 12px;
-  }
-
-  .cards-grid {
-    grid-template-columns: 1fr;
-  }
 }
