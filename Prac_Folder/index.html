@@ -8,22 +8,25 @@
       href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css"
       rel="stylesheet"
     />
-    <link href="styles.css" rel="stylesheet" />
+    <link href="style.css" rel="stylesheet" />
   </head>
   <body>
     <!-- HEADER -->
     <header>
-      <a class="logo" href="#">u<span>d</span>emy</a>
+      <a class="logo" href="#">udemy</a>
 
-      <nav class="categories">Explore <i class="ri-arrow-down-s-line"></i></nav>
+      <div class="header-nav">
+        <a href="#">Explore</a>
+        <a href="#">Subscribe</a>
+      </div>
 
       <div class="search-bar">
+        <i class="ri-search-line"></i>
         <input
           type="text"
           placeholder="Search for anything"
           value="web development"
         />
-        <button><i class="ri-search-line"></i></button>
       </div>
 
       <div class="header-actions">
@@ -35,58 +38,59 @@
         </div>
         <a href="#" class="btn-outline">Log in</a>
         <a href="#" class="btn-purple">Sign up</a>
+        <div class="globe-icon">
+          <i class="ri-global-line"></i>
+        </div>
       </div>
     </header>
 
+    <!-- RECOMMENDATIONS BANNER -->
+    <div class="recommendations-banner">
+      <p>Recommended in <strong>web development</strong></p>
+      <div class="pills">
+        <span class="pill"><i class="ri-arrow-right-line"></i> React</span>
+        <span class="pill"
+          ><i class="ri-arrow-right-line"></i> Front-End Development</span
+        >
+        <span class="pill"><i class="ri-arrow-right-line"></i> MERN Stack</span>
+        <span class="pill"
+          ><i class="ri-arrow-right-line"></i> Python and Django Framework</span
+        >
+      </div>
+    </div>
+
     <!-- MAIN -->
     <main>
-      <!-- RECOMMENDATIONS -->
-      <section class="recommendations">
-        <h1>Recommended for "Web Development"</h1>
-        <div class="pills">
-          <span class="pill active">Web Development</span>
-          <span class="pill">JavaScript</span>
-          <span class="pill">HTML &amp; CSS</span>
-          <span class="pill">React</span>
-          <span class="pill">Node.js</span>
-          <span class="pill">Python</span>
-          <span class="pill">Full Stack</span>
-          <span class="pill">Bootstrap</span>
-          <span class="pill">Vue.js</span>
-        </div>
-      </section>
-
       <!-- FILTERS -->
-      <div class="filters">
+      <div class="filters-row">
         <button class="filter-btn">
-          Filter <i class="ri-equalizer-line"></i>
+          <i class="ri-equalizer-line"></i> All filters
         </button>
         <button class="filter-btn">
-          Ratings <i class="ri-arrow-down-s-line"></i>
+          <i class="ri-question-line"></i> Quizzes
         </button>
         <button class="filter-btn">
-          Video Duration <i class="ri-arrow-down-s-line"></i>
+          <i class="ri-code-s-slash-line"></i> Coding Exercises
         </button>
         <button class="filter-btn">
-          Topic <i class="ri-arrow-down-s-line"></i>
+          <i class="ri-pencil-line"></i> Practice Tests
         </button>
         <button class="filter-btn">
-          Level <i class="ri-arrow-down-s-line"></i>
+          <i class="ri-group-line"></i> Role Plays
         </button>
         <button class="filter-btn">
           Language <i class="ri-arrow-down-s-line"></i>
         </button>
         <button class="filter-btn">
-          Price <i class="ri-arrow-down-s-line"></i>
+          Ratings <i class="ri-arrow-down-s-line"></i>
         </button>
         <button class="filter-btn">
-          Features <i class="ri-arrow-down-s-line"></i>
+          Level <i class="ri-arrow-down-s-line"></i>
         </button>
+        <span class="sort-label"
+          >Most Relevant <i class="ri-arrow-down-s-line"></i
+        ></span>
       </div>
-
-      <p class="results-info">
-        10,000+ results for <strong>web development</strong>
-      </p>
 
       <!-- COURSE CARDS -->
       <div class="cards-grid">
@@ -107,7 +111,8 @@
               Node.js, and more. Fully updated for 2024.
             </p>
             <p class="card-instructor">Andrei Neagoie</p>
-            <div class="rating-row">
+            <div class="card-tags">
+              <span class="badge-bestseller">Bestseller</span>
               <span class="rating-score">4.7</span>
               <div class="stars">
                 <i class="ri-star-fill"></i>
@@ -116,20 +121,23 @@
                 <i class="ri-star-fill"></i>
                 <i class="ri-star-half-fill"></i>
               </div>
-              <span class="rating-count">(98,453)</span>
+              <span class="rating-count">464,943 ratings</span>
             </div>
             <div class="card-meta">
-              <span><i class="ri-time-line"></i> 52.5 total hours</span>
-              <span><i class="ri-book-open-line"></i> 338 lectures</span>
-              <span><i class="ri-bar-chart-line"></i> All Levels</span>
+              <span>62 total hours</span>
+              <span class="meta-sep">|</span>
+              <span>374 lectures</span>
+              <span class="meta-sep">|</span>
+              <span>All Levels</span>
             </div>
-            <span class="badge-bestseller">Bestseller</span>
+          </div>
+          <div class="card-footer">
             <div class="price-row">
               <span class="price-current">&#8369;549</span>
               <span class="price-old">&#8369;3,199</span>
             </div>
+            <button class="btn-cart">Add to cart</button>
           </div>
-          <button class="btn-cart">Add to cart</button>
         </div>
       </div>
     </main>
