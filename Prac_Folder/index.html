@@ -3,135 +3,180 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Udemy - Search Results</title>
+    <title>Udemy - Web Development Courses</title>
     <link
-      href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css"
+      href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
       rel="stylesheet"
     />
-    <link href="style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <!-- HEADER -->
+    <!-- ===== HEADER ===== -->
     <header>
-      <a class="logo" href="#">udemy</a>
+      <div class="logo">udemy</div>
 
-      <nav class="categories">Explore <i class="ri-arrow-down-s-line"></i></nav>
+      <nav class="nav-links">
+        <a href="#">Explore</a>
+        <a href="#">Subscribe</a>
+      </nav>
 
       <div class="search-bar">
-        <input
-          type="text"
-          placeholder="Search for anything"
-          value="web development"
-        />
-        <button><i class="ri-search-line"></i></button>
+        <i class="ri-search-line"></i>
+        <input type="text" placeholder="Search for anything" />
       </div>
 
-      <div class="header-actions">
+      <div class="header-right">
         <a href="#">Udemy Business</a>
         <a href="#">Teach on Udemy</a>
-        <div class="cart-icon">
-          <i class="ri-shopping-cart-line"></i>
-          <span class="badge">3</span>
-        </div>
-        <a href="#" class="btn-outline">Log in</a>
-        <a href="#" class="btn-purple">Sign up</a>
+        <i class="ri-shopping-cart-line icon-cart"></i>
+        <button class="btn-login">Log in</button>
+        <button class="btn-signup">Sign up</button>
       </div>
     </header>
 
-    <!-- MAIN -->
-    <main>
-      <!-- RECOMMENDATIONS -->
+    <!-- ===== PAGE CONTENT WRAPPER ===== -->
+    <div class="page-content">
+      <!-- ===== RECOMMENDATIONS ===== -->
       <section class="recommendations">
-        <h1>Recommended for "Web Development"</h1>
+        <h2>Recommended in <strong>web development</strong></h2>
         <div class="pills">
-          <span class="pill active">Web Development</span>
-          <span class="pill">JavaScript</span>
-          <span class="pill">HTML &amp; CSS</span>
-          <span class="pill">React</span>
-          <span class="pill">Node.js</span>
-          <span class="pill">Python</span>
-          <span class="pill">Full Stack</span>
-          <span class="pill">Bootstrap</span>
-          <span class="pill">Vue.js</span>
+          <a class="pill" href="#"
+            ><i class="ri-arrow-right-s-line"></i> React</a
+          >
+          <a class="pill" href="#"
+            ><i class="ri-arrow-right-s-line"></i> Front-End Development</a
+          >
+          <a class="pill" href="#"
+            ><i class="ri-arrow-right-s-line"></i> MERN Stack</a
+          >
+          <a class="pill" href="#"
+            ><i class="ri-arrow-right-s-line"></i> Python and Django
+            Framework</a
+          >
         </div>
       </section>
 
-      <!-- FILTERS -->
+      <!-- ===== FILTERS ===== -->
       <div class="filters">
         <button class="filter-btn">
-          Filter <i class="ri-equalizer-line"></i>
+          <i class="ri-equalizer-line"></i> All filters
         </button>
         <button class="filter-btn">
-          Ratings <i class="ri-arrow-down-s-line"></i>
+          <i class="ri-questionnaire-line"></i> Quizzes
         </button>
         <button class="filter-btn">
-          Video Duration <i class="ri-arrow-down-s-line"></i>
+          <i class="ri-code-s-slash-line"></i> Coding Exercises
         </button>
         <button class="filter-btn">
-          Topic <i class="ri-arrow-down-s-line"></i>
+          <i class="ri-edit-line"></i> Practice Tests
         </button>
         <button class="filter-btn">
-          Level <i class="ri-arrow-down-s-line"></i>
+          <i class="ri-group-line"></i> Role Plays
         </button>
         <button class="filter-btn">
           Language <i class="ri-arrow-down-s-line"></i>
         </button>
         <button class="filter-btn">
-          Price <i class="ri-arrow-down-s-line"></i>
+          Ratings <i class="ri-arrow-down-s-line"></i>
         </button>
         <button class="filter-btn">
-          Features <i class="ri-arrow-down-s-line"></i>
+          Level <i class="ri-arrow-down-s-line"></i>
         </button>
-      </div>
-
-      <p class="results-info">
-        10,000+ results for <strong>web development</strong>
-      </p>
-
-      <!-- COURSE CARDS -->
-      <div class="cards-grid">
-        <!-- CARD 1 -->
-        <div class="card">
-          <div
-            class="card-image"
-            style="background: linear-gradient(135deg, #1a1a2e, #16213e)"
-          >
-            HTML &amp; CSS
-          </div>
-          <div class="card-body">
-            <p class="card-title">
-              The Complete Web Developer in 2024: Zero to Mastery
-            </p>
-            <p class="card-desc">
-              Become a web developer, learn HTML, CSS, JavaScript, React,
-              Node.js, and more. Fully updated for 2024.
-            </p>
-            <p class="card-instructor">Andrei Neagoie</p>
-            <div class="rating-row">
-              <span class="rating-score">4.7</span>
-              <div class="stars">
-                <i class="ri-star-fill"></i>
-                <i class="ri-star-fill"></i>
-                <i class="ri-star-fill"></i>
-                <i class="ri-star-fill"></i>
-                <i class="ri-star-half-fill"></i>
-              </div>
-              <span class="rating-count">(98,453)</span>
-            </div>
-            <div class="card-meta">
-              <span><i class="ri-time-line"></i> 52.5 total hours</span>
-              <span><i class="ri-book-open-line"></i> 338 lectures</span>
-              <span><i class="ri-bar-chart-line"></i> All Levels</span>
-            </div>
-            <span class="badge-bestseller">Bestseller</span>
-            <div class="price-row">
-              <span class="price-current">&#8369;549</span>
-              <span class="price-old">&#8369;3,199</span>
-            </div>
-          </div>
-          <button class="btn-cart">Add to cart</button>
+        <div class="filter-sort">
+          Most Relevant <i class="ri-arrow-down-s-line"></i>
         </div>
       </div>
-    </main>
+
+      <!-- ===== COURSE CARDS ===== -->
+      <section class="course-grid">
+        <!-- Card 1 -->
+        <div class="card">
+          <div class="card-image" style="background: #dbeafe"></div>
+          <div class="card-body">
+            <div class="card-title">Course Title Here</div>
+            <div class="card-description">
+              Short description of the course goes here.
+            </div>
+            <div class="card-instructor">Instructor Name</div>
+            <div class="card-rating">
+              <span class="rating-score">0.0</span>
+              <span class="stars">★★★★★</span>
+              <span class="rating-count">(0 ratings)</span>
+            </div>
+            <div class="card-meta">
+              <span class="meta-tag">0 total hours</span>
+              <span class="meta-tag">0 lectures</span>
+              <span class="meta-tag">All Levels</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="price-block">
+              <span class="price-current">₱0</span>
+              <span class="price-old">₱0</span>
+            </div>
+            <button class="btn-add">Add to cart</button>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card">
+          <div class="card-image" style="background: #ede9fe"></div>
+          <div class="card-body">
+            <div class="card-title">Course Title Here</div>
+            <div class="card-description">
+              Short description of the course goes here.
+            </div>
+            <div class="card-instructor">Instructor Name</div>
+            <div class="card-rating">
+              <span class="rating-score">0.0</span>
+              <span class="stars">★★★★★</span>
+              <span class="rating-count">(0 ratings)</span>
+            </div>
+            <div class="card-meta">
+              <span class="meta-tag">0 total hours</span>
+              <span class="meta-tag">0 lectures</span>
+              <span class="meta-tag">All Levels</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="price-block">
+              <span class="price-current">₱0</span>
+              <span class="price-old">₱0</span>
+            </div>
+            <button class="btn-add">Add to cart</button>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card">
+          <div class="card-image" style="background: #fee2e2"></div>
+          <div class="card-body">
+            <div class="card-title">Course Title Here</div>
+            <div class="card-description">
+              Short description of the course goes here.
+            </div>
+            <div class="card-instructor">Instructor Name</div>
+            <div class="card-rating">
+              <span class="rating-score">0.0</span>
+              <span class="stars">★★★★★</span>
+              <span class="rating-count">(0 ratings)</span>
+            </div>
+            <div class="card-meta">
+              <span class="meta-tag">0 total hours</span>
+              <span class="meta-tag">0 lectures</span>
+              <span class="meta-tag">All Levels</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="price-block">
+              <span class="price-current">₱0</span>
+              <span class="price-old">₱0</span>
+            </div>
+            <button class="btn-add">Add to cart</button>
+          </div>
+        </div>
+      </section>
+    </div>
+    <!-- end .page-content -->
   </body>
 </html>
