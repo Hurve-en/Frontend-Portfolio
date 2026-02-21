@@ -1,3 +1,6 @@
+/* ===== GOOGLE FONT ===== */
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,900;1,9..40,400&display=swap");
+
 /* ===== RESET ===== */
 * {
   margin: 0;
@@ -5,20 +8,23 @@
   box-sizing: border-box;
 }
 
+/* ===== BASE — MOBILE FIRST ===== */
 body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "DM Sans", sans-serif;
   background: #fff;
   color: #1c1d1f;
   font-size: 14px;
 }
 
-/* ===== HEADER ===== */
+/* =============================
+   HEADER
+   ============================= */
 header {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 0 24px;
-  height: 60px;
+  gap: 10px;
+  padding: 0 16px;
+  height: 56px;
   border-bottom: 1px solid #d1d7dc;
   background: #fff;
   position: sticky;
@@ -26,33 +32,30 @@ header {
   z-index: 100;
 }
 
-/* Logo — all black */
+/* Logo */
 .logo {
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   font-weight: 900;
   color: #1c1d1f;
   letter-spacing: -1.5px;
   white-space: nowrap;
-  text-decoration: none;
   flex-shrink: 0;
 }
 
-/* Nav links */
+/* Nav — hidden on mobile */
 .nav-links {
-  display: flex;
-  gap: 4px;
-  white-space: nowrap;
-  flex-shrink: 0;
+  display: none;
 }
 
 .nav-links a {
   text-decoration: none;
   color: #1c1d1f;
   font-size: 0.88rem;
-  font-weight: 400;
+  font-weight: 500;
   padding: 6px 10px;
   border-radius: 4px;
   transition: background 0.15s;
+  white-space: nowrap;
 }
 
 .nav-links a:hover {
@@ -66,9 +69,9 @@ header {
   align-items: center;
   border: 1.5px solid #1c1d1f;
   border-radius: 25px;
-  padding: 0 16px;
-  gap: 10px;
-  height: 44px;
+  padding: 0 14px;
+  gap: 8px;
+  height: 40px;
   background: #fff;
   min-width: 0;
 }
@@ -82,7 +85,8 @@ header {
 .search-bar input {
   border: none;
   outline: none;
-  font-size: 0.9rem;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.88rem;
   width: 100%;
   color: #1c1d1f;
   background: transparent;
@@ -96,19 +100,21 @@ header {
 .header-right {
   display: flex;
   align-items: center;
-  gap: 10px;
-  white-space: nowrap;
+  gap: 8px;
   flex-shrink: 0;
 }
 
-.header-right a {
+/* Business + Teach links — hidden on mobile */
+.header-right .nav-text {
+  display: none;
   text-decoration: none;
   font-size: 0.82rem;
+  font-weight: 500;
   color: #1c1d1f;
   white-space: nowrap;
 }
 
-.header-right a:hover {
+.header-right .nav-text:hover {
   color: #5624d0;
 }
 
@@ -119,9 +125,11 @@ header {
 }
 
 .btn-login {
+  display: none;
   border: 1.5px solid #1c1d1f;
-  padding: 8px 14px;
+  padding: 7px 14px;
   border-radius: 4px;
+  font-family: "DM Sans", sans-serif;
   font-size: 0.82rem;
   font-weight: 700;
   color: #1c1d1f;
@@ -137,8 +145,9 @@ header {
 
 .btn-signup {
   border: 1.5px solid #1c1d1f;
-  padding: 8px 14px;
+  padding: 7px 14px;
   border-radius: 4px;
+  font-family: "DM Sans", sans-serif;
   font-size: 0.82rem;
   font-weight: 700;
   color: #fff;
@@ -152,23 +161,26 @@ header {
   background: #3d3d3d;
 }
 
-/* ===== PAGE WRAPPER ===== */
+/* =============================
+   PAGE WRAPPER — mobile first
+   ============================= */
 .page-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 24px;
+  width: 100%;
+  padding: 0 16px;
 }
 
-/* ===== RECOMMENDATIONS ===== */
+/* =============================
+   RECOMMENDATIONS
+   ============================= */
 .recommendations {
-  padding: 24px 0 0;
+  padding: 20px 0 0;
 }
 
 .recommendations h2 {
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 400;
   color: #1c1d1f;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 .recommendations h2 strong {
@@ -187,28 +199,31 @@ header {
   gap: 4px;
   border: 1px solid #1c1d1f;
   border-radius: 25px;
-  padding: 5px 14px;
-  font-size: 0.82rem;
+  padding: 5px 12px;
+  font-size: 0.8rem;
   font-weight: 500;
   cursor: pointer;
   color: #1c1d1f;
   text-decoration: none;
-  transition: background 0.15s;
   white-space: nowrap;
+  transition: background 0.15s;
 }
 
 .pill:hover {
   background: #f7f9fa;
 }
 
-/* ===== FILTERS ===== */
+/* =============================
+   FILTERS
+   ============================= */
 .filters {
   display: flex;
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
-  padding: 18px 0 16px;
+  padding: 16px 0 14px;
   border-bottom: 1px solid #d1d7dc;
+  overflow-x: auto;
 }
 
 .filter-btn {
@@ -217,7 +232,8 @@ header {
   gap: 5px;
   border: 1px solid #6a6f73;
   border-radius: 25px;
-  padding: 6px 14px;
+  padding: 5px 12px;
+  font-family: "DM Sans", sans-serif;
   font-size: 0.8rem;
   font-weight: 400;
   color: #1c1d1f;
@@ -225,6 +241,7 @@ header {
   cursor: pointer;
   transition: background 0.15s;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .filter-btn:hover {
@@ -232,7 +249,7 @@ header {
 }
 
 .filter-btn i {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: #6a6f73;
 }
 
@@ -246,17 +263,22 @@ header {
   cursor: pointer;
   color: #1c1d1f;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
-/* ===== COURSE GRID ===== */
+/* =============================
+   COURSE GRID — 1 col on mobile
+   ============================= */
 .course-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr;
   gap: 16px;
-  padding: 20px 0 60px;
+  padding: 20px 0 48px;
 }
 
-/* ===== COURSE CARD ===== */
+/* =============================
+   COURSE CARD
+   ============================= */
 .card {
   border: 1px solid #d1d7dc;
   border-radius: 4px;
@@ -269,10 +291,9 @@ header {
 }
 
 .card:hover {
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.14);
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.12);
 }
 
-/* Card image */
 .card-image {
   width: 100%;
   aspect-ratio: 16 / 9;
@@ -287,7 +308,6 @@ header {
   display: block;
 }
 
-/* Card body */
 .card-body {
   padding: 12px 14px;
   display: flex;
@@ -297,31 +317,28 @@ header {
 }
 
 .card-title {
-  font-size: 0.92rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: #1c1d1f;
   line-height: 1.35;
 }
 
 .card-description {
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   color: #6a6f73;
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
 .card-instructor {
-  font-size: 0.74rem;
+  font-size: 0.76rem;
   color: #6a6f73;
-  margin-top: 2px;
 }
 
-/* Rating */
 .card-rating {
   display: flex;
   align-items: center;
   gap: 4px;
-  font-size: 0.78rem;
-  margin-top: 2px;
+  font-size: 0.8rem;
 }
 
 .rating-score {
@@ -331,7 +348,7 @@ header {
 
 .stars {
   color: #e59819;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   letter-spacing: 1px;
 }
 
@@ -339,24 +356,22 @@ header {
   color: #6a6f73;
 }
 
-/* Meta tags */
 .card-meta {
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
 .meta-tag {
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   color: #6a6f73;
   background: #f7f9fa;
   border: 1px solid #d1d7dc;
   border-radius: 20px;
-  padding: 2px 9px;
+  padding: 2px 10px;
 }
 
-/* Card footer */
 .card-footer {
   padding: 10px 14px 12px;
   display: flex;
@@ -379,7 +394,7 @@ header {
 }
 
 .price-old {
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   color: #6a6f73;
   text-decoration: line-through;
 }
@@ -387,8 +402,9 @@ header {
 .btn-add {
   border: 1.5px solid #a435f0;
   border-radius: 4px;
-  padding: 7px 12px;
-  font-size: 0.78rem;
+  padding: 7px 14px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.8rem;
   font-weight: 700;
   color: #a435f0;
   background: transparent;
@@ -405,27 +421,112 @@ header {
   color: #fff;
 }
 
-/* ===== RESPONSIVE ===== */
-@media (max-width: 1024px) {
-  .header-right a {
-    display: none;
+/* =============================
+   BREAKPOINT: Tablet 576px+
+   ============================= */
+@media (min-width: 576px) {
+  header {
+    padding: 0 24px;
+    height: 60px;
   }
-}
 
-@media (max-width: 860px) {
+  .page-content {
+    padding: 0 24px;
+  }
+
   .course-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  .nav-links {
-    display: none;
+
+  .btn-login {
+    display: block;
   }
 }
 
-@media (max-width: 540px) {
-  .course-grid {
-    grid-template-columns: 1fr;
+/* =============================
+   BREAKPOINT: Tablet-L 768px+
+   ============================= */
+@media (min-width: 768px) {
+  header {
+    padding: 0 32px;
+    gap: 14px;
   }
-  .btn-login {
-    display: none;
+
+  .page-content {
+    padding: 0 32px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 4px;
+  }
+
+  .header-right .nav-text {
+    display: inline;
+  }
+
+  .search-bar {
+    height: 44px;
+  }
+
+  .recommendations h2 {
+    font-size: 1rem;
+  }
+
+  .card-title {
+    font-size: 1rem;
+  }
+}
+
+/* =============================
+   BREAKPOINT: Desktop 992px+
+   ============================= */
+@media (min-width: 992px) {
+  header {
+    padding: 0 40px;
+    gap: 16px;
+  }
+
+  .page-content {
+    padding: 0 40px;
+  }
+
+  .course-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .card-title {
+    font-size: 0.95rem;
+  }
+
+  .card-description {
+    font-size: 0.8rem;
+  }
+}
+
+/* =============================
+   BREAKPOINT: Desktop-L 1200px+
+   ============================= */
+@media (min-width: 1200px) {
+  header {
+    padding: 0 56px;
+  }
+
+  .page-content {
+    padding: 0 56px;
+  }
+}
+
+/* =============================
+   BREAKPOINT: Wide 1440px+
+   ============================= */
+@media (min-width: 1440px) {
+  header {
+    padding: 0 72px;
+  }
+
+  .page-content {
+    padding: 0 72px;
   }
 }
