@@ -3,320 +3,333 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Udemy – Web Development</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
-      rel="stylesheet"
-    />
+    <title>Online Courses - Learn Anything, On Your Schedule | Udemy</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <!-- ── HEADER ── -->
-    <header>
-      <div class="logo"><span class="logo-u"></span>udemy</div>
+    <!-- Header -->
+    <header class="header">
+      <div class="header-container">
+        <div class="header-left">
+          <a href="#" class="logo">udemy</a>
+          <nav class="nav">
+            <a href="#" class="nav-link">Explore</a>
+            <a href="#" class="nav-link">Subscribe</a>
+          </nav>
+        </div>
 
-      <nav class="nav-links">
-        <a href="#">Explore</a>
-        <a href="#">Subscribe</a>
-      </nav>
+        <div class="search-bar">
+          <span class="search-icon">&#128269;</span>
+          <input
+            type="text"
+            placeholder="Search for anything"
+            class="search-input"
+          />
+        </div>
 
-      <div class="search-bar">
-        <i class="ri-search-line"></i>
-        <input
-          type="text"
-          placeholder="Search for anything"
-          value="web development"
-        />
-      </div>
-
-      <div class="header-right">
-        <a href="#" class="nav-text">Udemy Business</a>
-        <a href="#" class="nav-text">Teach on Udemy</a>
-        <i class="ri-shopping-cart-line icon-cart"></i>
-        <button class="btn-login">Log in</button>
-        <button class="btn-signup">Sign up</button>
-        <i class="ri-global-line icon-globe"></i>
+        <div class="header-right">
+          <a href="#" class="nav-link hide-mobile">Udemy Business</a>
+          <a href="#" class="nav-link hide-mobile">Teach on Udemy</a>
+          <button class="icon-btn">&#128722;</button>
+          <button class="btn btn-outline">Log in</button>
+          <button class="btn btn-primary">Sign up</button>
+        </div>
       </div>
     </header>
 
-    <!-- ── RECOMMENDATIONS ── -->
-    <div class="recommendations-band">
-      <div class="recommendations-inner">
-        <h2>Recommended in <strong>web development</strong></h2>
-        <div class="pills">
-          <a class="pill" href="#"><i class="ri-arrow-right-line"></i>React</a>
-          <a class="pill" href="#"
-            ><i class="ri-arrow-right-line"></i>Front-End Development</a
-          >
-          <a class="pill" href="#"
-            ><i class="ri-arrow-right-line"></i>MERN Stack</a
-          >
-          <a class="pill" href="#"
-            ><i class="ri-arrow-right-line"></i>Python and Django Framework</a
-          >
+    <!-- Topic Tags -->
+    <section class="topic-tags">
+      <div class="container">
+        <p class="topic-label">
+          Recommended in <span class="topic-highlight">web development</span>
+        </p>
+        <div class="tags-row">
+          <button class="tag">&#8594; React</button>
+          <button class="tag">&#8594; Front-End Development</button>
+          <button class="tag">&#8594; MERN Stack</button>
+          <button class="tag">&#8594; Python and Django Framework</button>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- ── FILTERS ── -->
-    <div class="filters-row">
-      <div class="filters-inner">
-        <button class="filter-btn">
-          <i class="ri-equalizer-line"></i> All filters
-        </button>
-        <button class="filter-btn">
-          <i class="ri-questionnaire-line"></i> Quizzes
-        </button>
-        <button class="filter-btn">
-          <i class="ri-code-s-slash-line"></i> Coding Exercises
-        </button>
-        <button class="filter-btn">
-          <i class="ri-edit-line"></i> Practice Tests
-        </button>
-        <button class="filter-btn">
-          <i class="ri-group-line"></i> Role Plays
-        </button>
-        <button class="filter-btn">
-          Language <i class="ri-arrow-down-s-line"></i>
-        </button>
-        <button class="filter-btn">
-          Ratings <i class="ri-arrow-down-s-line"></i>
-        </button>
-        <button class="filter-btn">
-          Level <i class="ri-arrow-down-s-line"></i>
-        </button>
-        <div class="filter-sort">
-          Most Relevant <i class="ri-arrow-down-s-line"></i>
+    <!-- Filter Bar -->
+    <section class="filter-bar">
+      <div class="container filter-container">
+        <div class="filters">
+          <button class="filter-btn">&#9776; All filters</button>
+          <button class="filter-btn">&#63; Quizzes</button>
+          <button class="filter-btn">&lt;/&gt; Coding Exercises</button>
+          <button class="filter-btn">Practice Tests</button>
+          <button class="filter-btn">Role Plays</button>
+          <button class="filter-btn">Language &#8595;</button>
+          <button class="filter-btn">Ratings &#8595;</button>
+          <button class="filter-btn">Level &#8595;</button>
+        </div>
+        <div class="sort">
+          <select class="sort-select">
+            <option>Most Relevant</option>
+            <option>Highest Rated</option>
+            <option>Most Reviewed</option>
+            <option>Newest</option>
+          </select>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- ── COURSE CARDS ── -->
-    <div class="course-grid-wrapper">
-      <div class="course-grid">
-        <!-- Card 1 -->
-        <div class="card">
-          <div class="card-image" style="background: #dbeafe"></div>
-          <div class="card-body">
-            <div class="card-title">Web Development Fundamentals</div>
-            <div class="card-desc">
-              An introduction to HTML, CSS, and basic web development concepts.
+    <!-- Course Grid -->
+    <section class="course-grid">
+      <div class="container">
+        <h2 class="results-title">7 results for "web development"</h2>
+        <div class="grid">
+          <div class="course-card">
+            <div class="course-image">
+              <img src="images/image1.png" alt="Web Development Fundamentals" />
             </div>
-            <div class="card-instructor">Alex Morgan</div>
-            <div class="card-rating">
-              <span class="badge-bestseller">Bestseller</span>
-              <span class="star-icon">★</span>
-              <span class="rating-score">4.6</span>
-              <div class="card-meta-row">
-                <span class="meta-item">12,480 ratings</span>
-                <span class="meta-item">42 total hours</span>
+            <div class="course-content">
+              <h3 class="course-title">Web Development Fundamentals</h3>
+              <p class="course-description">
+                An introduction to HTML, CSS, and basic web development
+                concepts.
+              </p>
+              <p class="course-instructor">Alex Morgan</p>
+              <div class="course-rating">
+                <span class="bestseller-badge">Bestseller</span>
+                <span class="rating-number">4.6</span>
+                <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+                <span class="rating-count">(12,480)</span>
+              </div>
+              <div class="course-meta">
+                42 total hours &bull; 198 lectures &bull; Beginner
+              </div>
+              <div class="course-footer">
+                <span class="course-price">₱549</span>
+                <span class="course-old-price">₱699</span>
+                <button class="btn-add-cart">Add to cart</button>
               </div>
             </div>
-            <div class="card-tags">
-              <span class="tag">198 lectures</span>
-              <span class="tag">Beginner</span>
-            </div>
           </div>
-          <div class="card-footer">
-            <div class="price-wrap">
-              <span class="price">₱549</span>
-              <span class="price-old">₱699</span>
-            </div>
-            <button class="btn-add">Add to cart</button>
-          </div>
-        </div>
 
-        <!-- Card 2 -->
-        <div class="card">
-          <div class="card-image" style="background: #d1fae5"></div>
-          <div class="card-body">
-            <div class="card-title">The Complete Frontend Basics Course</div>
-            <div class="card-desc">
-              Learn how to build structured and styled web pages using HTML and
-              CSS.
+          <div class="course-card">
+            <div class="course-image">
+              <img
+                src="images/image2.png"
+                alt="The Complete Frontend Basics Course"
+              />
             </div>
-            <div class="card-instructor">Jamie Cruz</div>
-            <div class="card-rating">
-              <span class="badge-bestseller">Bestseller</span>
-              <span class="star-icon">★</span>
-              <span class="rating-score">4.7</span>
-              <div class="card-meta-row">
-                <span class="meta-item">84,230 ratings</span>
-                <span class="meta-item">55 total hours</span>
+            <div class="course-content">
+              <h3 class="course-title">The Complete Frontend Basics Course</h3>
+              <p class="course-description">
+                Learn how to build structured and styled web pages using HTML
+                and CSS.
+              </p>
+              <p class="course-instructor">Jamie Cruz</p>
+              <div class="course-rating">
+                <span class="bestseller-badge">Bestseller</span>
+                <span class="rating-number">4.7</span>
+                <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                <span class="rating-count">(84,230)</span>
+              </div>
+              <div class="course-meta">
+                55 total hours &bull; 312 lectures &bull; All Levels
+              </div>
+              <div class="course-footer">
+                <span class="course-price">₱599</span>
+                <span class="course-old-price">₱749</span>
+                <button class="btn-add-cart">Add to cart</button>
               </div>
             </div>
-            <div class="card-tags">
-              <span class="tag">312 lectures</span>
-              <span class="tag">All Levels</span>
-            </div>
           </div>
-          <div class="card-footer">
-            <div class="price-wrap">
-              <span class="price">₱599</span>
-              <span class="price-old">₱749</span>
-            </div>
-            <button class="btn-add">Add to cart</button>
-          </div>
-        </div>
 
-        <!-- Card 3 -->
-        <div class="card">
-          <div class="card-image" style="background: #fee2e2"></div>
-          <div class="card-body">
-            <div class="card-title">HTML and CSS for Beginners</div>
-            <div class="card-desc">
-              A step-by-step guide to creating responsive web layouts with HTML
-              and CSS.
+          <div class="course-card">
+            <div class="course-image">
+              <img src="images/image3.png" alt="HTML and CSS for Beginners" />
             </div>
-            <div class="card-instructor">Daniel Reyes</div>
-            <div class="card-rating">
-              <span class="star-icon">★</span>
-              <span class="rating-score">4.5</span>
-              <div class="card-meta-row">
-                <span class="meta-item">9,760 ratings</span>
-                <span class="meta-item">28 total hours</span>
+            <div class="course-content">
+              <h3 class="course-title">HTML and CSS for Beginners</h3>
+              <p class="course-description">
+                A step-by-step guide to creating responsive web layouts with
+                HTML and CSS.
+              </p>
+              <p class="course-instructor">Daniel Reyes</p>
+              <div class="course-rating">
+                <span class="rating-number">4.5</span>
+                <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+                <span class="rating-count">(9,760)</span>
+              </div>
+              <div class="course-meta">
+                28 total hours &bull; 156 lectures &bull; Beginner
+              </div>
+              <div class="course-footer">
+                <span class="course-price">₱499</span>
+                <span class="course-old-price">₱629</span>
+                <button class="btn-add-cart">Add to cart</button>
               </div>
             </div>
-            <div class="card-tags">
-              <span class="tag">156 lectures</span>
-              <span class="tag">Beginner</span>
-            </div>
           </div>
-          <div class="card-footer">
-            <div class="price-wrap">
-              <span class="price">₱499</span>
-              <span class="price-old">₱629</span>
-            </div>
-            <button class="btn-add">Add to cart</button>
-          </div>
-        </div>
 
-        <!-- Card 4 -->
-        <div class="card">
-          <div class="card-image" style="background: #ede9fe"></div>
-          <div class="card-body">
-            <div class="card-title">Responsive Web Design Essentials</div>
-            <div class="card-desc">
-              Learn modern layout techniques using Flexbox and CSS Grid.
+          <div class="course-card">
+            <div class="course-image">
+              <img
+                src="images/image4.png"
+                alt="Responsive Web Design Essentials"
+              />
             </div>
-            <div class="card-instructor">Patricia Lim</div>
-            <div class="card-rating">
-              <span class="star-icon">★</span>
-              <span class="rating-score">4.4</span>
-              <div class="card-meta-row">
-                <span class="meta-item">6,340 ratings</span>
-                <span class="meta-item">24 total hours</span>
+            <div class="course-content">
+              <h3 class="course-title">Responsive Web Design Essentials</h3>
+              <p class="course-description">
+                Learn modern layout techniques using Flexbox and CSS Grid.
+              </p>
+              <p class="course-instructor">Patricia Lim</p>
+              <div class="course-rating">
+                <span class="rating-number">4.4</span>
+                <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+                <span class="rating-count">(6,340)</span>
+              </div>
+              <div class="course-meta">
+                24 total hours &bull; 142 lectures &bull; Intermediate
+              </div>
+              <div class="course-footer">
+                <span class="course-price">₱529</span>
+                <span class="course-old-price">₱649</span>
+                <button class="btn-add-cart">Add to cart</button>
               </div>
             </div>
-            <div class="card-tags">
-              <span class="tag">142 lectures</span>
-              <span class="tag">Intermediate</span>
-            </div>
           </div>
-          <div class="card-footer">
-            <div class="price-wrap">
-              <span class="price">₱529</span>
-              <span class="price-old">₱649</span>
-            </div>
-            <button class="btn-add">Add to cart</button>
-          </div>
-        </div>
 
-        <!-- Card 5 -->
-        <div class="card">
-          <div class="card-image" style="background: #fef3c7"></div>
-          <div class="card-body">
-            <div class="card-title">User Interface Design for Developers</div>
-            <div class="card-desc">
-              Understand spacing, typography, and layout principles for better
-              interfaces.
+          <div class="course-card">
+            <div class="course-image">
+              <img
+                src="images/image5.png"
+                alt="User Interface Design for Developers"
+              />
             </div>
-            <div class="card-instructor">Michael Santos</div>
-            <div class="card-rating">
-              <span class="star-icon">★</span>
-              <span class="rating-score">4.3</span>
-              <div class="card-meta-row">
-                <span class="meta-item">5,180 ratings</span>
-                <span class="meta-item">20 total hours</span>
+            <div class="course-content">
+              <h3 class="course-title">User Interface Design for Developers</h3>
+              <p class="course-description">
+                Understand spacing, typography, and layout principles for better
+                interfaces.
+              </p>
+              <p class="course-instructor">Michael Santos</p>
+              <div class="course-rating">
+                <span class="rating-number">4.3</span>
+                <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+                <span class="rating-count">(5,180)</span>
+              </div>
+              <div class="course-meta">
+                20 total hours &bull; 118 lectures &bull; All Levels
+              </div>
+              <div class="course-footer">
+                <span class="course-price">₱519</span>
+                <span class="course-old-price">₱639</span>
+                <button class="btn-add-cart">Add to cart</button>
               </div>
             </div>
-            <div class="card-tags">
-              <span class="tag">118 lectures</span>
-              <span class="tag">All Levels</span>
-            </div>
           </div>
-          <div class="card-footer">
-            <div class="price-wrap">
-              <span class="price">₱519</span>
-              <span class="price-old">₱639</span>
-            </div>
-            <button class="btn-add">Add to cart</button>
-          </div>
-        </div>
 
-        <!-- Card 6 -->
-        <div class="card">
-          <div class="card-image" style="background: #e0f2fe"></div>
-          <div class="card-body">
-            <div class="card-title">Modern CSS Layout Techniques</div>
-            <div class="card-desc">
-              Build flexible and responsive layouts using modern CSS practices.
+          <div class="course-card">
+            <div class="course-image">
+              <img src="images/image6.png" alt="Modern CSS Layout Techniques" />
             </div>
-            <div class="card-instructor">Andrea Villanueva</div>
-            <div class="card-rating">
-              <span class="star-icon">★</span>
-              <span class="rating-score">4.6</span>
-              <div class="card-meta-row">
-                <span class="meta-item">3,950 ratings</span>
-                <span class="meta-item">18 total hours</span>
+            <div class="course-content">
+              <h3 class="course-title">Modern CSS Layout Techniques</h3>
+              <p class="course-description">
+                Build flexible and responsive layouts using modern CSS
+                practices.
+              </p>
+              <p class="course-instructor">Andrea Villanueva</p>
+              <div class="course-rating">
+                <span class="rating-number">4.6</span>
+                <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+                <span class="rating-count">(3,950)</span>
+              </div>
+              <div class="course-meta">
+                18 total hours &bull; 96 lectures &bull; Intermediate
+              </div>
+              <div class="course-footer">
+                <span class="course-price">₱569</span>
+                <span class="course-old-price">₱699</span>
+                <button class="btn-add-cart">Add to cart</button>
               </div>
             </div>
-            <div class="card-tags">
-              <span class="tag">96 lectures</span>
-              <span class="tag">Intermediate</span>
-            </div>
           </div>
-          <div class="card-footer">
-            <div class="price-wrap">
-              <span class="price">₱569</span>
-              <span class="price-old">₱699</span>
-            </div>
-            <button class="btn-add">Add to cart</button>
-          </div>
-        </div>
 
-        <!-- Card 7 -->
-        <div class="card">
-          <div class="card-image" style="background: #f3f4f6"></div>
-          <div class="card-body">
-            <div class="card-title">Introduction to Web Technologies</div>
-            <div class="card-desc">
-              A foundational course covering how websites work and how they are
-              built.
+          <div class="course-card">
+            <div class="course-image">
+              <img
+                src="images/image7.png"
+                alt="Introduction to Web Technologies"
+              />
             </div>
-            <div class="card-instructor">Kevin Navarro</div>
-            <div class="card-rating">
-              <span class="star-icon">★</span>
-              <span class="rating-score">4.2</span>
-              <div class="card-meta-row">
-                <span class="meta-item">2,410 ratings</span>
-                <span class="meta-item">16 total hours</span>
+            <div class="course-content">
+              <h3 class="course-title">Introduction to Web Technologies</h3>
+              <p class="course-description">
+                A foundational course covering how websites work and how they
+                are built.
+              </p>
+              <p class="course-instructor">Kevin Navarro</p>
+              <div class="course-rating">
+                <span class="rating-number">4.2</span>
+                <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+                <span class="rating-count">(2,410)</span>
+              </div>
+              <div class="course-meta">
+                16 total hours &bull; 88 lectures &bull; Beginner
+              </div>
+              <div class="course-footer">
+                <span class="course-price">₱479</span>
+                <span class="course-old-price">₱599</span>
+                <button class="btn-add-cart">Add to cart</button>
               </div>
             </div>
-            <div class="card-tags">
-              <span class="tag">88 lectures</span>
-              <span class="tag">Beginner</span>
-            </div>
-          </div>
-          <div class="card-footer">
-            <div class="price-wrap">
-              <span class="price">₱479</span>
-              <span class="price-old">₱599</span>
-            </div>
-            <button class="btn-add">Add to cart</button>
           </div>
         </div>
       </div>
-    </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-column">
+            <h4>About</h4>
+            <ul>
+              <li><a href="#">About Us</a></li>
+              <li><a href="#">Careers</a></li>
+              <li><a href="#">Blog</a></li>
+              <li><a href="#">Investors</a></li>
+              <li><a href="#">Get the app</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4>Teach</h4>
+            <ul>
+              <li><a href="#">Teach on Udemy</a></li>
+              <li><a href="#">Plans & Pricing</a></li>
+              <li><a href="#">Affiliate</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4>Support</h4>
+            <ul>
+              <li><a href="#">Help and Support</a></li>
+              <li><a href="#">Udemy Business</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4>Legal</h4>
+            <ul>
+              <li><a href="#">Accessibility</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Sitemap</a></li>
+              <li><a href="#">Terms</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span class="footer-logo">udemy</span>
+          <div class="footer-right"></div>
+        </div>
+      </div>
+    </footer>
   </body>
 </html>
