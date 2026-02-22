@@ -238,9 +238,7 @@ header {
   color: #1c1d1f;
 }
 
-/* ══════════════════════════════
-   FILTERS ROW
-══════════════════════════════ */
+/* FILTERS ROW */
 .filters-row {
   padding: 0;
   border-bottom: 1px solid #e8e8e8;
@@ -255,7 +253,7 @@ header {
   flex-wrap: wrap;
 }
 
-/* Filter buttons — fully rounded */
+/* Filter buttons*/
 .filter-btn {
   display: inline-flex;
   align-items: center;
@@ -292,9 +290,7 @@ header {
   white-space: nowrap;
 }
 
-/* ══════════════════════════════
-   COURSE GRID
-══════════════════════════════ */
+/* COURSE GRID */
 .course-grid-wrapper {
   max-width: 1200px;
   margin: 32px auto;
