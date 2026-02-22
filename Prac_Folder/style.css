@@ -1,5 +1,5 @@
-/* ===== GOOGLE FONT ===== */
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,900;1,9..40,400&display=swap");
+/* ===== FONT ===== */
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700;9..40,900&display=swap");
 
 /* ===== RESET ===== */
 * {
@@ -8,7 +8,6 @@
   box-sizing: border-box;
 }
 
-/* ===== BASE — MOBILE FIRST ===== */
 body {
   font-family: "DM Sans", sans-serif;
   background: #fff;
@@ -16,13 +15,13 @@ body {
   font-size: 14px;
 }
 
-/* =============================
+/* ===========================
    HEADER
-   ============================= */
+   =========================== */
 header {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 14px;
   padding: 0 16px;
   height: 56px;
   border-bottom: 1px solid #d1d7dc;
@@ -32,47 +31,45 @@ header {
   z-index: 100;
 }
 
-/* Logo */
 .logo {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 900;
   color: #1c1d1f;
-  letter-spacing: -1.5px;
+  letter-spacing: -1px;
   white-space: nowrap;
   flex-shrink: 0;
 }
 
-/* Nav — hidden on mobile */
 .nav-links {
   display: none;
+  gap: 2px;
+  flex-shrink: 0;
 }
 
 .nav-links a {
   text-decoration: none;
   color: #1c1d1f;
-  font-size: 0.88rem;
+  font-size: 0.875rem;
   font-weight: 500;
-  padding: 6px 10px;
+  padding: 6px 12px;
   border-radius: 4px;
-  transition: background 0.15s;
   white-space: nowrap;
+  transition: background 0.15s;
 }
 
 .nav-links a:hover {
   background: #f7f9fa;
 }
 
-/* Search bar */
 .search-bar {
   flex: 1;
   display: flex;
   align-items: center;
   border: 1.5px solid #1c1d1f;
-  border-radius: 25px;
-  padding: 0 14px;
+  border-radius: 24px;
+  padding: 0 16px;
   gap: 8px;
-  height: 40px;
-  background: #fff;
+  height: 42px;
   min-width: 0;
 }
 
@@ -86,7 +83,7 @@ header {
   border: none;
   outline: none;
   font-family: "DM Sans", sans-serif;
-  font-size: 0.88rem;
+  font-size: 0.875rem;
   width: 100%;
   color: #1c1d1f;
   background: transparent;
@@ -96,16 +93,14 @@ header {
   color: #6a6f73;
 }
 
-/* Header right */
 .header-right {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   flex-shrink: 0;
 }
 
-/* Business + Teach links — hidden on mobile */
-.header-right .nav-text {
+.nav-text {
   display: none;
   text-decoration: none;
   font-size: 0.82rem;
@@ -114,12 +109,12 @@ header {
   white-space: nowrap;
 }
 
-.header-right .nav-text:hover {
+.nav-text:hover {
   color: #5624d0;
 }
 
-.header-right .icon-cart {
-  font-size: 1.4rem;
+.icon-cart {
+  font-size: 1.35rem;
   color: #1c1d1f;
   cursor: pointer;
 }
@@ -127,7 +122,7 @@ header {
 .btn-login {
   display: none;
   border: 1.5px solid #1c1d1f;
-  padding: 7px 14px;
+  padding: 6px 12px;
   border-radius: 4px;
   font-family: "DM Sans", sans-serif;
   font-size: 0.82rem;
@@ -135,8 +130,8 @@ header {
   color: #1c1d1f;
   background: transparent;
   cursor: pointer;
-  transition: background 0.15s;
   white-space: nowrap;
+  transition: background 0.15s;
 }
 
 .btn-login:hover {
@@ -144,43 +139,45 @@ header {
 }
 
 .btn-signup {
-  border: 1.5px solid #1c1d1f;
-  padding: 7px 14px;
+  border: 1.5px solid #a435f0;
+  padding: 6px 12px;
   border-radius: 4px;
   font-family: "DM Sans", sans-serif;
   font-size: 0.82rem;
   font-weight: 700;
   color: #fff;
-  background: #1c1d1f;
+  background: #a435f0;
   cursor: pointer;
-  transition: background 0.15s;
   white-space: nowrap;
+  transition: background 0.15s;
 }
 
 .btn-signup:hover {
-  background: #3d3d3d;
+  background: #8710d8;
 }
 
-/* =============================
-   PAGE WRAPPER — mobile first
-   ============================= */
+/* ===========================
+   PAGE CONTENT
+   =========================== */
 .page-content {
-  width: 100%;
   padding: 0 16px;
 }
 
-/* =============================
+/* ===========================
    RECOMMENDATIONS
-   ============================= */
+   =========================== */
 .recommendations {
-  padding: 20px 0 0;
+  padding: 20px 0 14px;
+  background: #f7f9fa;
+  margin: 0 -16px;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 .recommendations h2 {
   font-size: 0.95rem;
   font-weight: 400;
-  color: #1c1d1f;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .recommendations h2 strong {
@@ -196,13 +193,12 @@ header {
 .pill {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
   border: 1px solid #1c1d1f;
-  border-radius: 25px;
-  padding: 5px 12px;
+  border-radius: 24px;
+  padding: 4px 12px;
   font-size: 0.8rem;
   font-weight: 500;
-  cursor: pointer;
   color: #1c1d1f;
   text-decoration: none;
   white-space: nowrap;
@@ -210,20 +206,19 @@ header {
 }
 
 .pill:hover {
-  background: #f7f9fa;
+  background: #ebebeb;
 }
 
-/* =============================
+/* ===========================
    FILTERS
-   ============================= */
+   =========================== */
 .filters {
   display: flex;
   align-items: center;
   gap: 8px;
-  flex-wrap: wrap;
-  padding: 16px 0 14px;
+  padding: 14px 0;
   border-bottom: 1px solid #d1d7dc;
-  overflow-x: auto;
+  flex-wrap: wrap;
 }
 
 .filter-btn {
@@ -231,25 +226,22 @@ header {
   align-items: center;
   gap: 5px;
   border: 1px solid #6a6f73;
-  border-radius: 25px;
+  border-radius: 24px;
   padding: 5px 12px;
   font-family: "DM Sans", sans-serif;
   font-size: 0.8rem;
-  font-weight: 400;
   color: #1c1d1f;
   background: #fff;
   cursor: pointer;
-  transition: background 0.15s;
   white-space: nowrap;
-  flex-shrink: 0;
+  transition: background 0.15s;
 }
 
 .filter-btn:hover {
   background: #f7f9fa;
 }
-
 .filter-btn i {
-  font-size: 0.88rem;
+  font-size: 0.85rem;
   color: #6a6f73;
 }
 
@@ -257,41 +249,40 @@ header {
   margin-left: auto;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
   font-size: 0.82rem;
   font-weight: 700;
   cursor: pointer;
   color: #1c1d1f;
   white-space: nowrap;
-  flex-shrink: 0;
 }
 
-/* =============================
-   COURSE GRID — 1 col on mobile
-   ============================= */
+/* ===========================
+   COURSE GRID
+   =========================== */
 .course-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 16px;
-  padding: 20px 0 48px;
+  gap: 12px;
+  padding: 16px 0 48px;
 }
 
-/* =============================
-   COURSE CARD
-   ============================= */
+/* ===========================
+   CARD
+   =========================== */
 .card {
   border: 1px solid #d1d7dc;
   border-radius: 4px;
   overflow: hidden;
   background: #fff;
-  transition: box-shadow 0.2s;
   display: flex;
   flex-direction: column;
   cursor: pointer;
+  transition: box-shadow 0.2s;
 }
 
 .card:hover {
-  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
 }
 
 .card-image {
@@ -309,28 +300,28 @@ header {
 }
 
 .card-body {
-  padding: 12px 14px;
+  padding: 10px 12px;
   display: flex;
   flex-direction: column;
   flex: 1;
-  gap: 5px;
+  gap: 4px;
 }
 
 .card-title {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 700;
   color: #1c1d1f;
-  line-height: 1.35;
+  line-height: 1.3;
 }
 
 .card-description {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: #6a6f73;
-  line-height: 1.45;
+  line-height: 1.4;
 }
 
 .card-instructor {
-  font-size: 0.76rem;
+  font-size: 0.74rem;
   color: #6a6f73;
 }
 
@@ -338,20 +329,17 @@ header {
   display: flex;
   align-items: center;
   gap: 4px;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
 }
 
 .rating-score {
   font-weight: 700;
   color: #b4690e;
 }
-
 .stars {
   color: #e59819;
-  font-size: 0.75rem;
-  letter-spacing: 1px;
+  font-size: 0.72rem;
 }
-
 .rating-count {
   color: #6a6f73;
 }
@@ -364,16 +352,16 @@ header {
 }
 
 .meta-tag {
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   color: #6a6f73;
   background: #f7f9fa;
   border: 1px solid #d1d7dc;
   border-radius: 20px;
-  padding: 2px 10px;
+  padding: 2px 9px;
 }
 
 .card-footer {
-  padding: 10px 14px 12px;
+  padding: 10px 12px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -384,17 +372,17 @@ header {
 .price-block {
   display: flex;
   align-items: baseline;
-  gap: 7px;
+  gap: 6px;
 }
 
 .price-current {
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: #1c1d1f;
 }
 
 .price-old {
-  font-size: 0.8rem;
+  font-size: 0.76rem;
   color: #6a6f73;
   text-decoration: line-through;
 }
@@ -402,18 +390,18 @@ header {
 .btn-add {
   border: 1.5px solid #a435f0;
   border-radius: 4px;
-  padding: 7px 14px;
+  padding: 7px 12px;
   font-family: "DM Sans", sans-serif;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 700;
   color: #a435f0;
   background: transparent;
   cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
   transition:
     background 0.15s,
     color 0.15s;
-  white-space: nowrap;
-  flex-shrink: 0;
 }
 
 .btn-add:hover {
@@ -421,74 +409,67 @@ header {
   color: #fff;
 }
 
-/* =============================
-   BREAKPOINT: Tablet 576px+
-   ============================= */
-@media (min-width: 576px) {
-  header {
-    padding: 0 24px;
-    height: 60px;
-  }
-
+/* ===========================
+   TABLET 640px+
+   =========================== */
+@media (min-width: 640px) {
   .page-content {
     padding: 0 24px;
   }
-
+  .recommendations {
+    margin: 0 -24px;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
   .course-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
   }
-
   .btn-login {
     display: block;
   }
 }
 
-/* =============================
-   BREAKPOINT: Tablet-L 768px+
-   ============================= */
+/* ===========================
+   TABLET-L 768px+
+   =========================== */
 @media (min-width: 768px) {
   header {
-    padding: 0 32px;
-    gap: 14px;
+    padding: 0 24px;
+    height: 60px;
+    gap: 16px;
   }
-
-  .page-content {
-    padding: 0 32px;
-  }
-
   .nav-links {
     display: flex;
-    gap: 4px;
   }
-
-  .header-right .nav-text {
+  .nav-text {
     display: inline;
   }
-
-  .search-bar {
-    height: 44px;
+  .page-content {
+    padding: 0 24px;
   }
-
-  .recommendations h2 {
-    font-size: 1rem;
-  }
-
-  .card-title {
-    font-size: 1rem;
+  .recommendations {
+    margin: 0 -24px;
+    padding-left: 24px;
+    padding-right: 24px;
   }
 }
 
-/* =============================
-   BREAKPOINT: Desktop 992px+
-   ============================= */
-@media (min-width: 992px) {
+/* ===========================
+   DESKTOP 1024px+
+   — matches the reference screenshot
+   =========================== */
+@media (min-width: 1024px) {
   header {
-    padding: 0 40px;
-    gap: 16px;
+    padding: 0 24px;
   }
-
   .page-content {
-    padding: 0 40px;
+    padding: 0 24px;
+  }
+  .recommendations {
+    margin: 0 -24px;
+    padding-left: 24px;
+    padding-right: 24px;
   }
 
   .course-grid {
@@ -496,37 +477,17 @@ header {
     gap: 16px;
   }
 
-  .card-title {
-    font-size: 0.95rem;
+  .card-body {
+    padding: 12px 14px;
+    gap: 5px;
   }
-
+  .card-title {
+    font-size: 0.92rem;
+  }
   .card-description {
     font-size: 0.8rem;
   }
-}
-
-/* =============================
-   BREAKPOINT: Desktop-L 1200px+
-   ============================= */
-@media (min-width: 1200px) {
-  header {
-    padding: 0 56px;
-  }
-
-  .page-content {
-    padding: 0 56px;
-  }
-}
-
-/* =============================
-   BREAKPOINT: Wide 1440px+
-   ============================= */
-@media (min-width: 1440px) {
-  header {
-    padding: 0 72px;
-  }
-
-  .page-content {
-    padding: 0 72px;
+  .card-footer {
+    padding: 10px 14px;
   }
 }
