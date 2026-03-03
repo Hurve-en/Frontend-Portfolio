@@ -97,14 +97,14 @@ body {
 /* GALLERY */
 .gallery-container {
   max-width: 1400px;
-  margin: 80px auto;
-  padding: 0 40px;
+  margin: 40px auto;
+  padding: 0 16px;
 }
 
 .gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 40px;
+  grid-template-columns: 1fr;
+  gap: 20px;
 }
 
 /* CARD */
@@ -354,44 +354,77 @@ body {
   }
 }
 
-/* RESPONSIVE */
-@media (max-width: 1024px) {
-  .gallery {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
+/* RESPONSIVE - Mobile First */
+
+/* Mobile default styles are already set above */
+.header {
+  padding: 24px 16px;
+}
+
+.title {
+  font-size: 24px;
+}
+
+.subtitle {
+  font-size: 11px;
+}
+
+.card-image {
+  height: 150px;
+}
+
+.card-content {
+  padding: 20px;
+  gap: 12px;
+}
+
+.character-name {
+  font-size: 18px;
+}
+
+.character-desc {
+  font-size: 13px;
+}
+
+.powers {
+  gap: 6px;
+}
+
+.power {
+  font-size: 10px;
+  padding: 4px 8px;
+}
+
+/* Tablet - 2 columns */
+@media (min-width: 768px) {
+  .header {
+    padding: 40px 20px;
   }
 
   .title {
     font-size: 36px;
   }
-}
 
-@media (max-width: 768px) {
-  .header {
-    padding: 40px 20px;
+  .subtitle {
+    font-size: 13px;
   }
 
   .gallery-container {
     margin: 60px auto;
-    padding: 0 20px;
+    padding: 0 24px;
   }
 
   .gallery {
-    grid-template-columns: 1fr;
-    gap: 20px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
   }
 
-  .title {
-    font-size: 28px;
-  }
-
-  .subtitle {
-    font-size: 12px;
+  .card-image {
+    height: 180px;
   }
 
   .card-content {
     padding: 24px;
-    gap: 12px;
   }
 
   .character-name {
@@ -399,50 +432,53 @@ body {
   }
 
   .character-desc {
-    font-size: 13px;
-  }
-}
-
-@media (max-width: 480px) {
-  .header {
-    padding: 24px 16px;
-  }
-
-  .gallery-container {
-    margin: 40px auto;
-    padding: 0 16px;
-  }
-
-  .title {
-    font-size: 24px;
-  }
-
-  .subtitle {
-    font-size: 11px;
-  }
-
-  .card-image {
-    height: 150px;
-  }
-
-  .placeholder {
-    font-size: 60px;
-  }
-
-  .card-content {
-    padding: 20px;
-  }
-
-  .character-name {
-    font-size: 18px;
-  }
-
-  .powers {
-    gap: 6px;
+    font-size: 14px;
   }
 
   .power {
-    font-size: 10px;
-    padding: 4px 8px;
+    font-size: 11px;
+    padding: 6px 12px;
+  }
+}
+
+/* Desktop - 3 columns */
+@media (min-width: 1024px) {
+  .header {
+    padding: 60px 40px;
+  }
+
+  .title {
+    font-size: 48px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+  }
+
+  .gallery-container {
+    margin: 80px auto;
+    padding: 0 40px;
+  }
+
+  .gallery {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+  }
+
+  .card-image {
+    height: 200px;
+  }
+
+  .card-content {
+    padding: 32px;
+    gap: 16px;
+  }
+
+  .character-name {
+    font-size: 24px;
+  }
+
+  .powers {
+    gap: 8px;
   }
 }
