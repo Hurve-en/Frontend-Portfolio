@@ -5,18 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Creative Designer & Developer - Beautiful Digital Experiences"
+      content="Hurve-en portfolio: high-end minimalist digital product design and frontend development."
     />
-    <title>Personal Portfolio</title>
+    <title>Hurve-en Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <!-- NAVIGATION -->
-    <nav class="navbar">
-      <div class="nav-container">
-        <div class="nav-logo">
-          <a href="#home">Hurve-en</a>
-        </div>
+    <div class="bg-grid" aria-hidden="true"></div>
+
+    <nav class="navbar" aria-label="Primary navigation">
+      <div class="nav-inner">
+        <a href="#home" class="brand">Hurve-en</a>
         <ul class="nav-menu">
           <li><a href="#work">Work</a></li>
           <li><a href="#about">About</a></li>
@@ -25,284 +30,126 @@
       </div>
     </nav>
 
-    <!-- HERO SECTION -->
-    <section class="hero" id="home">
-      <div class="hero-content">
-        <h1>
-          <span>Digital</span>
-          <span>Solutions</span>
-          <span>That</span>
-          <span>Drive</span>
-          <span>Business</span>
-          <span>Growth</span>
+    <main>
+      <section class="hero section" id="home">
+        <p class="eyebrow" data-reveal>Digital Product Designer and Frontend Developer</p>
+        <h1 data-reveal data-delay="80">
+          Minimal interfaces with
+          <span>maximum business clarity.</span>
         </h1>
-        <p class="hero-subtitle">
-          I help companies build digital products that engage users, increase
-          conversions, and accelerate business success through strategic design
-          and development
+        <p class="hero-copy" data-reveal data-delay="160">
+          I design and ship conversion-focused web experiences for startups and
+          growing teams with a clean visual language, fast performance, and
+          deliberate interaction design.
         </p>
-        <a href="#work" class="scroll-cta">View Projects</a>
-      </div>
-    </section>
+        <div class="hero-actions" data-reveal data-delay="240">
+          <a href="#work" class="button button-solid">View Projects</a>
+          <a href="#contact" class="button button-ghost">Start a Project</a>
+        </div>
+      </section>
 
-    <!-- WORK SECTION -->
-    <section class="work-section" id="work">
-      <div class="section-header">
-        <h2>Featured Work</h2>
-        <p>
-          A selection of recent projects showcasing design excellence and
-          creative innovation
-        </p>
-      </div>
+      <section class="section" id="work">
+        <header class="section-head" data-reveal>
+          <p class="eyebrow">Selected Work</p>
+          <h2>Featured projects</h2>
+        </header>
 
-      <div class="projects-container">
-        <!-- Project 1 -->
-        <article class="project-item">
-          <div class="project-visual">
-            <div class="project-image">
-              <img
-                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 450'%3E%3Crect fill='%23ffffff' width='600' height='450'/%3E%3Crect fill='%232d6a4f' x='75' y='75' width='450' height='300' rx='16' opacity='0.15'/%3E%3Ccircle cx='300' cy='225' r='80' fill='%232d6a4f' opacity='0.1'/%3E%3C/svg%3E"
-                alt="Minimal E-Commerce"
-              />
+        <div class="project-list">
+          <article class="project-card" data-reveal>
+            <div class="project-media project-media-1" aria-hidden="true"></div>
+            <div class="project-content">
+              <p class="project-meta">E-Commerce</p>
+              <h3>Minimal Commerce Redesign</h3>
+              <p>
+                Simplified the shopping flow with clear hierarchy and reduced
+                checkout friction, improving user confidence and clarity.
+              </p>
+              <ul class="tag-list" aria-label="Project skills">
+                <li>UX Strategy</li>
+                <li>UI System</li>
+                <li>Frontend</li>
+              </ul>
             </div>
-          </div>
-          <div class="project-info">
-            <span class="project-category">Web Design</span>
-            <h3 class="project-title">Minimal E-Commerce Platform</h3>
-            <p class="project-description">
-              A refined shopping experience with clean typography, thoughtful
-              spacing, and elegant micro-interactions that guide users
-              seamlessly through their purchase journey.
-            </p>
-            <div class="project-tags">
-              <span class="tag">Web Design</span>
-              <span class="tag">E-Commerce</span>
-              <span class="tag">UI/UX</span>
-            </div>
-          </div>
-        </article>
+          </article>
 
-        <!-- Project 2 -->
-        <article class="project-item">
-          <div class="project-visual">
-            <div class="project-image">
-              <img
-                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 450'%3E%3Crect fill='%23f0f9ff' width='600' height='450'/%3E%3Crect fill='%232d6a4f' x='100' y='100' width='400' height='250' rx='12' opacity='0.12'/%3E%3Crect fill='%232d6a4f' x='120' y='140' width='360' height='40' rx='20' opacity='0.15'/%3E%3C/svg%3E"
-                alt="Brand Identity"
-              />
+          <article class="project-card" data-reveal data-delay="100">
+            <div class="project-media project-media-2" aria-hidden="true"></div>
+            <div class="project-content">
+              <p class="project-meta">SaaS</p>
+              <h3>Analytics Dashboard</h3>
+              <p>
+                Designed a focused data UI with a strong reading rhythm,
+                reducing cognitive load while preserving deep insights.
+              </p>
+              <ul class="tag-list" aria-label="Project skills">
+                <li>Product Design</li>
+                <li>Motion</li>
+                <li>Design System</li>
+              </ul>
             </div>
-          </div>
-          <div class="project-info">
-            <span class="project-category">Branding</span>
-            <h3 class="project-title">Brand Identity System</h3>
-            <p class="project-description">
-              Complete visual identity with cohesive design language,
-              comprehensive brand guidelines, and a design system that scales
-              beautifully across all platforms and touchpoints.
-            </p>
-            <div class="project-tags">
-              <span class="tag">Branding</span>
-              <span class="tag">Identity</span>
-              <span class="tag">Design System</span>
-            </div>
-          </div>
-        </article>
+          </article>
 
-        <!-- Project 3 -->
-        <article class="project-item">
-          <div class="project-visual">
-            <div class="project-image">
-              <img
-                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 450'%3E%3Crect fill='%23ffffff' width='600' height='450'/%3E%3Cpath d='M150 150 Q300 50 450 150 T450 300 Q300 400 150 300 T150 150' fill='none' stroke='%232d6a4f' stroke-width='2' opacity='0.15'/%3E%3C/svg%3E"
-                alt="Interactive"
-              />
+          <article class="project-card" data-reveal>
+            <div class="project-media project-media-3" aria-hidden="true"></div>
+            <div class="project-content">
+              <p class="project-meta">Brand Platform</p>
+              <h3>Creator Portfolio System</h3>
+              <p>
+                Built a modular portfolio framework for storytelling with clean
+                visual pacing and strong typography-led composition.
+              </p>
+              <ul class="tag-list" aria-label="Project skills">
+                <li>Brand UI</li>
+                <li>Web Design</li>
+                <li>Interaction</li>
+              </ul>
             </div>
-          </div>
-          <div class="project-info">
-            <span class="project-category">Interaction Design</span>
-            <h3 class="project-title">Interactive Digital Experience</h3>
-            <p class="project-description">
-              An immersive digital experience crafted with smooth animations and
-              delightful micro-interactions. Every element designed to create a
-              memorable user journey with engaging visual feedback.
-            </p>
-            <div class="project-tags">
-              <span class="tag">Interaction</span>
-              <span class="tag">Animation</span>
-              <span class="tag">Frontend</span>
-            </div>
-          </div>
-        </article>
+          </article>
+        </div>
+      </section>
 
-        <!-- Project 4 -->
-        <article class="project-item">
-          <div class="project-visual">
-            <div class="project-image">
-              <img
-                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 450'%3E%3Crect fill='%23f0f9ff' width='600' height='450'/%3E%3Crect fill='%232d6a4f' x='100' y='80' width='400' height='290' rx='8' opacity='0.08'/%3E%3C/svg%3E"
-                alt="Dashboard"
-              />
-            </div>
-          </div>
-          <div class="project-info">
-            <span class="project-category">UI Design</span>
-            <h3 class="project-title">Analytics Dashboard</h3>
-            <p class="project-description">
-              A modern data visualization interface featuring real-time updates,
-              beautiful charts, and intuitive controls that make complex
-              analytics simple and accessible for all users.
-            </p>
-            <div class="project-tags">
-              <span class="tag">UI Design</span>
-              <span class="tag">Dashboard</span>
-              <span class="tag">Data Visualization</span>
-            </div>
-          </div>
-        </article>
+      <section class="section split" id="about">
+        <header class="section-head" data-reveal>
+          <p class="eyebrow">About</p>
+          <h2>Design that serves outcomes.</h2>
+        </header>
 
-        <!-- Project 5 -->
-        <article class="project-item">
-          <div class="project-visual">
-            <div class="project-image">
-              <img
-                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 450'%3E%3Crect fill='%23ffffff' width='600' height='450'/%3E%3Ccircle cx='150' cy='150' r='60' fill='%232d6a4f' opacity='0.1'/%3E%3Ccircle cx='450' cy='300' r='60' fill='%232d6a4f' opacity='0.08'/%3E%3Crect x='150' y='250' width='300' height='40' rx='20' fill='%232d6a4f' opacity='0.1'/%3E%3C/svg%3E"
-                alt="Portfolio"
-              />
-            </div>
-          </div>
-          <div class="project-info">
-            <span class="project-category">Portfolio Website</span>
-            <h3 class="project-title">Creator Portfolio Platform</h3>
-            <p class="project-description">
-              An elegant portfolio platform designed for showcasing creative
-              work with beautiful gallery features, storytelling capabilities,
-              and community engagement tools.
-            </p>
-            <div class="project-tags">
-              <span class="tag">Web Design</span>
-              <span class="tag">Portfolio</span>
-              <span class="tag">Platform</span>
-            </div>
-          </div>
-        </article>
-
-        <!-- Project 6 -->
-        <article class="project-item">
-          <div class="project-visual">
-            <div class="project-image">
-              <img
-                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 450'%3E%3Crect fill='%23f0f9ff' width='600' height='450'/%3E%3Cpath d='M100 200 L300 100 L500 200 L300 350 Z' fill='%232d6a4f' opacity='0.08'/%3E%3Crect x='200' y='150' width='200' height='150' fill='%232d6a4f' opacity='0.05' rx='8'/%3E%3C/svg%3E"
-                alt="Web App"
-              />
-            </div>
-          </div>
-          <div class="project-info">
-            <span class="project-category">Web Application</span>
-            <h3 class="project-title">Collaboration App</h3>
-            <p class="project-description">
-              A seamless collaboration web application built with real-time
-              synchronization features, beautiful user interface, and thoughtful
-              design that makes teamwork effortless and enjoyable.
-            </p>
-            <div class="project-tags">
-              <span class="tag">Web App</span>
-              <span class="tag">Real-time</span>
-              <span class="tag">Frontend</span>
-            </div>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- ABOUT SECTION -->
-    <section class="about-section" id="about">
-      <div class="section-header">
-        <h2>About Me</h2>
-      </div>
-
-      <div class="about-content">
-        <div class="about-text">
-          <p>
-            I partner with companies to design and develop digital products that
-            solve real business problems. With a strategic approach to both
-            design and development, I create solutions that directly impact user
-            satisfaction, revenue growth, and brand loyalty.
+        <div class="split-grid">
+          <p data-reveal>
+            I work with teams that need websites and product surfaces to do
+            more than look good. I focus on structure, copy hierarchy,
+            performance, and interaction quality so users move through a
+            product with confidence.
           </p>
-          <p>
-            My experience spans early-stage startups to established enterprises.
-            I understand the importance of delivering on time, on budget, and
-            exceeding expectations. Let's work together to build something that
-            moves your business forward.
+          <p data-reveal data-delay="90">
+            My process is collaborative and direct: define objective, shape the
+            experience, ship a polished frontend, and iterate based on user
+            behavior. Every decision supports speed, trust, and conversion.
           </p>
         </div>
+      </section>
 
-        <div class="about-grid">
-          <div class="about-item">
-            <h4>What I Deliver</h4>
-            <p>
-              High-performing digital products that users love, complete with
-              scalable design systems and clean, maintainable code
-            </p>
-          </div>
-          <div class="about-item">
-            <h4>Core Expertise</h4>
-            <p>
-              Full-stack product development from concept through launch, with
-              focus on user research, design, and frontend implementation
-            </p>
-          </div>
-          <div class="about-item">
-            <h4>Experience</h4>
-            <p>2nd Year BSCS Software Engineering Student at iACADEMY Cebu.</p>
-          </div>
-          <div class="about-item">
-            <h4>How I Work</h4>
-            <p>
-              Collaborative process with clear communication, milestone-based
-              delivery, and a focus on meeting your timeline and budget.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
+      <section class="section contact" id="contact">
+        <header class="section-head" data-reveal>
+          <p class="eyebrow">Contact</p>
+          <h2>Let us build something precise.</h2>
+        </header>
 
-    <!-- CONTACT SECTION -->
-    <section class="contact-section" id="contact">
-      <div class="section-header">
-        <h2>Let's Collaborate</h2>
-        <p>Let's discuss how I can help your business grow</p>
-      </div>
-
-      <div class="contact-content">
-        <div class="contact-info">
-          <p>
-            Have an exciting project in mind? I'd love to discuss it with you.
-            Whether you want to talk about design, code, or just say hello I'm
-            always open to meaningful conversations and creative collaborations.
-          </p>
-          <a
-            href="https://mail.google.com/mail/u/0/?tab=rm&ogbl"
-            class="contact-email"
+        <div class="contact-row" data-reveal>
+          <a class="email" href="mailto:velosohurveenrayford@gmail.com"
             >velosohurveenrayford@gmail.com</a
           >
+          <div class="socials" aria-label="Social links">
+            <a href="https://github.com/Hurve-en" target="_blank" rel="noreferrer">Github</a>
+            <a href="https://www.linkedin.com" target="_blank" rel="noreferrer">LinkedIn</a>
+            <a href="https://www.instagram.com" target="_blank" rel="noreferrer">Instagram</a>
+          </div>
         </div>
+      </section>
+    </main>
 
-        <div class="social-links">
-          <a href="#" class="social-link">Twitter</a>
-          <a href="#" class="social-link">Instagram</a>
-          <a href="#" class="social-link">LinkedIn</a>
-          <a
-            href="https://github.com/Hurve-en?tab=overview&from=2025-12-01&to=2025-12-31"
-            class="social-link"
-            >Github</a
-          >
-        </div>
-      </div>
-    </section>
-
-    <!-- FOOTER -->
     <footer class="footer">
-      <p>&copy; 2024 Studio. Designed & developed with care and creativity.</p>
+      <p>2026 Hurve-en. Minimal portfolio, built for clarity.</p>
     </footer>
 
     <script src="script.js"></script>
