@@ -1,3 +1,4 @@
+/* Theme tokens */
 :root {
   --bg: #f6f5f2;
   --surface: #faf9f6;
@@ -11,17 +12,20 @@
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* Base reset */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+/* Global page behavior */
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 96px;
 }
 
+/* Base layout and background */
 body {
   font-family: "Manrope", sans-serif;
   color: var(--text);
@@ -33,6 +37,7 @@ body {
   overflow-x: hidden;
 }
 
+/* Decorative background grid */
 .bg-grid {
   position: fixed;
   inset: 0;
@@ -45,11 +50,13 @@ body {
   z-index: -1;
 }
 
+/* Global anchor reset */
 a {
   color: inherit;
   text-decoration: none;
 }
 
+/* Navigation */
 .navbar {
   position: fixed;
   top: 0;
@@ -103,12 +110,14 @@ a {
   background: rgba(18, 18, 18, 0.08);
 }
 
+/* Shared section container */
 .section {
   width: min(1160px, calc(100% - 3rem));
   margin: 0 auto;
   padding: 6rem 0;
 }
 
+/* Hero */
 .hero {
   min-height: 100svh;
   display: grid;
@@ -193,6 +202,7 @@ h1 span {
   background: #fff;
 }
 
+/* Section headings */
 .section-head {
   display: grid;
   gap: 0.4rem;
@@ -204,6 +214,7 @@ h2 {
   line-height: 1.08;
 }
 
+/* Featured projects */
 .project-list {
   display: grid;
   grid-template-columns: 1fr;
@@ -395,6 +406,7 @@ h3 {
   border-radius: 999px;
 }
 
+/* About split section */
 .split {
   border-top: 1px solid rgba(18, 18, 18, 0.12);
   border-bottom: 1px solid rgba(18, 18, 18, 0.12);
@@ -411,6 +423,7 @@ h3 {
   font-size: 1.04rem;
 }
 
+/* Contact */
 .contact {
   padding-bottom: 5rem;
 }
@@ -458,6 +471,7 @@ h3 {
   background: rgba(255, 255, 255, 0.8);
 }
 
+/* Footer */
 .footer {
   border-top: 1px solid rgba(18, 18, 18, 0.08);
   padding: 1.8rem;
@@ -469,6 +483,7 @@ h3 {
   font-size: 0.86rem;
 }
 
+/* Scroll reveal utility */
 [data-reveal] {
   opacity: 0;
   transform: translateY(18px);
@@ -481,12 +496,14 @@ h3 {
   transform: translateY(0);
 }
 
+/* Responsive: tablet and below */
 @media (max-width: 980px) {
   .split-grid {
     grid-template-columns: 1fr;
   }
 }
 
+/* Responsive: mobile */
 @media (max-width: 720px) {
   .nav-inner,
   .section {
@@ -519,6 +536,7 @@ h3 {
   }
 }
 
+/* Touch devices: details visible without hover */
 @media (hover: none) {
   .project-card {
     min-height: 250px;
@@ -545,6 +563,7 @@ h3 {
   }
 }
 
+/* Accessibility: reduced motion */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

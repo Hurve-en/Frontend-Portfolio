@@ -1,16 +1,20 @@
+// Cache common DOM references used across interactions.
 const navbar = document.querySelector(".navbar");
 const navLinks = Array.from(document.querySelectorAll('.nav-menu a[href^="#"]'));
 const revealNodes = Array.from(document.querySelectorAll("[data-reveal]"));
 const sectionNodes = Array.from(document.querySelectorAll("main section[id]"));
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+// Use navbar height as scroll offset for anchored navigation.
 const getOffset = () => navbar?.offsetHeight || 86;
 
+// Toggle compact/scrolled navbar styles based on scroll position.
 const setNavbarState = () => {
   if (!navbar) return;
   navbar.classList.toggle("scrolled", window.scrollY > 18);
 };
 
+// Intercept in-page links and apply smooth scrolling with offset.
 const smoothAnchorNavigation = () => {
   navLinks.forEach((link) => {
     link.addEventListener("click", (event) => {
@@ -30,6 +34,7 @@ const smoothAnchorNavigation = () => {
   });
 };
 
+// Reveal elements once when they enter the viewport.
 const setupRevealObserver = () => {
   if (prefersReducedMotion || !("IntersectionObserver" in window)) {
     revealNodes.forEach((node) => node.classList.add("is-visible"));
@@ -58,6 +63,7 @@ const setupRevealObserver = () => {
   revealNodes.forEach((node) => observer.observe(node));
 };
 
+// Keep the current section nav link highlighted while scrolling.
 const setupSectionHighlight = () => {
   if (!("IntersectionObserver" in window)) return;
 
@@ -86,6 +92,7 @@ const setupSectionHighlight = () => {
   sectionNodes.forEach((section) => observer.observe(section));
 };
 
+// Global listeners and one-time initialization.
 window.addEventListener("scroll", setNavbarState, { passive: true });
 window.addEventListener("resize", setNavbarState);
 
