@@ -215,9 +215,9 @@ h2 {
   display: block;
   min-height: 236px;
   background:
-    linear-gradient(155deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 246, 240, 0.92) 100%);
+    linear-gradient(155deg, rgba(255, 255, 255, 0.94) 0%, rgba(247, 244, 237, 0.95) 100%);
   border: 1px solid rgba(18, 18, 18, 0.1);
-  border-radius: var(--radius);
+  border-radius: 20px;
   padding: 1.2rem 1.3rem;
   overflow: hidden;
   will-change: transform;
@@ -229,10 +229,23 @@ h2 {
   content: "";
   position: absolute;
   inset: 0 0 auto 0;
-  height: 2px;
-  background: linear-gradient(90deg, rgba(157, 143, 118, 0.72), rgba(31, 41, 55, 0.35));
-  opacity: 0.35;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(157, 143, 118, 0.68), rgba(31, 41, 55, 0.28));
+  opacity: 0.55;
   transition: opacity 220ms ease;
+}
+
+.project-card::after {
+  content: "";
+  position: absolute;
+  width: 340px;
+  height: 340px;
+  right: -180px;
+  top: -210px;
+  background: radial-gradient(circle, rgba(157, 143, 118, 0.16), transparent 68%);
+  opacity: 0.55;
+  pointer-events: none;
+  transition: opacity 260ms ease;
 }
 
 .project-card-link {
@@ -249,12 +262,17 @@ h2 {
 .project-card-link:focus-visible {
   transform: translateY(-3px);
   border-color: rgba(18, 18, 18, 0.18);
-  box-shadow: 0 14px 28px rgba(18, 18, 18, 0.08);
+  box-shadow: 0 16px 34px rgba(18, 18, 18, 0.085);
 }
 
 .project-card-link:hover::before,
 .project-card-link:focus-visible::before {
   opacity: 0.9;
+}
+
+.project-card-link:hover::after,
+.project-card-link:focus-visible::after {
+  opacity: 0.85;
 }
 
 .project-content {
@@ -283,11 +301,21 @@ h3 {
 .project-title {
   color: var(--text);
   border-bottom: 1px solid rgba(18, 18, 18, 0.14);
-  padding-bottom: 0.72rem;
+  padding-bottom: 0.78rem;
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 0.8rem;
+  font-size: clamp(1.25rem, 2vw, 1.72rem);
+  line-height: 1.18;
+}
+
+.project-index {
+  font-size: 0.72rem;
+  font-family: "Manrope", sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: rgba(18, 18, 18, 0.42);
 }
 
 .project-details {
@@ -306,6 +334,10 @@ h3 {
   transition: opacity 220ms ease, transform 260ms var(--ease-out);
   scrollbar-width: thin;
   scrollbar-color: rgba(18, 18, 18, 0.26) rgba(18, 18, 18, 0.04);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(18, 18, 18, 0.08);
+  padding: 0.75rem 0.88rem;
 }
 
 .project-card-link:hover .project-details,
@@ -313,13 +345,13 @@ h3 {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
-  padding-right: 0.22rem;
+  padding-right: 0.4rem;
 }
 
 .project-content p {
-  color: rgba(18, 18, 18, 0.78);
-  font-size: 0.92rem;
-  line-height: 1.5;
+  color: rgba(18, 18, 18, 0.74);
+  font-size: 0.9rem;
+  line-height: 1.48;
 }
 
 .project-tagline {
@@ -331,10 +363,10 @@ h3 {
   display: flex;
   flex-wrap: wrap;
   gap: 0.45rem;
-  margin-top: 0.7rem;
+  margin-top: 0.78rem;
   max-height: 96px;
   overflow: auto;
-  padding-right: 0.3rem;
+  padding-right: 0.4rem;
 }
 
 .tag-list li {
@@ -343,7 +375,24 @@ h3 {
   border: 1px solid rgba(18, 18, 18, 0.14);
   border-radius: 999px;
   color: var(--muted);
-  background: rgba(255, 255, 255, 0.78);
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.project-details::-webkit-scrollbar,
+.tag-list::-webkit-scrollbar {
+  width: 7px;
+}
+
+.project-details::-webkit-scrollbar-thumb,
+.tag-list::-webkit-scrollbar-thumb {
+  background: rgba(18, 18, 18, 0.24);
+  border-radius: 999px;
+}
+
+.project-details::-webkit-scrollbar-track,
+.tag-list::-webkit-scrollbar-track {
+  background: rgba(18, 18, 18, 0.05);
+  border-radius: 999px;
 }
 
 .split {
@@ -486,7 +535,7 @@ h3 {
     opacity: 1;
     transform: none;
     pointer-events: auto;
-    padding-right: 0.22rem;
+    padding-right: 0.4rem;
     overflow: auto;
   }
 
