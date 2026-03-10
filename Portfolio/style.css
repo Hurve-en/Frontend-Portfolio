@@ -420,8 +420,8 @@ h3 {
   padding: 1.4rem 1.2rem;
   border: 1px solid rgba(18, 18, 18, 0.1);
   border-radius: 18px;
-  background: linear-gradient(155deg, rgba(255, 255, 255, 0.94), rgba(247, 244, 237, 0.95));
-  box-shadow: 0 12px 26px rgba(18, 18, 18, 0.06);
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 14px 32px rgba(18, 18, 18, 0.06);
 }
 
 .marquee-head {
@@ -442,45 +442,119 @@ h3 {
 }
 
 .logo-marquee {
+  position: relative;
   overflow: hidden;
   border: 1px solid rgba(18, 18, 18, 0.08);
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.82);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.9);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%);
+}
+
+.logo-marquee::before,
+.logo-marquee::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 10%;
+  pointer-events: none;
+  background: linear-gradient(to right, rgba(246, 245, 242, 1), rgba(246, 245, 242, 0));
+  z-index: 1;
+}
+
+.logo-marquee::after {
+  right: 0;
+  transform: scaleX(-1);
+}
+
+.logo-marquee::before {
+  left: 0;
 }
 
 .marquee-track {
   display: inline-flex;
   align-items: center;
-  gap: 0.8rem;
-  padding: 0.85rem 1rem;
-  min-height: 64px;
-  animation: marquee 28s linear infinite;
+  gap: 1.25rem;
+  padding: 1.25rem 1.6rem;
+  min-height: 102px;
+  animation: marquee var(--marquee-speed, 24s) linear infinite;
   will-change: transform;
 }
 
-.logo-pill {
+.logo-marquee[data-reveal].is-visible .marquee-track {
+  animation-play-state: running;
+}
+
+.logo-marquee[data-reveal]:not(.is-visible) .marquee-track {
+  animation-play-state: paused;
+}
+
+.logo-chip {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.5rem 0.9rem;
-  border-radius: 999px;
-  border: 1px solid rgba(18, 18, 18, 0.16);
+  width: 132px;
+  height: 94px;
+  padding: 0.65rem;
+  border-radius: 18px;
+  border: 1px solid rgba(18, 18, 18, 0.1);
   color: var(--ink);
-  font-weight: 700;
-  letter-spacing: 0.01em;
   background: #fff;
-  box-shadow: 0 10px 18px rgba(18, 18, 18, 0.05);
-  white-space: nowrap;
+  box-shadow: 0 16px 30px rgba(18, 18, 18, 0.08);
+  transition: transform 140ms var(--ease-out), box-shadow 140ms var(--ease-out), border-color 140ms ease, background-color 140ms ease;
+}
+.logo-chip:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 34px rgba(18, 18, 18, 0.12);
+  border-color: rgba(18, 18, 18, 0.18);
+  background: #fdfcf9;
 }
 
-.logo-pill:focus-visible {
+.logo-chip:focus-visible {
   outline: 2px solid rgba(18, 18, 18, 0.32);
   outline-offset: 3px;
 }
 
-.logo-marquee:hover .marquee-track,
-.logo-marquee:focus-within .marquee-track {
-  animation-play-state: paused;
+.logo-icon {
+  width: 32px;
+  height: 32px;
+  display: block;
+}
+
+.logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: saturate(0.92);
+}
+
+.logo-chip.has-fallback {
+  border-style: dashed;
+  color: var(--muted);
+}
+
+.logo-chip.has-fallback::after {
+  content: attr(data-label);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.logo-img.is-broken {
+  display: none;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 @keyframes marquee {
@@ -573,14 +647,14 @@ h3 {
 /* Scroll reveal utility */
 [data-reveal] {
   opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 760ms var(--ease-out), transform 760ms var(--ease-out);
+  transform: translateY(22px) scale(0.985);
+  transition: opacity 640ms var(--ease-out), transform 640ms var(--ease-out);
   transition-delay: var(--reveal-delay, 0ms);
 }
 
 [data-reveal].is-visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
 }
 
 /* Responsive: tablet and below */
