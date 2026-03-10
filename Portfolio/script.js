@@ -103,3 +103,16 @@ setNavbarState();
 smoothAnchorNavigation();
 setupRevealObserver();
 setupSectionHighlight();
+
+// Ensure page always loads at the top (hero) on refresh.
+if ("scrollRestoration" in history) {
+  history.scrollRestoration = "manual";
+}
+
+window.addEventListener("load", () => {
+  // Clear any hash to avoid loading mid-page.
+  if (location.hash) {
+    history.replaceState(null, "", location.pathname + location.search);
+  }
+  window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+});

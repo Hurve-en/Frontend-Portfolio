@@ -130,8 +130,14 @@ a {
   min-height: 100svh;
   display: grid;
   align-content: center;
-  gap: 1.2rem;
+  gap: 1.6rem;
   padding-top: 7rem;
+  grid-template-columns: 1fr;
+}
+
+.hero-copyblock {
+  display: grid;
+  gap: 1rem;
 }
 
 .eyebrow {
@@ -170,6 +176,51 @@ h1 span {
   flex-wrap: wrap;
   gap: 0.85rem;
   margin-top: 0.8rem;
+}
+
+.hero-visual {
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.avatar-frame {
+  position: relative;
+  width: clamp(240px, 34vw, 340px);
+  aspect-ratio: 1 / 1;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 26px 60px rgba(18, 18, 18, 0.12);
+  background: linear-gradient(155deg, rgba(255, 255, 255, 0.94), rgba(247, 244, 237, 0.95));
+  animation: float 7s ease-in-out infinite;
+}
+
+.avatar-frame::after {
+  content: "";
+  position: absolute;
+  inset: 12px;
+  border-radius: 18px;
+  border: 1px solid rgba(18, 18, 18, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  pointer-events: none;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background-color: transparent;
+  display: block;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
 }
 
 .button {
@@ -662,6 +713,14 @@ h3 {
   .split-grid {
     grid-template-columns: 1fr;
   }
+
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-visual {
+    display: none;
+  }
 }
 
 /* Responsive: mobile */
@@ -694,6 +753,17 @@ h3 {
 
   .project-list {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 981px) {
+  .hero {
+    grid-template-columns: 1.08fr 0.92fr;
+    align-items: center;
+  }
+
+  .hero-visual {
+    display: flex;
   }
 }
 
