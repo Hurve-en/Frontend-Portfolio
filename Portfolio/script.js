@@ -4,6 +4,7 @@ const navLinks = Array.from(document.querySelectorAll('.nav-menu a[href^="#"]'))
 const revealNodes = Array.from(document.querySelectorAll("[data-reveal]"));
 const sectionNodes = Array.from(document.querySelectorAll("main section[id]"));
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const animatedHeading = null;
 
 // Use navbar height as scroll offset for anchored navigation.
 const getOffset = () => navbar?.offsetHeight || 86;
@@ -49,11 +50,11 @@ const setupRevealObserver = () => {
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        const isMostlyVisible = entry.intersectionRatio > 0.14;
-        if (isMostlyVisible) {
-          entry.target.classList.add("is-visible");
-        } else {
-          entry.target.classList.remove("is-visible");
+    const isMostlyVisible = entry.intersectionRatio > 0.14;
+    if (isMostlyVisible) {
+      entry.target.classList.add("is-visible");
+    } else {
+      entry.target.classList.remove("is-visible");
         }
       });
     },
@@ -116,3 +117,5 @@ window.addEventListener("load", () => {
   }
   window.scrollTo({ top: 0, left: 0, behavior: "auto" });
 });
+
+// (Interactive heading animation removed by request)
