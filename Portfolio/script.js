@@ -47,20 +47,33 @@ const setupRevealObserver = () => {
     node.style.setProperty("--reveal-delay", `${delay}ms`);
   });
 
+  const hideTimers = new WeakMap();
+
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        const isMostlyVisible = entry.intersectionRatio > 0.14;
-        if (isMostlyVisible) {
+        if (entry.isIntersecting) {
+          // cancel any pending hide and show immediately
+          const pending = hideTimers.get(entry.target);
+          if (pending) {
+            clearTimeout(pending);
+            hideTimers.delete(entry.target);
+          }
           entry.target.classList.add("is-visible");
         } else {
-          entry.target.classList.remove("is-visible");
+          // delay hide slightly to avoid flicker on quick scroll reversals
+          if (hideTimers.has(entry.target)) return;
+          const timer = setTimeout(() => {
+            entry.target.classList.remove("is-visible");
+            hideTimers.delete(entry.target);
+          }, 140);
+          hideTimers.set(entry.target, timer);
         }
       });
     },
     {
-      threshold: [0, 0.15, 0.35],
-      rootMargin: "-10% 0px -10% 0px",
+      threshold: [0, 0.12, 0.28, 0.55],
+      rootMargin: "-10% 0px -12% 0px",
     },
   );
 
