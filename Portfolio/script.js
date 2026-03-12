@@ -50,11 +50,11 @@ const setupRevealObserver = () => {
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-    const isMostlyVisible = entry.intersectionRatio > 0.14;
-    if (isMostlyVisible) {
-      entry.target.classList.add("is-visible");
-    } else {
-      entry.target.classList.remove("is-visible");
+        const isMostlyVisible = entry.intersectionRatio > 0.14;
+        if (isMostlyVisible) {
+          entry.target.classList.add("is-visible");
+        } else {
+          entry.target.classList.remove("is-visible");
         }
       });
     },
@@ -96,6 +96,106 @@ const setupSectionHighlight = () => {
   sectionNodes.forEach((section) => observer.observe(section));
 };
 
+// Featured projects carousel with stacked cards, auto-loop, and hover/drag pause.
+const setupProjectsCarousel = () => {
+  const carousel = document.querySelector(".projects-carousel");
+  if (!carousel) return;
+
+  const viewport = carousel.querySelector(".carousel-viewport");
+  const cards = Array.from(carousel.querySelectorAll(".carousel-card"));
+  const prevBtn = carousel.querySelector(".carousel-arrow.prev");
+  const nextBtn = carousel.querySelector(".carousel-arrow.next");
+
+  if (!viewport || cards.length === 0) return;
+
+  const states = ["active", "prev1", "next1", "prev2", "next2"];
+  let index = 0;
+  let autoTimer = null;
+  let isDragging = false;
+  let startX = 0;
+
+  const applyStates = () => {
+    const total = cards.length;
+    cards.forEach((card) => card.classList.remove(...states));
+    const prev2 = (index - 2 + total) % total;
+    const prev1 = (index - 1 + total) % total;
+    const next1 = (index + 1) % total;
+    const next2 = (index + 2) % total;
+    cards[index].classList.add("active");
+    cards[prev1].classList.add("prev1");
+    cards[next1].classList.add("next1");
+    cards[prev2].classList.add("prev2");
+    cards[next2].classList.add("next2");
+  };
+
+  const nextCard = () => {
+    index = (index + 1) % cards.length;
+    applyStates();
+  };
+
+  const prevCard = () => {
+    index = (index - 1 + cards.length) % cards.length;
+    applyStates();
+  };
+
+  const stopAuto = () => {
+    if (autoTimer) clearInterval(autoTimer);
+    autoTimer = null;
+  };
+
+  const startAuto = () => {
+    if (prefersReducedMotion) return;
+    stopAuto();
+    autoTimer = setInterval(nextCard, 3600);
+  };
+
+  prevBtn?.addEventListener("click", () => {
+    prevCard();
+    stopAuto();
+    startAuto();
+  });
+
+  nextBtn?.addEventListener("click", () => {
+    nextCard();
+    stopAuto();
+    startAuto();
+  });
+
+  viewport.addEventListener("mouseenter", () => {
+    stopAuto();
+  });
+
+  viewport.addEventListener("mouseleave", () => {
+    startAuto();
+  });
+
+  viewport.addEventListener("pointerdown", (event) => {
+    isDragging = true;
+    startX = event.clientX;
+    viewport.classList.add("is-dragging");
+    stopAuto();
+  });
+
+  window.addEventListener("pointerup", (event) => {
+    if (!isDragging) return;
+    const delta = event.clientX - startX;
+    isDragging = false;
+    viewport.classList.remove("is-dragging");
+    if (Math.abs(delta) > 30) {
+      if (delta < 0) nextCard();
+      else prevCard();
+    }
+    startAuto();
+  });
+
+  applyStates();
+  startAuto();
+  window.addEventListener("visibilitychange", () => {
+    if (document.hidden) stopAuto();
+    else startAuto();
+  });
+};
+
 // Global listeners and one-time initialization.
 window.addEventListener("scroll", setNavbarState, { passive: true });
 window.addEventListener("resize", setNavbarState);
@@ -104,6 +204,7 @@ setNavbarState();
 smoothAnchorNavigation();
 setupRevealObserver();
 setupSectionHighlight();
+setupProjectsCarousel();
 
 // Ensure page always loads at the top (hero) on refresh.
 if ("scrollRestoration" in history) {

@@ -352,107 +352,106 @@
           <h2>Featured projects</h2>
         </header>
 
-        <div class="project-list">
-          <!-- Project 01 -->
-          <a
-            class="project-card project-card-link"
-            data-reveal
-            href="https://github.com/Hurve-en/CITA-CoralGuardAI"
-            target="_blank"
-            rel="noreferrer"
-            aria-label="Open CITA-CoralGuardAI on GitHub"
-          >
-            <div class="project-content">
-              <h3 class="project-title">
-                CITA-CoralGuardAI <span class="project-index">01</span>
-              </h3>
-              <div class="project-details">
-                <p class="project-meta">SDG 14 - Life Below Water</p>
-                <p>
-                  Turns reef monitoring into a community-powered, AI-assisted
-                  workflow. People can upload underwater photos and instantly
-                  generate structured reef health reports for local
-                  decision-makers.
-                </p>
-                <ul class="tag-list" aria-label="Project skills">
-                  <li>React + Vite</li>
-                  <li>Tailwind CSS</li>
-                  <li>Google Gemini</li>
-                  <li>Supabase</li>
-                  <li>Leaflet + OpenStreetMap</li>
-                  <li>Vercel</li>
-                </ul>
-              </div>
-            </div>
-          </a>
+        <div class="projects-carousel" data-reveal>
+          <button class="carousel-arrow prev" type="button" aria-label="Previous project">
+            <span aria-hidden="true">&#8592;</span>
+          </button>
 
-          <!-- Project 02 -->
-          <a
-            class="project-card project-card-link"
-            data-reveal
-            data-delay="100"
-            href="https://github.com/Hurve-en/CITA-CebuCleanAI"
-            target="_blank"
-            rel="noreferrer"
-            aria-label="Open CITA-CebuCleanAI on GitHub"
-          >
-            <div class="project-content">
-              <h3 class="project-title">
-                CITA-CebuCleanAI <span class="project-index">02</span>
-              </h3>
-              <div class="project-details">
-                <p class="project-meta">
-                  SDG 11 - Sustainable Cities and Communities
-                </p>
-                <p>
-                  Mobile app for Cebu residents to scan waste with on-device AI,
-                  classify it instantly, and get disposal tips with reward
-                  points while live reports help barangays and city hall.
-                </p>
-                <p class="project-tagline">Scan. Segregate. Save Cebu.</p>
-                <ul class="tag-list" aria-label="Project skills">
-                  <li>Flutter</li>
-                  <li>Next.js 15</li>
-                  <li>Node.js + NestJS</li>
-                  <li>PostgreSQL + PostGIS</li>
-                  <li>TensorFlow Lite</li>
-                  <li>Docker + Vercel</li>
-                </ul>
+          <div class="carousel-viewport" aria-label="Featured projects carousel">
+            <div class="carousel-track">
+              <!-- Project 01 -->
+              <div class="project-card carousel-card" data-title="CITA-CoralGuardAI">
+                <div class="project-content">
+                  <div class="project-head">
+                    <div>
+                      <p class="project-meta">SDG 14 - Life Below Water</p>
+                      <h3 class="project-title">
+                        CITA-CoralGuardAI <span class="project-index">01</span>
+                      </h3>
+                    </div>
+                    <span class="project-badge">AI + Mapping</span>
+                  </div>
+                  <p class="project-summary">
+                    Community-powered reef monitoring with AI-assisted reporting so local teams can see reef health snapshots in minutes.
+                  </p>
+                  <ul class="tag-list" aria-label="Project skills">
+                    <li>React + Vite</li>
+                    <li>Tailwind CSS</li>
+                    <li>Gemini</li>
+                    <li>Supabase</li>
+                    <li>Leaflet</li>
+                  </ul>
+                  <div class="project-actions">
+                    <a class="button button-solid sm" href="https://coralguard.ai" target="_blank" rel="noreferrer">View Project</a>
+                    <a class="button button-ghost sm" href="https://github.com/Hurve-en/CITA-CoralGuardAI" target="_blank" rel="noreferrer">View Code</a>
+                  </div>
+                </div>
               </div>
-            </div>
-          </a>
 
-          <!-- Project 03 -->
-          <a
-            class="project-card project-card-link"
-            data-reveal
-            href="https://github.com/Hurve-en/Mt-Apos-Best-Coffee"
-            target="_blank"
-            rel="noreferrer"
-            aria-label="Open Mt. Apos Best Coffee on GitHub"
-          >
-            <div class="project-content">
-              <h3 class="project-title">
-                Mt. Apos Best Coffee <span class="project-index">03</span>
-              </h3>
-              <div class="project-details">
-                <p class="project-meta">Production-Grade Coffee Platform</p>
-                <p>
-                  Full-featured ordering and management system where customers
-                  browse, order, and track products while administrators handle
-                  inventory and operations in real time.
-                </p>
-                <ul class="tag-list" aria-label="Project skills">
-                  <li>Node.js + Express</li>
-                  <li>TypeScript + Prisma</li>
-                  <li>PostgreSQL</li>
-                  <li>React + Vite</li>
-                  <li>Socket.IO</li>
-                  <li>Docker Compose</li>
-                </ul>
+              <!-- Project 02 -->
+              <div class="project-card carousel-card" data-title="CITA-CebuCleanAI">
+                <div class="project-content">
+                  <div class="project-head">
+                    <div>
+                      <p class="project-meta">SDG 11 - Sustainable Cities</p>
+                      <h3 class="project-title">
+                        CITA-CebuCleanAI <span class="project-index">02</span>
+                      </h3>
+                    </div>
+                    <span class="project-badge">Mobile + AI</span>
+                  </div>
+                  <p class="project-summary">
+                    On-device waste scanning, instant guidance, and live barangay dashboards to keep Cebu cleaner.
+                  </p>
+                  <p class="project-tagline">Scan. Segregate. Save Cebu.</p>
+                  <ul class="tag-list" aria-label="Project skills">
+                    <li>Flutter</li>
+                    <li>Next.js 15</li>
+                    <li>NestJS</li>
+                    <li>PostGIS</li>
+                    <li>TFLite</li>
+                  </ul>
+                  <div class="project-actions">
+                    <a class="button button-solid sm" href="https://github.com/Hurve-en/CITA-CebuCleanAI" target="_blank" rel="noreferrer">View Project</a>
+                    <a class="button button-ghost sm" href="https://github.com/Hurve-en/CITA-CebuCleanAI" target="_blank" rel="noreferrer">View Code</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Project 03 -->
+              <div class="project-card carousel-card" data-title="Mt. Apos Best Coffee">
+                <div class="project-content">
+                  <div class="project-head">
+                    <div>
+                      <p class="project-meta">Production-Grade Coffee Platform</p>
+                      <h3 class="project-title">
+                        Mt. Apos Best Coffee <span class="project-index">03</span>
+                      </h3>
+                    </div>
+                    <span class="project-badge">E‑commerce</span>
+                  </div>
+                  <p class="project-summary">
+                    Ordering and operations suite where customers buy, track, and rate products while admins manage inventory in real time.
+                  </p>
+                  <ul class="tag-list" aria-label="Project skills">
+                    <li>Node + Express</li>
+                    <li>TypeScript + Prisma</li>
+                    <li>PostgreSQL</li>
+                    <li>React + Vite</li>
+                    <li>Socket.IO</li>
+                  </ul>
+                  <div class="project-actions">
+                    <a class="button button-solid sm" href="https://github.com/Hurve-en/Mt-Apos-Best-Coffee" target="_blank" rel="noreferrer">View Project</a>
+                    <a class="button button-ghost sm" href="https://github.com/Hurve-en/Mt-Apos-Best-Coffee" target="_blank" rel="noreferrer">View Code</a>
+                  </div>
+                </div>
               </div>
             </div>
-          </a>
+          </div>
+
+          <button class="carousel-arrow next" type="button" aria-label="Next project">
+            <span aria-hidden="true">&#8594;</span>
+          </button>
         </div>
       </section>
 
