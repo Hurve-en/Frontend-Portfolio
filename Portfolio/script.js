@@ -165,58 +165,60 @@ const setupSectionHighlight = () => {
 
 // ──────────────────────────────────────────────
 // LETTER-BY-LETTER CURSOR-REACTIVE ANIMATION
+// FIX: Wrap letters inside word-spans so the
+// browser never breaks mid-word across lines.
 // ──────────────────────────────────────────────
 const setupInteractiveHeaders = () => {
   const headers = Array.from(document.querySelectorAll(".interactive-header"));
   if (headers.length === 0) return;
 
-  // Only enable on devices that support hover
   const isHoverSupported = window.matchMedia("(hover: hover)").matches;
   if (!isHoverSupported || prefersReducedMotion) return;
 
   headers.forEach((header) => {
     const text = header.textContent;
-    const letters = text.split("");
+    const words = text.trim().split(/(\s+)/); // split on whitespace, keep spaces
 
-    // Create spans for each letter
-    header.innerHTML = letters
-      .map((letter) => {
-        if (letter === " ") {
-          return '<span class="letter" style="display: inline-block; width: 0.25em;"> </span>';
+    // Build HTML: each word is wrapped in a word-span (display:inline-block)
+    // so the browser treats the whole word as an unbreakable unit for line
+    // wrapping. Letters inside are also inline-block for the cursor effect.
+    header.innerHTML = words
+      .map((chunk) => {
+        if (/^\s+$/.test(chunk)) {
+          // Pure whitespace — render as a normal space between words
+          return " ";
         }
-        return `<span class="letter" style="display: inline-block; position: relative;">${letter}</span>`;
+        // Wrap every letter in a span, then wrap the whole word
+        const letterSpans = chunk
+          .split("")
+          .map(
+            (letter) =>
+              `<span class="letter" style="display:inline-block;position:relative;">${letter}</span>`,
+          )
+          .join("");
+        return `<span class="word" style="display:inline-block;white-space:nowrap;">${letterSpans}</span>`;
       })
       .join("");
 
     const letterElements = header.querySelectorAll(".letter");
-
-    // Store animation frame IDs for cleanup
     let animationFrameId = null;
 
     const updateLetterPositions = (mouseX, mouseY) => {
-      const rect = header.getBoundingClientRect();
-      const headerCenterX = rect.left + rect.width / 2;
-      const headerCenterY = rect.top + rect.height / 2;
-
-      letterElements.forEach((letter, index) => {
+      letterElements.forEach((letter) => {
         const letterRect = letter.getBoundingClientRect();
         const letterCenterX = letterRect.left + letterRect.width / 2;
         const letterCenterY = letterRect.top + letterRect.height / 2;
 
-        // Calculate distance from cursor to letter
         const distX = mouseX - letterCenterX;
         const distY = mouseY - letterCenterY;
         const distance = Math.sqrt(distX * distX + distY * distY);
 
-        // Maximum influence distance
         const maxDistance = 200;
         const influence = Math.max(0, 1 - distance / maxDistance);
 
-        // Calculate movement (max 12px in each direction)
         const moveX = (distX / distance) * influence * 12 || 0;
         const moveY = (distY / distance) * influence * 12 || 0;
 
-        // Apply transform with smooth easing
         letter.style.transform = `translate(${moveX}px, ${moveY}px)`;
         letter.style.transition =
           "transform 120ms cubic-bezier(0.25, 0.46, 0.45, 0.94)";
@@ -227,7 +229,6 @@ const setupInteractiveHeaders = () => {
       const mouseX = event.clientX;
       const mouseY = event.clientY;
 
-      // Use requestAnimationFrame for smooth animation
       if (animationFrameId) cancelAnimationFrame(animationFrameId);
       animationFrameId = requestAnimationFrame(() => {
         updateLetterPositions(mouseX, mouseY);
@@ -235,18 +236,15 @@ const setupInteractiveHeaders = () => {
     };
 
     const onMouseLeave = () => {
-      // Reset all letters smoothly
       letterElements.forEach((letter) => {
         letter.style.transform = "translate(0, 0)";
       });
       if (animationFrameId) cancelAnimationFrame(animationFrameId);
     };
 
-    // Add listeners
     document.addEventListener("mousemove", onMouseMove, { passive: true });
     header.addEventListener("mouseleave", onMouseLeave);
 
-    // Cleanup on page unload
     window.addEventListener("beforeunload", () => {
       document.removeEventListener("mousemove", onMouseMove);
       header.removeEventListener("mouseleave", onMouseLeave);
@@ -272,7 +270,6 @@ const setupAwwwardsCarousel = () => {
 
   if (!viewport || cards.length === 0) return;
 
-  // State management
   const states = ["active", "prev1", "next1", "prev2", "next2"];
   let index = 0;
   let autoTimer = null;
@@ -281,10 +278,8 @@ const setupAwwwardsCarousel = () => {
   let currentX = 0;
   let isTransitioning = false;
 
-  // Detect if device supports hover
   const isHoverSupported = window.matchMedia("(hover: hover)").matches;
 
-  // Apply 3D transforms and state classes to cards
   const applyStates = () => {
     const total = cards.length;
     cards.forEach((card) => {
@@ -303,13 +298,11 @@ const setupAwwwardsCarousel = () => {
     cards[prev2].classList.add("prev2");
     cards[next2].classList.add("next2");
 
-    // Update indicators
     indicators.forEach((ind, i) => {
       ind.classList.toggle("active", i === index);
     });
   };
 
-  // Navigate to next card
   const nextCard = () => {
     if (isTransitioning) return;
     isTransitioning = true;
@@ -317,10 +310,9 @@ const setupAwwwardsCarousel = () => {
     applyStates();
     setTimeout(() => {
       isTransitioning = false;
-    }, 700); // Match CSS transition duration
+    }, 700);
   };
 
-  // Navigate to previous card
   const prevCard = () => {
     if (isTransitioning) return;
     isTransitioning = true;
@@ -328,10 +320,9 @@ const setupAwwwardsCarousel = () => {
     applyStates();
     setTimeout(() => {
       isTransitioning = false;
-    }, 700); // Match CSS transition duration
+    }, 700);
   };
 
-  // Navigate to specific card
   const goToCard = (newIndex) => {
     if (isTransitioning || newIndex === index) return;
     isTransitioning = true;
@@ -342,7 +333,6 @@ const setupAwwwardsCarousel = () => {
     }, 700);
   };
 
-  // Auto-play management
   const stopAuto = () => {
     if (autoTimer) clearInterval(autoTimer);
     autoTimer = null;
@@ -351,23 +341,20 @@ const setupAwwwardsCarousel = () => {
   const startAuto = () => {
     if (prefersReducedMotion) return;
     stopAuto();
-    autoTimer = setInterval(nextCard, 6000); // Auto-advance every 6 seconds
+    autoTimer = setInterval(nextCard, 6000);
   };
 
-  // Button click handlers
   prevBtn?.addEventListener("click", () => {
     prevCard();
     stopAuto();
     startAuto();
   });
-
   nextBtn?.addEventListener("click", () => {
     nextCard();
     stopAuto();
     startAuto();
   });
 
-  // Indicator click handlers
   indicators.forEach((indicator, i) => {
     indicator.addEventListener("click", () => {
       goToCard(i);
@@ -376,13 +363,8 @@ const setupAwwwardsCarousel = () => {
     });
   });
 
-  // Pause auto-play on hover
   viewport.addEventListener("mouseenter", stopAuto);
   viewport.addEventListener("mouseleave", startAuto);
-
-  // ────────────────────────────────────────────
-  // DRAG & SWIPE INTERACTIONS
-  // ────────────────────────────────────────────
 
   let dragStartX = 0;
   let dragStartTime = 0;
@@ -412,17 +394,14 @@ const setupAwwwardsCarousel = () => {
     isDragging = false;
     viewport.classList.remove("is-dragging");
 
-    // Swipe threshold: 30px or velocity > 0.5px/ms
     if (Math.abs(delta) > 30 || velocity > 0.5) {
-      if (delta < 0)
-        nextCard(); // Drag left → next
-      else prevCard(); // Drag right → previous
+      if (delta < 0) nextCard();
+      else prevCard();
     }
 
     startAuto();
   });
 
-  // Keyboard navigation
   document.addEventListener("keydown", (event) => {
     if (event.key === "ArrowLeft") {
       prevCard();
@@ -436,34 +415,25 @@ const setupAwwwardsCarousel = () => {
     }
   });
 
-  // ────────────────────────────────────────────
-  // HOVER REVEAL (Desktop) & TAP-TO-REVEAL (Mobile)
-  // ────────────────────────────────────────────
-
   cards.forEach((card) => {
     if (!isHoverSupported) {
       card.addEventListener("click", (event) => {
-        // Only toggle if clicking on the active card
         if (!card.classList.contains("active")) return;
-
         event.stopPropagation();
         card.classList.toggle("is-revealed");
       });
     }
   });
 
-  // Close reveal on outside click (mobile)
   document.addEventListener("click", (event) => {
     if (!isHoverSupported && !event.target.closest(".carousel-card")) {
       cards.forEach((card) => card.classList.remove("is-revealed"));
     }
   });
 
-  // Initialize carousel
   applyStates();
   startAuto();
 
-  // Pause when page is hidden, resume when visible
   window.addEventListener("visibilitychange", () => {
     if (document.hidden) stopAuto();
     else startAuto();
@@ -490,6 +460,5 @@ window.addEventListener("load", () => {
     history.replaceState(null, "", location.pathname + location.search);
   }
   window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-  // Initial highlight
   setTimeout(updateActiveFromScroll, 300);
 });
