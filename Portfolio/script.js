@@ -39,7 +39,7 @@ const smoothAnchorNavigation = () => {
   });
 };
 
-// Reveal observer (unchanged)
+// Reveal observer
 const setupRevealObserver = () => {
   if (prefersReducedMotion || !("IntersectionObserver" in window)) {
     revealNodes.forEach((node) => node.classList.add("is-visible"));
@@ -86,7 +86,7 @@ const setupRevealObserver = () => {
 };
 
 // ──────────────────────────────────────────────
-// STABLE ACTIVE NAV HIGHLIGHT – improved for manual scroll reliability
+// STABLE ACTIVE NAV HIGHLIGHT
 // ──────────────────────────────────────────────
 let lastActiveId = null;
 let pendingUpdate = null;
@@ -137,7 +137,7 @@ const updateActiveFromScroll = () => {
 
     updateActiveLink(bestId);
     pendingUpdate = null;
-  }, 60); // small debounce – prevents flip-flopping during scroll
+  }, 60);
 };
 
 const setupSectionHighlight = () => {
@@ -160,21 +160,24 @@ const setupSectionHighlight = () => {
 
   sectionNodes.forEach((section) => observer.observe(section));
 
-  // Also listen to scroll for smoother feel during fast manual scrolling
   window.addEventListener("scroll", updateActiveFromScroll, { passive: true });
 };
 
 // ──────────────────────────────────────────────
-// ENHANCED 3D CAROUSEL WITH HOVER REVEAL & TOUCH
+// AWWWARDS-STYLE 3D CAROUSEL WITH SIDE ARROWS
 // ──────────────────────────────────────────────
-const setupProjectsCarousel = () => {
-  const carousel = document.querySelector(".projects-carousel");
+const setupAwwwardsCarousel = () => {
+  const carousel = document.querySelector(".awwwards-carousel");
   if (!carousel) return;
 
   const viewport = carousel.querySelector(".carousel-viewport");
   const cards = Array.from(carousel.querySelectorAll(".carousel-card"));
-  const prevBtn = carousel.querySelector(".carousel-arrow.prev");
-  const nextBtn = carousel.querySelector(".carousel-arrow.next");
+  const container = document.querySelector(".carousel-container");
+  const prevBtn = container?.querySelector(".carousel-arrow.prev");
+  const nextBtn = container?.querySelector(".carousel-arrow.next");
+  const indicators = Array.from(
+    document.querySelectorAll(".carousel-indicators .indicator"),
+  );
 
   if (!viewport || cards.length === 0) return;
 
@@ -184,9 +187,10 @@ const setupProjectsCarousel = () => {
   let autoTimer = null;
   let isDragging = false;
   let startX = 0;
+  let currentX = 0;
   let isTransitioning = false;
 
-  // Detect if device supports hover (not touch-only)
+  // Detect if device supports hover
   const isHoverSupported = window.matchMedia("(hover: hover)").matches;
 
   // Apply 3D transforms and state classes to cards
@@ -194,7 +198,6 @@ const setupProjectsCarousel = () => {
     const total = cards.length;
     cards.forEach((card) => {
       card.classList.remove(...states);
-      // Clear reveal state when carousel moves
       card.classList.remove("is-revealed");
     });
 
@@ -208,6 +211,11 @@ const setupProjectsCarousel = () => {
     cards[next1].classList.add("next1");
     cards[prev2].classList.add("prev2");
     cards[next2].classList.add("next2");
+
+    // Update indicators
+    indicators.forEach((ind, i) => {
+      ind.classList.toggle("active", i === index);
+    });
   };
 
   // Navigate to next card
@@ -218,7 +226,7 @@ const setupProjectsCarousel = () => {
     applyStates();
     setTimeout(() => {
       isTransitioning = false;
-    }, 600); // Match CSS transition duration
+    }, 700); // Match CSS transition duration
   };
 
   // Navigate to previous card
@@ -229,7 +237,18 @@ const setupProjectsCarousel = () => {
     applyStates();
     setTimeout(() => {
       isTransitioning = false;
-    }, 600); // Match CSS transition duration
+    }, 700); // Match CSS transition duration
+  };
+
+  // Navigate to specific card
+  const goToCard = (newIndex) => {
+    if (isTransitioning || newIndex === index) return;
+    isTransitioning = true;
+    index = newIndex;
+    applyStates();
+    setTimeout(() => {
+      isTransitioning = false;
+    }, 700);
   };
 
   // Auto-play management
@@ -241,7 +260,7 @@ const setupProjectsCarousel = () => {
   const startAuto = () => {
     if (prefersReducedMotion) return;
     stopAuto();
-    autoTimer = setInterval(nextCard, 5000); // Auto-advance every 5 seconds
+    autoTimer = setInterval(nextCard, 6000); // Auto-advance every 6 seconds
   };
 
   // Button click handlers
@@ -257,37 +276,73 @@ const setupProjectsCarousel = () => {
     startAuto();
   });
 
+  // Indicator click handlers
+  indicators.forEach((indicator, i) => {
+    indicator.addEventListener("click", () => {
+      goToCard(i);
+      stopAuto();
+      startAuto();
+    });
+  });
+
   // Pause auto-play on hover
   viewport.addEventListener("mouseenter", stopAuto);
   viewport.addEventListener("mouseleave", startAuto);
 
-  // Touch/drag support for mobile
+  // ────────────────────────────────────────────
+  // DRAG & SWIPE INTERACTIONS
+  // ────────────────────────────────────────────
+
+  let dragStartX = 0;
+  let dragStartTime = 0;
+
   viewport.addEventListener("pointerdown", (event) => {
     isDragging = true;
+    dragStartX = event.clientX;
+    dragStartTime = Date.now();
     startX = event.clientX;
+    currentX = 0;
     viewport.classList.add("is-dragging");
     stopAuto();
   });
 
+  window.addEventListener("pointermove", (event) => {
+    if (!isDragging) return;
+    currentX = event.clientX - dragStartX;
+  });
+
   window.addEventListener("pointerup", (event) => {
     if (!isDragging) return;
-    const delta = event.clientX - startX;
+
+    const delta = event.clientX - dragStartX;
+    const duration = Date.now() - dragStartTime;
+    const velocity = Math.abs(delta) / duration;
+
     isDragging = false;
     viewport.classList.remove("is-dragging");
 
-    // Swipe threshold: 30px
-    if (Math.abs(delta) > 30) {
+    // Swipe threshold: 30px or velocity > 0.5px/ms
+    if (Math.abs(delta) > 30 || velocity > 0.5) {
       if (delta < 0)
-        nextCard(); // Swipe left → next
-      else prevCard(); // Swipe right → previous
+        nextCard(); // Drag left → next
+      else prevCard(); // Drag right → previous
     }
+
     startAuto();
   });
 
   // Keyboard navigation
   document.addEventListener("keydown", (event) => {
-    if (event.key === "ArrowLeft") prevCard();
-    if (event.key === "ArrowRight") nextCard();
+    if (event.key === "ArrowLeft") {
+      prevCard();
+      stopAuto();
+      startAuto();
+    }
+    if (event.key === "ArrowRight") {
+      nextCard();
+      stopAuto();
+      startAuto();
+    }
   });
 
   // ────────────────────────────────────────────
@@ -295,13 +350,6 @@ const setupProjectsCarousel = () => {
   // ────────────────────────────────────────────
 
   cards.forEach((card) => {
-    // Desktop: Hover reveal (automatic via CSS)
-    if (isHoverSupported) {
-      // Hover is handled by CSS :hover pseudo-class
-      // No additional JS needed for desktop
-    }
-
-    // Mobile: Tap-to-reveal
     if (!isHoverSupported) {
       card.addEventListener("click", (event) => {
         // Only toggle if clicking on the active card
@@ -338,7 +386,7 @@ setNavbarState();
 smoothAnchorNavigation();
 setupRevealObserver();
 setupSectionHighlight();
-setupProjectsCarousel();
+setupAwwwardsCarousel();
 
 // Ensure page always loads at the top (hero) on refresh.
 if ("scrollRestoration" in history) {

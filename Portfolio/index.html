@@ -345,8 +345,8 @@
         </div>
       </section>
 
-      <!-- Featured projects section with enhanced 3D carousel -->
-      <section class="section" id="work">
+      <!-- Featured projects section - SIDE NAVIGATION -->
+      <section class="section projects-section" id="work">
         <header class="section-head" data-reveal>
           <div class="section-kicker">
             <p class="eyebrow">Selected Work</p>
@@ -355,11 +355,11 @@
           <h2>Featured projects</h2>
         </header>
 
-        <!-- 3D Carousel Container -->
-        <div class="projects-carousel" data-reveal>
-          <!-- Navigation Arrows -->
+        <!-- Carousel with Side Navigation -->
+        <div class="carousel-container" data-reveal>
+          <!-- Left Navigation Arrow -->
           <button
-            class="carousel-arrow prev"
+            class="carousel-arrow carousel-arrow-left prev"
             aria-label="Previous project"
             title="Previous"
           >
@@ -377,151 +377,195 @@
             </svg>
           </button>
 
-          <!-- Carousel Viewport -->
-          <div class="carousel-viewport">
-            <!-- Carousel Track -->
-            <div class="carousel-track">
-              <!-- Project Card 1 -->
-              <article class="carousel-card case-card theme-reef">
-                <!-- Title Section (Always Visible) -->
-                <div class="card-title-section">
-                  <span class="card-number">01</span>
-                  <h3 class="case-title">CITA-CoralGuardAI</h3>
-                </div>
+          <!-- Carousel -->
+          <div class="awwwards-carousel">
+            <!-- Carousel Viewport -->
+            <div class="carousel-viewport">
+              <!-- Carousel Track -->
+              <div class="carousel-track">
+                <!-- Project Card 1: CITA-CoralGuardAI -->
+                <article class="carousel-card project-card theme-coral">
+                  <div class="card-content">
+                    <div class="card-body">
+                      <div class="card-header">
+                        <h3 class="card-title">CITA-CoralGuardAI</h3>
+                        <p class="card-category">AI + Mapping</p>
+                      </div>
 
-                <!-- Details Section (Revealed on Hover/Tap) -->
-                <div class="card-details-overlay">
-                  <div class="overlay-content">
-                    <div class="case-top">
-                      <span class="pill">AI + Mapping</span>
-                      <span class="case-meta">SDG 14 · Life Below Water</span>
-                    </div>
-                    <p class="case-summary">
-                      CITA-CGC turns reef monitoring into a community-powered,
-                      AI-assisted workflow—people upload underwater photos and
-                      get instant, structured reef health reports that local
-                      decision-makers can use.
-                    </p>
-                    <ul class="case-tags" aria-label="Technologies used">
-                      <li>React + Vite</li>
-                      <li>Tailwind utilities</li>
-                      <li>Google Gemini</li>
-                      <li>Supabase</li>
-                      <li>React Leaflet</li>
-                      <li>Vercel</li>
-                    </ul>
-                    <div class="case-actions">
-                      <a
-                        class="button button-solid sm"
-                        href="https://coralguard.ai"
-                        target="_blank"
-                        rel="noreferrer"
-                        >View Project</a
-                      >
-                    </div>
-                  </div>
-                </div>
+                      <p class="card-description">
+                        CITA-CGC turns reef monitoring into a community-powered,
+                        AI-assisted workflow—people upload underwater photos and
+                        get instant, structured reef health reports that local
+                        decision-makers can use.
+                      </p>
 
-                <!-- Background Visual (Subtle) -->
-                <div class="case-visual-bg theme-reef-bg"></div>
-              </article>
+                      <!-- Hidden Details -->
+                      <div class="card-details">
+                        <div class="details-section">
+                          <h4 class="details-title">Frontend</h4>
+                          <div class="tech-list">
+                            <span class="tech-tag">React</span>
+                            <span class="tech-tag">Vite</span>
+                            <span class="tech-tag">Tailwind CSS</span>
+                          </div>
+                        </div>
 
-              <!-- Project Card 2 -->
-              <article class="carousel-card case-card theme-waste">
-                <!-- Title Section (Always Visible) -->
-                <div class="card-title-section">
-                  <span class="card-number">02</span>
-                  <h3 class="case-title">CITA-CebuCleanAI</h3>
-                </div>
+                        <div class="details-section">
+                          <h4 class="details-title">AI & Backend</h4>
+                          <div class="tech-list">
+                            <span class="tech-tag">Google Gemini</span>
+                            <span class="tech-tag">Supabase (Postgres)</span>
+                            <span class="tech-tag">Supabase Storage</span>
+                          </div>
+                        </div>
 
-                <!-- Details Section (Revealed on Hover/Tap) -->
-                <div class="card-details-overlay">
-                  <div class="overlay-content">
-                    <div class="case-top">
-                      <span class="pill">Mobile + AI</span>
-                      <span class="case-meta">SDG 11 · Sustainable Cities</span>
-                    </div>
-                    <p class="case-summary">
-                      CebuCleanAI lets residents point a phone at trash for
-                      instant on-device classification, disposal tips, and
-                      points—while barangays get real-time heatmaps and
-                      routing-ready data.
-                    </p>
-                    <ul class="case-tags" aria-label="Technologies used">
-                      <li>Flutter (mobile)</li>
-                      <li>Next.js 15</li>
-                      <li>NestJS / FastAPI</li>
-                      <li>PostgreSQL + PostGIS</li>
-                      <li>TensorFlow Lite</li>
-                      <li>AWS IoT + MQTT</li>
-                    </ul>
-                    <div class="case-actions">
-                      <a
-                        class="button button-solid sm"
-                        href="https://github.com/Hurve-en/CITA-CebuCleanAI"
-                        target="_blank"
-                        rel="noreferrer"
-                        >View Project</a
-                      >
+                        <div class="details-section">
+                          <h4 class="details-title">Mapping & Deployment</h4>
+                          <div class="tech-list">
+                            <span class="tech-tag">React Leaflet</span>
+                            <span class="tech-tag">OpenStreetMap</span>
+                            <span class="tech-tag">Vercel</span>
+                          </div>
+                        </div>
+
+                        <a
+                          class="button button-solid sm"
+                          href="https://coralguard.ai"
+                          target="_blank"
+                          rel="noreferrer"
+                          >View Project</a
+                        >
+                      </div>
                     </div>
                   </div>
-                </div>
+                </article>
 
-                <!-- Background Visual (Subtle) -->
-                <div class="case-visual-bg theme-waste-bg"></div>
-              </article>
+                <!-- Project Card 2: CITA-CebuCleanAI -->
+                <article class="carousel-card project-card theme-clean">
+                  <div class="card-content">
+                    <div class="card-body">
+                      <div class="card-header">
+                        <h3 class="card-title">CITA-CebuCleanAI</h3>
+                        <p class="card-category">Mobile + AI + IoT</p>
+                      </div>
 
-              <!-- Project Card 3 -->
-              <article class="carousel-card case-card theme-coffee">
-                <!-- Title Section (Always Visible) -->
-                <div class="card-title-section">
-                  <span class="card-number">03</span>
-                  <h3 class="case-title">Mt. Apos Best Coffee</h3>
-                </div>
+                      <p class="card-description">
+                        CebuCleanAI lets residents point a phone at trash for
+                        instant on-device classification, disposal tips, and
+                        points—while barangays get real-time heatmaps and
+                        routing-ready data.
+                      </p>
 
-                <!-- Details Section (Revealed on Hover/Tap) -->
-                <div class="card-details-overlay">
-                  <div class="overlay-content">
-                    <div class="case-top">
-                      <span class="pill">E‑commerce</span>
-                      <span class="case-meta"
-                        >Production-grade coffee platform</span
-                      >
-                    </div>
-                    <p class="case-summary">
-                      A production-grade coffee ordering and operations suite:
-                      users browse, order, and track; admins manage inventory,
-                      logistics, and live orders with real-time dashboards.
-                    </p>
-                    <ul class="case-tags" aria-label="Technologies used">
-                      <li>Node/Express 18</li>
-                      <li>Prisma + PostgreSQL</li>
-                      <li>JWT + Zod</li>
-                      <li>React 18 + Vite</li>
-                      <li>Socket.IO real-time</li>
-                      <li>Leaflet maps</li>
-                    </ul>
-                    <div class="case-actions">
-                      <a
-                        class="button button-solid sm"
-                        href="https://github.com/Hurve-en/Mt-Apos-Best-Coffee"
-                        target="_blank"
-                        rel="noreferrer"
-                        >View Project</a
-                      >
+                      <!-- Hidden Details -->
+                      <div class="card-details">
+                        <div class="details-section">
+                          <h4 class="details-title">Mobile & Frontend</h4>
+                          <div class="tech-list">
+                            <span class="tech-tag">Flutter</span>
+                            <span class="tech-tag">Next.js 15</span>
+                            <span class="tech-tag">Tailwind + shadcn/ui</span>
+                          </div>
+                        </div>
+
+                        <div class="details-section">
+                          <h4 class="details-title">Backend & Database</h4>
+                          <div class="tech-list">
+                            <span class="tech-tag">NestJS / FastAPI</span>
+                            <span class="tech-tag">PostgreSQL + PostGIS</span>
+                            <span class="tech-tag">Redis (caching)</span>
+                          </div>
+                        </div>
+
+                        <div class="details-section">
+                          <h4 class="details-title">AI, IoT & Cloud</h4>
+                          <div class="tech-list">
+                            <span class="tech-tag">TensorFlow Lite</span>
+                            <span class="tech-tag">ESP32 + MQTT</span>
+                            <span class="tech-tag">AWS IoT Core</span>
+                            <span class="tech-tag">Mapbox GL / Leaflet</span>
+                          </div>
+                        </div>
+
+                        <a
+                          class="button button-solid sm"
+                          href="https://github.com/Hurve-en/CITA-CebuCleanAI"
+                          target="_blank"
+                          rel="noreferrer"
+                          >View Project</a
+                        >
+                      </div>
                     </div>
                   </div>
-                </div>
+                </article>
 
-                <!-- Background Visual (Subtle) -->
-                <div class="case-visual-bg theme-coffee-bg"></div>
-              </article>
+                <!-- Project Card 3: Mt. Apos Best Coffee -->
+                <article class="carousel-card project-card theme-coffee">
+                  <div class="card-content">
+                    <div class="card-body">
+                      <div class="card-header">
+                        <h3 class="card-title">Mt. Apos Best Coffee</h3>
+                        <p class="card-category">E-commerce Platform</p>
+                      </div>
+
+                      <p class="card-description">
+                        A production-grade coffee ordering and operations suite:
+                        users browse, order, and track; admins manage inventory,
+                        logistics, and live orders with real-time dashboards.
+                      </p>
+
+                      <!-- Hidden Details -->
+                      <div class="card-details">
+                        <div class="details-section">
+                          <h4 class="details-title">Frontend</h4>
+                          <div class="tech-list">
+                            <span class="tech-tag">React 18</span>
+                            <span class="tech-tag">Vite</span>
+                            <span class="tech-tag">React Router 6</span>
+                            <span class="tech-tag">Redux Toolkit</span>
+                            <span class="tech-tag">Tailwind CSS</span>
+                          </div>
+                        </div>
+
+                        <div class="details-section">
+                          <h4 class="details-title">Backend & Database</h4>
+                          <div class="tech-list">
+                            <span class="tech-tag">Node.js/Express 18</span>
+                            <span class="tech-tag">TypeScript</span>
+                            <span class="tech-tag">Prisma ORM</span>
+                            <span class="tech-tag">PostgreSQL</span>
+                            <span class="tech-tag">Socket.IO 4.7</span>
+                          </div>
+                        </div>
+
+                        <div class="details-section">
+                          <h4 class="details-title">Security & Tools</h4>
+                          <div class="tech-list">
+                            <span class="tech-tag">JWT Auth</span>
+                            <span class="tech-tag">bcryptjs</span>
+                            <span class="tech-tag">Zod Validation</span>
+                            <span class="tech-tag">Helmet Security</span>
+                            <span class="tech-tag">Leaflet Maps</span>
+                          </div>
+                        </div>
+
+                        <a
+                          class="button button-solid sm"
+                          href="https://github.com/Hurve-en/Mt-Apos-Best-Coffee"
+                          target="_blank"
+                          rel="noreferrer"
+                          >View Project</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
             </div>
           </div>
 
-          <!-- Navigation Arrows -->
+          <!-- Right Navigation Arrow -->
           <button
-            class="carousel-arrow next"
+            class="carousel-arrow carousel-arrow-right next"
             aria-label="Next project"
             title="Next"
           >
@@ -538,6 +582,13 @@
               <polyline points="9 18 15 12 9 6"></polyline>
             </svg>
           </button>
+        </div>
+
+        <!-- Carousel Indicators -->
+        <div class="carousel-indicators">
+          <span class="indicator active" data-index="0"></span>
+          <span class="indicator" data-index="1"></span>
+          <span class="indicator" data-index="2"></span>
         </div>
       </section>
 
