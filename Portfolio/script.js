@@ -164,6 +164,97 @@ const setupSectionHighlight = () => {
 };
 
 // ──────────────────────────────────────────────
+// LETTER-BY-LETTER CURSOR-REACTIVE ANIMATION
+// ──────────────────────────────────────────────
+const setupInteractiveHeaders = () => {
+  const headers = Array.from(document.querySelectorAll(".interactive-header"));
+  if (headers.length === 0) return;
+
+  // Only enable on devices that support hover
+  const isHoverSupported = window.matchMedia("(hover: hover)").matches;
+  if (!isHoverSupported || prefersReducedMotion) return;
+
+  headers.forEach((header) => {
+    const text = header.textContent;
+    const letters = text.split("");
+
+    // Create spans for each letter
+    header.innerHTML = letters
+      .map((letter) => {
+        if (letter === " ") {
+          return '<span class="letter" style="display: inline-block; width: 0.25em;"> </span>';
+        }
+        return `<span class="letter" style="display: inline-block; position: relative;">${letter}</span>`;
+      })
+      .join("");
+
+    const letterElements = header.querySelectorAll(".letter");
+
+    // Store animation frame IDs for cleanup
+    let animationFrameId = null;
+
+    const updateLetterPositions = (mouseX, mouseY) => {
+      const rect = header.getBoundingClientRect();
+      const headerCenterX = rect.left + rect.width / 2;
+      const headerCenterY = rect.top + rect.height / 2;
+
+      letterElements.forEach((letter, index) => {
+        const letterRect = letter.getBoundingClientRect();
+        const letterCenterX = letterRect.left + letterRect.width / 2;
+        const letterCenterY = letterRect.top + letterRect.height / 2;
+
+        // Calculate distance from cursor to letter
+        const distX = mouseX - letterCenterX;
+        const distY = mouseY - letterCenterY;
+        const distance = Math.sqrt(distX * distX + distY * distY);
+
+        // Maximum influence distance
+        const maxDistance = 200;
+        const influence = Math.max(0, 1 - distance / maxDistance);
+
+        // Calculate movement (max 12px in each direction)
+        const moveX = (distX / distance) * influence * 12 || 0;
+        const moveY = (distY / distance) * influence * 12 || 0;
+
+        // Apply transform with smooth easing
+        letter.style.transform = `translate(${moveX}px, ${moveY}px)`;
+        letter.style.transition =
+          "transform 120ms cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+      });
+    };
+
+    const onMouseMove = (event) => {
+      const mouseX = event.clientX;
+      const mouseY = event.clientY;
+
+      // Use requestAnimationFrame for smooth animation
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+      animationFrameId = requestAnimationFrame(() => {
+        updateLetterPositions(mouseX, mouseY);
+      });
+    };
+
+    const onMouseLeave = () => {
+      // Reset all letters smoothly
+      letterElements.forEach((letter) => {
+        letter.style.transform = "translate(0, 0)";
+      });
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+    };
+
+    // Add listeners
+    document.addEventListener("mousemove", onMouseMove, { passive: true });
+    header.addEventListener("mouseleave", onMouseLeave);
+
+    // Cleanup on page unload
+    window.addEventListener("beforeunload", () => {
+      document.removeEventListener("mousemove", onMouseMove);
+      header.removeEventListener("mouseleave", onMouseLeave);
+    });
+  });
+};
+
+// ──────────────────────────────────────────────
 // AWWWARDS-STYLE 3D CAROUSEL WITH SIDE ARROWS
 // ──────────────────────────────────────────────
 const setupAwwwardsCarousel = () => {
@@ -386,6 +477,7 @@ setNavbarState();
 smoothAnchorNavigation();
 setupRevealObserver();
 setupSectionHighlight();
+setupInteractiveHeaders();
 setupAwwwardsCarousel();
 
 // Ensure page always loads at the top (hero) on refresh.
