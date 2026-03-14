@@ -165,7 +165,7 @@ const setupSectionHighlight = () => {
 };
 
 // ──────────────────────────────────────────────
-// ENHANCED 3D CAROUSEL WITH SMOOTH ANIMATIONS
+// ENHANCED 3D CAROUSEL WITH HOVER REVEAL & TOUCH
 // ──────────────────────────────────────────────
 const setupProjectsCarousel = () => {
   const carousel = document.querySelector(".projects-carousel");
@@ -186,10 +186,17 @@ const setupProjectsCarousel = () => {
   let startX = 0;
   let isTransitioning = false;
 
+  // Detect if device supports hover (not touch-only)
+  const isHoverSupported = window.matchMedia("(hover: hover)").matches;
+
   // Apply 3D transforms and state classes to cards
   const applyStates = () => {
     const total = cards.length;
-    cards.forEach((card) => card.classList.remove(...states));
+    cards.forEach((card) => {
+      card.classList.remove(...states);
+      // Clear reveal state when carousel moves
+      card.classList.remove("is-revealed");
+    });
 
     const prev2 = (index - 2 + total) % total;
     const prev1 = (index - 1 + total) % total;
@@ -281,6 +288,36 @@ const setupProjectsCarousel = () => {
   document.addEventListener("keydown", (event) => {
     if (event.key === "ArrowLeft") prevCard();
     if (event.key === "ArrowRight") nextCard();
+  });
+
+  // ────────────────────────────────────────────
+  // HOVER REVEAL (Desktop) & TAP-TO-REVEAL (Mobile)
+  // ────────────────────────────────────────────
+
+  cards.forEach((card) => {
+    // Desktop: Hover reveal (automatic via CSS)
+    if (isHoverSupported) {
+      // Hover is handled by CSS :hover pseudo-class
+      // No additional JS needed for desktop
+    }
+
+    // Mobile: Tap-to-reveal
+    if (!isHoverSupported) {
+      card.addEventListener("click", (event) => {
+        // Only toggle if clicking on the active card
+        if (!card.classList.contains("active")) return;
+
+        event.stopPropagation();
+        card.classList.toggle("is-revealed");
+      });
+    }
+  });
+
+  // Close reveal on outside click (mobile)
+  document.addEventListener("click", (event) => {
+    if (!isHoverSupported && !event.target.closest(".carousel-card")) {
+      cards.forEach((card) => card.classList.remove("is-revealed"));
+    }
   });
 
   // Initialize carousel
