@@ -164,29 +164,38 @@ const setupSectionHighlight = () => {
   window.addEventListener("scroll", updateActiveFromScroll, { passive: true });
 };
 
-// Featured projects carousel (unchanged)
+// ──────────────────────────────────────────────
+// ENHANCED 3D CAROUSEL WITH SMOOTH ANIMATIONS
+// ──────────────────────────────────────────────
 const setupProjectsCarousel = () => {
   const carousel = document.querySelector(".projects-carousel");
   if (!carousel) return;
+
   const viewport = carousel.querySelector(".carousel-viewport");
   const cards = Array.from(carousel.querySelectorAll(".carousel-card"));
   const prevBtn = carousel.querySelector(".carousel-arrow.prev");
   const nextBtn = carousel.querySelector(".carousel-arrow.next");
+
   if (!viewport || cards.length === 0) return;
 
+  // State management
   const states = ["active", "prev1", "next1", "prev2", "next2"];
   let index = 0;
   let autoTimer = null;
   let isDragging = false;
   let startX = 0;
+  let isTransitioning = false;
 
+  // Apply 3D transforms and state classes to cards
   const applyStates = () => {
     const total = cards.length;
     cards.forEach((card) => card.classList.remove(...states));
+
     const prev2 = (index - 2 + total) % total;
     const prev1 = (index - 1 + total) % total;
     const next1 = (index + 1) % total;
     const next2 = (index + 2) % total;
+
     cards[index].classList.add("active");
     cards[prev1].classList.add("prev1");
     cards[next1].classList.add("next1");
@@ -194,39 +203,58 @@ const setupProjectsCarousel = () => {
     cards[next2].classList.add("next2");
   };
 
+  // Navigate to next card
   const nextCard = () => {
+    if (isTransitioning) return;
+    isTransitioning = true;
     index = (index + 1) % cards.length;
     applyStates();
-  };
-  const prevCard = () => {
-    index = (index - 1 + cards.length) % cards.length;
-    applyStates();
+    setTimeout(() => {
+      isTransitioning = false;
+    }, 600); // Match CSS transition duration
   };
 
+  // Navigate to previous card
+  const prevCard = () => {
+    if (isTransitioning) return;
+    isTransitioning = true;
+    index = (index - 1 + cards.length) % cards.length;
+    applyStates();
+    setTimeout(() => {
+      isTransitioning = false;
+    }, 600); // Match CSS transition duration
+  };
+
+  // Auto-play management
   const stopAuto = () => {
     if (autoTimer) clearInterval(autoTimer);
     autoTimer = null;
   };
+
   const startAuto = () => {
     if (prefersReducedMotion) return;
     stopAuto();
-    autoTimer = setInterval(nextCard, 3600);
+    autoTimer = setInterval(nextCard, 5000); // Auto-advance every 5 seconds
   };
 
+  // Button click handlers
   prevBtn?.addEventListener("click", () => {
     prevCard();
     stopAuto();
     startAuto();
   });
+
   nextBtn?.addEventListener("click", () => {
     nextCard();
     stopAuto();
     startAuto();
   });
 
+  // Pause auto-play on hover
   viewport.addEventListener("mouseenter", stopAuto);
   viewport.addEventListener("mouseleave", startAuto);
 
+  // Touch/drag support for mobile
   viewport.addEventListener("pointerdown", (event) => {
     isDragging = true;
     startX = event.clientX;
@@ -239,16 +267,27 @@ const setupProjectsCarousel = () => {
     const delta = event.clientX - startX;
     isDragging = false;
     viewport.classList.remove("is-dragging");
+
+    // Swipe threshold: 30px
     if (Math.abs(delta) > 30) {
-      if (delta < 0) nextCard();
-      else prevCard();
+      if (delta < 0)
+        nextCard(); // Swipe left → next
+      else prevCard(); // Swipe right → previous
     }
     startAuto();
   });
 
+  // Keyboard navigation
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowLeft") prevCard();
+    if (event.key === "ArrowRight") nextCard();
+  });
+
+  // Initialize carousel
   applyStates();
   startAuto();
 
+  // Pause when page is hidden, resume when visible
   window.addEventListener("visibilitychange", () => {
     if (document.hidden) stopAuto();
     else startAuto();

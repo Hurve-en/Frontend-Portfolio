@@ -345,7 +345,7 @@
         </div>
       </section>
 
-      <!-- Featured projects section -->
+      <!-- Featured projects section with 3D carousel -->
       <section class="section" id="work">
         <header class="section-head" data-reveal>
           <div class="section-kicker">
@@ -355,133 +355,186 @@
           <h2>Featured projects</h2>
         </header>
 
-        <div class="feature-rail" aria-label="Featured projects">
-          <article class="case-card theme-reef" data-reveal>
-            <div class="case-main">
-              <div class="case-top">
-                <span class="pill">01 · AI + Mapping</span>
-                <span class="case-meta">SDG 14 · Life Below Water</span>
-              </div>
-              <h3 class="case-title">CITA-CoralGuardAI</h3>
-              <p class="case-summary">
-                CITA-CGC turns reef monitoring into a community-powered,
-                AI-assisted workflow—people upload underwater photos and get
-                instant, structured reef health reports that local
-                decision-makers can use.
-              </p>
-              <ul class="case-tags" aria-label="Technologies used">
-                <li>React + Vite</li>
-                <li>Tailwind utilities</li>
-                <li>Google Gemini (analysis + chatbot)</li>
-                <li>Supabase (Postgres + Storage)</li>
-                <li>React Leaflet + OpenStreetMap</li>
-                <li>Vercel</li>
-              </ul>
-              <div class="case-actions">
-                <a
-                  class="button button-solid sm"
-                  href="https://coralguard.ai"
-                  target="_blank"
-                  rel="noreferrer"
-                  >View Project</a
-                >
-              </div>
-            </div>
+        <!-- 3D Carousel Container -->
+        <div class="projects-carousel" data-reveal>
+          <!-- Navigation Arrows -->
+          <button
+            class="carousel-arrow prev"
+            aria-label="Previous project"
+            title="Previous"
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
 
-            <div class="case-visual">
-              <div class="visual-kpi">
-                <span class="kpi-value">92%</span>
-                <span class="kpi-label">model precision</span>
-              </div>
-              <div class="visual-caption">
-                Citizen uploads → AI → actionable briefs
-              </div>
-            </div>
-          </article>
+          <!-- Carousel Viewport -->
+          <div class="carousel-viewport">
+            <!-- Carousel Track -->
+            <div class="carousel-track">
+              <!-- Project Card 1 -->
+              <article class="carousel-card case-card theme-reef">
+                <div class="case-main">
+                  <div class="case-top">
+                    <span class="pill">01 · AI + Mapping</span>
+                    <span class="case-meta">SDG 14 · Life Below Water</span>
+                  </div>
+                  <h3 class="case-title">CITA-CoralGuardAI</h3>
+                  <p class="case-summary">
+                    CITA-CGC turns reef monitoring into a community-powered,
+                    AI-assisted workflow—people upload underwater photos and get
+                    instant, structured reef health reports that local
+                    decision-makers can use.
+                  </p>
+                  <ul class="case-tags" aria-label="Technologies used">
+                    <li>React + Vite</li>
+                    <li>Tailwind utilities</li>
+                    <li>Google Gemini (analysis + chatbot)</li>
+                    <li>Supabase (Postgres + Storage)</li>
+                    <li>React Leaflet + OpenStreetMap</li>
+                    <li>Vercel</li>
+                  </ul>
+                  <div class="case-actions">
+                    <a
+                      class="button button-solid sm"
+                      href="https://coralguard.ai"
+                      target="_blank"
+                      rel="noreferrer"
+                      >View Project</a
+                    >
+                  </div>
+                </div>
 
-          <article class="case-card theme-waste" data-reveal data-delay="90">
-            <div class="case-main">
-              <div class="case-top">
-                <span class="pill">02 · Mobile + AI</span>
-                <span class="case-meta">SDG 11 · Sustainable Cities</span>
-              </div>
-              <h3 class="case-title">CITA-CebuCleanAI</h3>
-              <p class="case-summary">
-                CebuCleanAI lets residents point a phone at trash for instant
-                on-device classification, disposal tips, and points—while
-                barangays get real-time heatmaps and routing-ready data.
-              </p>
-              <ul class="case-tags" aria-label="Technologies used">
-                <li>Flutter (mobile)</li>
-                <li>Next.js 15 + Tailwind + shadcn/ui</li>
-                <li>NestJS / FastAPI</li>
-                <li>PostgreSQL + PostGIS + Prisma + Redis</li>
-                <li>TensorFlow Lite + PyTorch svc</li>
-                <li>Mapbox/Leaflet + AWS IoT + MQTT</li>
-              </ul>
-              <div class="case-actions">
-                <a
-                  class="button button-solid sm"
-                  href="https://github.com/Hurve-en/CITA-CebuCleanAI"
-                  target="_blank"
-                  rel="noreferrer"
-                  >View Project</a
-                >
-              </div>
-            </div>
+                <div class="case-visual">
+                  <div class="visual-kpi">
+                    <span class="kpi-value">92%</span>
+                    <span class="kpi-label">model precision</span>
+                  </div>
+                  <div class="visual-caption">
+                    Citizen uploads → AI → actionable briefs
+                  </div>
+                </div>
+              </article>
 
-            <div class="case-visual">
-              <div class="visual-kpi">
-                <span class="kpi-value">0.3s</span>
-                <span class="kpi-label">scan latency</span>
-              </div>
-              <div class="visual-caption">
-                Barangay dashboards · Waste heatmaps
-              </div>
-            </div>
-          </article>
+              <!-- Project Card 2 -->
+              <article class="carousel-card case-card theme-waste">
+                <div class="case-main">
+                  <div class="case-top">
+                    <span class="pill">02 · Mobile + AI</span>
+                    <span class="case-meta">SDG 11 · Sustainable Cities</span>
+                  </div>
+                  <h3 class="case-title">CITA-CebuCleanAI</h3>
+                  <p class="case-summary">
+                    CebuCleanAI lets residents point a phone at trash for
+                    instant on-device classification, disposal tips, and
+                    points—while barangays get real-time heatmaps and
+                    routing-ready data.
+                  </p>
+                  <ul class="case-tags" aria-label="Technologies used">
+                    <li>Flutter (mobile)</li>
+                    <li>Next.js 15 + Tailwind + shadcn/ui</li>
+                    <li>NestJS / FastAPI</li>
+                    <li>PostgreSQL + PostGIS + Prisma + Redis</li>
+                    <li>TensorFlow Lite + PyTorch svc</li>
+                    <li>Mapbox/Leaflet + AWS IoT + MQTT</li>
+                  </ul>
+                  <div class="case-actions">
+                    <a
+                      class="button button-solid sm"
+                      href="https://github.com/Hurve-en/CITA-CebuCleanAI"
+                      target="_blank"
+                      rel="noreferrer"
+                      >View Project</a
+                    >
+                  </div>
+                </div>
 
-          <article class="case-card theme-coffee" data-reveal data-delay="140">
-            <div class="case-main">
-              <div class="case-top">
-                <span class="pill">03 · E‑commerce</span>
-                <span class="case-meta">Production-grade coffee platform</span>
-              </div>
-              <h3 class="case-title">Mt. Apos Best Coffee</h3>
-              <p class="case-summary">
-                A production-grade coffee ordering and operations suite: users
-                browse, order, and track; admins manage inventory, logistics,
-                and live orders with real-time dashboards.
-              </p>
-              <ul class="case-tags" aria-label="Technologies used">
-                <li>Node/Express 18 + TypeScript</li>
-                <li>Prisma + PostgreSQL 16</li>
-                <li>JWT + Zod + Helmet</li>
-                <li>React 18 + Vite + Redux Toolkit</li>
-                <li>Socket.IO real-time</li>
-                <li>Leaflet maps</li>
-              </ul>
-              <div class="case-actions">
-                <a
-                  class="button button-solid sm"
-                  href="https://github.com/Hurve-en/Mt-Apos-Best-Coffee"
-                  target="_blank"
-                  rel="noreferrer"
-                  >View Project</a
-                >
-              </div>
-            </div>
+                <div class="case-visual">
+                  <div class="visual-kpi">
+                    <span class="kpi-value">0.3s</span>
+                    <span class="kpi-label">scan latency</span>
+                  </div>
+                  <div class="visual-caption">
+                    Barangay dashboards · Waste heatmaps
+                  </div>
+                </div>
+              </article>
 
-            <div class="case-visual">
-              <div class="visual-kpi">
-                <span class="kpi-value">24/7</span>
-                <span class="kpi-label">live orders</span>
-              </div>
-              <div class="visual-caption">
-                Inventory, courier, and loyalty in sync
-              </div>
+              <!-- Project Card 3 -->
+              <article class="carousel-card case-card theme-coffee">
+                <div class="case-main">
+                  <div class="case-top">
+                    <span class="pill">03 · E‑commerce</span>
+                    <span class="case-meta"
+                      >Production-grade coffee platform</span
+                    >
+                  </div>
+                  <h3 class="case-title">Mt. Apos Best Coffee</h3>
+                  <p class="case-summary">
+                    A production-grade coffee ordering and operations suite:
+                    users browse, order, and track; admins manage inventory,
+                    logistics, and live orders with real-time dashboards.
+                  </p>
+                  <ul class="case-tags" aria-label="Technologies used">
+                    <li>Node/Express 18 + TypeScript</li>
+                    <li>Prisma + PostgreSQL 16</li>
+                    <li>JWT + Zod + Helmet</li>
+                    <li>React 18 + Vite + Redux Toolkit</li>
+                    <li>Socket.IO real-time</li>
+                    <li>Leaflet maps</li>
+                  </ul>
+                  <div class="case-actions">
+                    <a
+                      class="button button-solid sm"
+                      href="https://github.com/Hurve-en/Mt-Apos-Best-Coffee"
+                      target="_blank"
+                      rel="noreferrer"
+                      >View Project</a
+                    >
+                  </div>
+                </div>
+
+                <div class="case-visual">
+                  <div class="visual-kpi">
+                    <span class="kpi-value">24/7</span>
+                    <span class="kpi-label">live orders</span>
+                  </div>
+                  <div class="visual-caption">
+                    Inventory, courier, and loyalty in sync
+                  </div>
+                </div>
+              </article>
             </div>
-          </article>
+          </div>
+
+          <!-- Navigation Arrows -->
+          <button
+            class="carousel-arrow next"
+            aria-label="Next project"
+            title="Next"
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
         </div>
       </section>
 
