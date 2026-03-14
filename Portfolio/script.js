@@ -1,10 +1,13 @@
 // Cache common DOM references used across interactions.
 const navbar = document.querySelector(".navbar");
-const navLinks = Array.from(document.querySelectorAll('.nav-menu a[href^="#"]'));
+const navLinks = Array.from(
+  document.querySelectorAll('.nav-menu a[href^="#"]'),
+);
 const revealNodes = Array.from(document.querySelectorAll("[data-reveal]"));
 const sectionNodes = Array.from(document.querySelectorAll("main section[id]"));
-const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-const animatedHeading = null;
+const prefersReducedMotion = window.matchMedia(
+  "(prefers-reduced-motion: reduce)",
+).matches;
 
 // Use navbar height as scroll offset for anchored navigation.
 const getOffset = () => navbar?.offsetHeight || 86;
@@ -21,26 +24,30 @@ const smoothAnchorNavigation = () => {
     link.addEventListener("click", (event) => {
       const targetId = link.getAttribute("href");
       if (!targetId || !targetId.startsWith("#")) return;
-
       const target = document.querySelector(targetId);
       if (!target) return;
-
       event.preventDefault();
-      const top = target.getBoundingClientRect().top + window.scrollY - getOffset() + 1;
+      const top =
+        target.getBoundingClientRect().top + window.scrollY - getOffset() + 1;
       window.scrollTo({
         top,
         behavior: prefersReducedMotion ? "auto" : "smooth",
       });
+      // Force re-check after click scroll settles
+      setTimeout(() => updateActiveFromScroll(), 400);
     });
   });
 };
 
-// Reveal elements once when they enter the viewport.
+// Reveal observer (unchanged)
 const setupRevealObserver = () => {
   if (prefersReducedMotion || !("IntersectionObserver" in window)) {
     revealNodes.forEach((node) => node.classList.add("is-visible"));
     return;
   }
+
+  const heroRevealElements = document.querySelectorAll("#home [data-reveal]");
+  heroRevealElements.forEach((el) => el.classList.add("is-visible"));
 
   revealNodes.forEach((node) => {
     const delay = Number(node.dataset.delay || 0);
@@ -53,7 +60,6 @@ const setupRevealObserver = () => {
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          // cancel any pending hide and show immediately
           const pending = hideTimers.get(entry.target);
           if (pending) {
             clearTimeout(pending);
@@ -61,64 +67,111 @@ const setupRevealObserver = () => {
           }
           entry.target.classList.add("is-visible");
         } else {
-          // delay hide slightly to avoid flicker on quick scroll reversals
           if (hideTimers.has(entry.target)) return;
           const timer = setTimeout(() => {
             entry.target.classList.remove("is-visible");
             hideTimers.delete(entry.target);
-          }, 140);
+          }, 60);
           hideTimers.set(entry.target, timer);
         }
       });
     },
     {
-      threshold: [0, 0.12, 0.28, 0.55],
-      rootMargin: "-10% 0px -12% 0px",
+      threshold: [0, 0.08, 0.2, 0.45, 0.7],
+      rootMargin: "-4% 0px -15% 0px",
     },
   );
 
   revealNodes.forEach((node) => observer.observe(node));
 };
 
-// Keep the current section nav link highlighted while scrolling.
-const setupSectionHighlight = () => {
-  if (!("IntersectionObserver" in window)) return;
+// ──────────────────────────────────────────────
+// STABLE ACTIVE NAV HIGHLIGHT – improved for manual scroll reliability
+// ──────────────────────────────────────────────
+let lastActiveId = null;
+let pendingUpdate = null;
 
-  const map = new Map(
-    navLinks.map((link) => [link.getAttribute("href")?.slice(1), link]),
-  );
+const updateActiveLink = (targetId) => {
+  if (targetId === lastActiveId) return;
+
+  navLinks.forEach((link) => link.classList.remove("active"));
+  if (targetId) {
+    const link = document.querySelector(`.nav-menu a[href="#${targetId}"]`);
+    if (link) link.classList.add("active");
+  }
+  lastActiveId = targetId;
+};
+
+const updateActiveFromScroll = () => {
+  if (pendingUpdate) clearTimeout(pendingUpdate);
+
+  pendingUpdate = setTimeout(() => {
+    const visibleSections = Array.from(sectionNodes)
+      .map((section) => {
+        const rect = section.getBoundingClientRect();
+        const vh = window.innerHeight;
+        const intersectionRatio = Math.min(
+          1,
+          Math.max(
+            0,
+            (Math.min(rect.bottom, vh) - Math.max(rect.top, 0)) /
+              (rect.bottom - rect.top),
+          ),
+        );
+        return { section, rect, intersectionRatio };
+      })
+      .filter((item) => item.intersectionRatio > 0.08)
+      .sort((a, b) => {
+        // Primary: more visible first
+        if (b.intersectionRatio !== a.intersectionRatio) {
+          return b.intersectionRatio - a.intersectionRatio;
+        }
+        // Tie-breaker: closer to top of viewport
+        return a.rect.top - b.rect.top;
+      });
+
+    let bestId = null;
+    if (visibleSections.length > 0) {
+      bestId = visibleSections[0].section.id;
+    }
+
+    updateActiveLink(bestId);
+    pendingUpdate = null;
+  }, 60); // small debounce – prevents flip-flopping during scroll
+};
+
+const setupSectionHighlight = () => {
+  if (!("IntersectionObserver" in window)) {
+    window.addEventListener("scroll", updateActiveFromScroll, {
+      passive: true,
+    });
+    return;
+  }
 
   const observer = new IntersectionObserver(
-    (entries) => {
-      const visible = entries
-        .filter((entry) => entry.isIntersecting)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-
-      if (!visible) return;
-      const id = visible.target.id;
-
-      navLinks.forEach((link) => link.classList.remove("active"));
-      map.get(id)?.classList.add("active");
+    () => {
+      updateActiveFromScroll();
     },
     {
-      threshold: [0.2, 0.55, 0.9],
-      rootMargin: `-${getOffset() + 12}px 0px -45% 0px`,
+      threshold: [0.08, 0.18, 0.28, 0.38, 0.48, 0.58, 0.68, 0.78, 0.88],
+      rootMargin: `-${getOffset() + 100}px 0px -40% 0px`,
     },
   );
 
   sectionNodes.forEach((section) => observer.observe(section));
+
+  // Also listen to scroll for smoother feel during fast manual scrolling
+  window.addEventListener("scroll", updateActiveFromScroll, { passive: true });
 };
 
-// Featured projects carousel with stacked cards, auto-loop, and hover/drag pause.
+// Featured projects carousel (unchanged)
 const setupProjectsCarousel = () => {
   const carousel = document.querySelector(".projects-carousel");
   if (!carousel) return;
-
   const viewport = carousel.querySelector(".carousel-viewport");
   const cards = Array.from(carousel.querySelectorAll(".carousel-card"));
   const prevBtn = carousel.querySelector(".carousel-arrow.prev");
   const nextBtn = carousel.querySelector(".carousel-arrow.next");
-
   if (!viewport || cards.length === 0) return;
 
   const states = ["active", "prev1", "next1", "prev2", "next2"];
@@ -145,7 +198,6 @@ const setupProjectsCarousel = () => {
     index = (index + 1) % cards.length;
     applyStates();
   };
-
   const prevCard = () => {
     index = (index - 1 + cards.length) % cards.length;
     applyStates();
@@ -155,7 +207,6 @@ const setupProjectsCarousel = () => {
     if (autoTimer) clearInterval(autoTimer);
     autoTimer = null;
   };
-
   const startAuto = () => {
     if (prefersReducedMotion) return;
     stopAuto();
@@ -167,20 +218,14 @@ const setupProjectsCarousel = () => {
     stopAuto();
     startAuto();
   });
-
   nextBtn?.addEventListener("click", () => {
     nextCard();
     stopAuto();
     startAuto();
   });
 
-  viewport.addEventListener("mouseenter", () => {
-    stopAuto();
-  });
-
-  viewport.addEventListener("mouseleave", () => {
-    startAuto();
-  });
+  viewport.addEventListener("mouseenter", stopAuto);
+  viewport.addEventListener("mouseleave", startAuto);
 
   viewport.addEventListener("pointerdown", (event) => {
     isDragging = true;
@@ -203,6 +248,7 @@ const setupProjectsCarousel = () => {
 
   applyStates();
   startAuto();
+
   window.addEventListener("visibilitychange", () => {
     if (document.hidden) stopAuto();
     else startAuto();
@@ -212,7 +258,6 @@ const setupProjectsCarousel = () => {
 // Global listeners and one-time initialization.
 window.addEventListener("scroll", setNavbarState, { passive: true });
 window.addEventListener("resize", setNavbarState);
-
 setNavbarState();
 smoothAnchorNavigation();
 setupRevealObserver();
@@ -225,11 +270,10 @@ if ("scrollRestoration" in history) {
 }
 
 window.addEventListener("load", () => {
-  // Clear any hash to avoid loading mid-page.
   if (location.hash) {
     history.replaceState(null, "", location.pathname + location.search);
   }
   window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  // Initial highlight
+  setTimeout(updateActiveFromScroll, 300);
 });
-
-// (Interactive heading animation removed by request)
