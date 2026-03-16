@@ -369,6 +369,7 @@ const setupAwwwardsCarousel = () => {
   let dragStartX = 0;
   let dragStartTime = 0;
 
+  // Enable drag/swipe gestures for carousel navigation.
   viewport.addEventListener("pointerdown", (event) => {
     isDragging = true;
     dragStartX = event.clientX;

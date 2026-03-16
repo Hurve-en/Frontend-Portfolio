@@ -215,6 +215,7 @@ h1 span {
   display: block;
 }
 
+/* Gentle float on the hero avatar */
 @keyframes float {
   0%,
   100% {
@@ -410,6 +411,7 @@ h2 {
   animation-play-state: paused;
 }
 
+/* Individual logo chip styles */
 .logo-chip {
   display: inline-flex;
   align-items: center;
