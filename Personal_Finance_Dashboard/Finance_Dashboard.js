@@ -1,3 +1,5 @@
+// Simple comment: This file adds page behavior and interactions.
+
 document.querySelectorAll(".menu-item").forEach((item) => {
   item.addEventListener("click", (e) => {
     e.preventDefault();

@@ -1,3 +1,5 @@
+// Simple comment: This file adds page behavior and interactions.
+
 /* Minimalist Calendar / Planner — script.js
    - Month switching
    - Add / edit / delete events

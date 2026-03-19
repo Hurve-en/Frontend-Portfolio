@@ -1,3 +1,5 @@
+<!-- Simple comment: This file contains project notes. -->
+
 # Minimal Flashcard Study App
 
 Files:

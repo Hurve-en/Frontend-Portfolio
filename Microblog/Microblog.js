@@ -1,3 +1,5 @@
+// Simple comment: This file adds page behavior and interactions.
+
 /* app.js - Minimal Microblog
    - Uses localStorage keys: microblog-posts, microblog-theme
    - Compose, edit, delete, like, search, mood filter, export/import JSON

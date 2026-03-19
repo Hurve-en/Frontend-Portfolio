@@ -1,3 +1,5 @@
+// Simple comment: This file adds page behavior and interactions.
+
 /* app.js
    Calculator with safe evaluation (tokenize -> shunting-yard -> RPN eval).
    Theme toggle is robust and persists; initial theme also applied via <html data-theme>.

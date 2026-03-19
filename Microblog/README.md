@@ -1,3 +1,5 @@
+<!-- Simple comment: This file contains project notes. -->
+
 # 📝 Modern Microblog App  
 *A clean, minimalist microblogging web app built with HTML, CSS, and JavaScript.*
 

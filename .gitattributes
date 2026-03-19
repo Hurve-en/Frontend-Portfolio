@@ -1,2 +1,4 @@
+# Simple comment: This file sets Git file handling rules.
+
 # Auto detect text files and perform LF normalization
 * text=auto

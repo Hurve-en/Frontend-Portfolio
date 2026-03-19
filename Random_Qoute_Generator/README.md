@@ -1,3 +1,5 @@
+<!-- Simple comment: This file contains project notes. -->
+
 # Random Quote Generator
 
 This project is a simple, responsive random quote generator built with **HTML, CSS, and JavaScript**.  

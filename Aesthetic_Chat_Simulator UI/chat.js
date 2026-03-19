@@ -1,3 +1,5 @@
+// Simple comment: This file adds page behavior and interactions.
+
 // ============================================
 // CHATFLOW - AESTHETIC CHAT SIMULATOR
 // ============================================

@@ -1,3 +1,5 @@
+<!-- Simple comment: This file contains project notes. -->
+
 # Dynamic Event Scoreboard
 
 A **modern, interactive, and responsive scoreboard** for events, competitions, or classroom activities. Built with **HTML, CSS, and JavaScript**, it features multiple groups, live score updates, and a presentation mode for audience-friendly display.

@@ -1,3 +1,5 @@
+<!-- Simple comment: This file contains project notes. -->
+
 # Todo List — Simple & Aesthetic
 
 A small, high-school–themed todo list app (HTML / CSS / JS) with a clean notebook/card aesthetic, subject/priority badges, and a presentation mode.

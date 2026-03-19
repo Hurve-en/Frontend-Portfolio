@@ -1,3 +1,5 @@
+<!-- Simple comment: This file contains project notes. -->
+
 # 🌸 Aesthetic Emoji Mood Logger UI  
 A modern, soft, minimalist web-based UI for logging daily moods using emojis.  
 Designed for calm, aesthetic UX with smooth animations, pastel color themes, and emotional expressiveness.

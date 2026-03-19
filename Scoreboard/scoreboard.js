@@ -1,3 +1,5 @@
+// Simple comment: This file adds page behavior and interactions.
+
 (function () {
   // ------------------ DOM ------------------
   const board = document.getElementById("board");

@@ -1,3 +1,5 @@
+// Simple comment: This file adds page behavior and interactions.
+
 /* clock.js
    Digital Clock with timezone support, 12/24 toggle, Analog view, Alarm (stop/snooze),
    theme persistence, and accessible updates.

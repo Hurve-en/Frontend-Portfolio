@@ -1,3 +1,5 @@
+// Simple comment: This file adds page behavior and interactions.
+
 /* script.js
    Vibe Pomodoro logic — vanilla JS.
    - Timer with start / pause / reset

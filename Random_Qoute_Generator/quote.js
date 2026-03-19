@@ -1,3 +1,5 @@
+// Simple comment: This file adds page behavior and interactions.
+
 /* quotes.js
    Externalized JavaScript for the Quote Generator.
    - Animates new quotes (fade + pop)

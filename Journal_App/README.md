@@ -1,3 +1,5 @@
+<!-- Simple comment: This file contains project notes. -->
+
 # Daily Journal — Mindful Journaling App
 
 A calm, accessible, front-end **Daily Journal** web app for mindful writing.  

@@ -1,3 +1,5 @@
+// Simple comment: This file adds page behavior and interactions.
+
 /* app.js — corrected & improved
    - Ensures all controls attach reliably
    - Theme toggle persists to localStorage

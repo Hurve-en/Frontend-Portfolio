@@ -1,3 +1,5 @@
+// Simple comment: This file adds page behavior and interactions.
+
 // app.js — interactive behavior for Emoji Mood Logger
 // - LocalStorage-backed (client-only)
 // - Modal flows, theme switching, trend drawing (canvas)
