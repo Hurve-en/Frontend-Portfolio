@@ -580,7 +580,7 @@ h1 span {
   position: relative;
   width: 100%;
   height: auto;
-  min-height: clamp(460px, 68vh, 620px);
+  min-height: clamp(420px, 62vh, 560px);
   overflow: visible;
   border-radius: 32px;
   perspective: 1200px;
@@ -599,7 +599,7 @@ h1 span {
 .carousel-card {
   position: relative;
   grid-area: 1 / 1;
-  width: min(680px, 80vw);
+  width: min(620px, 78vw);
   height: auto;
   opacity: 0;
   transform: translateX(200px) rotateY(45deg) scale(0.65);
@@ -617,7 +617,7 @@ h1 span {
   );
   border: 1px solid rgba(18, 18, 18, 0.08);
   box-shadow: 0 40px 80px rgba(18, 18, 18, 0.12);
-  --card-padding: clamp(1.6rem, 3vw, 2.6rem);
+  --card-padding: clamp(1.4rem, 2.6vw, 2.2rem);
   display: flex;
   flex-direction: column;
   text-decoration: none;
@@ -630,12 +630,12 @@ h1 span {
   transform: translateX(0) rotateY(0deg) scale(1);
   pointer-events: auto;
   z-index: 10;
-  box-shadow: 0 60px 120px rgba(18, 18, 18, 0.18);
+  box-shadow: 0 56px 112px rgba(18, 18, 18, 0.16);
 }
 
 .carousel-card.active:hover {
-  transform: translateX(0) rotateY(0deg) scale(1.01) translateY(-6px);
-  box-shadow: 0 70px 140px rgba(18, 18, 18, 0.2);
+  transform: translateX(0) rotateY(0deg) scale(1.01) translateY(-4px);
+  box-shadow: 0 64px 128px rgba(18, 18, 18, 0.18);
 }
 
 .carousel-card.prev1 {
@@ -665,7 +665,7 @@ h1 span {
 /* ── Card Visual (top gradient area) ── */
 .card-visual {
   position: relative;
-  height: 200px;
+  height: 170px;
   flex-shrink: 0;
   overflow: hidden;
   border-radius: 28px 28px 0 0;
@@ -1243,11 +1243,11 @@ h1 span {
   }
   .carousel-viewport {
     height: auto;
-    min-height: clamp(420px, 65vh, 580px);
+    min-height: clamp(390px, 62vh, 540px);
     overflow: visible;
   }
   .carousel-card {
-    width: min(640px, 82vw);
+    width: min(600px, 82vw);
     border-radius: 24px;
   }
   .carousel-arrow {
@@ -1279,11 +1279,11 @@ h1 span {
   }
   .carousel-viewport {
     height: auto;
-    min-height: clamp(420px, 65vh, 560px);
+    min-height: clamp(380px, 64vh, 520px);
     overflow: visible;
   }
   .carousel-card {
-    width: min(600px, 84vw);
+    width: min(580px, 84vw);
   }
   .carousel-container {
     gap: 1rem;
@@ -1318,16 +1318,16 @@ h1 span {
   }
   .carousel-viewport {
     height: auto;
-    min-height: clamp(400px, 65vh, 540px);
+    min-height: clamp(360px, 62vh, 500px);
     overflow: visible;
     border-radius: 24px;
   }
   .carousel-card {
-    width: min(560px, 88vw);
+    width: min(520px, 88vw);
     border-radius: 22px;
   }
   .card-visual {
-    height: 160px;
+    height: 150px;
   }
   .tech-stack-section {
     padding: 4rem 0;
@@ -1392,17 +1392,17 @@ h1 span {
   }
   .carousel-viewport {
     height: auto;
-    min-height: clamp(380px, 68vh, 520px);
+    min-height: clamp(350px, 66vh, 480px);
     overflow: visible;
     border-radius: 22px;
   }
   .carousel-card {
-    width: min(520px, 92vw);
+    width: min(500px, 92vw);
     border-radius: 20px;
     --card-padding: 1.3rem 1.5rem;
   }
   .card-visual {
-    height: 150px;
+    height: 140px;
   }
   .card-title {
     font-size: clamp(1.2rem, 4vw, 1.6rem);
@@ -1462,17 +1462,17 @@ h1 span {
   }
   .carousel-viewport {
     height: auto;
-    min-height: clamp(360px, 70vh, 480px);
+    min-height: clamp(330px, 66vh, 440px);
     overflow: visible;
     border-radius: 20px;
   }
   .carousel-card {
-    width: min(480px, 94vw);
+    width: min(460px, 94vw);
     border-radius: 18px;
     --card-padding: 1.1rem 1.2rem;
   }
   .card-visual {
-    height: 135px;
+    height: 130px;
   }
   .card-title {
     font-size: 1.2rem;
