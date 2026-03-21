@@ -501,14 +501,15 @@ h2 {
 .awwwards-carousel {
   position: relative;
   flex: 1;
-  max-width: 900px;
+  max-width: 980px;
   perspective: 1200px;
 }
 
 .carousel-viewport {
   position: relative;
   width: 100%;
-  height: 700px;
+  height: clamp(420px, 68vh, 640px);
+  padding: clamp(0.8rem, 1.5vh, 1.25rem) clamp(0.9rem, 2vw, 1.5rem);
   overflow: hidden;
   border-radius: 32px;
   perspective: 1200px;
@@ -527,9 +528,11 @@ h2 {
 /* Carousel Card - Full Content Layout */
 .carousel-card {
   position: absolute;
-  width: 70%;
-  max-width: 700px;
-  height: 85%;
+  width: min(78vw, 720px);
+  max-width: 720px;
+  min-width: min(92vw, 520px);
+  height: auto;
+  min-height: clamp(360px, 62vh, 560px);
   opacity: 0;
   transform: translateX(200px) rotateY(45deg) scale(0.65);
   pointer-events: none;
@@ -546,6 +549,7 @@ h2 {
   );
   border: 1px solid rgba(18, 18, 18, 0.08);
   box-shadow: 0 40px 80px rgba(18, 18, 18, 0.12);
+  --card-padding: clamp(1.4rem, 2.4vw, 2.6rem);
 }
 
 /* Active card (center) - DOMINANT */
@@ -605,11 +609,22 @@ h2 {
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 2.5rem 2.2rem;
-  gap: 1.2rem;
-  overflow-y: auto;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: var(--card-padding);
+  gap: 0.65rem;
+  overflow: hidden;
   position: relative;
   z-index: 2;
+  max-width: 640px;
+  margin: 0 auto;
+  transition:
+    padding 260ms var(--ease-fade),
+    gap 260ms var(--ease-fade),
+    justify-content 260ms var(--ease-fade),
+    align-items 260ms var(--ease-fade),
+    text-align 260ms var(--ease-fade);
 }
 
 .card-body::-webkit-scrollbar {
@@ -633,10 +648,11 @@ h2 {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
+  align-items: center;
 }
 
 .card-title {
-  font-size: 2rem;
+  font-size: clamp(1.7rem, 3vw, 2.35rem);
   font-weight: 700;
   line-height: 1.2;
   color: var(--text);
@@ -645,7 +661,7 @@ h2 {
 }
 
 .card-category {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -654,10 +670,19 @@ h2 {
 }
 
 .card-description {
-  font-size: 0.95rem;
+  font-size: 0.98rem;
   line-height: 1.65;
-  color: rgba(18, 18, 18, 0.75);
+  color: rgba(18, 18, 18, 0.78);
   margin: 0;
+  opacity: 0;
+  transform: translateY(10px);
+  max-height: 0;
+  pointer-events: none;
+  overflow: hidden;
+  transition:
+    opacity 320ms var(--ease-fade),
+    transform 320ms var(--ease-fade),
+    max-height 320ms var(--ease-fade);
 }
 
 /* Card Details - Hidden by default */
@@ -666,18 +691,14 @@ h2 {
   flex-direction: column;
   gap: 1.2rem;
   opacity: 0;
-  transform: translateY(16px);
+  transform: translateY(12px);
   pointer-events: none;
+  max-height: 0;
+  overflow: hidden;
   transition:
-    opacity 450ms var(--ease-fade),
-    transform 450ms var(--ease-fade);
-}
-
-.carousel-card:hover .card-details,
-.carousel-card.is-revealed .card-details {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
+    opacity 360ms var(--ease-fade),
+    transform 360ms var(--ease-fade),
+    max-height 360ms var(--ease-fade);
 }
 
 .details-section {
@@ -742,6 +763,35 @@ h2 {
   font-weight: 700;
   align-self: flex-start;
   margin-top: 0.4rem;
+}
+
+/* Collapsed vs. revealed states */
+.carousel-card:hover .card-body,
+.carousel-card:focus-within .card-body,
+.carousel-card.is-revealed .card-body {
+  justify-content: flex-start;
+  align-items: flex-start;
+  text-align: left;
+  gap: 1.1rem;
+  overflow-y: auto;
+}
+
+.carousel-card:hover .card-header,
+.carousel-card:focus-within .card-header,
+.carousel-card.is-revealed .card-header {
+  align-items: flex-start;
+}
+
+.carousel-card:hover .card-description,
+.carousel-card:focus-within .card-description,
+.carousel-card.is-revealed .card-description,
+.carousel-card:hover .card-details,
+.carousel-card:focus-within .card-details,
+.carousel-card.is-revealed .card-details {
+  opacity: 1;
+  transform: translateY(0);
+  max-height: 900px;
+  pointer-events: auto;
 }
 
 /* Theme colors */
@@ -998,6 +1048,16 @@ h2 {
     width: 20px;
     height: 20px;
   }
+  .awwwards-carousel {
+    max-width: 900px;
+  }
+  .carousel-viewport {
+    height: clamp(400px, 68vh, 600px);
+  }
+  .carousel-card {
+    width: min(86vw, 680px);
+    min-width: 0;
+  }
   .tech-stack-section {
     padding: 4.5rem 0;
   }
@@ -1023,10 +1083,10 @@ h2 {
     display: none;
   }
   .carousel-viewport {
-    height: 650px;
+    height: clamp(400px, 70vh, 600px);
   }
   .carousel-card {
-    width: 80%;
+    width: min(88vw, 660px);
   }
   .carousel-container {
     gap: 1rem;
@@ -1052,10 +1112,10 @@ h2 {
     z-index: 20;
   }
   .carousel-arrow-left {
-    left: -60px;
+    left: -28px;
   }
   .carousel-arrow-right {
-    right: -60px;
+    right: -28px;
   }
   .awwwards-carousel {
     position: relative;
@@ -1103,11 +1163,11 @@ h2 {
     padding: 5rem 0;
   }
   .carousel-viewport {
-    height: 580px;
+    height: clamp(360px, 72vh, 560px);
     border-radius: 28px;
   }
   .carousel-card {
-    width: 90%;
+    width: 92%;
     border-radius: 28px;
   }
   .card-body {
@@ -1169,10 +1229,10 @@ h2 {
 
 @media (max-width: 480px) {
   .carousel-viewport {
-    height: 520px;
+    height: clamp(340px, 75vh, 520px);
   }
   .carousel-card {
-    width: 95%;
+    width: 96%;
   }
   .card-body {
     padding: 1.6rem 1.4rem;
@@ -1201,10 +1261,10 @@ h2 {
     height: 40px;
   }
   .carousel-arrow-left {
-    left: -50px;
+    left: -18px;
   }
   .carousel-arrow-right {
-    right: -50px;
+    right: -18px;
   }
   .tech-stack-section {
     padding: 3rem 0;
@@ -1239,11 +1299,13 @@ h2 {
   .carousel-card {
     cursor: pointer;
   }
+  .card-description,
   .card-details {
     opacity: 0;
-    transform: translateY(16px);
+    transform: translateY(14px);
     pointer-events: none;
   }
+  .carousel-card.is-revealed .card-description,
   .carousel-card.is-revealed .card-details {
     opacity: 1;
     transform: translateY(0);
