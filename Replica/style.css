@@ -656,10 +656,33 @@ h1 span {
 /* ── Card Visual (top gradient area) ── */
 .card-visual {
   position: relative;
-  height: 160px;
+  height: 200px;
   flex-shrink: 0;
   overflow: hidden;
   border-radius: 28px 28px 0 0;
+}
+
+.card-visual-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.card-visual.has-image .card-visual-shapes {
+  display: none;
+}
+
+.card-visual.has-image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 45%,
+    rgba(0, 0, 0, 0.38) 100%
+  );
+  pointer-events: none;
+  z-index: 2;
 }
 
 /* When you have a real screenshot, use this class */
@@ -668,11 +691,9 @@ h1 span {
   height: 100%;
   object-fit: cover;
   object-position: top center;
-}
-
-.card-visual-bg {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  z-index: 1;
+  display: block;
 }
 
 .coral-gradient {
@@ -741,6 +762,7 @@ h1 span {
   position: absolute;
   bottom: 14px;
   left: 16px;
+  z-index: 3;
 }
 
 .visual-tag {
@@ -1364,7 +1386,7 @@ h1 span {
     border-radius: 22px;
   }
   .card-visual {
-    height: 140px;
+    height: 160px;
   }
   .tech-stack-section {
     padding: 4rem 0;
@@ -1437,7 +1459,7 @@ h1 span {
     --card-padding: 1.3rem 1.5rem;
   }
   .card-visual {
-    height: 130px;
+    height: 150px;
   }
   .card-title {
     font-size: clamp(1.2rem, 4vw, 1.6rem);
@@ -1505,7 +1527,7 @@ h1 span {
     --card-padding: 1.1rem 1.2rem;
   }
   .card-visual {
-    height: 115px;
+    height: 135px;
   }
   .card-title {
     font-size: 1.2rem;
