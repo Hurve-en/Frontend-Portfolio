@@ -579,8 +579,9 @@ h1 span {
 .carousel-viewport {
   position: relative;
   width: 100%;
-  height: clamp(460px, 68vh, 620px);
-  overflow: hidden;
+  height: auto;
+  min-height: clamp(460px, 68vh, 620px);
+  overflow: visible;
   border-radius: 32px;
   perspective: 1200px;
 }
@@ -588,18 +589,18 @@ h1 span {
 .carousel-track {
   position: relative;
   width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  height: auto;
+  display: grid;
+  place-items: center;
   perspective: 1200px;
 }
 
 /* ── Card ── */
 .carousel-card {
-  position: absolute;
+  position: relative;
+  grid-area: 1 / 1;
   width: min(680px, 80vw);
-  height: 100%;
+  height: auto;
   opacity: 0;
   transform: translateX(200px) rotateY(45deg) scale(0.65);
   pointer-events: none;
@@ -619,6 +620,9 @@ h1 span {
   --card-padding: clamp(1.6rem, 3vw, 2.6rem);
   display: flex;
   flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
 }
 
 .carousel-card.active {
@@ -627,6 +631,11 @@ h1 span {
   pointer-events: auto;
   z-index: 10;
   box-shadow: 0 60px 120px rgba(18, 18, 18, 0.18);
+}
+
+.carousel-card.active:hover {
+  transform: translateX(0) rotateY(0deg) scale(1.01) translateY(-6px);
+  box-shadow: 0 70px 140px rgba(18, 18, 18, 0.2);
 }
 
 .carousel-card.prev1 {
@@ -784,46 +793,29 @@ h1 span {
   flex: 1;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .card-body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+  justify-content: flex-start;
+  align-items: flex-start;
+  text-align: left;
   padding: var(--card-padding);
-  gap: 0.65rem;
-  overflow: hidden;
+  gap: 1rem;
+  overflow: visible;
   position: relative;
   z-index: 2;
   min-height: 0;
-  transition:
-    padding 260ms var(--ease-fade),
-    gap 260ms var(--ease-fade),
-    justify-content 260ms var(--ease-fade),
-    align-items 260ms var(--ease-fade),
-    text-align 260ms var(--ease-fade);
-}
-
-.card-body::-webkit-scrollbar {
-  width: 5px;
-}
-.card-body::-webkit-scrollbar-track {
-  background: transparent;
-}
-.card-body::-webkit-scrollbar-thumb {
-  background: rgba(18, 18, 18, 0.12);
-  border-radius: 3px;
 }
 
 .card-header {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .card-title {
@@ -849,55 +841,32 @@ h1 span {
   line-height: 1.65;
   color: rgba(18, 18, 18, 0.75);
   margin: 0;
-  opacity: 0;
-  transform: translateY(10px);
-  max-height: 0;
-  pointer-events: none;
-  overflow: hidden;
-  transition:
-    opacity 320ms var(--ease-fade),
-    transform 320ms var(--ease-fade),
-    max-height 320ms var(--ease-fade);
+  opacity: 1;
+  transform: none;
+  max-height: none;
+  pointer-events: auto;
+  overflow: visible;
+  transition: none;
 }
 
 .card-details {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  opacity: 0;
-  transform: translateY(12px);
-  pointer-events: none;
-  max-height: 0;
-  overflow: hidden;
-  transition:
-    opacity 360ms var(--ease-fade),
-    transform 360ms var(--ease-fade),
-    max-height 360ms var(--ease-fade);
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+  max-height: none;
+  overflow: visible;
+  transition: none;
 }
 
 .details-section {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  animation: fadeInUp 500ms var(--ease-fade) forwards;
-  opacity: 0;
-}
-
-.carousel-card:hover .details-section:nth-child(1),
-.carousel-card.is-revealed .details-section:nth-child(1) {
-  animation-delay: 50ms;
-}
-.carousel-card:hover .details-section:nth-child(2),
-.carousel-card.is-revealed .details-section:nth-child(2) {
-  animation-delay: 120ms;
-}
-.carousel-card:hover .details-section:nth-child(3),
-.carousel-card.is-revealed .details-section:nth-child(3) {
-  animation-delay: 190ms;
-}
-.carousel-card:hover .button.sm,
-.carousel-card.is-revealed .button.sm {
-  animation: fadeInUp 500ms var(--ease-fade) 260ms both;
+  animation: none;
+  opacity: 1;
 }
 
 .details-title {
@@ -928,41 +897,7 @@ h1 span {
 }
 
 .button.sm {
-  min-height: 40px;
-  padding: 0.52rem 1.05rem;
-  font-size: 0.82rem;
-  font-weight: 700;
-  align-self: flex-start;
-  margin-top: 0.35rem;
-}
-
-/* Revealed state */
-.carousel-card:hover .card-body,
-.carousel-card:focus-within .card-body,
-.carousel-card.is-revealed .card-body {
-  justify-content: flex-start;
-  align-items: flex-start;
-  text-align: left;
-  gap: 1rem;
-  overflow-y: auto;
-}
-
-.carousel-card:hover .card-header,
-.carousel-card:focus-within .card-header,
-.carousel-card.is-revealed .card-header {
-  align-items: flex-start;
-}
-
-.carousel-card:hover .card-description,
-.carousel-card:focus-within .card-description,
-.carousel-card.is-revealed .card-description,
-.carousel-card:hover .card-details,
-.carousel-card:focus-within .card-details,
-.carousel-card.is-revealed .card-details {
-  opacity: 1;
-  transform: translateY(0);
-  max-height: 900px;
-  pointer-events: auto;
+  display: none;
 }
 
 /* Theme colors */
@@ -1307,7 +1242,9 @@ h1 span {
     gap: 1.2rem;
   }
   .carousel-viewport {
-    height: clamp(420px, 65vh, 580px);
+    height: auto;
+    min-height: clamp(420px, 65vh, 580px);
+    overflow: visible;
   }
   .carousel-card {
     width: min(640px, 82vw);
@@ -1341,7 +1278,9 @@ h1 span {
     display: none;
   }
   .carousel-viewport {
-    height: clamp(420px, 65vh, 560px);
+    height: auto;
+    min-height: clamp(420px, 65vh, 560px);
+    overflow: visible;
   }
   .carousel-card {
     width: min(600px, 84vw);
@@ -1378,7 +1317,9 @@ h1 span {
     height: 40px;
   }
   .carousel-viewport {
-    height: clamp(400px, 65vh, 540px);
+    height: auto;
+    min-height: clamp(400px, 65vh, 540px);
+    overflow: visible;
     border-radius: 24px;
   }
   .carousel-card {
@@ -1450,7 +1391,9 @@ h1 span {
     height: 18px;
   }
   .carousel-viewport {
-    height: clamp(380px, 68vh, 520px);
+    height: auto;
+    min-height: clamp(380px, 68vh, 520px);
+    overflow: visible;
     border-radius: 22px;
   }
   .carousel-card {
@@ -1518,7 +1461,9 @@ h1 span {
     height: 16px;
   }
   .carousel-viewport {
-    height: clamp(360px, 70vh, 480px);
+    height: auto;
+    min-height: clamp(360px, 70vh, 480px);
+    overflow: visible;
     border-radius: 20px;
   }
   .carousel-card {
