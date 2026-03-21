@@ -315,6 +315,17 @@ h1 span {
   height: 100%;
   object-fit: cover;
   display: block;
+  position: absolute;
+  inset: 0;
+}
+
+.avatar-img-top {
+  opacity: 0;
+  transition: opacity 400ms ease;
+}
+
+.avatar-frame:hover .avatar-img-top {
+  opacity: 1;
 }
 
 @keyframes float {
