@@ -508,8 +508,8 @@ h2 {
 .carousel-viewport {
   position: relative;
   width: 100%;
-  height: clamp(420px, 68vh, 640px);
-  padding: clamp(0.8rem, 1.5vh, 1.25rem) clamp(0.9rem, 2vw, 1.5rem);
+  height: clamp(420px, 70vh, 640px);
+  padding: clamp(0.65rem, 1.2vh, 1rem) clamp(0.9rem, 2vw, 1.5rem);
   overflow: hidden;
   border-radius: 32px;
   perspective: 1200px;
@@ -528,11 +528,10 @@ h2 {
 /* Carousel Card - Full Content Layout */
 .carousel-card {
   position: absolute;
-  width: min(78vw, 720px);
+  width: clamp(280px, 78vw, 720px);
   max-width: 720px;
-  min-width: min(92vw, 520px);
   height: auto;
-  min-height: clamp(360px, 62vh, 560px);
+  min-height: clamp(340px, 62vh, 560px);
   opacity: 0;
   transform: translateX(200px) rotateY(45deg) scale(0.65);
   pointer-events: none;
@@ -564,7 +563,7 @@ h2 {
 /* Previous card (left) */
 .carousel-card.prev1 {
   opacity: 0.45;
-  transform: translateX(-180px) rotateY(-40deg) scale(0.68);
+  transform: translateX(-150px) rotateY(-36deg) scale(0.68);
   pointer-events: none;
   z-index: 5;
   filter: blur(1px);
@@ -573,7 +572,7 @@ h2 {
 /* Next card (right) */
 .carousel-card.next1 {
   opacity: 0.2;
-  transform: translateX(180px) rotateY(40deg) scale(0.68);
+  transform: translateX(150px) rotateY(36deg) scale(0.68);
   pointer-events: none;
   z-index: 2;
   filter: blur(2px);
@@ -601,6 +600,7 @@ h2 {
   display: flex;
   flex-direction: column;
   height: 100%;
+  min-height: inherit;
   overflow: hidden;
 }
 
@@ -617,13 +617,15 @@ h2 {
   overflow: hidden;
   position: relative;
   z-index: 2;
+  width: 100%;
   max-width: 640px;
   margin: 0 auto;
+  min-height: 0;
   transition:
     padding 260ms var(--ease-fade),
     gap 260ms var(--ease-fade),
-    justify-content 260ms var(--ease-fade),
-    align-items 260ms var(--ease-fade),
+    align-content 260ms var(--ease-fade),
+    justify-items 260ms var(--ease-fade),
     text-align 260ms var(--ease-fade);
 }
 
@@ -1040,6 +1042,9 @@ h2 {
   .carousel-container {
     gap: 1.5rem;
   }
+  .awwwards-carousel {
+    max-width: 900px;
+  }
   .carousel-arrow {
     width: 45px;
     height: 45px;
@@ -1048,15 +1053,11 @@ h2 {
     width: 20px;
     height: 20px;
   }
-  .awwwards-carousel {
-    max-width: 900px;
-  }
   .carousel-viewport {
-    height: clamp(400px, 68vh, 600px);
+    height: clamp(400px, 70vh, 600px);
   }
   .carousel-card {
-    width: min(86vw, 680px);
-    min-width: 0;
+    width: clamp(280px, 86vw, 680px);
   }
   .tech-stack-section {
     padding: 4.5rem 0;
@@ -1086,7 +1087,7 @@ h2 {
     height: clamp(400px, 70vh, 600px);
   }
   .carousel-card {
-    width: min(88vw, 660px);
+    width: clamp(260px, 88vw, 660px);
   }
   .carousel-container {
     gap: 1rem;
@@ -1112,10 +1113,10 @@ h2 {
     z-index: 20;
   }
   .carousel-arrow-left {
-    left: -28px;
+    left: -18px;
   }
   .carousel-arrow-right {
-    right: -28px;
+    right: -18px;
   }
   .awwwards-carousel {
     position: relative;
@@ -1167,7 +1168,7 @@ h2 {
     border-radius: 28px;
   }
   .carousel-card {
-    width: 92%;
+    width: clamp(240px, 92vw, 620px);
     border-radius: 28px;
   }
   .card-body {
@@ -1232,7 +1233,7 @@ h2 {
     height: clamp(340px, 75vh, 520px);
   }
   .carousel-card {
-    width: 96%;
+    width: clamp(220px, 96vw, 560px);
   }
   .card-body {
     padding: 1.6rem 1.4rem;
