@@ -71,6 +71,18 @@ const setupRevealObserver = () => {
 
   const hideTimers = new WeakMap();
 
+  // FIX: 8 add and remove will-change around reveals for better perf
+  const applyWillChange = (el) => {
+    if (el.dataset.willChangeApplied) return;
+    el.style.willChange = "opacity, transform";
+    el.dataset.willChangeApplied = "true";
+    const handleTransitionEnd = () => {
+      el.style.willChange = "";
+      delete el.dataset.willChangeApplied;
+    };
+    el.addEventListener("transitionend", handleTransitionEnd, { once: true });
+  };
+
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -80,6 +92,7 @@ const setupRevealObserver = () => {
             clearTimeout(pending);
             hideTimers.delete(entry.target);
           }
+          applyWillChange(entry.target);
           entry.target.classList.add("is-visible");
         } else {
           if (hideTimers.has(entry.target)) return;
@@ -157,6 +170,47 @@ const setupSectionHighlight = () => {
   window.addEventListener("scroll", updateActiveFromScroll, { passive: true });
 };
 
+// FIX: 11 mobile hamburger menu toggle
+const setupMobileNav = () => {
+  const toggle = document.getElementById("navToggle");
+  const menu = document.getElementById("primaryMenu");
+  if (!toggle || !menu || !navbar) return;
+
+  const closeMenu = () => {
+    navbar.classList.remove("is-open");
+    document.body.classList.remove("nav-open");
+    toggle.setAttribute("aria-expanded", "false");
+    menu.classList.remove("is-open");
+  };
+
+  const openMenu = () => {
+    navbar.classList.add("is-open");
+    document.body.classList.add("nav-open");
+    toggle.setAttribute("aria-expanded", "true");
+    menu.classList.add("is-open");
+  };
+
+  toggle.addEventListener("click", () => {
+    const expanded = toggle.getAttribute("aria-expanded") === "true";
+    if (expanded) closeMenu();
+    else openMenu();
+  });
+
+  menu.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      if (window.innerWidth <= 720) closeMenu();
+    });
+  });
+
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 720) closeMenu();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeMenu();
+  });
+};
+
 // ── Letter-by-letter interactive headers ──
 const setupInteractiveHeaders = () => {
   const headers = Array.from(document.querySelectorAll(".interactive-header"));
@@ -165,9 +219,11 @@ const setupInteractiveHeaders = () => {
   const isHoverSupported = window.matchMedia("(hover: hover)").matches;
   if (!isHoverSupported || prefersReducedMotion) return;
 
-  headers.forEach((header) => {
+  // FIX: 3 share one mousemove listener + AbortController cleanup
+  const controller = new AbortController();
+  const { signal } = controller;
+  const headerData = headers.map((header) => {
     const text = header.innerHTML;
-    // Preserve <em> tags — only wrap plain text nodes
     const tempDiv = document.createElement("div");
     tempDiv.innerHTML = text;
 
@@ -195,27 +251,32 @@ const setupInteractiveHeaders = () => {
         return frag;
       } else if (node.nodeType === Node.ELEMENT_NODE) {
         const clone = node.cloneNode(false);
-        node.childNodes.forEach((child) =>
-          clone.appendChild(processNode(child)),
-        );
+        node.childNodes.forEach((child) => clone.appendChild(processNode(child)));
         return clone;
       }
       return node.cloneNode(true);
     };
 
     header.innerHTML = "";
-    tempDiv.childNodes.forEach((child) =>
-      header.appendChild(processNode(child)),
-    );
+    tempDiv.childNodes.forEach((child) => header.appendChild(processNode(child)));
 
-    const letterElements = header.querySelectorAll(".letter");
-    let animationFrameId = null;
+    const letterElements = Array.from(header.querySelectorAll(".letter"));
+    const resetLetters = () => {
+      letterElements.forEach((letter) => {
+        letter.style.transform = "translate(0, 0)";
+      });
+    };
 
-    const onMouseMove = (event) => {
-      const mouseX = event.clientX;
-      const mouseY = event.clientY;
-      if (animationFrameId) cancelAnimationFrame(animationFrameId);
-      animationFrameId = requestAnimationFrame(() => {
+    header.addEventListener("mouseleave", resetLetters, { signal });
+    return { letterElements };
+  });
+
+  let animationFrameId = null;
+  const onMouseMove = (event) => {
+    const { clientX: mouseX, clientY: mouseY } = event;
+    if (animationFrameId) cancelAnimationFrame(animationFrameId);
+    animationFrameId = requestAnimationFrame(() => {
+      headerData.forEach(({ letterElements }) => {
         letterElements.forEach((letter) => {
           const rect = letter.getBoundingClientRect();
           const cx = rect.left + rect.width / 2;
@@ -231,23 +292,22 @@ const setupInteractiveHeaders = () => {
             "transform 120ms cubic-bezier(0.25, 0.46, 0.45, 0.94)";
         });
       });
-    };
-
-    const onMouseLeave = () => {
-      letterElements.forEach((letter) => {
-        letter.style.transform = "translate(0, 0)";
-      });
-      if (animationFrameId) cancelAnimationFrame(animationFrameId);
-    };
-
-    document.addEventListener("mousemove", onMouseMove, { passive: true });
-    header.addEventListener("mouseleave", onMouseLeave);
-
-    window.addEventListener("beforeunload", () => {
-      document.removeEventListener("mousemove", onMouseMove);
-      header.removeEventListener("mouseleave", onMouseLeave);
     });
+  };
+
+  document.addEventListener("mousemove", onMouseMove, {
+    passive: true,
+    signal,
   });
+
+  window.addEventListener(
+    "pagehide",
+    () => {
+      controller.abort();
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+    },
+    { once: true },
+  );
 };
 
 // ── 3D Carousel ──
@@ -350,6 +410,7 @@ const setupAwwwardsCarousel = () => {
   viewport.addEventListener("mouseenter", stopAuto);
   viewport.addEventListener("mouseleave", startAuto);
 
+  // FIX: 4 removed no-op pointermove listener
   viewport.addEventListener("pointerdown", (event) => {
     isDragging = true;
     dragStartX = event.clientX;
@@ -357,8 +418,6 @@ const setupAwwwardsCarousel = () => {
     viewport.classList.add("is-dragging");
     stopAuto();
   });
-
-  window.addEventListener("pointermove", () => {});
 
   window.addEventListener("pointerup", (event) => {
     if (!isDragging) return;
@@ -418,6 +477,8 @@ window.addEventListener("resize", setNavbarState);
 setNavbarState();
 setupScrollProgress();
 smoothAnchorNavigation();
+// FIX: 11 initialize mobile nav toggle
+setupMobileNav();
 setupRevealObserver();
 setupSectionHighlight();
 setupInteractiveHeaders();

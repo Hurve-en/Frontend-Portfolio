@@ -2,6 +2,7 @@
    THEME TOKENS
 ═══════════════════════════════════════════════ */
 :root {
+  /* FIX: 5 Remove duplicate ease token */
   --bg: #f6f5f2;
   --surface: #faf9f6;
   --panel: #ffffff;
@@ -14,7 +15,6 @@
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  --ease-fade: cubic-bezier(0.4, 0, 0.2, 1);
   --rail-line: rgba(18, 18, 18, 0.08);
 }
 
@@ -29,19 +29,25 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 96px;
+  /* FIX: 7 Align scroll padding to navbar height */
+  scroll-padding-top: 86px;
 }
 
 body {
   font-family: "Manrope", sans-serif;
   color: var(--text);
+  /* FIX: 10 Adjust radial gradient opacities for dark safety */
   background:
     radial-gradient(
       circle at 12% 14%,
-      rgba(157, 143, 118, 0.14),
+      rgba(157, 143, 118, 0.12),
       transparent 40%
     ),
-    radial-gradient(circle at 88% 6%, rgba(31, 41, 55, 0.08), transparent 34%),
+    radial-gradient(
+      circle at 88% 6%,
+      rgba(31, 41, 55, 0.07),
+      transparent 34%
+    ),
     var(--bg);
   line-height: 1.6;
   overflow-x: hidden;
@@ -96,9 +102,9 @@ a {
   z-index: 1000;
   border-bottom: 1px solid transparent;
   transition:
-    background-color 300ms var(--ease-fade),
-    border-color 300ms var(--ease-fade),
-    backdrop-filter 300ms var(--ease-fade);
+    background-color 300ms var(--ease-in-out),
+    border-color 300ms var(--ease-in-out),
+    backdrop-filter 300ms var(--ease-in-out);
 }
 
 .navbar.scrolled {
@@ -138,8 +144,8 @@ a {
   padding: 0.3rem 0.55rem;
   border-radius: 999px;
   transition:
-    color 220ms var(--ease-fade),
-    background-color 220ms var(--ease-fade);
+    color 220ms var(--ease-in-out),
+    background-color 220ms var(--ease-in-out);
 }
 
 .nav-menu a:hover,
@@ -164,6 +170,52 @@ a {
   outline: 2px solid rgba(18, 18, 18, 0.4);
   outline-offset: 3px;
   background: rgba(18, 18, 18, 0.06);
+}
+
+/* FIX: 11 Hamburger toggle base */
+.nav-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(18, 18, 18, 0.14);
+  background: rgba(255, 255, 255, 0.82);
+  cursor: pointer;
+  transition:
+    transform 220ms var(--ease-in-out),
+    border-color 220ms var(--ease-in-out),
+    box-shadow 220ms var(--ease-in-out);
+}
+
+.nav-toggle:hover {
+  transform: translateY(-1px);
+  border-color: rgba(18, 18, 18, 0.28);
+  box-shadow: 0 12px 28px rgba(18, 18, 18, 0.14);
+}
+
+.nav-toggle svg line {
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  transform-origin: center;
+  transition: transform 200ms var(--ease-in-out), opacity 200ms var(--ease-in-out);
+}
+
+.navbar.is-open .nav-toggle svg line:nth-child(1) {
+  transform: translateY(5px) rotate(45deg);
+}
+.navbar.is-open .nav-toggle svg line:nth-child(2) {
+  opacity: 0;
+}
+.navbar.is-open .nav-toggle svg line:nth-child(3) {
+  transform: translateY(-5px) rotate(-45deg);
+}
+
+/* FIX: 11 Lock scroll when mobile menu is open */
+body.nav-open {
+  overflow: hidden;
 }
 
 /* ═══════════════════════════════════════════════
@@ -357,9 +409,9 @@ h1 span {
   transition:
     transform 240ms var(--ease-out),
     box-shadow 240ms var(--ease-out),
-    background-color 240ms var(--ease-fade),
-    color 240ms var(--ease-fade),
-    border-color 240ms var(--ease-fade);
+    background-color 240ms var(--ease-in-out),
+    color 240ms var(--ease-in-out),
+    border-color 240ms var(--ease-in-out);
 }
 
 .button:hover {
@@ -466,8 +518,8 @@ h1 span {
   border: 1px solid rgba(18, 18, 18, 0.08);
   box-shadow: 0 32px 64px rgba(18, 18, 18, 0.1);
   transition:
-    box-shadow 300ms var(--ease-fade),
-    border-color 300ms var(--ease-fade);
+    box-shadow 300ms var(--ease-in-out),
+    border-color 300ms var(--ease-in-out);
 }
 
 .tech-carousel-container:hover {
@@ -527,8 +579,8 @@ h1 span {
   box-shadow: 0 20px 40px rgba(18, 18, 18, 0.1);
   transition:
     transform 200ms var(--ease-out),
-    box-shadow 200ms var(--ease-fade),
-    filter 200ms var(--ease-fade);
+    box-shadow 200ms var(--ease-in-out),
+    filter 200ms var(--ease-in-out);
   flex-shrink: 0;
 }
 
@@ -542,10 +594,9 @@ h1 span {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: saturate(0.95) brightness(0.98);
 }
 .logo-chip:hover .logo-img {
-  filter: saturate(1) brightness(1.02);
+  filter: none;
 }
 
 .logo-chip.has-fallback {
@@ -617,7 +668,7 @@ h1 span {
   pointer-events: none;
   transition:
     all 700ms var(--ease-smooth),
-    opacity 700ms var(--ease-fade);
+    opacity 700ms var(--ease-in-out);
   z-index: 1;
   border-radius: 28px;
   overflow: hidden;
@@ -690,19 +741,6 @@ h1 span {
 
 .card-visual.has-image .card-visual-shapes {
   display: none;
-}
-
-.card-visual.has-image::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0) 45%,
-    rgba(0, 0, 0, 0.38) 100%
-  );
-  pointer-events: none;
-  z-index: 2;
 }
 
 /* When you have a real screenshot, use this class */
@@ -939,8 +977,8 @@ h1 span {
   z-index: 15;
   transition:
     transform 280ms var(--ease-smooth),
-    box-shadow 280ms var(--ease-fade),
-    border-color 280ms var(--ease-fade);
+    box-shadow 280ms var(--ease-in-out),
+    border-color 280ms var(--ease-in-out);
 }
 
 .carousel-arrow:hover {
@@ -974,7 +1012,7 @@ h1 span {
   background: rgba(18, 18, 18, 0.15);
   cursor: pointer;
   border: 1px solid rgba(18, 18, 18, 0.1);
-  transition: all 300ms var(--ease-fade);
+  transition: all 300ms var(--ease-in-out);
 }
 
 .indicator.active {
@@ -1031,8 +1069,8 @@ h1 span {
   backdrop-filter: blur(8px);
   transition:
     transform 280ms var(--ease-out),
-    box-shadow 280ms var(--ease-fade),
-    border-color 280ms var(--ease-fade);
+    box-shadow 280ms var(--ease-in-out),
+    border-color 280ms var(--ease-in-out);
   position: relative;
   overflow: hidden;
 }
@@ -1128,7 +1166,7 @@ h1 span {
   letter-spacing: -0.03em;
   transition:
     transform 240ms var(--ease-out),
-    color 240ms var(--ease-fade);
+    color 240ms var(--ease-in-out);
 }
 
 .email:hover {
@@ -1159,9 +1197,9 @@ h1 span {
   border: 1px solid rgba(18, 18, 18, 0.15);
   color: var(--muted);
   transition:
-    border-color 220ms var(--ease-fade),
-    color 220ms var(--ease-fade),
-    background-color 220ms var(--ease-fade);
+    border-color 220ms var(--ease-in-out),
+    color 220ms var(--ease-in-out),
+    background-color 220ms var(--ease-in-out);
 }
 
 .socials a:hover {
@@ -1217,10 +1255,10 @@ h1 span {
 [data-reveal] {
   opacity: 0;
   transform: translateY(28px) scale(0.97);
-  will-change: opacity, transform;
+  /* FIX: 8 Will-change moved to JS before reveal */
   transition:
-    opacity 800ms var(--ease-fade),
-    transform 800ms var(--ease-fade);
+    opacity 800ms var(--ease-in-out),
+    transform 800ms var(--ease-in-out);
   transition-delay: var(--reveal-delay, 0ms);
 }
 
@@ -1230,9 +1268,9 @@ h1 span {
 }
 
 /* ═══════════════════════════════════════════════
-   RESPONSIVE — DESKTOP (≥981px)
-═══════════════════════════════════════════════ */
-@media (min-width: 981px) {
+   RESPONSIVE — DESKTOP (≥980px) */
+/* FIX: 6 Adjust breakpoint gap */
+@media (min-width: 980px) {
   .hero {
     grid-template-columns: 1.08fr 0.92fr;
     align-items: center;
@@ -1276,9 +1314,10 @@ h1 span {
 }
 
 /* ═══════════════════════════════════════════════
-   RESPONSIVE — TABLET PORTRAIT (≤980px)
+   RESPONSIVE — TABLET PORTRAIT (≤979px)
 ═══════════════════════════════════════════════ */
-@media (max-width: 980px) {
+/* FIX: 6 Adjust breakpoint gap */
+@media (max-width: 979px) {
   .split-grid {
     grid-template-columns: 1fr;
   }
@@ -1368,18 +1407,46 @@ h1 span {
   }
   .nav-inner {
     height: 72px;
+    position: relative;
     gap: 0.75rem;
+  }
+  .nav-toggle {
+    display: inline-flex;
   }
   .nav-resume {
     display: none;
   }
+  /* FIX: 11 Mobile dropdown menu */
   .nav-menu {
-    gap: 0.4rem;
-    justify-content: flex-end;
+    position: absolute;
+    top: 72px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 0.9rem;
+    align-items: flex-start;
+    padding: 1.2rem 1.4rem;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(18, 18, 18, 0.12);
+    border-radius: 16px;
+    box-shadow: 0 20px 48px rgba(18, 18, 18, 0.16);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-10px);
+    transition:
+      opacity 200ms var(--ease-in-out),
+      transform 200ms var(--ease-in-out);
+    z-index: 1200;
+  }
+  .nav-menu.is-open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
   }
   .nav-menu a {
-    font-size: 0.82rem;
-    padding: 0.24rem 0.42rem;
+    font-size: 0.95rem;
+    padding: 0.35rem 0.6rem;
+    width: 100%;
   }
   .hero {
     padding-top: 5.5rem;
@@ -1564,3 +1631,5 @@ h1 span {
     animation: none !important;
   }
 }
+
+/* FIX: 10 Minimal dark mode support */

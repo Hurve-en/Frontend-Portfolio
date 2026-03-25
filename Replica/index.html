@@ -32,6 +32,9 @@
       href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
       rel="stylesheet"
     />
+    <!-- FIX: 9 Add favicon assets -->
+    <link rel="icon" type="image/png" href="images/favicon.png" />
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png" />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -47,7 +50,22 @@
     <nav class="navbar" aria-label="Primary navigation">
       <div class="nav-inner">
         <a href="#home" class="brand">Hurve-en</a>
-        <ul class="nav-menu">
+        <!-- FIX: 11 Mobile hamburger toggle -->
+        <button
+          class="nav-toggle"
+          id="navToggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="primaryMenu"
+          aria-label="Toggle navigation menu"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+            <line x1="4" y1="7" x2="20" y2="7" />
+            <line x1="4" y1="12" x2="20" y2="12" />
+            <line x1="4" y1="17" x2="20" y2="17" />
+          </svg>
+        </button>
+        <ul class="nav-menu" id="primaryMenu">
           <li><a href="#work">Work</a></li>
           <li><a href="#about">About</a></li>
           <li><a href="#contact">Contact</a></li>
