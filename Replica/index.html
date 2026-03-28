@@ -8,7 +8,7 @@
       content="Hurve-en — Full-stack developer & software engineering student building tech from Cebu for global impact."
     />
 
-    <!-- Open Graph -->
+    <!-- Social media preview cards (Open Graph) -->
     <meta property="og:title" content="Hurve-en — Portfolio" />
     <meta
       property="og:description"
@@ -17,6 +17,8 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://hurve-en.dev" />
     <meta property="og:image" content="images/og-preview.png" />
+
+    <!-- Twitter card preview -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Hurve-en — Portfolio" />
     <meta
@@ -26,31 +28,35 @@
 
     <title>Hurve-en — Portfolio</title>
 
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <!-- FIX: 9 Add favicon assets -->
+
+    <!-- Favicon icons -->
     <link rel="icon" type="image/png" href="images/favicon.png" />
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png" />
+
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <!-- Scroll progress bar -->
+    <!-- Thin bar at the top that fills as the user scrolls -->
     <div class="scroll-progress" aria-hidden="true">
       <div class="scroll-progress-bar" id="scrollProgressBar"></div>
     </div>
 
-    <!-- Background decoration -->
+    <!-- Decorative background grid (purely visual) -->
     <div class="bg-grid" aria-hidden="true"></div>
 
-    <!-- Fixed top navigation -->
+    <!-- Top navigation bar -->
     <nav class="navbar" aria-label="Primary navigation">
       <div class="nav-inner">
         <a href="#home" class="brand">Hurve-en</a>
-        <!-- FIX: 11 Mobile hamburger toggle -->
+
+        <!-- Hamburger button shown on mobile -->
         <button
           class="nav-toggle"
           id="navToggle"
@@ -65,11 +71,15 @@
             <line x1="4" y1="17" x2="20" y2="17" />
           </svg>
         </button>
+
+        <!-- Nav links -->
         <ul class="nav-menu" id="primaryMenu">
           <li><a href="#work">Work</a></li>
           <li><a href="#about">About</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
+
+        <!-- Resume download button -->
         <a
           href="resume.pdf"
           class="button button-ghost nav-resume"
@@ -98,8 +108,11 @@
     </nav>
 
     <main>
-      <!-- Hero section -->
+      <!-- =====================
+           HERO
+      ===================== -->
       <section class="hero section" id="home">
+        <!-- Left: text content -->
         <div class="hero-copyblock">
           <p class="eyebrow" data-reveal>BSCS-SE Student at iACADEMY</p>
           <h1 class="hero-title interactive-header" data-reveal data-delay="80">
@@ -115,7 +128,7 @@
             <a href="#contact" class="button button-ghost">Start a Project</a>
           </div>
 
-          <!-- Currently block -->
+          <!-- Status badge -->
           <div class="currently-block" data-reveal data-delay="320">
             <span class="currently-dot" aria-hidden="true"></span>
             <p class="currently-text">
@@ -125,6 +138,7 @@
           </div>
         </div>
 
+        <!-- Right: profile photo with hover effect -->
         <div class="hero-visual" aria-hidden="true">
           <div class="avatar-frame" data-reveal data-delay="220">
             <img
@@ -132,6 +146,7 @@
               alt="Portrait of Hurve-en"
               class="avatar-img avatar-img-base"
             />
+            <!-- Second image shown on hover -->
             <img
               src="images/Me_2.png"
               alt=""
@@ -141,7 +156,9 @@
         </div>
       </section>
 
-      <!-- Tech stack section -->
+      <!-- =====================
+           TECH STACK
+      ===================== -->
       <section class="section tech-stack-section" aria-label="Tech stack">
         <div class="tech-stack-wrapper" data-reveal>
           <div class="tech-stack-header">
@@ -151,6 +168,7 @@
             </p>
           </div>
 
+          <!-- Auto-scrolling logo strip -->
           <div class="tech-carousel-container">
             <div
               class="logo-marquee"
@@ -159,6 +177,7 @@
               data-delay="60"
             >
               <div class="marquee-track">
+                <!-- First set of logos -->
                 <span class="logo-chip" data-label="React" tabindex="0"
                   ><img
                     src="images/react.png"
@@ -279,7 +298,8 @@
                       this.parentElement.classList.add('has-fallback');
                     "
                 /></span>
-                <!-- Duplicate for loop -->
+
+                <!-- Duplicate set — needed to make the scroll loop seamlessly -->
                 <span class="logo-chip" data-label="React" tabindex="0"
                   ><img
                     src="images/react.png"
@@ -406,7 +426,9 @@
         </div>
       </section>
 
-      <!-- Featured projects section -->
+      <!-- =====================
+           PROJECTS
+      ===================== -->
       <section class="section projects-section" id="work">
         <header class="section-head" data-reveal>
           <div class="section-kicker">
@@ -416,6 +438,7 @@
           <h2 class="interactive-header">Featured <em>projects</em></h2>
         </header>
 
+        <!-- Carousel with left/right arrow buttons -->
         <div class="carousel-container" data-reveal>
           <button
             class="carousel-arrow carousel-arrow-left prev"
@@ -439,7 +462,7 @@
           <div class="awwwards-carousel">
             <div class="carousel-viewport">
               <div class="carousel-track">
-                <!-- Card 1: CITA-CoralGuardAI -->
+                <!-- Project 1: CITA-CoralGuardAI -->
                 <a
                   class="carousel-card project-card theme-coral"
                   href="https://github.com/Hurve-en/CITA-CoralGuardAI"
@@ -503,7 +526,7 @@
                   </div>
                 </a>
 
-                <!-- Card 2: CITA-CebuCleanAI -->
+                <!-- Project 2: CITA-CebuCleanAI -->
                 <a
                   class="carousel-card project-card theme-clean"
                   href="https://github.com/Hurve-en/CITA-CebuCleanAI"
@@ -565,7 +588,7 @@
                   </div>
                 </a>
 
-                <!-- Card 3: Mt. Apos Best Coffee -->
+                <!-- Project 3: Mt. Apos Best Coffee -->
                 <a
                   class="carousel-card project-card theme-coffee"
                   href="https://github.com/Hurve-en/Mt-Apos-Best-Coffee"
@@ -653,6 +676,7 @@
           </button>
         </div>
 
+        <!-- Dot indicators below the carousel -->
         <div class="carousel-indicators">
           <span class="indicator active" data-index="0"></span>
           <span class="indicator" data-index="1"></span>
@@ -660,7 +684,9 @@
         </div>
       </section>
 
-      <!-- About section -->
+      <!-- =====================
+           ABOUT
+      ===================== -->
       <section class="section split" id="about">
         <header class="section-head" data-reveal>
           <p class="eyebrow">About</p>
@@ -687,7 +713,9 @@
         </div>
       </section>
 
-      <!-- Testimonials section -->
+      <!-- =====================
+           TESTIMONIALS
+      ===================== -->
       <section class="section testimonials-section" id="testimonials">
         <header class="section-head" data-reveal>
           <p class="eyebrow">Kind Words</p>
@@ -741,7 +769,9 @@
         </div>
       </section>
 
-      <!-- Contact section -->
+      <!-- =====================
+           CONTACT
+      ===================== -->
       <section class="section contact" id="contact">
         <header class="section-head" data-reveal>
           <p class="eyebrow">Contact</p>
@@ -755,6 +785,7 @@
             >velosohurveenrayford@gmail.com</a
           >
           <div class="contact-bottom">
+            <!-- Social media links -->
             <div class="socials" aria-label="Social links">
               <a
                 href="https://github.com/Hurve-en"
@@ -775,6 +806,8 @@
                 >Instagram</a
               >
             </div>
+
+            <!-- Resume download button -->
             <a
               href="resume.pdf"
               class="button button-solid resume-cta"
