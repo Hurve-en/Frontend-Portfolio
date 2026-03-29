@@ -1,30 +1,29 @@
-// Simple comment: This file adds page behavior and interactions.
-
 // ============================================
-// STUDYFLOW - DYNAMIC FLASHCARD APP
+// STUDYFLOW - UPGRADED FLASHCARD APP
 // ============================================
 
-// DATA MANAGEMENT
+// DATA
 let decks = JSON.parse(localStorage.getItem("studyflowDecks")) || [];
 let currentDeck = null;
 let currentCardIndex = 0;
 let isFlipped = false;
-let stats = {
-  good: 0,
-  help: 0,
-  hard: 0,
-};
+let studyCards = []; // cards currently in study session
+let hardCardIds = new Set();
+let editingCardIndex = -1;
+let stats = { good: 0, help: 0, hard: 0 };
+let aiGeneratedCards = [];
 
-// DOM ELEMENTS
-const sidebar = document.querySelector(".sidebar");
+// DOM — VIEWS
 const decksList = document.getElementById("decksList");
-const mainContent = document.querySelector(".main-content");
 const emptyState = document.getElementById("emptyState");
 const deckView = document.getElementById("deckView");
 const studyMode = document.getElementById("studyMode");
 const newDeckModal = document.getElementById("newDeckModal");
+const editCardModal = document.getElementById("editCardModal");
+const exportModal = document.getElementById("exportModal");
+const sessionComplete = document.getElementById("sessionComplete");
 
-// BUTTONS
+// DOM — BUTTONS
 const newDeckBtn = document.getElementById("newDeckBtn");
 const createFirstDeckBtn = document.getElementById("createFirstDeckBtn");
 const closeModalBtn = document.getElementById("closeModalBtn");
@@ -35,25 +34,67 @@ const deleteDeckBtn = document.getElementById("deleteDeckBtn");
 const addCardBtn = document.getElementById("addCardBtn");
 const startStudyBtn = document.getElementById("startStudyBtn");
 const exitStudyBtn = document.getElementById("exitStudyBtn");
-
-// FORM INPUTS
-const newDeckNameInput = document.getElementById("newDeckName");
-const questionInput = document.getElementById("questionInput");
-const answerInput = document.getElementById("answerInput");
-
-// STUDY MODE ELEMENTS
-const flashcard = document.getElementById("flashcard");
-const studyQuestion = document.getElementById("studyQuestion");
-const studyAnswer = document.getElementById("studyAnswer");
 const flipCardBtn = document.getElementById("flipCardBtn");
 const prevCardBtn = document.getElementById("prevCardBtn");
 const nextCardBtn = document.getElementById("nextCardBtn");
 const markGoodBtn = document.getElementById("markGoodBtn");
 const markNeedHelpBtn = document.getElementById("markNeedHelpBtn");
 const markHardBtn = document.getElementById("markHardBtn");
+const shuffleBtn = document.getElementById("shuffleBtn");
+const exportBtn = document.getElementById("exportBtn");
+
+// DOM — INPUTS
+const newDeckNameInput = document.getElementById("newDeckName");
+const newDeckDescInput = document.getElementById("newDeckDesc");
+const questionInput = document.getElementById("questionInput");
+const answerInput = document.getElementById("answerInput");
+const deckSearch = document.getElementById("deckSearch");
+const cardSearch = document.getElementById("cardSearch");
+const bulkInput = document.getElementById("bulkInput");
+const bulkCounter = document.getElementById("bulkCounter");
+
+// DOM — BULK
+const previewBulkBtn = document.getElementById("previewBulkBtn");
+const importBulkBtn = document.getElementById("importBulkBtn");
+const bulkPreviewWrap = document.getElementById("bulkPreviewWrap");
+const bulkPreview = document.getElementById("bulkPreview");
+const togglePreviewBtn = document.getElementById("togglePreviewBtn");
+const previewCount = document.getElementById("previewCount");
+
+// DOM — AI
+const generateAiBtn = document.getElementById("generateAiBtn");
+const aiTopic = document.getElementById("aiTopic");
+const aiCount = document.getElementById("aiCount");
+const aiDifficulty = document.getElementById("aiDifficulty");
+const aiResult = document.getElementById("aiResult");
+const aiLoading = document.getElementById("aiLoading");
+const aiResultCount = document.getElementById("aiResultCount");
+const aiPreviewList = document.getElementById("aiPreviewList");
+const importAiBtn = document.getElementById("importAiBtn");
+
+// DOM — STUDY
+const flashcard = document.getElementById("flashcard");
+const studyQuestion = document.getElementById("studyQuestion");
+const studyAnswer = document.getElementById("studyAnswer");
+const studyDeckName = document.getElementById("studyDeckName");
+
+// DOM — SESSION
+const restartStudyBtn = document.getElementById("restartStudyBtn");
+const studyHardBtn = document.getElementById("studyHardBtn");
+const exitSessionBtn = document.getElementById("exitSessionBtn");
+
+// DOM — EDIT MODAL
+const closeEditModalBtn = document.getElementById("closeEditModalBtn");
+const cancelEditBtn = document.getElementById("cancelEditBtn");
+const confirmEditBtn = document.getElementById("confirmEditBtn");
+const editQuestion = document.getElementById("editQuestion");
+const editAnswer = document.getElementById("editAnswer");
+
+// DOM — EXPORT MODAL
+const closeExportModalBtn = document.getElementById("closeExportModalBtn");
 
 // ============================================
-// INITIALIZE APP
+// INIT
 // ============================================
 
 function init() {
@@ -67,24 +108,58 @@ function init() {
 // ============================================
 
 function attachEventListeners() {
-  // Deck management
+  // Deck
   newDeckBtn.addEventListener("click", openNewDeckModal);
   createFirstDeckBtn.addEventListener("click", openNewDeckModal);
   closeModalBtn.addEventListener("click", closeNewDeckModal);
   confirmDeckBtn.addEventListener("click", createNewDeck);
   cancelDeckBtn.addEventListener("click", closeNewDeckModal);
-  backBtn.addEventListener("click", goBackToDeckView);
+  backBtn.addEventListener("click", goBackToMain);
   deleteDeckBtn.addEventListener("click", deleteDeck);
-  exitStudyBtn.addEventListener("click", goBackToDeckView);
 
-  // Card management
+  // Deck search
+  deckSearch.addEventListener("input", () => renderDecks(deckSearch.value));
+
+  // Card search
+  cardSearch.addEventListener("input", () => renderCards(cardSearch.value));
+
+  // Single card
   addCardBtn.addEventListener("click", addCard);
-  questionInput.addEventListener("keypress", (e) => {
+  questionInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && e.ctrlKey) addCard();
+  });
+  answerInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter" && e.ctrlKey) addCard();
   });
 
-  // Study mode
+  // Tabs
+  document.querySelectorAll(".tab-btn").forEach((btn) => {
+    btn.addEventListener("click", () => switchTab(btn.dataset.tab));
+  });
+
+  // Bulk import
+  bulkInput.addEventListener("input", updateBulkCounter);
+  previewBulkBtn.addEventListener("click", previewBulk);
+  importBulkBtn.addEventListener("click", importBulk);
+  togglePreviewBtn.addEventListener("click", toggleBulkPreview);
+  document.querySelectorAll("input[name='separator']").forEach((r) =>
+    r.addEventListener("change", () => {
+      updateBulkCounter();
+      if (!bulkPreviewWrap.classList.contains("hidden")) previewBulk();
+    }),
+  );
+  document.getElementById("customSeparator").addEventListener("input", () => {
+    updateBulkCounter();
+    if (!bulkPreviewWrap.classList.contains("hidden")) previewBulk();
+  });
+
+  // AI
+  generateAiBtn.addEventListener("click", generateAiCards);
+  importAiBtn.addEventListener("click", importAiCards);
+
+  // Study
   startStudyBtn.addEventListener("click", startStudyMode);
+  exitStudyBtn.addEventListener("click", goBackToDeckView);
   flipCardBtn.addEventListener("click", flipCard);
   prevCardBtn.addEventListener("click", previousCard);
   nextCardBtn.addEventListener("click", nextCard);
@@ -92,59 +167,125 @@ function attachEventListeners() {
   markNeedHelpBtn.addEventListener("click", () => markCard("help"));
   markHardBtn.addEventListener("click", () => markCard("hard"));
 
-  // Keyboard shortcuts
+  // Session complete
+  restartStudyBtn.addEventListener("click", () => startStudyMode());
+  studyHardBtn.addEventListener("click", studyHardCards);
+  exitSessionBtn.addEventListener("click", goBackToDeckView);
+
+  // Edit modal
+  closeEditModalBtn.addEventListener("click", closeEditModal);
+  cancelEditBtn.addEventListener("click", closeEditModal);
+  confirmEditBtn.addEventListener("click", saveEditCard);
+
+  // Export
+  exportBtn.addEventListener("click", () =>
+    exportModal.classList.remove("hidden"),
+  );
+  closeExportModalBtn.addEventListener("click", () =>
+    exportModal.classList.add("hidden"),
+  );
+  document
+    .getElementById("exportTxt")
+    .addEventListener("click", () => exportDeck("txt"));
+  document
+    .getElementById("exportCsv")
+    .addEventListener("click", () => exportDeck("csv"));
+  document
+    .getElementById("exportJson")
+    .addEventListener("click", () => exportDeck("json"));
+
+  // Shuffle
+  shuffleBtn.addEventListener("click", shuffleCards);
+
+  // Keyboard
   document.addEventListener("keydown", handleKeyboard);
+
+  // New deck on Enter
+  newDeckNameInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") createNewDeck();
+  });
+
+  // Close modals on backdrop click
+  [newDeckModal, editCardModal, exportModal].forEach((m) => {
+    m.addEventListener("click", (e) => {
+      if (e.target === m) m.classList.add("hidden");
+    });
+  });
+}
+
+// ============================================
+// TABS
+// ============================================
+
+function switchTab(tabName) {
+  document
+    .querySelectorAll(".tab-btn")
+    .forEach((b) => b.classList.remove("active"));
+  document.querySelectorAll(".tab-content").forEach((c) => {
+    c.classList.remove("active");
+    c.classList.add("hidden");
+  });
+  document.querySelector(`[data-tab="${tabName}"]`).classList.add("active");
+  const content = document.getElementById(`tab-${tabName}`);
+  content.classList.remove("hidden");
+  content.classList.add("active");
 }
 
 // ============================================
 // DECK MANAGEMENT
 // ============================================
 
-function renderDecks() {
-  if (decks.length === 0) {
-    decksList.innerHTML = '<p class="empty-decks">No decks yet</p>';
+function renderDecks(filter = "") {
+  const filtered = decks.filter((d) =>
+    d.name.toLowerCase().includes(filter.toLowerCase()),
+  );
+
+  if (filtered.length === 0) {
+    decksList.innerHTML = `<p class="empty-decks">${filter ? "No matching decks" : "No decks yet"}</p>`;
     return;
   }
 
-  decksList.innerHTML = decks
-    .map(
-      (deck, index) => `
-        <div class="deck-item ${currentDeck && currentDeck.id === deck.id ? "active" : ""}" onclick="selectDeck(${index})">
-            <div class="deck-name">${deck.name}</div>
-            <div class="deck-meta">${deck.cards.length} cards</div>
-        </div>
-    `,
-    )
+  decksList.innerHTML = filtered
+    .map((deck, i) => {
+      const realIndex = decks.indexOf(deck);
+      const isActive = currentDeck && currentDeck.id === deck.id;
+      return `
+      <div class="deck-item ${isActive ? "active" : ""}" onclick="selectDeck(${realIndex})">
+        <div class="deck-name">${escapeHtml(deck.name)}</div>
+        <div class="deck-meta">${deck.cards.length} card${deck.cards.length !== 1 ? "s" : ""}${deck.description ? " · " + escapeHtml(deck.description) : ""}</div>
+      </div>`;
+    })
     .join("");
 }
 
 function selectDeck(index) {
   currentDeck = decks[index];
-  renderDecks();
+  renderDecks(deckSearch.value);
   updateMainView();
 }
 
 function openNewDeckModal() {
   newDeckModal.classList.remove("hidden");
-  newDeckNameInput.focus();
+  setTimeout(() => newDeckNameInput.focus(), 50);
 }
 
 function closeNewDeckModal() {
   newDeckModal.classList.add("hidden");
   newDeckNameInput.value = "";
+  newDeckDescInput.value = "";
 }
 
 function createNewDeck() {
-  const deckName = newDeckNameInput.value.trim();
-
-  if (!deckName) {
-    alert("Please enter a deck name");
+  const name = newDeckNameInput.value.trim();
+  if (!name) {
+    showToast("Please enter a deck name", "error");
     return;
   }
 
   const newDeck = {
     id: Date.now(),
-    name: deckName,
+    name,
+    description: newDeckDescInput.value.trim(),
     cards: [],
     createdAt: new Date().toLocaleDateString(),
   };
@@ -152,20 +293,20 @@ function createNewDeck() {
   decks.push(newDeck);
   saveToLocalStorage();
   currentDeck = newDeck;
-
   closeNewDeckModal();
   renderDecks();
   updateMainView();
+  showToast(`✅ Deck "${name}" created!`);
 }
 
 function deleteDeck() {
-  if (confirm(`Are you sure you want to delete "${currentDeck.name}"?`)) {
-    decks = decks.filter((d) => d.id !== currentDeck.id);
-    saveToLocalStorage();
-    currentDeck = null;
-    renderDecks();
-    updateMainView();
-  }
+  if (!confirm(`Delete "${currentDeck.name}"? This cannot be undone.`)) return;
+  decks = decks.filter((d) => d.id !== currentDeck.id);
+  saveToLocalStorage();
+  currentDeck = null;
+  renderDecks();
+  updateMainView();
+  showToast("Deck deleted", "warning");
 }
 
 // ============================================
@@ -175,98 +316,402 @@ function deleteDeck() {
 function addCard() {
   const question = questionInput.value.trim();
   const answer = answerInput.value.trim();
-
   if (!question || !answer) {
-    alert("Please fill in both question and answer");
+    showToast("Please fill in both question and answer", "error");
     return;
   }
-
   if (!currentDeck) {
-    alert("Please select or create a deck first");
+    showToast("Please select or create a deck first", "error");
     return;
   }
 
-  const newCard = {
-    id: Date.now(),
-    question,
-    answer,
-  };
-
-  currentDeck.cards.push(newCard);
+  currentDeck.cards.push({ id: Date.now(), question, answer });
   saveToLocalStorage();
-
-  // Clear inputs
   questionInput.value = "";
   answerInput.value = "";
   questionInput.focus();
-
   renderCards();
   updateCardCount();
+  showToast("Card added! ✓", "success");
 }
 
-function renderCards() {
+function renderCards(filter = "") {
   const cardsList = document.getElementById("cardsList");
-
   if (!currentDeck || currentDeck.cards.length === 0) {
     cardsList.innerHTML =
       '<p class="empty-cards">No cards yet. Add your first card above!</p>';
     return;
   }
 
-  cardsList.innerHTML = currentDeck.cards
-    .map(
-      (card, index) => `
-        <div class="card-item">
-            <div class="card-q">Q: ${card.question}</div>
-            <div class="card-a">A: ${card.answer}</div>
-            <div class="card-actions">
-                <button class="btn-card-delete" onclick="deleteCard(${index})">Delete</button>
-            </div>
+  const filtered = filter
+    ? currentDeck.cards.filter(
+        (c) =>
+          c.question.toLowerCase().includes(filter.toLowerCase()) ||
+          c.answer.toLowerCase().includes(filter.toLowerCase()),
+      )
+    : currentDeck.cards;
+
+  if (filtered.length === 0) {
+    cardsList.innerHTML =
+      '<p class="empty-cards">No cards match your search.</p>';
+    return;
+  }
+
+  cardsList.innerHTML = filtered
+    .map((card) => {
+      const realIndex = currentDeck.cards.indexOf(card);
+      return `
+      <div class="card-item">
+        <div class="card-num">#${realIndex + 1}</div>
+        <div class="card-q">${escapeHtml(card.question)}</div>
+        <div class="card-a">${escapeHtml(card.answer)}</div>
+        <div class="card-actions">
+          <button class="btn-card-edit" onclick="openEditModal(${realIndex})">✏️ Edit</button>
+          <button class="btn-card-delete" onclick="deleteCard(${realIndex})">🗑️ Delete</button>
         </div>
-    `,
-    )
+      </div>`;
+    })
     .join("");
 }
 
 function deleteCard(index) {
-  if (confirm("Delete this card?")) {
-    currentDeck.cards.splice(index, 1);
-    saveToLocalStorage();
-    renderCards();
-    updateCardCount();
+  if (!confirm("Delete this card?")) return;
+  currentDeck.cards.splice(index, 1);
+  saveToLocalStorage();
+  renderCards(cardSearch.value);
+  updateCardCount();
+  showToast("Card deleted", "warning");
+}
+
+function openEditModal(index) {
+  editingCardIndex = index;
+  const card = currentDeck.cards[index];
+  editQuestion.value = card.question;
+  editAnswer.value = card.answer;
+  editCardModal.classList.remove("hidden");
+  setTimeout(() => editQuestion.focus(), 50);
+}
+
+function closeEditModal() {
+  editCardModal.classList.add("hidden");
+  editingCardIndex = -1;
+}
+
+function saveEditCard() {
+  const q = editQuestion.value.trim();
+  const a = editAnswer.value.trim();
+  if (!q || !a) {
+    showToast("Both fields are required", "error");
+    return;
   }
+  currentDeck.cards[editingCardIndex] = {
+    ...currentDeck.cards[editingCardIndex],
+    question: q,
+    answer: a,
+  };
+  saveToLocalStorage();
+  renderCards(cardSearch.value);
+  closeEditModal();
+  showToast("Card updated ✓", "success");
 }
 
 function updateCardCount() {
   document.getElementById("cardCountDisplay").textContent =
-    `${currentDeck.cards.length} cards`;
+    `${currentDeck.cards.length} card${currentDeck.cards.length !== 1 ? "s" : ""}`;
+}
+
+function shuffleCards() {
+  if (!currentDeck || currentDeck.cards.length === 0) return;
+  currentDeck.cards = shuffleArray([...currentDeck.cards]);
+  saveToLocalStorage();
+  renderCards(cardSearch.value);
+  showToast("🔀 Cards shuffled!", "success");
+}
+
+// ============================================
+// BULK IMPORT
+// ============================================
+
+function getSeparator() {
+  const sel = document.querySelector("input[name='separator']:checked");
+  if (!sel) return "|";
+  if (sel.value === "custom")
+    return document.getElementById("customSeparator").value || "|";
+  return sel.value;
+}
+
+function parseBulkText(text) {
+  const sep = getSeparator();
+  const lines = text
+    .split("\n")
+    .map((l) => l.trim())
+    .filter((l) => l.length > 0);
+  const valid = [],
+    errors = [];
+
+  lines.forEach((line, i) => {
+    const idx = line.indexOf(sep);
+    if (idx === -1) {
+      errors.push({
+        line: i + 1,
+        text: line,
+        reason: `Missing separator "${sep}"`,
+      });
+      return;
+    }
+    const q = line.slice(0, idx).trim();
+    const a = line.slice(idx + sep.length).trim();
+    if (!q || !a) {
+      errors.push({
+        line: i + 1,
+        text: line,
+        reason: "Empty question or answer",
+      });
+      return;
+    }
+    valid.push({ id: Date.now() + Math.random(), question: q, answer: a });
+  });
+
+  return { valid, errors };
+}
+
+function updateBulkCounter() {
+  const text = bulkInput.value.trim();
+  if (!text) {
+    bulkCounter.textContent = "0 cards detected";
+    return;
+  }
+  const { valid } = parseBulkText(text);
+  bulkCounter.textContent = `${valid.length} card${valid.length !== 1 ? "s" : ""} detected`;
+}
+
+function previewBulk() {
+  const text = bulkInput.value.trim();
+  if (!text) {
+    showToast("Please paste some cards first", "error");
+    return;
+  }
+
+  const { valid, errors } = parseBulkText(text);
+  previewCount.textContent = valid.length;
+  bulkPreviewWrap.classList.remove("hidden");
+  bulkPreview.classList.remove("hidden");
+  togglePreviewBtn.textContent = "Hide Preview ▴";
+
+  let html = "";
+  errors.forEach((e) => {
+    html += `<div class="bulk-preview-error">⚠️ Line ${e.line}: ${escapeHtml(e.reason)} — <em>${escapeHtml(e.text.slice(0, 60))}</em></div>`;
+  });
+  valid.forEach((card, i) => {
+    html += `
+      <div class="bulk-preview-item">
+        <div class="q"><span class="num">#${i + 1}</span>${escapeHtml(card.question)}</div>
+        <div class="a">${escapeHtml(card.answer)}</div>
+      </div>`;
+  });
+
+  bulkPreview.innerHTML =
+    html ||
+    '<p style="padding:1rem; color: var(--text-secondary)">No valid cards found.</p>';
+}
+
+function toggleBulkPreview() {
+  bulkPreview.classList.toggle("hidden");
+  togglePreviewBtn.textContent = bulkPreview.classList.contains("hidden")
+    ? "Show Preview ▾"
+    : "Hide Preview ▴";
+}
+
+function importBulk() {
+  const text = bulkInput.value.trim();
+  if (!text) {
+    showToast("Please paste some cards first", "error");
+    return;
+  }
+  if (!currentDeck) {
+    showToast("Please select a deck first", "error");
+    return;
+  }
+
+  const { valid, errors } = parseBulkText(text);
+  if (valid.length === 0) {
+    showToast("No valid cards found. Check your format.", "error");
+    return;
+  }
+
+  // Deduplicate against existing cards
+  const existingQs = new Set(
+    currentDeck.cards.map((c) => c.question.toLowerCase()),
+  );
+  const toAdd = valid.filter((c) => !existingQs.has(c.question.toLowerCase()));
+  const dupes = valid.length - toAdd.length;
+
+  currentDeck.cards.push(...toAdd);
+  saveToLocalStorage();
+  renderCards();
+  updateCardCount();
+
+  bulkInput.value = "";
+  bulkPreviewWrap.classList.add("hidden");
+  updateBulkCounter();
+
+  let msg = `✅ Imported ${toAdd.length} card${toAdd.length !== 1 ? "s" : ""}!`;
+  if (dupes > 0) msg += ` (${dupes} duplicate${dupes > 1 ? "s" : ""} skipped)`;
+  if (errors.length > 0)
+    msg += ` (${errors.length} line${errors.length > 1 ? "s" : ""} skipped)`;
+  showToast(msg, "success");
+
+  // Switch to cards view
+  document.querySelector(".tab-btn").click();
+}
+
+// ============================================
+// AI CARD GENERATION
+// ============================================
+
+async function generateAiCards() {
+  const topic = aiTopic.value.trim();
+  if (!topic) {
+    showToast("Please enter a topic or text", "error");
+    return;
+  }
+
+  const count = parseInt(aiCount.value);
+  const difficulty = aiDifficulty.value;
+
+  aiLoading.classList.remove("hidden");
+  aiResult.classList.add("hidden");
+  generateAiBtn.disabled = true;
+  generateAiBtn.textContent = "Generating...";
+
+  const prompt = `You are a flashcard generator. Create exactly ${count} high-quality flashcards for the following topic at ${difficulty} level.
+
+Topic/Text: ${topic}
+
+Rules:
+- Questions should be clear, specific, and test real understanding
+- Answers should be concise but complete
+- At ${difficulty} level: ${difficulty === "beginner" ? "simple definitions and basic facts" : difficulty === "intermediate" ? "concepts, applications, and relationships" : "deep analysis, edge cases, and nuanced understanding"}
+- No duplicate questions
+
+Respond ONLY with a valid JSON array, no markdown, no explanation:
+[
+  {"question": "...", "answer": "..."},
+  ...
+]`;
+
+  try {
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 4000,
+        messages: [{ role: "user", content: prompt }],
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) throw new Error(data.error?.message || "API error");
+
+    const text = data.content?.find((b) => b.type === "text")?.text || "";
+    const clean = text.replace(/```json|```/gi, "").trim();
+    const parsed = JSON.parse(clean);
+
+    if (!Array.isArray(parsed) || parsed.length === 0)
+      throw new Error("Invalid response format");
+
+    aiGeneratedCards = parsed
+      .map((c) => ({
+        id: Date.now() + Math.random(),
+        question: String(c.question || "").trim(),
+        answer: String(c.answer || "").trim(),
+      }))
+      .filter((c) => c.question && c.answer);
+
+    aiResultCount.textContent = aiGeneratedCards.length;
+    aiPreviewList.innerHTML = aiGeneratedCards
+      .map(
+        (c, i) => `
+      <div class="ai-preview-item">
+        <div class="q"><strong>#${i + 1}</strong> ${escapeHtml(c.question)}</div>
+        <div class="a">${escapeHtml(c.answer)}</div>
+      </div>`,
+      )
+      .join("");
+
+    aiResult.classList.remove("hidden");
+    showToast(`✨ Generated ${aiGeneratedCards.length} cards!`, "success");
+  } catch (err) {
+    showToast("Failed to generate cards. Check your connection.", "error");
+    console.error("AI generation error:", err);
+  } finally {
+    aiLoading.classList.add("hidden");
+    generateAiBtn.disabled = false;
+    generateAiBtn.textContent = "✨ Generate Cards";
+  }
+}
+
+function importAiCards() {
+  if (!aiGeneratedCards.length) return;
+  if (!currentDeck) {
+    showToast("Please select a deck first", "error");
+    return;
+  }
+
+  const existingQs = new Set(
+    currentDeck.cards.map((c) => c.question.toLowerCase()),
+  );
+  const toAdd = aiGeneratedCards.filter(
+    (c) => !existingQs.has(c.question.toLowerCase()),
+  );
+  const dupes = aiGeneratedCards.length - toAdd.length;
+
+  currentDeck.cards.push(...toAdd);
+  saveToLocalStorage();
+  renderCards();
+  updateCardCount();
+
+  aiGeneratedCards = [];
+  aiResult.classList.add("hidden");
+  aiTopic.value = "";
+
+  let msg = `✅ Imported ${toAdd.length} AI card${toAdd.length !== 1 ? "s" : ""}!`;
+  if (dupes > 0) msg += ` (${dupes} duplicate${dupes > 1 ? "s" : ""} skipped)`;
+  showToast(msg, "success");
+  document.querySelector(".tab-btn").click();
 }
 
 // ============================================
 // STUDY MODE
 // ============================================
 
-function startStudyMode() {
-  if (currentDeck.cards.length === 0) {
-    alert("Add some cards first!");
+function startStudyMode(cardsOverride) {
+  if (!currentDeck || currentDeck.cards.length === 0) {
+    showToast("Add some cards to this deck first!", "error");
     return;
   }
 
+  studyCards = cardsOverride ? [...cardsOverride] : [...currentDeck.cards];
+  hardCardIds.clear();
   currentCardIndex = 0;
   isFlipped = false;
   stats = { good: 0, help: 0, hard: 0 };
 
+  sessionComplete.classList.add("hidden");
   deckView.classList.add("hidden");
   studyMode.classList.remove("hidden");
+  studyDeckName.textContent = currentDeck.name;
 
   showCard();
   updateStudyStats();
 }
 
 function showCard() {
-  if (!currentDeck || currentDeck.cards.length === 0) return;
+  if (!studyCards.length) return;
 
-  const card = currentDeck.cards[currentCardIndex];
+  const card = studyCards[currentCardIndex];
   studyQuestion.textContent = card.question;
   studyAnswer.textContent = card.answer;
   isFlipped = false;
@@ -289,7 +734,7 @@ function previousCard() {
 }
 
 function nextCard() {
-  if (currentCardIndex < currentDeck.cards.length - 1) {
+  if (currentCardIndex < studyCards.length - 1) {
     currentCardIndex++;
     showCard();
   }
@@ -297,20 +742,27 @@ function nextCard() {
 
 function markCard(type) {
   stats[type]++;
+  if (type === "hard") hardCardIds.add(studyCards[currentCardIndex].id);
   updateStudyStats();
-  nextCard();
+
+  if (currentCardIndex < studyCards.length - 1) {
+    currentCardIndex++;
+    showCard();
+  } else {
+    showSessionComplete();
+  }
 }
 
 function updateProgress() {
-  const progress = ((currentCardIndex + 1) / currentDeck.cards.length) * 100;
-  document.getElementById("progressFill").style.width = progress + "%";
+  const pct = ((currentCardIndex + 1) / studyCards.length) * 100;
+  document.getElementById("progressFill").style.width = pct + "%";
   document.getElementById("studyProgress").textContent =
-    `${currentCardIndex + 1} / ${currentDeck.cards.length}`;
+    `${currentCardIndex + 1} / ${studyCards.length}`;
 }
 
 function updateButtonStates() {
   prevCardBtn.disabled = currentCardIndex === 0;
-  nextCardBtn.disabled = currentCardIndex === currentDeck.cards.length - 1;
+  nextCardBtn.disabled = currentCardIndex === studyCards.length - 1;
 }
 
 function updateStudyStats() {
@@ -319,33 +771,108 @@ function updateStudyStats() {
   document.getElementById("hardCount").textContent = stats.hard;
 }
 
-// ============================================
-// UI UPDATES
-// ============================================
+function showSessionComplete() {
+  const total = stats.good + stats.help + stats.hard;
+  const pct = total > 0 ? Math.round((stats.good / total) * 100) : 0;
+  document.getElementById("sessionSummary").textContent =
+    `You reviewed ${studyCards.length} card${studyCards.length !== 1 ? "s" : ""}. You got ${pct}% correct!`;
+  document.getElementById("scGood").textContent = stats.good;
+  document.getElementById("scHelp").textContent = stats.help;
+  document.getElementById("scHard").textContent = stats.hard;
 
-function updateMainView() {
-  if (decks.length === 0) {
-    emptyState.classList.remove("hidden");
-    deckView.classList.add("hidden");
-    studyMode.classList.add("hidden");
-  } else if (currentDeck) {
-    emptyState.classList.add("hidden");
-    deckView.classList.remove("hidden");
-    studyMode.classList.add("hidden");
+  studyHardBtn.disabled = hardCardIds.size === 0;
+  if (hardCardIds.size === 0) studyHardBtn.style.opacity = "0.5";
+  else studyHardBtn.style.opacity = "1";
 
-    document.getElementById("deckNameDisplay").textContent = currentDeck.name;
-    updateCardCount();
-    renderCards();
-  } else {
-    emptyState.classList.remove("hidden");
-    deckView.classList.add("hidden");
-    studyMode.classList.add("hidden");
-  }
+  sessionComplete.classList.remove("hidden");
+}
+
+function studyHardCards() {
+  const hard = currentDeck.cards.filter((c) => hardCardIds.has(c.id));
+  if (hard.length === 0) return;
+  sessionComplete.classList.add("hidden");
+  startStudyMode(hard);
 }
 
 function goBackToDeckView() {
   studyMode.classList.add("hidden");
   deckView.classList.remove("hidden");
+  sessionComplete.classList.add("hidden");
+}
+
+// ============================================
+// EXPORT
+// ============================================
+
+function exportDeck(format) {
+  if (!currentDeck) return;
+  const sep = "|";
+  let content, filename, type;
+
+  if (format === "txt") {
+    content = currentDeck.cards
+      .map((c) => `${c.question} | ${c.answer}`)
+      .join("\n");
+    filename = `${currentDeck.name}.txt`;
+    type = "text/plain";
+  } else if (format === "csv") {
+    content =
+      "Question,Answer\n" +
+      currentDeck.cards
+        .map(
+          (c) =>
+            `"${c.question.replace(/"/g, '""')}","${c.answer.replace(/"/g, '""')}"`,
+        )
+        .join("\n");
+    filename = `${currentDeck.name}.csv`;
+    type = "text/csv";
+  } else {
+    content = JSON.stringify(
+      { name: currentDeck.name, cards: currentDeck.cards },
+      null,
+      2,
+    );
+    filename = `${currentDeck.name}.json`;
+    type = "application/json";
+  }
+
+  const blob = new Blob([content], { type });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+
+  exportModal.classList.add("hidden");
+  showToast(`Exported as ${format.toUpperCase()} ✓`, "success");
+}
+
+// ============================================
+// UI UPDATES
+// ============================================
+
+function updateMainView() {
+  if (!currentDeck) {
+    emptyState.classList.remove("hidden");
+    deckView.classList.add("hidden");
+    studyMode.classList.add("hidden");
+    return;
+  }
+
+  emptyState.classList.add("hidden");
+  studyMode.classList.add("hidden");
+  deckView.classList.remove("hidden");
+
+  document.getElementById("deckNameDisplay").textContent = currentDeck.name;
+  updateCardCount();
+  renderCards();
+}
+
+function goBackToMain() {
+  currentDeck = null;
+  renderDecks(deckSearch.value);
+  updateMainView();
 }
 
 // ============================================
@@ -353,7 +880,11 @@ function goBackToDeckView() {
 // ============================================
 
 function handleKeyboard(e) {
+  // Don't trigger shortcuts if typing in an input
+  if (["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement.tagName))
+    return;
   if (studyMode.classList.contains("hidden")) return;
+  if (!sessionComplete.classList.contains("hidden")) return;
 
   switch (e.key) {
     case " ":
@@ -375,7 +906,40 @@ function handleKeyboard(e) {
     case "3":
       markCard("hard");
       break;
+    case "Escape":
+      goBackToDeckView();
+      break;
   }
+}
+
+// ============================================
+// HELPERS
+// ============================================
+
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+let toastTimer;
+function showToast(message, type = "") {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.className = `toast${type ? " " + type : ""}`;
+  toast.classList.remove("hidden");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.add("hidden"), 3000);
 }
 
 // ============================================
@@ -387,9 +951,8 @@ function saveToLocalStorage() {
 }
 
 // ============================================
-// INITIALIZE
+// START
 // ============================================
 
 init();
-
-console.log("🎓 StudyFlow loaded successfully!");
+console.log("🎓 StudyFlow loaded!");
