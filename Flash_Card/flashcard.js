@@ -43,6 +43,7 @@ const markHardBtn = document.getElementById("markHardBtn");
 const shuffleBtn = document.getElementById("shuffleBtn");
 const exportBtn = document.getElementById("exportBtn");
 const sidebarToggle = document.getElementById("sidebarToggle");
+const sidebarOverlay = document.getElementById("sidebarOverlay");
 
 // DOM — INPUTS
 const newDeckNameInput = document.getElementById("newDeckName");
@@ -102,6 +103,10 @@ function init() {
   renderDecks();
   updateMainView();
   attachEventListeners();
+
+  if (window.innerWidth <= 1024) {
+    closeSidebar();
+  }
 }
 
 // ============================================
@@ -201,6 +206,10 @@ function attachEventListeners() {
   // Shuffle
   shuffleBtn.addEventListener("click", shuffleCards);
 
+  // Sidebar toggle
+  sidebarToggle.addEventListener("click", toggleSidebar);
+  sidebarOverlay.addEventListener("click", closeSidebar);
+
   // Keyboard
   document.addEventListener("keydown", handleKeyboard);
 
@@ -224,6 +233,20 @@ function attachEventListeners() {
 function toggleSidebar() {
   const sidebar = document.querySelector(".sidebar");
   sidebar.classList.toggle("collapsed");
+  const isOpen = !sidebar.classList.contains("collapsed");
+  sidebarOverlay.classList.toggle("visible", isOpen);
+}
+
+function closeSidebar() {
+  const sidebar = document.querySelector(".sidebar");
+  sidebar.classList.add("collapsed");
+  sidebarOverlay.classList.remove("visible");
+}
+
+function openSidebar() {
+  const sidebar = document.querySelector(".sidebar");
+  sidebar.classList.remove("collapsed");
+  sidebarOverlay.classList.add("visible");
 }
 
 // ============================================
@@ -275,6 +298,9 @@ function selectDeck(index) {
   currentDeck = decks[index];
   renderDecks(deckSearch.value);
   updateMainView();
+
+  // On small screens, close sidebar after deck selection.
+  if (window.innerWidth <= 1024) closeSidebar();
 }
 
 function openNewDeckModal() {
