@@ -2,7 +2,7 @@
    IMPORTS & VARIABLES
    =========================== */
 
-@import url("https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap");
 
 :root {
   --primary: #6366f1;
@@ -42,7 +42,7 @@ html {
 }
 
 body {
-  font-family: "DM Sans", sans-serif;
+  font-family: "Outfit", sans-serif;
   background: #f1f5f9;
   color: var(--text-primary);
   display: flex;
@@ -86,7 +86,7 @@ body {
 }
 
 .sidebar-header h1 {
-  font-family: "Syne", sans-serif;
+  font-family: "Cormorant Garamond", serif;
   font-size: 1.5rem;
   font-weight: 800;
   background: linear-gradient(135deg, #a5b4fc 0%, #c4b5fd 100%);
@@ -210,6 +210,35 @@ body {
   flex: 1;
   padding: 2.5rem;
   min-height: 100vh;
+  transition: margin-left 0.3s ease;
+}
+
+.sidebar-toggle {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0.5rem;
+  cursor: pointer;
+  font-size: 1.2rem;
+  z-index: 200;
+  transition: all 0.2s ease;
+  display: block; /* Show on all screens */
+}
+
+.sidebar-toggle:hover {
+  background: var(--primary-dark);
+}
+
+.sidebar.collapsed ~ .main-content {
+  margin-left: 0;
+}
+
+.sidebar.collapsed {
+  transform: translateX(-100%);
 }
 
 .hidden {
@@ -267,7 +296,7 @@ body {
 }
 
 .deck-title-section h2 {
-  font-family: "Syne", sans-serif;
+  font-family: "Cormorant Garamond", serif;
   font-size: 1.6rem;
   font-weight: 700;
   margin-bottom: 0.3rem;
@@ -442,7 +471,7 @@ body {
 }
 
 .bulk-instructions h4 {
-  font-family: "Syne", sans-serif;
+  font-family: "Cormorant Garamond", serif;
   font-weight: 700;
   margin-bottom: 0.5rem;
   color: var(--primary-dark);
@@ -649,7 +678,7 @@ body {
 }
 
 .ai-header h4 {
-  font-family: "Syne", sans-serif;
+  font-family: "Cormorant Garamond", serif;
   font-weight: 700;
   font-size: 1.05rem;
   margin-bottom: 0.4rem;
@@ -772,7 +801,7 @@ body {
 }
 
 .display-header-left h3 {
-  font-family: "Syne", sans-serif;
+  font-family: "Cormorant Garamond", serif;
   font-weight: 700;
   white-space: nowrap;
 }
@@ -962,7 +991,7 @@ body {
 }
 
 .study-title {
-  font-family: "Syne", sans-serif;
+  font-family: "Cormorant Garamond", serif;
   font-weight: 700;
   font-size: 1.1rem;
   color: var(--text-secondary);
@@ -1067,7 +1096,7 @@ body {
 
 .flashcard-front p,
 .flashcard-back p {
-  font-family: "Syne", sans-serif;
+  font-family: "Cormorant Garamond", serif;
   font-size: 1.6rem;
   font-weight: 600;
   line-height: 1.4;
@@ -1233,7 +1262,7 @@ kbd {
 
 .stat-value {
   display: block;
-  font-family: "Syne", sans-serif;
+  font-family: "Cormorant Garamond", serif;
   font-size: 2rem;
   font-weight: 800;
   line-height: 1;
@@ -1291,7 +1320,7 @@ kbd {
 }
 
 .session-card h2 {
-  font-family: "Syne", sans-serif;
+  font-family: "Cormorant Garamond", serif;
   font-size: 1.8rem;
   font-weight: 800;
   margin-bottom: 0.5rem;
@@ -1319,7 +1348,7 @@ kbd {
 
 .sb-item span {
   display: block;
-  font-family: "Syne", sans-serif;
+  font-family: "Cormorant Garamond", serif;
   font-size: 1.8rem;
   font-weight: 800;
   margin-bottom: 0.2rem;
@@ -1404,7 +1433,7 @@ kbd {
 }
 
 .modal-header h2 {
-  font-family: "Syne", sans-serif;
+  font-family: "Cormorant Garamond", serif;
   font-size: 1.3rem;
   font-weight: 700;
 }
@@ -1522,7 +1551,7 @@ kbd {
 }
 
 .empty-content h2 {
-  font-family: "Syne", sans-serif;
+  font-family: "Cormorant Garamond", serif;
   font-size: 2.2rem;
   font-weight: 800;
   margin-bottom: 0.8rem;
@@ -1612,9 +1641,15 @@ kbd {
 
 @media (max-width: 768px) {
   .sidebar {
-    width: 100%;
-    height: auto;
-    position: relative;
+    width: 280px;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    transition: transform 0.3s ease;
+    z-index: 150;
+  }
+  .sidebar.collapsed {
+    transform: translateX(-280px);
   }
   .main-content {
     margin-left: 0;

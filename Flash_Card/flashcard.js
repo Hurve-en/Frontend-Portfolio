@@ -42,6 +42,7 @@ const markNeedHelpBtn = document.getElementById("markNeedHelpBtn");
 const markHardBtn = document.getElementById("markHardBtn");
 const shuffleBtn = document.getElementById("shuffleBtn");
 const exportBtn = document.getElementById("exportBtn");
+const sidebarToggle = document.getElementById("sidebarToggle");
 
 // DOM — INPUTS
 const newDeckNameInput = document.getElementById("newDeckName");
@@ -108,6 +109,9 @@ function init() {
 // ============================================
 
 function attachEventListeners() {
+  // Sidebar toggle
+  sidebarToggle.addEventListener("click", toggleSidebar);
+
   // Deck
   newDeckBtn.addEventListener("click", openNewDeckModal);
   createFirstDeckBtn.addEventListener("click", openNewDeckModal);
@@ -211,6 +215,15 @@ function attachEventListeners() {
       if (e.target === m) m.classList.add("hidden");
     });
   });
+}
+
+// ============================================
+// SIDEBAR TOGGLE
+// ============================================
+
+function toggleSidebar() {
+  const sidebar = document.querySelector(".sidebar");
+  sidebar.classList.toggle("collapsed");
 }
 
 // ============================================
@@ -584,51 +597,21 @@ async function generateAiCards() {
   generateAiBtn.disabled = true;
   generateAiBtn.textContent = "Generating...";
 
-  const prompt = `You are a flashcard generator. Create exactly ${count} high-quality flashcards for the following topic at ${difficulty} level.
+  // Mock AI response for demo
+  setTimeout(() => {
+    const mockCards = [
+      { question: "What is the capital of France?", answer: "Paris" },
+      { question: "What is 2 + 2?", answer: "4" },
+      { question: "What color is the sky?", answer: "Blue" },
+      { question: "What is the largest planet?", answer: "Jupiter" },
+      { question: "What is H2O?", answer: "Water" },
+    ].slice(0, count);
 
-Topic/Text: ${topic}
-
-Rules:
-- Questions should be clear, specific, and test real understanding
-- Answers should be concise but complete
-- At ${difficulty} level: ${difficulty === "beginner" ? "simple definitions and basic facts" : difficulty === "intermediate" ? "concepts, applications, and relationships" : "deep analysis, edge cases, and nuanced understanding"}
-- No duplicate questions
-
-Respond ONLY with a valid JSON array, no markdown, no explanation:
-[
-  {"question": "...", "answer": "..."},
-  ...
-]`;
-
-  try {
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
-        max_tokens: 4000,
-        messages: [{ role: "user", content: prompt }],
-      }),
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) throw new Error(data.error?.message || "API error");
-
-    const text = data.content?.find((b) => b.type === "text")?.text || "";
-    const clean = text.replace(/```json|```/gi, "").trim();
-    const parsed = JSON.parse(clean);
-
-    if (!Array.isArray(parsed) || parsed.length === 0)
-      throw new Error("Invalid response format");
-
-    aiGeneratedCards = parsed
-      .map((c) => ({
-        id: Date.now() + Math.random(),
-        question: String(c.question || "").trim(),
-        answer: String(c.answer || "").trim(),
-      }))
-      .filter((c) => c.question && c.answer);
+    aiGeneratedCards = mockCards.map((c, i) => ({
+      id: Date.now() + i,
+      question: c.question,
+      answer: c.answer,
+    }));
 
     aiResultCount.textContent = aiGeneratedCards.length;
     aiPreviewList.innerHTML = aiGeneratedCards
@@ -643,14 +626,11 @@ Respond ONLY with a valid JSON array, no markdown, no explanation:
 
     aiResult.classList.remove("hidden");
     showToast(`✨ Generated ${aiGeneratedCards.length} cards!`, "success");
-  } catch (err) {
-    showToast("Failed to generate cards. Check your connection.", "error");
-    console.error("AI generation error:", err);
-  } finally {
+
     aiLoading.classList.add("hidden");
     generateAiBtn.disabled = false;
     generateAiBtn.textContent = "✨ Generate Cards";
-  }
+  }, 2000); // Simulate delay
 }
 
 function importAiCards() {

@@ -3,185 +3,200 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="StudyFlow Flashcard Study App" />
-    <title>StudyFlow - Flashcard App</title>
+    <meta name="description" content="StudyFlow — Premium Flashcard App" />
+    <title>StudyFlow</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="Flashcard.css" />
   </head>
   <body>
-    <!-- LEFT SIDEBAR -->
-    <div class="sidebar">
-      <div class="sidebar-header">
-        <div class="logo-wrap">
-          <span class="logo-icon">⚡</span>
-          <h1>StudyFlow</h1>
+    <aside class="sidebar">
+      <div class="sidebar-top">
+        <div class="brand">
+          <span class="brand-mark">SF</span>
+          <div class="brand-text">
+            <h1>StudyFlow</h1>
+            <span class="brand-tagline">Learn differently</span>
+          </div>
         </div>
         <button class="btn-new-deck" id="newDeckBtn">+ New Deck</button>
       </div>
 
       <div class="sidebar-search">
-        <input type="text" id="deckSearch" placeholder="🔍 Search decks..." />
+        <input
+          type="text"
+          id="deckSearch"
+          placeholder="Search decks…"
+          autocomplete="off"
+        />
       </div>
 
-      <div class="decks-container">
+      <nav class="decks-container">
+        <div class="decks-label">DECKS</div>
         <div id="decksList" class="decks-list">
           <p class="empty-decks">No decks yet</p>
         </div>
-      </div>
+      </nav>
 
-      <div class="sidebar-footer">
-        <p>&copy; 2026 StudyFlow</p>
-      </div>
-    </div>
+      <div class="sidebar-footer">© 2026 StudyFlow</div>
+    </aside>
 
-    <!-- MAIN CONTENT -->
-    <div class="main-content">
+    <main class="main-content">
+      <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+
       <!-- DECK VIEW -->
       <div id="deckView" class="deck-view hidden">
-        <div class="deck-header">
-          <button class="btn-back" id="backBtn">← Back</button>
+        <header class="deck-header">
+          <button class="btn-ghost" id="backBtn">← Back</button>
           <div class="deck-title-section">
-            <h2 id="deckNameDisplay">Untitled Deck</h2>
+            <h2 id="deckNameDisplay">Untitled</h2>
             <span id="cardCountDisplay" class="card-count">0 cards</span>
           </div>
-          <button class="btn-delete-deck" id="deleteDeckBtn">🗑️ Delete</button>
-        </div>
+          <button class="btn-danger-ghost" id="deleteDeckBtn">Delete</button>
+        </header>
 
-        <!-- TABS -->
         <div class="tab-bar">
-          <button class="tab-btn active" data-tab="single">
-            ✏️ Add Single Card
-          </button>
-          <button class="tab-btn" data-tab="bulk">📋 Bulk Import</button>
-          <button class="tab-btn" data-tab="ai">🤖 AI Generate</button>
+          <button class="tab-btn active" data-tab="single">Add Card</button>
+          <button class="tab-btn" data-tab="bulk">Bulk Import</button>
+          <button class="tab-btn" data-tab="ai">AI Generate</button>
         </div>
 
-        <!-- SINGLE CARD TAB -->
+        <!-- SINGLE CARD -->
         <div class="tab-content active" id="tab-single">
-          <div class="add-card-form">
-            <div class="form-group">
-              <label for="questionInput">Question</label>
-              <textarea
-                id="questionInput"
-                placeholder="Type your question here..."
-                rows="3"
-              ></textarea>
+          <div class="form-panel">
+            <div class="form-two-col">
+              <div class="form-group">
+                <label for="questionInput">Question</label>
+                <textarea
+                  id="questionInput"
+                  placeholder="What do you want to remember?"
+                  rows="3"
+                ></textarea>
+              </div>
+              <div class="form-group">
+                <label for="answerInput">Answer</label>
+                <textarea
+                  id="answerInput"
+                  placeholder="The answer you want to recall…"
+                  rows="3"
+                ></textarea>
+              </div>
             </div>
-            <div class="form-group">
-              <label for="answerInput">Answer</label>
-              <textarea
-                id="answerInput"
-                placeholder="Type your answer here..."
-                rows="3"
-              ></textarea>
-            </div>
-            <button id="addCardBtn" class="btn-add-card">+ Add Card</button>
+            <button id="addCardBtn" class="btn-primary">Add Card</button>
           </div>
         </div>
 
-        <!-- BULK IMPORT TAB -->
+        <!-- BULK IMPORT -->
         <div class="tab-content hidden" id="tab-bulk">
-          <div class="add-card-form">
-            <div class="bulk-instructions">
-              <h4>📋 Bulk Import Format</h4>
+          <div class="form-panel">
+            <div class="bulk-info">
+              <h4>Bulk Import</h4>
               <p>
-                Enter one card per line. Separate <strong>Question</strong> and
-                <strong>Answer</strong> with a separator.
+                One card per line. Separate question &amp; answer with your
+                chosen delimiter. Paste up to 100+ cards at once.
               </p>
               <div class="separator-row">
-                <label>Separator:</label>
-                <div class="separator-options">
-                  <label class="sep-opt"
-                    ><input type="radio" name="separator" value="|" checked />
-                    <code>|</code> Pipe</label
+                <span class="sep-label">Delimiter</span>
+                <div class="sep-pills">
+                  <label class="sep-pill"
+                    ><input
+                      type="radio"
+                      name="separator"
+                      value="|"
+                      checked
+                    /><span>| Pipe</span></label
                   >
-                  <label class="sep-opt"
-                    ><input type="radio" name="separator" value="::" />
-                    <code>::</code> Double Colon</label
+                  <label class="sep-pill"
+                    ><input type="radio" name="separator" value="::" /><span
+                      >:: Colon</span
+                    ></label
                   >
-                  <label class="sep-opt"
-                    ><input type="radio" name="separator" value="	" />
-                    <code>Tab</code></label
+                  <label class="sep-pill"
+                    ><input type="radio" name="separator" value="	" /><span
+                      >Tab</span
+                    ></label
                   >
-                  <label class="sep-opt"
-                    ><input type="radio" name="separator" value="custom" />
-                    Custom:
-                    <input
-                      type="text"
-                      id="customSeparator"
-                      placeholder="e.g. ->"
-                      style="width: 60px; padding: 2px 6px"
+                  <label class="sep-pill custom-pill"
+                    ><input type="radio" name="separator" value="custom" /><span
+                      >Custom</span
+                    ><input type="text" id="customSeparator" placeholder="→"
                   /></label>
                 </div>
               </div>
-              <div class="bulk-example">
-                <span class="example-label">Example:</span>
+              <div class="bulk-example-block">
+                <span class="ex-label">FORMAT EXAMPLE</span>
                 <code
-                  >What is photosynthesis? | The process by which plants make
-                  food using sunlight</code
-                ><br />
-                <code>Capital of France | Paris</code><br />
-                <code>H₂O formula | Water</code>
+                  >What is photosynthesis? | The process plants use to convert
+                  sunlight into energy</code
+                >
+                <code>Capital of Japan | Tokyo</code>
+                <code
+                  >Newton's first law | An object at rest stays at rest unless
+                  acted on by a force</code
+                >
               </div>
             </div>
 
             <div class="form-group">
               <label for="bulkInput">
-                Paste your questions &amp; answers here
-                <span class="bulk-counter" id="bulkCounter"
-                  >0 cards detected</span
-                >
+                Cards
+                <span class="pill-count" id="bulkCounter">0 detected</span>
               </label>
               <textarea
                 id="bulkInput"
-                placeholder="What is photosynthesis? | The process by which plants make food using sunlight&#10;Capital of France | Paris&#10;H₂O formula | Water&#10;..."
-                rows="14"
+                placeholder="Paste your cards here…&#10;What is photosynthesis? | The process plants use to convert sunlight into energy&#10;Capital of Japan | Tokyo"
+                rows="12"
                 spellcheck="false"
               ></textarea>
             </div>
 
             <div class="bulk-preview-wrap hidden" id="bulkPreviewWrap">
-              <div class="bulk-preview-header">
-                <h4>Preview <span id="previewCount">0</span> cards</h4>
-                <button class="btn-toggle-preview" id="togglePreviewBtn">
-                  Show Preview ▾
+              <div class="preview-header">
+                <span><span id="previewCount">0</span> cards ready</span>
+                <button class="btn-ghost-sm" id="togglePreviewBtn">
+                  Show preview
                 </button>
               </div>
               <div class="bulk-preview hidden" id="bulkPreview"></div>
             </div>
 
             <div class="bulk-actions">
-              <button id="previewBulkBtn" class="btn-secondary-action">
-                👁 Preview
-              </button>
-              <button id="importBulkBtn" class="btn-add-card">
-                ⬇️ Import All Cards
-              </button>
+              <button id="previewBulkBtn" class="btn-outline">Preview</button>
+              <button id="importBulkBtn" class="btn-primary">Import All</button>
             </div>
           </div>
         </div>
 
-        <!-- AI GENERATE TAB -->
+        <!-- AI GENERATE -->
         <div class="tab-content hidden" id="tab-ai">
-          <div class="add-card-form">
-            <div class="ai-header">
-              <span class="ai-badge">✨ AI Powered</span>
-              <h4>Generate flashcards from any topic or text</h4>
+          <div class="form-panel">
+            <div class="ai-intro">
+              <div class="ai-tag-row">
+                <span class="ai-tag">AI</span>
+                <h4>Generate cards from any topic</h4>
+              </div>
               <p>
-                Paste a paragraph, chapter, or just name a topic — AI will
-                create cards for you.
+                Describe a subject or paste a passage. Cards are generated
+                instantly.
               </p>
             </div>
+
             <div class="form-group">
               <label for="aiTopic">Topic or Text</label>
               <textarea
                 id="aiTopic"
-                placeholder="e.g. 'The French Revolution' or paste a paragraph from your textbook..."
+                placeholder="e.g. 'The French Revolution' or paste a textbook paragraph…"
                 rows="5"
               ></textarea>
             </div>
-            <div class="ai-options">
+
+            <div class="ai-options-row">
               <div class="form-group">
-                <label for="aiCount">Number of cards</label>
+                <label for="aiCount">Cards to generate</label>
                 <select id="aiCount">
                   <option value="5">5 cards</option>
                   <option value="10" selected>10 cards</option>
@@ -198,93 +213,78 @@
                 </select>
               </div>
             </div>
-            <button id="generateAiBtn" class="btn-add-card">
-              ✨ Generate Cards
+
+            <button id="generateAiBtn" class="btn-primary">
+              Generate Cards
             </button>
+
+            <div class="ai-loading hidden" id="aiLoading">
+              <div class="loading-bar"><div class="loading-fill"></div></div>
+              <p>Generating flashcards…</p>
+            </div>
+
             <div class="ai-result hidden" id="aiResult">
               <div class="ai-result-header">
-                <h4>Generated <span id="aiResultCount">0</span> cards</h4>
-                <button id="importAiBtn" class="btn-study">
-                  ⬇️ Add to Deck
+                <span><span id="aiResultCount">0</span> cards generated</span>
+                <button id="importAiBtn" class="btn-primary-sm">
+                  Add to Deck
                 </button>
               </div>
-              <div id="aiPreviewList" class="ai-preview-list"></div>
-            </div>
-            <div class="ai-loading hidden" id="aiLoading">
-              <div class="ai-spinner"></div>
-              <p>Generating your flashcards...</p>
+              <div id="aiPreviewList" class="preview-list"></div>
             </div>
           </div>
         </div>
 
-        <!-- CARDS DISPLAY -->
-        <div class="cards-display">
-          <div class="display-header">
-            <div class="display-header-left">
-              <h3>Cards in Deck</h3>
-              <div class="search-cards-wrap">
-                <input
-                  type="text"
-                  id="cardSearch"
-                  placeholder="🔍 Filter cards..."
-                />
-              </div>
+        <!-- CARDS GRID -->
+        <section class="cards-display">
+          <div class="cards-display-header">
+            <div class="cdh-left">
+              <h3>Cards</h3>
+              <input
+                type="text"
+                id="cardSearch"
+                placeholder="Filter cards…"
+                class="filter-input"
+              />
             </div>
-            <div class="display-header-right">
-              <button
-                id="shuffleBtn"
-                class="btn-icon-action"
-                title="Shuffle cards"
-              >
-                🔀 Shuffle
-              </button>
-              <button
-                id="exportBtn"
-                class="btn-icon-action"
-                title="Export deck"
-              >
-                ⬆️ Export
-              </button>
-              <button id="startStudyBtn" class="btn-study">▶ Study</button>
+            <div class="cdh-right">
+              <button id="shuffleBtn" class="btn-ghost-sm">Shuffle</button>
+              <button id="exportBtn" class="btn-ghost-sm">Export</button>
+              <button id="startStudyBtn" class="btn-primary">Study →</button>
             </div>
           </div>
-
           <div id="cardsList" class="cards-grid">
-            <p class="empty-cards">No cards yet. Add your first card above!</p>
+            <p class="empty-cards">No cards yet — add your first above.</p>
           </div>
-        </div>
+        </section>
       </div>
 
       <!-- STUDY MODE -->
       <div id="studyMode" class="study-mode hidden">
         <div class="study-header">
-          <button class="btn-back" id="exitStudyBtn">← Exit</button>
-          <div class="study-title">
-            <span id="studyDeckName">Deck</span>
-          </div>
-          <div class="study-progress-wrap">
+          <button class="btn-ghost" id="exitStudyBtn">← Exit</button>
+          <span class="study-deck-label" id="studyDeckName">Deck</span>
+          <div class="progress-wrap">
             <span id="studyProgress">1 / 10</span>
-            <div class="progress-bar">
+            <div class="progress-track">
               <div id="progressFill" class="progress-fill"></div>
             </div>
           </div>
         </div>
 
-        <div class="flashcard-main">
+        <div class="flashcard-stage">
           <div id="flashcard" class="flashcard" onclick="flipCard()">
             <div class="flashcard-inner">
               <div class="flashcard-front">
-                <div class="card-label">QUESTION</div>
+                <span class="face-label">Question</span>
                 <p id="studyQuestion">Question</p>
-                <span class="flip-hint"
-                  >Click or press <kbd>Space</kbd> to reveal</span
-                >
+                <span class="face-hint">Click to flip · <kbd>Space</kbd></span>
               </div>
               <div class="flashcard-back">
-                <div class="card-label">ANSWER</div>
+                <span class="face-label">Answer</span>
                 <p id="studyAnswer">Answer</p>
-                <span class="flip-hint" style="color: rgba(255, 255, 255, 0.6)"
-                  >Press <kbd>←</kbd> <kbd>→</kbd> to navigate</span
+                <span class="face-hint"
+                  ><kbd>←</kbd> <kbd>→</kbd> navigate</span
                 >
               </div>
             </div>
@@ -292,169 +292,168 @@
         </div>
 
         <div class="study-controls">
-          <button id="prevCardBtn" class="btn-control">← Prev</button>
-          <button id="flipCardBtn" class="btn-flip">↺ Flip</button>
-          <button id="nextCardBtn" class="btn-control">Next →</button>
+          <button id="prevCardBtn" class="btn-nav">←</button>
+          <button id="flipCardBtn" class="btn-flip-main">Flip Card</button>
+          <button id="nextCardBtn" class="btn-nav">→</button>
         </div>
 
         <div class="study-feedback">
-          <button id="markGoodBtn" class="btn-good">
-            ✓ Got It <kbd>1</kbd>
+          <button id="markGoodBtn" class="btn-mark mark-good">
+            Got it <kbd>1</kbd>
           </button>
-          <button id="markNeedHelpBtn" class="btn-help">
-            ~ Almost <kbd>2</kbd>
+          <button id="markNeedHelpBtn" class="btn-mark mark-mid">
+            Almost <kbd>2</kbd>
           </button>
-          <button id="markHardBtn" class="btn-hard">✗ Hard <kbd>3</kbd></button>
+          <button id="markHardBtn" class="btn-mark mark-hard">
+            Missed <kbd>3</kbd>
+          </button>
         </div>
 
-        <div class="study-stats">
-          <div class="stat stat-good">
-            <span class="stat-value" id="goodCount">0</span>
-            <span class="stat-label">Got It</span>
+        <div class="study-stats-row">
+          <div class="stat-chip">
+            <span id="goodCount" class="stat-num good-num">0</span
+            ><span class="stat-lbl">Got it</span>
           </div>
-          <div class="stat stat-help">
-            <span class="stat-value" id="helpCount">0</span>
-            <span class="stat-label">Almost</span>
+          <div class="stat-sep"></div>
+          <div class="stat-chip">
+            <span id="helpCount" class="stat-num mid-num">0</span
+            ><span class="stat-lbl">Almost</span>
           </div>
-          <div class="stat stat-hard">
-            <span class="stat-value" id="hardCount">0</span>
-            <span class="stat-label">Hard</span>
+          <div class="stat-sep"></div>
+          <div class="stat-chip">
+            <span id="hardCount" class="stat-num hard-num">0</span
+            ><span class="stat-lbl">Missed</span>
           </div>
         </div>
 
-        <!-- SESSION COMPLETE OVERLAY -->
         <div id="sessionComplete" class="session-complete hidden">
           <div class="session-card">
-            <div class="session-emoji">🎉</div>
-            <h2>Session Complete!</h2>
-            <p id="sessionSummary">You reviewed all cards.</p>
-            <div class="session-breakdown">
-              <div class="sb-item sb-good">
-                <span id="scGood">0</span> Got It
+            <div class="session-glyph">✦</div>
+            <h2>Complete</h2>
+            <p id="sessionSummary">Session finished.</p>
+            <div class="session-scores">
+              <div class="ss-item">
+                <span id="scGood">0</span><label>Got it</label>
               </div>
-              <div class="sb-item sb-help">
-                <span id="scHelp">0</span> Almost
+              <div class="ss-rule"></div>
+              <div class="ss-item">
+                <span id="scHelp">0</span><label>Almost</label>
               </div>
-              <div class="sb-item sb-hard"><span id="scHard">0</span> Hard</div>
+              <div class="ss-rule"></div>
+              <div class="ss-item">
+                <span id="scHard">0</span><label>Missed</label>
+              </div>
             </div>
-            <div class="session-actions">
-              <button id="restartStudyBtn" class="btn-primary">
-                🔄 Restart
+            <div class="session-btns">
+              <button id="restartStudyBtn" class="btn-primary">Restart</button>
+              <button id="studyHardBtn" class="btn-outline">
+                Study missed
               </button>
-              <button id="studyHardBtn" class="btn-secondary">
-                📌 Study Hard Cards
-              </button>
-              <button id="exitSessionBtn" class="btn-back-session">
-                ← Back to Deck
+              <button id="exitSessionBtn" class="btn-ghost">
+                ← Back to deck
               </button>
             </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- NEW DECK MODAL -->
-      <div id="newDeckModal" class="modal hidden">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h2>Create New Deck</h2>
-            <button class="btn-close" id="closeModalBtn">×</button>
-          </div>
-          <div class="form-group">
-            <label for="newDeckName">Deck Name</label>
-            <input
-              type="text"
-              id="newDeckName"
-              placeholder="e.g., Spanish Vocab, Biology 101"
-            />
-          </div>
-          <div class="form-group">
-            <label for="newDeckDesc"
-              >Description
-              <span style="font-weight: 400; color: #9ca3af"
-                >(optional)</span
-              ></label
-            >
-            <input
-              type="text"
-              id="newDeckDesc"
-              placeholder="What's this deck about?"
-            />
-          </div>
-          <div class="modal-buttons">
-            <button id="cancelDeckBtn" class="btn-secondary">Cancel</button>
-            <button id="confirmDeckBtn" class="btn-primary">Create Deck</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- EDIT CARD MODAL -->
-      <div id="editCardModal" class="modal hidden">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h2>Edit Card</h2>
-            <button class="btn-close" id="closeEditModalBtn">×</button>
-          </div>
-          <div class="form-group">
-            <label for="editQuestion">Question</label>
-            <textarea id="editQuestion" rows="3"></textarea>
-          </div>
-          <div class="form-group">
-            <label for="editAnswer">Answer</label>
-            <textarea id="editAnswer" rows="3"></textarea>
-          </div>
-          <div class="modal-buttons">
-            <button id="cancelEditBtn" class="btn-secondary">Cancel</button>
-            <button id="confirmEditBtn" class="btn-primary">
-              Save Changes
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- EXPORT MODAL -->
-      <div id="exportModal" class="modal hidden">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h2>Export Deck</h2>
-            <button class="btn-close" id="closeExportModalBtn">×</button>
-          </div>
-          <p style="color: var(--text-secondary); margin-bottom: 1.5rem">
-            Choose a format to export your deck.
-          </p>
-          <div class="export-options">
-            <button class="export-opt" id="exportTxt">
-              📄 Text File (.txt)
-            </button>
-            <button class="export-opt" id="exportCsv">
-              📊 CSV File (.csv)
-            </button>
-            <button class="export-opt" id="exportJson">
-              🗂 JSON File (.json)
-            </button>
           </div>
         </div>
       </div>
 
       <!-- EMPTY STATE -->
       <div id="emptyState" class="empty-state">
-        <div class="empty-content">
-          <div class="empty-icon">📚</div>
+        <div class="empty-inner">
+          <div class="empty-glyph">✦</div>
           <h2>Welcome to StudyFlow</h2>
-          <p>Create your first deck to start studying smarter</p>
-          <button id="createFirstDeckBtn" class="btn-primary large">
-            + Create First Deck
+          <p>Build a deck and begin studying smarter.</p>
+          <button id="createFirstDeckBtn" class="btn-primary">
+            Create your first deck
           </button>
-          <div class="empty-features">
-            <div class="ef-item">✏️ Add cards one by one</div>
-            <div class="ef-item">📋 Bulk import 50–100+ cards</div>
-            <div class="ef-item">🤖 AI-generate cards instantly</div>
-            <div class="ef-item">📊 Track your progress</div>
+          <div class="feature-pills">
+            <span>Add cards one by one</span>
+            <span class="dot">·</span>
+            <span>Bulk import 100+</span>
+            <span class="dot">·</span>
+            <span>AI generation</span>
+            <span class="dot">·</span>
+            <span>Track progress</span>
           </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- MODALS -->
+    <div id="newDeckModal" class="modal hidden">
+      <div class="modal-panel">
+        <div class="modal-header">
+          <h3>New Deck</h3>
+          <button class="modal-close" id="closeModalBtn">×</button>
+        </div>
+        <div class="form-group">
+          <label for="newDeckName">Name</label>
+          <input
+            type="text"
+            id="newDeckName"
+            placeholder="e.g. Spanish Verbs, Biology 101…"
+            autocomplete="off"
+          />
+        </div>
+        <div class="form-group">
+          <label for="newDeckDesc">Description <em>(optional)</em></label>
+          <input type="text" id="newDeckDesc" placeholder="A short note…" />
+        </div>
+        <div class="modal-actions">
+          <button id="cancelDeckBtn" class="btn-outline">Cancel</button>
+          <button id="confirmDeckBtn" class="btn-primary">Create</button>
         </div>
       </div>
     </div>
 
-    <!-- TOAST -->
+    <div id="editCardModal" class="modal hidden">
+      <div class="modal-panel">
+        <div class="modal-header">
+          <h3>Edit Card</h3>
+          <button class="modal-close" id="closeEditModalBtn">×</button>
+        </div>
+        <div class="form-group">
+          <label for="editQuestion">Question</label>
+          <textarea id="editQuestion" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="editAnswer">Answer</label>
+          <textarea id="editAnswer" rows="3"></textarea>
+        </div>
+        <div class="modal-actions">
+          <button id="cancelEditBtn" class="btn-outline">Cancel</button>
+          <button id="confirmEditBtn" class="btn-primary">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="exportModal" class="modal hidden">
+      <div class="modal-panel modal-sm">
+        <div class="modal-header">
+          <h3>Export</h3>
+          <button class="modal-close" id="closeExportModalBtn">×</button>
+        </div>
+        <p class="modal-sub">Download your deck in any format.</p>
+        <div class="export-list">
+          <button class="export-row" id="exportTxt">
+            <span class="efmt">TXT</span>
+            <span class="edesc">Plain text, pipe-separated</span>
+            <span class="earrow">→</span>
+          </button>
+          <button class="export-row" id="exportCsv">
+            <span class="efmt">CSV</span>
+            <span class="edesc">Spreadsheet-compatible</span>
+            <span class="earrow">→</span>
+          </button>
+          <button class="export-row" id="exportJson">
+            <span class="efmt">JSON</span>
+            <span class="edesc">Full structured data</span>
+            <span class="earrow">→</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
     <div id="toast" class="toast hidden"></div>
 
     <script src="Flashcard.js"></script>
