@@ -855,6 +855,11 @@ body {
   color: var(--text-secondary);
 }
 
+/* Hide export button since we focus on bulk paste conversion only */
+#exportBtn {
+  display: none !important;
+}
+
 .btn-icon-action:hover {
   background: white;
   border-color: var(--primary);
@@ -1635,6 +1640,20 @@ kbd {
 }
 .toast.warning {
   background: var(--warning);
+}
+
+/* Hide export modal UI when bulk paste conversion is preferred */
+#exportModal {
+  display: none !important;
+}
+
+/* Hide the card options tab elements to reduce UI clutter */
+.tab-bar .tab-btn:not([data-tab="bulk"]) {
+  display: none;
+}
+
+.tab-content:not(#tab-bulk) {
+  display: none !important;
 }
 
 /* ===========================

@@ -132,13 +132,19 @@ function attachEventListeners() {
   // Card search
   cardSearch.addEventListener("input", () => renderCards(cardSearch.value));
 
-  // Single card
+  // Single card (optional but can still add manually)
   addCardBtn.addEventListener("click", addCard);
   questionInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter" && e.ctrlKey) addCard();
   });
   answerInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter" && e.ctrlKey) addCard();
+  });
+
+  // Bulk import: immediate preview from paste
+  bulkInput.addEventListener("input", () => {
+    updateBulkCounter();
+    previewBulk();
   });
 
   // Tabs
@@ -873,6 +879,9 @@ function updateMainView() {
   document.getElementById("deckNameDisplay").textContent = currentDeck.name;
   updateCardCount();
   renderCards();
+
+  // Default to bulk import experience
+  switchTab("bulk");
 }
 
 function goBackToMain() {
