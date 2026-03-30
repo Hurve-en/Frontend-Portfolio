@@ -1437,6 +1437,17 @@ kbd {
   }
 }
 
+.modal-content,
+.modal-panel {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  width: 90%;
+  max-width: 440px;
+  box-shadow: var(--shadow-lg);
+  animation: slideUp 0.25s ease-out;
+}
+
 .modal-header {
   display: flex;
   justify-content: space-between;
@@ -1515,13 +1526,15 @@ kbd {
 }
 
 /* EXPORT MODAL */
-.export-options {
+.export-options,
+.export-list {
   display: flex;
   flex-direction: column;
   gap: 0.7rem;
 }
 
-.export-opt {
+.export-opt,
+.export-row {
   padding: 1rem 1.2rem;
   background: var(--surface);
   border: 1.5px solid var(--border);
@@ -1535,7 +1548,8 @@ kbd {
   color: var(--text-primary);
 }
 
-.export-opt:hover {
+.export-opt:hover,
+.export-row:hover {
   background: white;
   border-color: var(--primary);
   color: var(--primary);
