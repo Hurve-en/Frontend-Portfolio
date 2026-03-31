@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FlashCards — Smart Paste</title>
+    <link rel="stylesheet" href="flashcard.css" />
+  </head>
+  <body>
+    <div class="app">
+      <!-- ══ INPUT SCREEN ══ -->
+      <div class="screen active" id="s-input">
+        <div class="top-bar">
+          <div>
+            <div class="logo-sub">smart paste</div>
+            <div class="logo">Flash<span>·</span>Cards</div>
+          </div>
+        </div>
+
+        <div class="format-hint">
+          📋 <strong>Paste anything — one big block of text.</strong><br />
+          Supported formats: &nbsp;<strong>Q: … &nbsp;A: …</strong>
+          &nbsp;·&nbsp; <strong>1. Question↵Answer</strong> &nbsp;·&nbsp;
+          <strong>Question?↵Answer.</strong><br />
+          Mixed or messy text is fine. The parser figures it out automatically.
+        </div>
+
+        <textarea
+          class="paste-area"
+          id="pasteArea"
+          placeholder="Paste your questions and answers here…
+
+Example formats:
+
+Q: What is photosynthesis?
+A: The process plants use to convert sunlight into energy.
+
+Q: What year did World War II end?
+A: 1945
+
+1. Capital of Japan?
+Tokyo
+
+What is the powerhouse of the cell?
+The mitochondria."
+        ></textarea>
+
+        <div class="input-actions">
+          <button class="btn btn-clear" onclick="clearInput()">Clear</button>
+          <button
+            class="btn btn-parse"
+            id="parseBtn"
+            onclick="parseInput()"
+            disabled
+          >
+            Parse Cards →
+          </button>
+        </div>
+      </div>
+
+      <!-- ══ PREVIEW SCREEN ══ -->
+      <div class="screen" id="s-preview">
+        <div class="preview-header">
+          <div class="preview-title">Review Cards</div>
+          <div class="badge" id="previewBadge">0 cards</div>
+        </div>
+
+        <div class="preview-list" id="previewList"></div>
+
+        <div class="preview-footer">
+          <button class="btn btn-back-inp" onclick="goTo('s-input')">
+            ← Edit Text
+          </button>
+          <button class="btn btn-study" onclick="startStudy()">
+            Start Studying →
+          </button>
+        </div>
+      </div>
+
+      <!-- ══ STUDY SCREEN ══ -->
+      <div class="screen" id="s-study">
+        <div class="study-top">
+          <button class="btn-sm" onclick="goTo('s-preview')">← Cards</button>
+          <div class="progress-wrap">
+            <div class="progress-bar">
+              <div class="progress-fill" id="progFill" style="width: 0%"></div>
+            </div>
+            <div class="progress-txt" id="progTxt">1 of 1</div>
+          </div>
+          <button class="btn-sm" onclick="shuffle()">⇄ Shuffle</button>
+        </div>
+
+        <div class="scene" id="scene" onclick="flip()">
+          <div class="flipper" id="flipper">
+            <div class="face face-front">
+              <div class="face-tag">Question</div>
+              <div class="face-text" id="qText"></div>
+              <div class="flip-hint">tap to reveal answer</div>
+            </div>
+            <div class="face face-back">
+              <div class="face-tag">Answer</div>
+              <div class="face-text" id="aText"></div>
+              <div class="flip-hint">tap to flip back</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="nav-row">
+          <button class="nav-btn" id="prevBtn" onclick="navigate(-1)">
+            ← Prev
+          </button>
+          <button class="nav-btn" id="nextBtn" onclick="navigate(1)">
+            Next →
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="flashcard.js"></script>
+  </body>
+</html>
