@@ -1,32 +1,38 @@
 // ═══════════════════════════════════════════
-//  STATE
+//  STATE VARIABLES
 // ═══════════════════════════════════════════
+// Array to store the flashcard data (questions and answers)
 let cards = [];
+// Array to keep track of the order of cards during study
 let studyOrder = [];
+// Current index in the study order
 let idx = 0;
 
 // ═══════════════════════════════════════════
-//  INPUT SCREEN
+//  INPUT SCREEN FUNCTIONS
 // ═══════════════════════════════════════════
+// Enable/disable the parse button based on textarea content
 document.getElementById("pasteArea").addEventListener("input", function () {
   document.getElementById("parseBtn").disabled = this.value.trim().length < 3;
 });
 
+// Clear the input textarea and disable the parse button
 function clearInput() {
   document.getElementById("pasteArea").value = "";
   document.getElementById("parseBtn").disabled = true;
 }
 
 // ═══════════════════════════════════════════
-//  SMART PARSER
+//  SMART PARSER FUNCTIONS
 // ═══════════════════════════════════════════
+// Parse the pasted text into question-answer pairs
 function parseInput() {
   const raw = document.getElementById("pasteArea").value.trim();
   if (!raw) return;
 
   let parsed = [];
 
-  // ── Strategy 1: Q:/A: or Question:/Answer: labels ──
+  // ── Strategy 1: Look for Q:/A: or Question:/Answer: labels ──
   const qaPattern =
     /(?:Q(?:uestion)?[\s:.]+)(.+?)(?:\r?\n)(?:A(?:nswer)?[\s:.]+)(.+?)(?=\r?\n\s*\r?\n|\r?\n\s*Q(?:uestion)?[\s:.]|$)/gis;
   let m;
@@ -36,7 +42,7 @@ function parseInput() {
     if (q && a) parsed.push({ q, a });
   }
 
-  // ── Strategy 2: blank-line separated blocks ──
+  // ── Strategy 2: Split by blank lines and treat as Q&A blocks ──
   if (parsed.length === 0) {
     const blocks = raw
       .split(/\r?\n\s*\r?\n/)
@@ -58,7 +64,7 @@ function parseInput() {
     }
   }
 
-  // ── Strategy 3: sequential line pairs ──
+  // ── Strategy 3: Pair consecutive lines as Q&A ──
   if (parsed.length === 0) {
     const lines = raw
       .split(/\r?\n/)
@@ -76,25 +82,30 @@ function parseInput() {
     }
   }
 
+  // If no pairs found, show error message
   if (parsed.length === 0) {
     showToast("Couldn't detect Q&A pairs. Try using Q: / A: labels.", true);
     return;
   }
 
+  // Store parsed cards and go to preview screen
   cards = parsed;
   renderPreview();
   goTo("s-preview");
 }
 
 // ═══════════════════════════════════════════
-//  PREVIEW SCREEN
+//  PREVIEW SCREEN FUNCTIONS
 // ═══════════════════════════════════════════
+// Display the parsed cards in a list for review
 function renderPreview() {
   const list = document.getElementById("previewList");
+  // Update the card count badge
   document.getElementById("previewBadge").textContent =
     `${cards.length} card${cards.length !== 1 ? "s" : ""}`;
 
   list.innerHTML = "";
+  // Create a preview item for each card
   cards.forEach((c, i) => {
     const el = document.createElement("div");
     el.className = "preview-item";
@@ -111,6 +122,7 @@ function renderPreview() {
   });
 }
 
+// Remove a card from the list
 function delCard(i) {
   cards.splice(i, 1);
   if (cards.length === 0) {
@@ -122,10 +134,12 @@ function delCard(i) {
 }
 
 // ═══════════════════════════════════════════
-//  STUDY SCREEN
+//  STUDY SCREEN FUNCTIONS
 // ═══════════════════════════════════════════
+// Start the study session with the cards
 function startStudy() {
   if (cards.length === 0) return;
+  // Create study order (initially in original order)
   studyOrder = [...Array(cards.length).keys()];
   idx = 0;
   removeDone();
@@ -133,18 +147,23 @@ function startStudy() {
   showCard();
 }
 
+// Display the current card in the study session
 function showCard() {
   const c = cards[studyOrder[idx]];
 
+  // Set question and answer text
   document.getElementById("qText").textContent = c.q;
   document.getElementById("aText").textContent = c.a;
+  // Reset card to show question side
   document.getElementById("flipper").classList.remove("flipped");
 
+  // Update progress bar and text
   const pct = ((idx + 1) / studyOrder.length) * 100;
   document.getElementById("progFill").style.width = pct + "%";
   document.getElementById("progTxt").textContent =
     `${idx + 1} of ${studyOrder.length}`;
 
+  // Enable/disable navigation buttons
   document.getElementById("prevBtn").disabled = idx === 0;
   document.getElementById("nextBtn").disabled = idx === studyOrder.length - 1;
 
@@ -158,10 +177,12 @@ function showCard() {
   }
 }
 
+// Flip the card to show answer or question
 function flip() {
   document.getElementById("flipper").classList.toggle("flipped");
 }
 
+// Navigate to previous or next card
 function navigate(dir) {
   const next = idx + dir;
   if (next < 0 || next >= studyOrder.length) return;
@@ -169,8 +190,9 @@ function navigate(dir) {
   showCard();
 }
 
+// Shuffle the order of cards
 function shuffle() {
-  // Fisher-Yates shuffle
+  // Fisher-Yates shuffle algorithm
   for (let i = studyOrder.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [studyOrder[i], studyOrder[j]] = [studyOrder[j], studyOrder[i]];
@@ -181,6 +203,7 @@ function shuffle() {
   showToast("Cards shuffled! 🔀");
 }
 
+// Show the completion overlay
 function showDone() {
   if (document.getElementById("doneOverlay")) return;
   const scene = document.getElementById("scene");
@@ -199,11 +222,13 @@ function showDone() {
   scene.appendChild(done);
 }
 
+// Remove the done overlay
 function removeDone() {
   const d = document.getElementById("doneOverlay");
   if (d) d.remove();
 }
 
+// Restart the study session
 function restartStudy() {
   removeDone();
   studyOrder = [...Array(cards.length).keys()];
@@ -212,8 +237,9 @@ function restartStudy() {
 }
 
 // ═══════════════════════════════════════════
-//  UTILITIES
+//  UTILITY FUNCTIONS
 // ═══════════════════════════════════════════
+// Switch to a different screen
 function goTo(id) {
   document
     .querySelectorAll(".screen")
@@ -221,10 +247,12 @@ function goTo(id) {
   document.getElementById(id).classList.add("active");
 }
 
+// Escape HTML characters for safe display
 function esc(str) {
   return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
+// Show a temporary notification message
 let toastTimer;
 function showToast(msg, isError = false) {
   clearTimeout(toastTimer);

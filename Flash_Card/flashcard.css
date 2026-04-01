@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600&display=swap");
 
+/* Reset default margins and padding, and set box-sizing for all elements */
 *,
 *::before,
 *::after {
@@ -8,6 +9,7 @@
   padding: 0;
 }
 
+/* Define color variables for consistent theming */
 :root {
   --bg: #0d0d0f;
   --surface: #16161a;
@@ -22,11 +24,13 @@
   --radius: 14px;
 }
 
+/* Set full height for html and body */
 html,
 body {
   height: 100%;
 }
 
+/* Style the body with font, background, and centering */
 body {
   font-family: "Outfit", sans-serif;
   background: var(--bg);
@@ -38,7 +42,7 @@ body {
   padding: 16px;
 }
 
-/* grain overlay */
+/* Add a subtle grain texture overlay to the body */
 body::before {
   content: "";
   position: fixed;
@@ -49,6 +53,7 @@ body::before {
   opacity: 0.5;
 }
 
+/* Main app container styling */
 .app {
   width: 100%;
   max-width: 580px;
@@ -61,16 +66,19 @@ body::before {
 }
 
 /* ─── SCREENS ─── */
+/* Base styles for screen containers */
 .screen {
   display: none;
   flex-direction: column;
   height: 100%;
   animation: fadeUp 0.3s ease both;
 }
+/* Show active screen */
 .screen.active {
   display: flex;
 }
 
+/* Animation for screen transitions */
 @keyframes fadeUp {
   from {
     opacity: 0;
@@ -83,6 +91,7 @@ body::before {
 }
 
 /* ─── INPUT SCREEN ─── */
+/* Top bar with logo */
 .top-bar {
   display: flex;
   align-items: flex-end;
@@ -93,6 +102,7 @@ body::before {
   flex-shrink: 0;
 }
 
+/* Logo styling */
 .logo {
   font-family: "Instrument Serif", serif;
   font-size: 2rem;
@@ -109,6 +119,7 @@ body::before {
   margin-bottom: 4px;
 }
 
+/* Hint box for input formats */
 .format-hint {
   background: var(--surface2);
   border: 1px solid var(--border);
@@ -125,6 +136,7 @@ body::before {
   font-weight: 500;
 }
 
+/* Textarea for pasting content */
 .paste-area {
   flex: 1;
   background: var(--surface);
@@ -147,6 +159,7 @@ body::before {
   color: var(--muted);
 }
 
+/* Button container for input actions */
 .input-actions {
   display: flex;
   gap: 10px;
@@ -154,6 +167,7 @@ body::before {
   flex-shrink: 0;
 }
 
+/* Base button styles */
 .btn {
   padding: 12px 20px;
   border: none;
@@ -168,6 +182,7 @@ body::before {
   transform: scale(0.97);
 }
 
+/* Parse button styling */
 .btn-parse {
   flex: 1;
   background: var(--accent);
@@ -183,6 +198,7 @@ body::before {
   transform: none;
 }
 
+/* Clear button styling */
 .btn-clear {
   background: var(--surface2);
   color: var(--muted);
@@ -194,6 +210,7 @@ body::before {
 }
 
 /* ─── PREVIEW SCREEN ─── */
+/* Header for preview screen */
 .preview-header {
   display: flex;
   align-items: center;
@@ -214,6 +231,7 @@ body::before {
   font-weight: 600;
 }
 
+/* Scrollable list of preview cards */
 .preview-list {
   flex: 1;
   overflow-y: auto;
@@ -234,6 +252,7 @@ body::before {
   border-radius: 4px;
 }
 
+/* Individual preview item */
 .preview-item {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -265,6 +284,7 @@ body::before {
   color: var(--muted);
 }
 
+/* Delete button for cards */
 .del-card {
   background: none;
   border: none;
@@ -279,6 +299,7 @@ body::before {
   color: var(--red);
 }
 
+/* Footer buttons for preview screen */
 .preview-footer {
   display: flex;
   gap: 10px;
@@ -303,6 +324,7 @@ body::before {
 }
 
 /* ─── STUDY SCREEN ─── */
+/* Top bar for study screen */
 .study-top {
   display: flex;
   align-items: center;
@@ -333,6 +355,7 @@ body::before {
   margin-top: 6px;
 }
 
+/* Small button styles */
 .btn-sm {
   background: var(--surface2);
   border: 1px solid var(--border);
@@ -350,7 +373,7 @@ body::before {
   border-color: var(--muted);
 }
 
-/* Flip card */
+/* Flip card container with 3D perspective */
 .scene {
   perspective: 1100px;
   flex: 1;
@@ -370,6 +393,7 @@ body::before {
   transform: rotateY(180deg);
 }
 
+/* Base styles for card faces */
 .face {
   position: absolute;
   inset: 0;
@@ -382,10 +406,12 @@ body::before {
   padding: 32px 28px;
   text-align: center;
 }
+/* Front face (question side) */
 .face-front {
   background: var(--surface);
   border: 1.5px solid var(--border);
 }
+/* Back face (answer side) */
 .face-back {
   background: linear-gradient(135deg, #1a2a1a, #0f1f0f);
   border: 1.5px solid #2a4a2a;
@@ -421,7 +447,7 @@ body::before {
   color: #3ecf8e88;
 }
 
-/* nav */
+/* Navigation buttons */
 .nav-row {
   display: flex;
   gap: 10px;
@@ -449,7 +475,7 @@ body::before {
   cursor: default;
 }
 
-/* done overlay */
+/* Done overlay when study is complete */
 .done-overlay {
   position: absolute;
   inset: 0;

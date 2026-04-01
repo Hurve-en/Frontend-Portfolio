@@ -1,15 +1,21 @@
 <!doctype html>
+<!-- This is the main HTML document for the Flashcard app -->
 <html lang="en">
   <head>
+    <!-- Meta tags for character encoding and responsive design -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Title of the page -->
     <title>FlashCards — Smart Paste</title>
+    <!-- Link to the CSS stylesheet -->
     <link rel="stylesheet" href="flashcard.css" />
   </head>
   <body>
+    <!-- Main container for the entire app -->
     <div class="app">
-      <!-- ══ INPUT SCREEN ══ -->
+      <!-- Input screen where users paste their questions and answers -->
       <div class="screen active" id="s-input">
+        <!-- Top bar with logo -->
         <div class="top-bar">
           <div>
             <div class="logo-sub">smart paste</div>
@@ -17,6 +23,7 @@
           </div>
         </div>
 
+        <!-- Hint text explaining supported formats -->
         <div class="format-hint">
           📋 <strong>Paste anything — one big block of text.</strong><br />
           Supported formats: &nbsp;<strong>Q: … &nbsp;A: …</strong>
@@ -25,6 +32,7 @@
           Mixed or messy text is fine. The parser figures it out automatically.
         </div>
 
+        <!-- Textarea for pasting content -->
         <textarea
           class="paste-area"
           id="pasteArea"
@@ -45,6 +53,7 @@ What is the powerhouse of the cell?
 The mitochondria."
         ></textarea>
 
+        <!-- Buttons for clearing input and parsing -->
         <div class="input-actions">
           <button class="btn btn-clear" onclick="clearInput()">Clear</button>
           <button
@@ -58,15 +67,18 @@ The mitochondria."
         </div>
       </div>
 
-      <!-- ══ PREVIEW SCREEN ══ -->
+      <!-- Preview screen to review parsed cards -->
       <div class="screen" id="s-preview">
+        <!-- Header with title and card count -->
         <div class="preview-header">
           <div class="preview-title">Review Cards</div>
           <div class="badge" id="previewBadge">0 cards</div>
         </div>
 
+        <!-- List of previewed cards -->
         <div class="preview-list" id="previewList"></div>
 
+        <!-- Footer buttons to go back or start studying -->
         <div class="preview-footer">
           <button class="btn btn-back-inp" onclick="goTo('s-input')">
             ← Edit Text
@@ -77,8 +89,9 @@ The mitochondria."
         </div>
       </div>
 
-      <!-- ══ STUDY SCREEN ══ -->
+      <!-- Study screen for flipping through cards -->
       <div class="screen" id="s-study">
+        <!-- Top bar with navigation and progress -->
         <div class="study-top">
           <button class="btn-sm" onclick="goTo('s-preview')">← Cards</button>
           <div class="progress-wrap">
@@ -90,13 +103,16 @@ The mitochondria."
           <button class="btn-sm" onclick="shuffle()">⇄ Shuffle</button>
         </div>
 
+        <!-- Flippable card area -->
         <div class="scene" id="scene" onclick="flip()">
           <div class="flipper" id="flipper">
+            <!-- Front of the card (question) -->
             <div class="face face-front">
               <div class="face-tag">Question</div>
               <div class="face-text" id="qText"></div>
               <div class="flip-hint">tap to reveal answer</div>
             </div>
+            <!-- Back of the card (answer) -->
             <div class="face face-back">
               <div class="face-tag">Answer</div>
               <div class="face-text" id="aText"></div>
@@ -105,6 +121,7 @@ The mitochondria."
           </div>
         </div>
 
+        <!-- Navigation buttons for previous and next -->
         <div class="nav-row">
           <button class="nav-btn" id="prevBtn" onclick="navigate(-1)">
             ← Prev
@@ -116,6 +133,7 @@ The mitochondria."
       </div>
     </div>
 
+    <!-- Link to the JavaScript file -->
     <script src="flashcard.js"></script>
   </body>
 </html>
