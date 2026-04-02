@@ -73,17 +73,23 @@ a {
   top: 0;
   left: 0;
   right: 0;
-  height: 2px;
+  height: 4px;
   z-index: 2000;
-  background: transparent;
+  background: rgba(18, 18, 18, 0.06);
 }
 
 .scroll-progress-bar {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, var(--accent), rgba(124, 106, 79, 0.4));
+  background: linear-gradient(
+    90deg,
+    var(--accent),
+    #b89a6e,
+    rgba(124, 106, 79, 0.5)
+  );
   transition: width 80ms linear;
   border-radius: 0 999px 999px 0;
+  box-shadow: 0 0 8px rgba(124, 106, 79, 0.45);
 }
 
 /* ═══════════════════════════════════════════════
