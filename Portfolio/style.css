@@ -213,20 +213,6 @@ a {
   stroke: currentColor;
   stroke-width: 2.2;
   stroke-linecap: round;
-  transform-origin: center;
-  transition:
-    transform 200ms var(--ease-in-out),
-    opacity 200ms var(--ease-in-out);
-}
-
-.navbar.is-open .nav-toggle svg line:nth-child(1) {
-  transform: translateY(5px) rotate(45deg);
-}
-.navbar.is-open .nav-toggle svg line:nth-child(2) {
-  opacity: 0;
-}
-.navbar.is-open .nav-toggle svg line:nth-child(3) {
-  transform: translateY(-5px) rotate(-45deg);
 }
 
 /* FIX: 11 Lock scroll when mobile menu is open */
@@ -730,6 +716,15 @@ h1 span {
   transform: translateX(140px) rotateY(36deg) scale(0.7);
   z-index: 2;
   filter: blur(2px);
+}
+
+@media (max-width: 720px) {
+  .carousel-card.prev1 {
+    transform: translateX(-80px) scale(0.85);
+  }
+  .carousel-card.next1 {
+    transform: translateX(80px) scale(0.85);
+  }
 }
 
 .carousel-card.prev2,
@@ -1516,22 +1511,23 @@ h1 span {
   }
   .carousel-viewport {
     height: auto;
-    min-height: clamp(350px, 66vh, 480px);
-    overflow: visible;
+    min-height: unset;
+    overflow: hidden;
     border-radius: 22px;
   }
   .carousel-card {
     width: min(500px, 88vw);
     border-radius: 20px;
-    --card-padding: 1.3rem 1.5rem;
+    --card-padding: 1.2rem 1.4rem;
+    height: auto;
+  }
+  .carousel-track {
+    height: auto;
   }
   .carousel-container {
     overflow: hidden;
   }
   .awwwards-carousel {
-    overflow: hidden;
-  }
-  .carousel-viewport {
     overflow: hidden;
   }
   .card-visual {
@@ -1595,8 +1591,8 @@ h1 span {
   }
   .carousel-viewport {
     height: auto;
-    min-height: clamp(330px, 66vh, 440px);
-    overflow: visible;
+    min-height: unset;
+    overflow: hidden;
     border-radius: 20px;
   }
   .carousel-card {
@@ -1647,17 +1643,20 @@ h1 span {
   .carousel-card {
     cursor: pointer;
   }
+  /* Always show description and details on touch — no tap-to-reveal needed */
   .card-description,
   .card-details {
-    opacity: 0;
-    transform: translateY(14px);
-    pointer-events: none;
-  }
-  .carousel-card.is-revealed .card-description,
-  .carousel-card.is-revealed .card-details {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
     pointer-events: auto;
+  }
+  /* Tighten card layout on mobile */
+  .carousel-viewport {
+    min-height: unset;
+    height: auto;
+  }
+  .carousel-card {
+    height: auto;
   }
 }
 
