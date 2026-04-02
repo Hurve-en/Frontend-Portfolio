@@ -3,40 +3,116 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Basic metadata and typography -->
     <meta
       name="description"
-      content="Hurve-en portfolio: high-end minimalist digital product design and frontend development."
+      content="Hurve-en — Full-stack developer & software engineering student building tech from Cebu for global impact."
     />
-    <title>Hurve-en Portfolio</title>
+
+    <!-- Social media preview cards (Open Graph) -->
+    <meta property="og:title" content="Hurve-en — Portfolio" />
+    <meta
+      property="og:description"
+      content="Full-stack developer & software engineering student building tech from Cebu for global impact."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://hurve-en.dev" />
+    <meta property="og:image" content="images/og-preview.png" />
+
+    <!-- Twitter card preview -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Hurve-en — Portfolio" />
+    <meta
+      name="twitter:description"
+      content="Full-stack developer & software engineering student building tech from Cebu for global impact."
+    />
+
+    <title>Hurve-en — Portfolio</title>
+
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Favicon icons -->
+    <link rel="icon" type="image/png" href="images/favicon.png" />
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png" />
+
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <!-- Background decoration -->
+    <!-- Thin bar at the top that fills as the user scrolls -->
+    <div class="scroll-progress" aria-hidden="true">
+      <div class="scroll-progress-bar" id="scrollProgressBar"></div>
+    </div>
+
+    <!-- Decorative background grid (purely visual) -->
     <div class="bg-grid" aria-hidden="true"></div>
 
-    <!-- Fixed top navigation -->
+    <!-- Top navigation bar -->
     <nav class="navbar" aria-label="Primary navigation">
       <div class="nav-inner">
         <a href="#home" class="brand">Hurve-en</a>
-        <ul class="nav-menu">
+
+        <!-- Hamburger button shown on mobile -->
+        <button
+          class="nav-toggle"
+          id="navToggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="primaryMenu"
+          aria-label="Toggle navigation menu"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+            <line x1="4" y1="7" x2="20" y2="7" />
+            <line x1="4" y1="12" x2="20" y2="12" />
+            <line x1="4" y1="17" x2="20" y2="17" />
+          </svg>
+        </button>
+
+        <!-- Nav links -->
+        <ul class="nav-menu" id="primaryMenu">
           <li><a href="#work">Work</a></li>
           <li><a href="#about">About</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
+
+        <!-- Resume download button -->
+        <a
+          href="resume.pdf"
+          class="button button-ghost nav-resume"
+          target="_blank"
+          rel="noopener noreferrer"
+          download
+        >
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+          Resume
+        </a>
       </div>
     </nav>
 
     <main>
-      <!-- Primary landing view -->
-      <!-- Hero section -->
+      <!-- =====================
+           HERO
+      ===================== -->
       <section class="hero section" id="home">
+        <!-- Left: text content -->
         <div class="hero-copyblock">
           <p class="eyebrow" data-reveal>BSCS-SE Student at iACADEMY</p>
           <h1 class="hero-title interactive-header" data-reveal data-delay="80">
@@ -51,30 +127,48 @@
             <a href="#work" class="button button-solid">View Projects</a>
             <a href="#contact" class="button button-ghost">Start a Project</a>
           </div>
+
+          <!-- Status badge -->
+          <div class="currently-block" data-reveal data-delay="320">
+            <span class="currently-dot" aria-hidden="true"></span>
+            <p class="currently-text">
+              <strong>Currently:</strong> 2nd year at iACADEMY · Open to
+              internships &amp; collaborations
+            </p>
+          </div>
         </div>
 
+        <!-- Right: profile photo with hover effect -->
         <div class="hero-visual" aria-hidden="true">
           <div class="avatar-frame" data-reveal data-delay="220">
             <img
-              src="images/Profile.png"
-              alt="3D avatar of Hurve-en"
-              class="avatar-img"
+              src="images/Me_1.png"
+              alt="Portrait of Hurve-en"
+              class="avatar-img avatar-img-base"
+            />
+            <!-- Second image shown on hover -->
+            <img
+              src="images/Me_2.png"
+              alt=""
+              class="avatar-img avatar-img-top"
             />
           </div>
         </div>
       </section>
 
-      <!-- Skill logos and tools -->
-      <!-- Tech stack section -->
+      <!-- =====================
+           TECH STACK
+      ===================== -->
       <section class="section tech-stack-section" aria-label="Tech stack">
         <div class="tech-stack-wrapper" data-reveal>
-          <!-- Section Header with Letter-by-Letter Animation -->
           <div class="tech-stack-header">
             <h3 class="tech-stack-title interactive-header">Tech Stack</h3>
-            <p class="tech-stack-subtitle">Tools & technologies I work with</p>
+            <p class="tech-stack-subtitle">
+              Tools &amp; technologies I work with
+            </p>
           </div>
 
-          <!-- Tech Stack Carousel -->
+          <!-- Auto-scrolling logo strip -->
           <div class="tech-carousel-container">
             <div
               class="logo-marquee"
@@ -83,9 +177,9 @@
               data-delay="60"
             >
               <div class="marquee-track">
-                <!-- First set -->
-                <span class="logo-chip" data-label="React" tabindex="0">
-                  <img
+                <!-- First set of logos -->
+                <span class="logo-chip" data-label="React" tabindex="0"
+                  ><img
                     src="images/react.png"
                     alt="React logo"
                     class="logo-img"
@@ -93,10 +187,9 @@
                       this.classList.add('is-broken');
                       this.parentElement.classList.add('has-fallback');
                     "
-                  />
-                </span>
-                <span class="logo-chip" data-label="Next.js" tabindex="0">
-                  <img
+                /></span>
+                <span class="logo-chip" data-label="Next.js" tabindex="0"
+                  ><img
                     src="images/nextjs.png"
                     alt="Next.js logo"
                     class="logo-img"
@@ -104,10 +197,9 @@
                       this.classList.add('is-broken');
                       this.parentElement.classList.add('has-fallback');
                     "
-                  />
-                </span>
-                <span class="logo-chip" data-label="TypeScript" tabindex="0">
-                  <img
+                /></span>
+                <span class="logo-chip" data-label="TypeScript" tabindex="0"
+                  ><img
                     src="images/typescript.png"
                     alt="TypeScript logo"
                     class="logo-img"
@@ -115,10 +207,9 @@
                       this.classList.add('is-broken');
                       this.parentElement.classList.add('has-fallback');
                     "
-                  />
-                </span>
-                <span class="logo-chip" data-label="Node.js" tabindex="0">
-                  <img
+                /></span>
+                <span class="logo-chip" data-label="Node.js" tabindex="0"
+                  ><img
                     src="images/nodejs.png"
                     alt="Node.js logo"
                     class="logo-img"
@@ -126,10 +217,9 @@
                       this.classList.add('is-broken');
                       this.parentElement.classList.add('has-fallback');
                     "
-                  />
-                </span>
-                <span class="logo-chip" data-label="Flutter" tabindex="0">
-                  <img
+                /></span>
+                <span class="logo-chip" data-label="Flutter" tabindex="0"
+                  ><img
                     src="images/flutter-original.png"
                     alt="Flutter logo"
                     class="logo-img"
@@ -137,10 +227,9 @@
                       this.classList.add('is-broken');
                       this.parentElement.classList.add('has-fallback');
                     "
-                  />
-                </span>
-                <span class="logo-chip" data-label="PostgreSQL" tabindex="0">
-                  <img
+                /></span>
+                <span class="logo-chip" data-label="PostgreSQL" tabindex="0"
+                  ><img
                     src="images/postgresql.png"
                     alt="PostgreSQL logo"
                     class="logo-img"
@@ -148,10 +237,9 @@
                       this.classList.add('is-broken');
                       this.parentElement.classList.add('has-fallback');
                     "
-                  />
-                </span>
-                <span class="logo-chip" data-label="Prisma" tabindex="0">
-                  <img
+                /></span>
+                <span class="logo-chip" data-label="Prisma" tabindex="0"
+                  ><img
                     src="images/prisma.png"
                     alt="Prisma logo"
                     class="logo-img"
@@ -159,10 +247,9 @@
                       this.classList.add('is-broken');
                       this.parentElement.classList.add('has-fallback');
                     "
-                  />
-                </span>
-                <span class="logo-chip" data-label="Supabase" tabindex="0">
-                  <img
+                /></span>
+                <span class="logo-chip" data-label="Supabase" tabindex="0"
+                  ><img
                     src="images/supabase.png"
                     alt="Supabase logo"
                     class="logo-img"
@@ -170,10 +257,9 @@
                       this.classList.add('is-broken');
                       this.parentElement.classList.add('has-fallback');
                     "
-                  />
-                </span>
-                <span class="logo-chip" data-label="Vercel" tabindex="0">
-                  <img
+                /></span>
+                <span class="logo-chip" data-label="Vercel" tabindex="0"
+                  ><img
                     src="images/vercel.png"
                     alt="Vercel logo"
                     class="logo-img"
@@ -181,10 +267,9 @@
                       this.classList.add('is-broken');
                       this.parentElement.classList.add('has-fallback');
                     "
-                  />
-                </span>
-                <span class="logo-chip" data-label="Docker" tabindex="0">
-                  <img
+                /></span>
+                <span class="logo-chip" data-label="Docker" tabindex="0"
+                  ><img
                     src="images/docker.png"
                     alt="Docker logo"
                     class="logo-img"
@@ -192,10 +277,9 @@
                       this.classList.add('is-broken');
                       this.parentElement.classList.add('has-fallback');
                     "
-                  />
-                </span>
-                <span class="logo-chip" data-label="Tailwind" tabindex="0">
-                  <img
+                /></span>
+                <span class="logo-chip" data-label="Tailwind" tabindex="0"
+                  ><img
                     src="images/tailwindcss.png"
                     alt="Tailwind CSS logo"
                     class="logo-img"
@@ -203,10 +287,9 @@
                       this.classList.add('is-broken');
                       this.parentElement.classList.add('has-fallback');
                     "
-                  />
-                </span>
-                <span class="logo-chip" data-label="TensorFlow" tabindex="0">
-                  <img
+                /></span>
+                <span class="logo-chip" data-label="TensorFlow" tabindex="0"
+                  ><img
                     src="images/tensorflow.png"
                     alt="TensorFlow logo"
                     class="logo-img"
@@ -214,12 +297,11 @@
                       this.classList.add('is-broken');
                       this.parentElement.classList.add('has-fallback');
                     "
-                  />
-                </span>
+                /></span>
 
-                <!-- Duplicate set for seamless loop -->
-                <span class="logo-chip" data-label="React" tabindex="0">
-                  <img
+                <!-- Duplicate set — needed to make the scroll loop seamlessly -->
+                <span class="logo-chip" data-label="React" tabindex="0"
+                  ><img
                     src="images/react.png"
                     alt="React logo"
                     class="logo-img"
@@ -227,10 +309,9 @@
                       this.classList.add('is-broken');
                       this.parentElement.classList.add('has-fallback');
                     "
-                  />
-                </span>
-                <span class="logo-chip" data-label="Next.js" tabindex="0">
-                  <img
+                /></span>
+                <span class="logo-chip" data-label="Next.js" tabindex="0"
+                  ><img
                     src="images/nextjs.png"
                     alt="Next.js logo"
                     class="logo-img"
@@ -238,10 +319,9 @@
                       this.classList.add('is-broken');
                       this.parentElement.classList.add('has-fallback');
                     "
-                  />
-                </span>
-                <span class="logo-chip" data-label="TypeScript" tabindex="0">
-                  <img
+                /></span>
+                <span class="logo-chip" data-label="TypeScript" tabindex="0"
+                  ><img
                     src="images/typescript.png"
                     alt="TypeScript logo"
                     class="logo-img"
@@ -249,10 +329,9 @@
                       this.classList.add('is-broken');
                       this.parentElement.classList.add('has-fallback');
                     "
-                  />
-                </span>
-                <span class="logo-chip" data-label="Node.js" tabindex="0">
-                  <img
+                /></span>
+                <span class="logo-chip" data-label="Node.js" tabindex="0"
+                  ><img
                     src="images/nodejs.png"
                     alt="Node.js logo"
                     class="logo-img"
@@ -260,10 +339,9 @@
                       this.classList.add('is-broken');
                       this.parentElement.classList.add('has-fallback');
                     "
-                  />
-                </span>
-                <span class="logo-chip" data-label="Flutter" tabindex="0">
-                  <img
+                /></span>
+                <span class="logo-chip" data-label="Flutter" tabindex="0"
+                  ><img
                     src="images/flutter-original.png"
                     alt="Flutter logo"
                     class="logo-img"
@@ -271,10 +349,9 @@
                       this.classList.add('is-broken');
                       this.parentElement.classList.add('has-fallback');
                     "
-                  />
-                </span>
-                <span class="logo-chip" data-label="PostgreSQL" tabindex="0">
-                  <img
+                /></span>
+                <span class="logo-chip" data-label="PostgreSQL" tabindex="0"
+                  ><img
                     src="images/postgresql.png"
                     alt="PostgreSQL logo"
                     class="logo-img"
@@ -282,10 +359,9 @@
                       this.classList.add('is-broken');
                       this.parentElement.classList.add('has-fallback');
                     "
-                  />
-                </span>
-                <span class="logo-chip" data-label="Prisma" tabindex="0">
-                  <img
+                /></span>
+                <span class="logo-chip" data-label="Prisma" tabindex="0"
+                  ><img
                     src="images/prisma.png"
                     alt="Prisma logo"
                     class="logo-img"
@@ -293,10 +369,9 @@
                       this.classList.add('is-broken');
                       this.parentElement.classList.add('has-fallback');
                     "
-                  />
-                </span>
-                <span class="logo-chip" data-label="Supabase" tabindex="0">
-                  <img
+                /></span>
+                <span class="logo-chip" data-label="Supabase" tabindex="0"
+                  ><img
                     src="images/supabase.png"
                     alt="Supabase logo"
                     class="logo-img"
@@ -304,10 +379,9 @@
                       this.classList.add('is-broken');
                       this.parentElement.classList.add('has-fallback');
                     "
-                  />
-                </span>
-                <span class="logo-chip" data-label="Vercel" tabindex="0">
-                  <img
+                /></span>
+                <span class="logo-chip" data-label="Vercel" tabindex="0"
+                  ><img
                     src="images/vercel.png"
                     alt="Vercel logo"
                     class="logo-img"
@@ -315,10 +389,9 @@
                       this.classList.add('is-broken');
                       this.parentElement.classList.add('has-fallback');
                     "
-                  />
-                </span>
-                <span class="logo-chip" data-label="Docker" tabindex="0">
-                  <img
+                /></span>
+                <span class="logo-chip" data-label="Docker" tabindex="0"
+                  ><img
                     src="images/docker.png"
                     alt="Docker logo"
                     class="logo-img"
@@ -326,10 +399,9 @@
                       this.classList.add('is-broken');
                       this.parentElement.classList.add('has-fallback');
                     "
-                  />
-                </span>
-                <span class="logo-chip" data-label="Tailwind" tabindex="0">
-                  <img
+                /></span>
+                <span class="logo-chip" data-label="Tailwind" tabindex="0"
+                  ><img
                     src="images/tailwindcss.png"
                     alt="Tailwind CSS logo"
                     class="logo-img"
@@ -337,10 +409,9 @@
                       this.classList.add('is-broken');
                       this.parentElement.classList.add('has-fallback');
                     "
-                  />
-                </span>
-                <span class="logo-chip" data-label="TensorFlow" tabindex="0">
-                  <img
+                /></span>
+                <span class="logo-chip" data-label="TensorFlow" tabindex="0"
+                  ><img
                     src="images/tensorflow.png"
                     alt="TensorFlow logo"
                     class="logo-img"
@@ -348,28 +419,27 @@
                       this.classList.add('is-broken');
                       this.parentElement.classList.add('has-fallback');
                     "
-                  />
-                </span>
+                /></span>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Highlighted project carousel -->
-      <!-- Featured projects section -->
+      <!-- =====================
+           PROJECTS
+      ===================== -->
       <section class="section projects-section" id="work">
         <header class="section-head" data-reveal>
           <div class="section-kicker">
             <p class="eyebrow">Selected Work</p>
             <span class="kicker-line" aria-hidden="true"></span>
           </div>
-          <h2 class="interactive-header">Featured projects</h2>
+          <h2 class="interactive-header">Featured <em>projects</em></h2>
         </header>
 
-        <!-- Carousel with Side Navigation -->
+        <!-- Carousel with left/right arrow buttons -->
         <div class="carousel-container" data-reveal>
-          <!-- Left Navigation Arrow -->
           <button
             class="carousel-arrow carousel-arrow-left prev"
             aria-label="Previous project"
@@ -389,29 +459,41 @@
             </svg>
           </button>
 
-          <!-- Carousel -->
           <div class="awwwards-carousel">
-            <!-- Carousel Viewport -->
             <div class="carousel-viewport">
-              <!-- Carousel Track -->
               <div class="carousel-track">
-                <!-- Project Card 1: CITA-CoralGuardAI -->
-                <article class="carousel-card project-card theme-coral">
+                <!-- Project 1: CITA-CoralGuardAI -->
+                <a
+                  class="carousel-card project-card theme-coral"
+                  href="https://github.com/Hurve-en/CITA-CoralGuardAI"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <div class="card-visual has-image" aria-hidden="true">
+                    <div class="card-visual-bg coral-gradient"></div>
+                    <img
+                      src="images/CITA-CoralGuardAi.png"
+                      alt="CITA-CoralGuardAI reef monitoring dashboard"
+                      class="card-preview-img"
+                      loading="lazy"
+                    />
+                    <div class="card-visual-label">
+                      <span class="visual-tag">AI + Mapping</span>
+                    </div>
+                  </div>
+
                   <div class="card-content">
                     <div class="card-body">
                       <div class="card-header">
                         <h3 class="card-title">CITA-CoralGuardAI</h3>
                         <p class="card-category">AI + Mapping</p>
                       </div>
-
                       <p class="card-description">
                         CITA-CGC turns reef monitoring into a community-powered,
-                        AI-assisted workflow—people upload underwater photos and
-                        get instant, structured reef health reports that local
-                        decision-makers can use.
+                        AI-assisted workflow — people upload underwater photos
+                        and get instant, structured reef health reports that
+                        local decision-makers can use.
                       </p>
-
-                      <!-- Hidden Details -->
                       <div class="card-details">
                         <div class="details-section">
                           <h4 class="details-title">Frontend</h4>
@@ -421,75 +503,79 @@
                             <span class="tech-tag">Tailwind CSS</span>
                           </div>
                         </div>
-
                         <div class="details-section">
-                          <h4 class="details-title">AI & Backend</h4>
+                          <h4 class="details-title">AI &amp; Backend</h4>
                           <div class="tech-list">
                             <span class="tech-tag">Google Gemini</span>
                             <span class="tech-tag">Supabase (Postgres)</span>
                             <span class="tech-tag">Supabase Storage</span>
                           </div>
                         </div>
-
                         <div class="details-section">
-                          <h4 class="details-title">Mapping & Deployment</h4>
+                          <h4 class="details-title">
+                            Mapping &amp; Deployment
+                          </h4>
                           <div class="tech-list">
                             <span class="tech-tag">React Leaflet</span>
                             <span class="tech-tag">OpenStreetMap</span>
                             <span class="tech-tag">Vercel</span>
                           </div>
                         </div>
-
-                        <a
-                          class="button button-solid sm"
-                          href="https://coralguard.ai"
-                          target="_blank"
-                          rel="noreferrer"
-                          >View Project</a
-                        >
                       </div>
                     </div>
                   </div>
-                </article>
+                </a>
 
-                <!-- Project Card 2: CITA-CebuCleanAI -->
-                <article class="carousel-card project-card theme-clean">
+                <!-- Project 2: CITA-CebuCleanAI -->
+                <a
+                  class="carousel-card project-card theme-clean"
+                  href="https://github.com/Hurve-en/CITA-CebuCleanAI"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <div class="card-visual" aria-hidden="true">
+                    <div class="card-visual-bg clean-gradient"></div>
+                    <div class="card-visual-shapes">
+                      <div class="shape shape-1"></div>
+                      <div class="shape shape-2"></div>
+                      <div class="shape shape-3"></div>
+                    </div>
+                    <div class="card-visual-label">
+                      <span class="visual-tag">Mobile + AI + IoT</span>
+                    </div>
+                  </div>
+
                   <div class="card-content">
                     <div class="card-body">
                       <div class="card-header">
                         <h3 class="card-title">CITA-CebuCleanAI</h3>
                         <p class="card-category">Mobile + AI + IoT</p>
                       </div>
-
                       <p class="card-description">
                         CebuCleanAI lets residents point a phone at trash for
                         instant on-device classification, disposal tips, and
-                        points—while barangays get real-time heatmaps and
+                        points — while barangays get real-time heatmaps and
                         routing-ready data.
                       </p>
-
-                      <!-- Hidden Details -->
                       <div class="card-details">
                         <div class="details-section">
-                          <h4 class="details-title">Mobile & Frontend</h4>
+                          <h4 class="details-title">Mobile &amp; Frontend</h4>
                           <div class="tech-list">
                             <span class="tech-tag">Flutter</span>
                             <span class="tech-tag">Next.js 15</span>
                             <span class="tech-tag">Tailwind + shadcn/ui</span>
                           </div>
                         </div>
-
                         <div class="details-section">
-                          <h4 class="details-title">Backend & Database</h4>
+                          <h4 class="details-title">Backend &amp; Database</h4>
                           <div class="tech-list">
                             <span class="tech-tag">NestJS / FastAPI</span>
                             <span class="tech-tag">PostgreSQL + PostGIS</span>
                             <span class="tech-tag">Redis (caching)</span>
                           </div>
                         </div>
-
                         <div class="details-section">
-                          <h4 class="details-title">AI, IoT & Cloud</h4>
+                          <h4 class="details-title">AI, IoT &amp; Cloud</h4>
                           <div class="tech-list">
                             <span class="tech-tag">TensorFlow Lite</span>
                             <span class="tech-tag">ESP32 + MQTT</span>
@@ -497,85 +583,79 @@
                             <span class="tech-tag">Mapbox GL / Leaflet</span>
                           </div>
                         </div>
-
-                        <a
-                          class="button button-solid sm"
-                          href="https://github.com/Hurve-en/CITA-CebuCleanAI"
-                          target="_blank"
-                          rel="noreferrer"
-                          >View Project</a
-                        >
                       </div>
                     </div>
                   </div>
-                </article>
+                </a>
 
-                <!-- Project Card 3: Mt. Apos Best Coffee -->
-                <article class="carousel-card project-card theme-coffee">
+                <!-- Project 3: Mt. Apos Best Coffee -->
+                <a
+                  class="carousel-card project-card theme-coffee"
+                  href="https://github.com/Hurve-en/Mt-Apos-Best-Coffee"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <div class="card-visual has-image" aria-hidden="true">
+                    <div class="card-visual-bg coffee-gradient"></div>
+                    <img
+                      src="images/Mt_Apo_Coffee.png"
+                      alt="Mt. Apos Best Coffee storefront experience"
+                      class="card-preview-img"
+                      loading="lazy"
+                    />
+                    <div class="card-visual-label">
+                      <span class="visual-tag">E-commerce Platform</span>
+                    </div>
+                  </div>
+
                   <div class="card-content">
                     <div class="card-body">
                       <div class="card-header">
                         <h3 class="card-title">Mt. Apos Best Coffee</h3>
                         <p class="card-category">E-commerce Platform</p>
                       </div>
-
                       <p class="card-description">
                         A production-grade coffee ordering and operations suite:
                         users browse, order, and track; admins manage inventory,
                         logistics, and live orders with real-time dashboards.
                       </p>
-
-                      <!-- Hidden Details -->
                       <div class="card-details">
                         <div class="details-section">
                           <h4 class="details-title">Frontend</h4>
                           <div class="tech-list">
                             <span class="tech-tag">React 18</span>
                             <span class="tech-tag">Vite</span>
-                            <span class="tech-tag">React Router 6</span>
                             <span class="tech-tag">Redux Toolkit</span>
                             <span class="tech-tag">Tailwind CSS</span>
                           </div>
                         </div>
-
                         <div class="details-section">
-                          <h4 class="details-title">Backend & Database</h4>
+                          <h4 class="details-title">Backend &amp; Database</h4>
                           <div class="tech-list">
-                            <span class="tech-tag">Node.js/Express 18</span>
+                            <span class="tech-tag">Node.js/Express</span>
                             <span class="tech-tag">TypeScript</span>
                             <span class="tech-tag">Prisma ORM</span>
                             <span class="tech-tag">PostgreSQL</span>
-                            <span class="tech-tag">Socket.IO 4.7</span>
+                            <span class="tech-tag">Socket.IO</span>
                           </div>
                         </div>
-
                         <div class="details-section">
-                          <h4 class="details-title">Security & Tools</h4>
+                          <h4 class="details-title">Security &amp; Tools</h4>
                           <div class="tech-list">
                             <span class="tech-tag">JWT Auth</span>
-                            <span class="tech-tag">bcryptjs</span>
                             <span class="tech-tag">Zod Validation</span>
                             <span class="tech-tag">Helmet Security</span>
                             <span class="tech-tag">Leaflet Maps</span>
                           </div>
                         </div>
-
-                        <a
-                          class="button button-solid sm"
-                          href="https://github.com/Hurve-en/Mt-Apos-Best-Coffee"
-                          target="_blank"
-                          rel="noreferrer"
-                          >View Project</a
-                        >
                       </div>
                     </div>
                   </div>
-                </article>
+                </a>
               </div>
             </div>
           </div>
 
-          <!-- Right Navigation Arrow -->
           <button
             class="carousel-arrow carousel-arrow-right next"
             aria-label="Next project"
@@ -596,7 +676,7 @@
           </button>
         </div>
 
-        <!-- Carousel Indicators -->
+        <!-- Dot indicators below the carousel -->
         <div class="carousel-indicators">
           <span class="indicator active" data-index="0"></span>
           <span class="indicator" data-index="1"></span>
@@ -604,12 +684,15 @@
         </div>
       </section>
 
-      <!-- About summary -->
-      <!-- About section -->
+      <!-- =====================
+           ABOUT
+      ===================== -->
       <section class="section split" id="about">
         <header class="section-head" data-reveal>
           <p class="eyebrow">About</p>
-          <h2 class="interactive-header">Locally rooted. Globally minded.</h2>
+          <h2 class="interactive-header">
+            Locally rooted. <em>Globally minded.</em>
+          </h2>
         </header>
 
         <div class="split-grid">
@@ -630,48 +713,134 @@
         </div>
       </section>
 
-      <!-- Contact block -->
-      <!-- Contact section -->
+      <!-- =====================
+           TESTIMONIALS
+      ===================== -->
+      <section class="section testimonials-section" id="testimonials">
+        <header class="section-head" data-reveal>
+          <p class="eyebrow">Testimonials</p>
+          <h2 class="interactive-header">What people <em>say</em></h2>
+        </header>
+
+        <div class="testimonials-grid" data-reveal>
+          <blockquote class="testimonial-card">
+            <p class="testimonial-quote">
+              "Hurveen is such an inspiration during projects. He keeps on
+              encouraging me and help me grow as a developer."
+            </p>
+            <footer class="testimonial-author">
+              <div class="author-avatar" aria-hidden="true">KM</div>
+              <div>
+                <strong class="author-name">Kendall Maputi</strong>
+                <span class="author-role">Classmate / Project Partner</span>
+              </div>
+            </footer>
+          </blockquote>
+
+          <blockquote class="testimonial-card">
+            <p class="testimonial-quote">
+              "The attention to detail in his work — from architecture decisions
+              to UI polish — shows a developer who thinks beyond just making
+              things work. He makes them right."
+            </p>
+            <footer class="testimonial-author">
+              <div class="author-avatar" aria-hidden="true">PM</div>
+              <div>
+                <strong class="author-name">Paul John Toral</strong>
+                <span class="author-role">Faculty · iACADEMY</span>
+              </div>
+            </footer>
+          </blockquote>
+
+          <blockquote class="testimonial-card">
+            <p class="testimonial-quote">
+              "Working with Hurve-en on the CoralGuard project was seamless. He
+              communicates clearly, delivers consistently, and always brings
+              fresh ideas to the table."
+            </p>
+            <footer class="testimonial-author">
+              <div class="author-avatar" aria-hidden="true">AR</div>
+              <div>
+                <strong class="author-name">Aj Mozart</strong>
+                <span class="author-role">Team Member · CITA Project</span>
+              </div>
+            </footer>
+          </blockquote>
+        </div>
+      </section>
+
+      <!-- =====================
+           CONTACT
+      ===================== -->
       <section class="section contact" id="contact">
         <header class="section-head" data-reveal>
           <p class="eyebrow">Contact</p>
-          <h2 class="interactive-header">Let us build something precise.</h2>
+          <h2 class="interactive-header">
+            Let us build something <em>precise.</em>
+          </h2>
         </header>
 
         <div class="contact-row" data-reveal>
           <a class="email" href="mailto:velosohurveenrayford@gmail.com"
             >velosohurveenrayford@gmail.com</a
           >
-          <div class="socials" aria-label="Social links">
+          <div class="contact-bottom">
+            <!-- Social media links -->
+            <div class="socials" aria-label="Social links">
+              <a
+                href="https://github.com/Hurve-en"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Github</a
+              >
+              <a
+                href="https://www.linkedin.com/in/hurveen-veloso-734450265/"
+                target="_blank"
+                rel="noopener noreferrer"
+                >LinkedIn</a
+              >
+              <a
+                href="https://www.instagram.com/hurveen"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Instagram</
+              >
+            </div>
+
+            <!-- Resume download button -->
             <a
-              href="https://github.com/Hurve-en"
+              href="resume.pdf"
+              class="button button-solid resume-cta"
               target="_blank"
               rel="noopener noreferrer"
-              >Github</a
+              download
             >
-            <a
-              href="https://www.linkedin.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              >LinkedIn</a
-            >
-            <a
-              href="https://www.instagram.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              >Instagram</a
-            >
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
+              Download Resume
+            </a>
           </div>
         </div>
       </section>
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
       <p>2026 Hurve-en. Minimal portfolio, built for clarity.</p>
     </footer>
 
-    <!-- Page interactions -->
     <script src="script.js"></script>
   </body>
 </html>

@@ -9,16 +9,32 @@ const prefersReducedMotion = window.matchMedia(
   "(prefers-reduced-motion: reduce)",
 ).matches;
 
-// Use navbar height as scroll offset for anchored navigation.
 const getOffset = () => navbar?.offsetHeight || 86;
 
-// Toggle compact/scrolled navbar styles based on scroll position.
+// ── Navbar scroll state ──
 const setNavbarState = () => {
   if (!navbar) return;
   navbar.classList.toggle("scrolled", window.scrollY > 18);
 };
 
-// Intercept in-page links and apply smooth scrolling with offset.
+// ── Scroll progress bar ──
+const setupScrollProgress = () => {
+  const bar = document.getElementById("scrollProgressBar");
+  if (!bar || prefersReducedMotion) return;
+
+  const update = () => {
+    const scrollTop = window.scrollY;
+    const docHeight =
+      document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    bar.style.width = `${Math.min(pct, 100)}%`;
+  };
+
+  window.addEventListener("scroll", update, { passive: true });
+  update();
+};
+
+// ── Smooth anchor navigation ──
 const smoothAnchorNavigation = () => {
   navLinks.forEach((link) => {
     link.addEventListener("click", (event) => {
@@ -33,13 +49,12 @@ const smoothAnchorNavigation = () => {
         top,
         behavior: prefersReducedMotion ? "auto" : "smooth",
       });
-      // Force re-check after click scroll settles
       setTimeout(() => updateActiveFromScroll(), 400);
     });
   });
 };
 
-// Reveal observer
+// ── Reveal observer ──
 const setupRevealObserver = () => {
   if (prefersReducedMotion || !("IntersectionObserver" in window)) {
     revealNodes.forEach((node) => node.classList.add("is-visible"));
@@ -56,6 +71,18 @@ const setupRevealObserver = () => {
 
   const hideTimers = new WeakMap();
 
+  // FIX: 8 add and remove will-change around reveals for better perf
+  const applyWillChange = (el) => {
+    if (el.dataset.willChangeApplied) return;
+    el.style.willChange = "opacity, transform";
+    el.dataset.willChangeApplied = "true";
+    const handleTransitionEnd = () => {
+      el.style.willChange = "";
+      delete el.dataset.willChangeApplied;
+    };
+    el.addEventListener("transitionend", handleTransitionEnd, { once: true });
+  };
+
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -65,6 +92,7 @@ const setupRevealObserver = () => {
             clearTimeout(pending);
             hideTimers.delete(entry.target);
           }
+          applyWillChange(entry.target);
           entry.target.classList.add("is-visible");
         } else {
           if (hideTimers.has(entry.target)) return;
@@ -76,24 +104,18 @@ const setupRevealObserver = () => {
         }
       });
     },
-    {
-      threshold: [0, 0.08, 0.2, 0.45, 0.7],
-      rootMargin: "-4% 0px -15% 0px",
-    },
+    { threshold: [0, 0.08, 0.2, 0.45, 0.7], rootMargin: "-4% 0px -15% 0px" },
   );
 
   revealNodes.forEach((node) => observer.observe(node));
 };
 
-// ──────────────────────────────────────────────
-// STABLE ACTIVE NAV HIGHLIGHT
-// ──────────────────────────────────────────────
+// ── Active nav highlight ──
 let lastActiveId = null;
 let pendingUpdate = null;
 
 const updateActiveLink = (targetId) => {
   if (targetId === lastActiveId) return;
-
   navLinks.forEach((link) => link.classList.remove("active"));
   if (targetId) {
     const link = document.querySelector(`.nav-menu a[href="#${targetId}"]`);
@@ -104,7 +126,6 @@ const updateActiveLink = (targetId) => {
 
 const updateActiveFromScroll = () => {
   if (pendingUpdate) clearTimeout(pendingUpdate);
-
   pendingUpdate = setTimeout(() => {
     const visibleSections = Array.from(sectionNodes)
       .map((section) => {
@@ -122,20 +143,14 @@ const updateActiveFromScroll = () => {
       })
       .filter((item) => item.intersectionRatio > 0.08)
       .sort((a, b) => {
-        // Primary: more visible first
-        if (b.intersectionRatio !== a.intersectionRatio) {
+        if (b.intersectionRatio !== a.intersectionRatio)
           return b.intersectionRatio - a.intersectionRatio;
-        }
-        // Tie-breaker: closer to top of viewport
         return a.rect.top - b.rect.top;
       });
 
-    let bestId = null;
-    if (visibleSections.length > 0) {
-      bestId = visibleSections[0].section.id;
-    }
-
-    updateActiveLink(bestId);
+    updateActiveLink(
+      visibleSections.length > 0 ? visibleSections[0].section.id : null,
+    );
     pendingUpdate = null;
   }, 60);
 };
@@ -147,27 +162,56 @@ const setupSectionHighlight = () => {
     });
     return;
   }
-
-  const observer = new IntersectionObserver(
-    () => {
-      updateActiveFromScroll();
-    },
-    {
-      threshold: [0.08, 0.18, 0.28, 0.38, 0.48, 0.58, 0.68, 0.78, 0.88],
-      rootMargin: `-${getOffset() + 100}px 0px -40% 0px`,
-    },
-  );
-
+  const observer = new IntersectionObserver(() => updateActiveFromScroll(), {
+    threshold: [0.08, 0.18, 0.28, 0.38, 0.48, 0.58, 0.68, 0.78, 0.88],
+    rootMargin: `-${getOffset() + 100}px 0px -40% 0px`,
+  });
   sectionNodes.forEach((section) => observer.observe(section));
-
   window.addEventListener("scroll", updateActiveFromScroll, { passive: true });
 };
 
-// ──────────────────────────────────────────────
-// LETTER-BY-LETTER CURSOR-REACTIVE ANIMATION
-// FIX: Wrap letters inside word-spans so the
-// browser never breaks mid-word across lines.
-// ──────────────────────────────────────────────
+// FIX: 11 mobile hamburger menu toggle
+const setupMobileNav = () => {
+  const toggle = document.getElementById("navToggle");
+  const menu = document.getElementById("primaryMenu");
+  if (!toggle || !menu || !navbar) return;
+
+  const closeMenu = () => {
+    navbar.classList.remove("is-open");
+    document.body.classList.remove("nav-open");
+    toggle.setAttribute("aria-expanded", "false");
+    menu.classList.remove("is-open");
+  };
+
+  const openMenu = () => {
+    navbar.classList.add("is-open");
+    document.body.classList.add("nav-open");
+    toggle.setAttribute("aria-expanded", "true");
+    menu.classList.add("is-open");
+  };
+
+  toggle.addEventListener("click", () => {
+    const expanded = toggle.getAttribute("aria-expanded") === "true";
+    if (expanded) closeMenu();
+    else openMenu();
+  });
+
+  menu.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      if (window.innerWidth <= 720) closeMenu();
+    });
+  });
+
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 720) closeMenu();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeMenu();
+  });
+};
+
+// ── Letter-by-letter interactive headers ──
 const setupInteractiveHeaders = () => {
   const headers = Array.from(document.querySelectorAll(".interactive-header"));
   if (headers.length === 0) return;
@@ -175,86 +219,98 @@ const setupInteractiveHeaders = () => {
   const isHoverSupported = window.matchMedia("(hover: hover)").matches;
   if (!isHoverSupported || prefersReducedMotion) return;
 
-  headers.forEach((header) => {
-    const text = header.textContent;
-    const words = text.trim().split(/(\s+)/); // split on whitespace, keep spaces
+  // FIX: 3 share one mousemove listener + AbortController cleanup
+  const controller = new AbortController();
+  const { signal } = controller;
+  const headerData = headers.map((header) => {
+    const text = header.innerHTML;
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = text;
 
-    // Build HTML: each word is wrapped in a word-span (display:inline-block)
-    // so the browser treats the whole word as an unbreakable unit for line
-    // wrapping. Letters inside are also inline-block for the cursor effect.
-    header.innerHTML = words
-      .map((chunk) => {
-        if (/^\s+$/.test(chunk)) {
-          // Pure whitespace — render as a normal space between words
-          return " ";
-        }
-        // Wrap every letter in a span, then wrap the whole word
-        const letterSpans = chunk
-          .split("")
-          .map(
-            (letter) =>
-              `<span class="letter" style="display:inline-block;position:relative;">${letter}</span>`,
-          )
-          .join("");
-        return `<span class="word" style="display:inline-block;white-space:nowrap;">${letterSpans}</span>`;
-      })
-      .join("");
-
-    const letterElements = header.querySelectorAll(".letter");
-    let animationFrameId = null;
-
-    const updateLetterPositions = (mouseX, mouseY) => {
-      letterElements.forEach((letter) => {
-        const letterRect = letter.getBoundingClientRect();
-        const letterCenterX = letterRect.left + letterRect.width / 2;
-        const letterCenterY = letterRect.top + letterRect.height / 2;
-
-        const distX = mouseX - letterCenterX;
-        const distY = mouseY - letterCenterY;
-        const distance = Math.sqrt(distX * distX + distY * distY);
-
-        const maxDistance = 200;
-        const influence = Math.max(0, 1 - distance / maxDistance);
-
-        const moveX = (distX / distance) * influence * 12 || 0;
-        const moveY = (distY / distance) * influence * 12 || 0;
-
-        letter.style.transform = `translate(${moveX}px, ${moveY}px)`;
-        letter.style.transition =
-          "transform 120ms cubic-bezier(0.25, 0.46, 0.45, 0.94)";
-      });
+    const processNode = (node) => {
+      if (node.nodeType === Node.TEXT_NODE) {
+        const words = node.textContent.split(/(\s+)/);
+        const frag = document.createDocumentFragment();
+        words.forEach((chunk) => {
+          if (/^\s+$/.test(chunk)) {
+            frag.appendChild(document.createTextNode(" "));
+          } else {
+            const wordSpan = document.createElement("span");
+            wordSpan.className = "word";
+            wordSpan.style.cssText = "display:inline-block;white-space:nowrap;";
+            chunk.split("").forEach((letter) => {
+              const span = document.createElement("span");
+              span.className = "letter";
+              span.style.cssText = "display:inline-block;position:relative;";
+              span.textContent = letter;
+              wordSpan.appendChild(span);
+            });
+            frag.appendChild(wordSpan);
+          }
+        });
+        return frag;
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        const clone = node.cloneNode(false);
+        node.childNodes.forEach((child) => clone.appendChild(processNode(child)));
+        return clone;
+      }
+      return node.cloneNode(true);
     };
 
-    const onMouseMove = (event) => {
-      const mouseX = event.clientX;
-      const mouseY = event.clientY;
+    header.innerHTML = "";
+    tempDiv.childNodes.forEach((child) => header.appendChild(processNode(child)));
 
-      if (animationFrameId) cancelAnimationFrame(animationFrameId);
-      animationFrameId = requestAnimationFrame(() => {
-        updateLetterPositions(mouseX, mouseY);
-      });
-    };
-
-    const onMouseLeave = () => {
+    const letterElements = Array.from(header.querySelectorAll(".letter"));
+    const resetLetters = () => {
       letterElements.forEach((letter) => {
         letter.style.transform = "translate(0, 0)";
       });
-      if (animationFrameId) cancelAnimationFrame(animationFrameId);
     };
 
-    document.addEventListener("mousemove", onMouseMove, { passive: true });
-    header.addEventListener("mouseleave", onMouseLeave);
-
-    window.addEventListener("beforeunload", () => {
-      document.removeEventListener("mousemove", onMouseMove);
-      header.removeEventListener("mouseleave", onMouseLeave);
-    });
+    header.addEventListener("mouseleave", resetLetters, { signal });
+    return { letterElements };
   });
+
+  let animationFrameId = null;
+  const onMouseMove = (event) => {
+    const { clientX: mouseX, clientY: mouseY } = event;
+    if (animationFrameId) cancelAnimationFrame(animationFrameId);
+    animationFrameId = requestAnimationFrame(() => {
+      headerData.forEach(({ letterElements }) => {
+        letterElements.forEach((letter) => {
+          const rect = letter.getBoundingClientRect();
+          const cx = rect.left + rect.width / 2;
+          const cy = rect.top + rect.height / 2;
+          const dx = mouseX - cx;
+          const dy = mouseY - cy;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          const influence = Math.max(0, 1 - dist / 200);
+          const mx = dist > 0 ? (dx / dist) * influence * 12 : 0;
+          const my = dist > 0 ? (dy / dist) * influence * 12 : 0;
+          letter.style.transform = `translate(${mx}px, ${my}px)`;
+          letter.style.transition =
+            "transform 120ms cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+        });
+      });
+    });
+  };
+
+  document.addEventListener("mousemove", onMouseMove, {
+    passive: true,
+    signal,
+  });
+
+  window.addEventListener(
+    "pagehide",
+    () => {
+      controller.abort();
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+    },
+    { once: true },
+  );
 };
 
-// ──────────────────────────────────────────────
-// AWWWARDS-STYLE 3D CAROUSEL WITH SIDE ARROWS
-// ──────────────────────────────────────────────
+// ── 3D Carousel ──
 const setupAwwwardsCarousel = () => {
   const carousel = document.querySelector(".awwwards-carousel");
   if (!carousel) return;
@@ -274,8 +330,8 @@ const setupAwwwardsCarousel = () => {
   let index = 0;
   let autoTimer = null;
   let isDragging = false;
-  let startX = 0;
-  let currentX = 0;
+  let dragStartX = 0;
+  let dragStartTime = 0;
   let isTransitioning = false;
 
   const isHoverSupported = window.matchMedia("(hover: hover)").matches;
@@ -283,24 +339,14 @@ const setupAwwwardsCarousel = () => {
   const applyStates = () => {
     const total = cards.length;
     cards.forEach((card) => {
-      card.classList.remove(...states);
-      card.classList.remove("is-revealed");
+      card.classList.remove(...states, "is-revealed");
     });
-
-    const prev2 = (index - 2 + total) % total;
-    const prev1 = (index - 1 + total) % total;
-    const next1 = (index + 1) % total;
-    const next2 = (index + 2) % total;
-
     cards[index].classList.add("active");
-    cards[prev1].classList.add("prev1");
-    cards[next1].classList.add("next1");
-    cards[prev2].classList.add("prev2");
-    cards[next2].classList.add("next2");
-
-    indicators.forEach((ind, i) => {
-      ind.classList.toggle("active", i === index);
-    });
+    cards[(index - 1 + total) % total].classList.add("prev1");
+    cards[(index + 1) % total].classList.add("next1");
+    cards[(index - 2 + total) % total].classList.add("prev2");
+    cards[(index + 2) % total].classList.add("next2");
+    indicators.forEach((ind, i) => ind.classList.toggle("active", i === index));
   };
 
   const nextCard = () => {
@@ -337,7 +383,6 @@ const setupAwwwardsCarousel = () => {
     if (autoTimer) clearInterval(autoTimer);
     autoTimer = null;
   };
-
   const startAuto = () => {
     if (prefersReducedMotion) return;
     stopAuto();
@@ -354,7 +399,6 @@ const setupAwwwardsCarousel = () => {
     stopAuto();
     startAuto();
   });
-
   indicators.forEach((indicator, i) => {
     indicator.addEventListener("click", () => {
       goToCard(i);
@@ -366,40 +410,26 @@ const setupAwwwardsCarousel = () => {
   viewport.addEventListener("mouseenter", stopAuto);
   viewport.addEventListener("mouseleave", startAuto);
 
-  let dragStartX = 0;
-  let dragStartTime = 0;
-
-  // Enable drag/swipe gestures for carousel navigation.
+  // FIX: 4 removed no-op pointermove listener
   viewport.addEventListener("pointerdown", (event) => {
     isDragging = true;
     dragStartX = event.clientX;
     dragStartTime = Date.now();
-    startX = event.clientX;
-    currentX = 0;
     viewport.classList.add("is-dragging");
     stopAuto();
   });
 
-  window.addEventListener("pointermove", (event) => {
-    if (!isDragging) return;
-    currentX = event.clientX - dragStartX;
-  });
-
   window.addEventListener("pointerup", (event) => {
     if (!isDragging) return;
-
     const delta = event.clientX - dragStartX;
     const duration = Date.now() - dragStartTime;
     const velocity = Math.abs(delta) / duration;
-
     isDragging = false;
     viewport.classList.remove("is-dragging");
-
     if (Math.abs(delta) > 30 || velocity > 0.5) {
       if (delta < 0) nextCard();
       else prevCard();
     }
-
     startAuto();
   });
 
@@ -441,25 +471,24 @@ const setupAwwwardsCarousel = () => {
   });
 };
 
-// Global listeners and one-time initialization.
+// ── Init ──
 window.addEventListener("scroll", setNavbarState, { passive: true });
 window.addEventListener("resize", setNavbarState);
 setNavbarState();
+setupScrollProgress();
 smoothAnchorNavigation();
+// FIX: 11 initialize mobile nav toggle
+setupMobileNav();
 setupRevealObserver();
 setupSectionHighlight();
 setupInteractiveHeaders();
 setupAwwwardsCarousel();
 
-// Ensure page always loads at the top (hero) on refresh.
-if ("scrollRestoration" in history) {
-  history.scrollRestoration = "manual";
-}
+if ("scrollRestoration" in history) history.scrollRestoration = "manual";
 
 window.addEventListener("load", () => {
-  if (location.hash) {
+  if (location.hash)
     history.replaceState(null, "", location.pathname + location.search);
-  }
   window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   setTimeout(updateActiveFromScroll, 300);
 });
