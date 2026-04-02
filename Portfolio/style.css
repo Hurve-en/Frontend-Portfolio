@@ -718,14 +718,7 @@ h1 span {
   filter: blur(2px);
 }
 
-@media (max-width: 720px) {
-  .carousel-card.prev1 {
-    transform: translateX(-80px) scale(0.85);
-  }
-  .carousel-card.next1 {
-    transform: translateX(80px) scale(0.85);
-  }
-}
+/* Mobile carousel transforms handled in flat layout section below */
 
 .carousel-card.prev2,
 .carousel-card.next2 {
@@ -1506,48 +1499,7 @@ h1 span {
   .projects-section {
     padding: 4.5rem 0;
   }
-  .carousel-container {
-    gap: 0.5rem;
-    padding: 0 0.25rem;
-  }
-  .carousel-arrow {
-    width: 36px;
-    height: 36px;
-    flex-shrink: 0;
-  }
-  .carousel-arrow svg {
-    width: 16px;
-    height: 16px;
-  }
-  .carousel-viewport {
-    height: auto;
-    min-height: unset;
-    overflow: hidden;
-    border-radius: 22px;
-  }
-  .carousel-card {
-    width: min(460px, calc(100vw - 80px));
-    max-width: calc(100vw - 80px);
-    border-radius: 20px;
-    --card-padding: 1.2rem 1.4rem;
-    height: auto;
-    box-sizing: border-box;
-  }
-  .carousel-track {
-    height: auto;
-  }
-  .carousel-container {
-    overflow: hidden;
-    padding: 0 0.5rem;
-  }
-  .awwwards-carousel {
-    overflow: hidden;
-    max-width: 100%;
-  }
-  .card-body {
-    overflow: hidden;
-    max-width: 100%;
-  }
+  /* Carousel overrides moved to dedicated mobile section below */
   .card-visual {
     height: 140px;
   }
@@ -1658,23 +1610,124 @@ h1 span {
    TOUCH DEVICES
 ═══════════════════════════════════════════════ */
 @media (hover: none) and (pointer: coarse) {
-  .carousel-card {
-    cursor: pointer;
-  }
-  /* Always show description and details on touch — no tap-to-reveal needed */
+  /* Always show description and details on touch */
   .card-description,
   .card-details {
     opacity: 1;
     transform: none;
     pointer-events: auto;
   }
-  /* Tighten card layout on mobile */
+}
+
+/* ═══════════════════════════════════════════════
+   MOBILE PROJECTS — flat stacked layout ≤720px
+   Replaces the 3D carousel with simple cards
+═══════════════════════════════════════════════ */
+@media (max-width: 720px) {
+  /* Hide carousel arrows and indicators */
+  .carousel-arrow,
+  .carousel-indicators {
+    display: none !important;
+  }
+
+  /* Reset carousel container to a plain block */
+  .carousel-container {
+    display: block;
+    padding: 0;
+    margin-top: 1.5rem;
+    perspective: none;
+    overflow: visible;
+  }
+
+  .awwwards-carousel {
+    perspective: none;
+    overflow: visible;
+    max-width: 100%;
+  }
+
   .carousel-viewport {
+    perspective: none;
+    overflow: visible;
     min-height: unset;
     height: auto;
+    border-radius: 0;
   }
-  .carousel-card {
+
+  /* Stack cards vertically */
+  .carousel-track {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    perspective: none;
     height: auto;
+    place-items: unset;
+  }
+
+  /* Make every card fully visible and readable */
+  .carousel-card {
+    position: relative;
+    grid-area: unset;
+    width: 100% !important;
+    max-width: 100% !important;
+    opacity: 1 !important;
+    transform: none !important;
+    pointer-events: auto !important;
+    filter: none !important;
+    z-index: 1 !important;
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(18, 18, 18, 0.1);
+    height: auto;
+    box-sizing: border-box;
+  }
+
+  .carousel-card:hover {
+    transform: none !important;
+  }
+
+  /* Card image area */
+  .card-visual {
+    height: 180px;
+    border-radius: 20px 20px 0 0;
+  }
+
+  /* Card body full width */
+  .card-body {
+    padding: 1.2rem 1.4rem;
+    overflow: hidden;
+    max-width: 100%;
+    box-sizing: border-box;
+    gap: 0.9rem;
+  }
+
+  .card-title {
+    font-size: 1.3rem;
+  }
+
+  .card-description {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+  }
+
+  .card-details {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+    max-width: 100%;
+  }
+
+  .tech-list {
+    flex-wrap: wrap;
+    max-width: 100%;
+  }
+
+  .tech-tag {
+    font-size: 0.72rem;
+    white-space: normal;
+    word-break: break-word;
   }
 }
 
