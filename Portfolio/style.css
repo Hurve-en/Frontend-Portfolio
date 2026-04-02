@@ -184,10 +184,23 @@ a {
   border: 1px solid rgba(18, 18, 18, 0.14);
   background: rgba(255, 255, 255, 0.82);
   cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+  color: var(--text);
   transition:
     transform 220ms var(--ease-in-out),
     border-color 220ms var(--ease-in-out),
     box-shadow 220ms var(--ease-in-out);
+}
+
+.nav-toggle:focus {
+  outline: none;
+}
+
+.nav-toggle:focus-visible {
+  outline: 2px solid rgba(18, 18, 18, 0.4);
+  outline-offset: 3px;
 }
 
 .nav-toggle:hover {
@@ -1465,14 +1478,24 @@ h1 span {
     padding: 0.35rem 0.6rem;
     width: 100%;
   }
-  /* Stack hero to single column on phones, hide avatar */
+  /* Stack hero to single column on phones, show avatar below text */
   .hero {
     grid-template-columns: 1fr;
     padding-top: 5.5rem;
-    gap: 1.4rem;
+    gap: 2rem;
+    justify-items: center;
+  }
+  .hero-copyblock {
+    width: 100%;
   }
   .hero-visual {
-    display: none;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  .avatar-frame {
+    width: clamp(140px, 50vw, 200px);
+    border-radius: 20px;
   }
   .section {
     padding: 4rem 0;
@@ -1498,9 +1521,18 @@ h1 span {
     border-radius: 22px;
   }
   .carousel-card {
-    width: min(500px, 92vw);
+    width: min(500px, 88vw);
     border-radius: 20px;
     --card-padding: 1.3rem 1.5rem;
+  }
+  .carousel-container {
+    overflow: hidden;
+  }
+  .awwwards-carousel {
+    overflow: hidden;
+  }
+  .carousel-viewport {
+    overflow: hidden;
   }
   .card-visual {
     height: 140px;
