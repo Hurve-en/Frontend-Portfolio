@@ -28,8 +28,7 @@
 }
 
 html {
-  scroll-behavior: smooth;
-  /* FIX: 7 Align scroll padding to navbar height */
+  scroll-behavior: auto; /* JS controls smooth scroll — avoid double-smooth */
   scroll-padding-top: 86px;
 }
 
@@ -43,11 +42,7 @@ body {
       rgba(157, 143, 118, 0.12),
       transparent 40%
     ),
-    radial-gradient(
-      circle at 88% 6%,
-      rgba(31, 41, 55, 0.07),
-      transparent 34%
-    ),
+    radial-gradient(circle at 88% 6%, rgba(31, 41, 55, 0.07), transparent 34%),
     var(--bg);
   line-height: 1.6;
   overflow-x: hidden;
@@ -200,7 +195,9 @@ a {
   stroke-width: 2.2;
   stroke-linecap: round;
   transform-origin: center;
-  transition: transform 200ms var(--ease-in-out), opacity 200ms var(--ease-in-out);
+  transition:
+    transform 200ms var(--ease-in-out),
+    opacity 200ms var(--ease-in-out);
 }
 
 .navbar.is-open .nav-toggle svg line:nth-child(1) {
@@ -270,7 +267,9 @@ h1 span {
   align-content: center;
   gap: 1.6rem;
   padding-top: 7rem;
-  grid-template-columns: 1fr;
+  /* Default: two columns so photo shows at all sizes above phone */
+  grid-template-columns: 1.08fr 0.92fr;
+  align-items: center;
 }
 
 .hero-copyblock {
@@ -346,14 +345,14 @@ h1 span {
 
 /* ── Hero Visual ── */
 .hero-visual {
-  display: none;
+  display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .avatar-frame {
   position: relative;
-  width: clamp(240px, 32vw, 300px);
+  width: clamp(180px, 30vw, 300px);
   aspect-ratio: 1 / 1;
   border-radius: 24px;
   overflow: hidden;
@@ -1278,6 +1277,9 @@ h1 span {
   .hero-visual {
     display: flex;
   }
+  .avatar-frame {
+    width: clamp(260px, 34vw, 340px);
+  }
 }
 
 /* ═══════════════════════════════════════════════
@@ -1321,11 +1323,17 @@ h1 span {
   .split-grid {
     grid-template-columns: 1fr;
   }
+  /* Keep hero two-column on tablet but tighten the ratio */
   .hero {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+    padding-top: 6rem;
   }
   .hero-visual {
-    display: none;
+    display: flex;
+  }
+  .avatar-frame {
+    width: clamp(200px, 38vw, 280px);
   }
   .carousel-viewport {
     height: auto;
@@ -1401,6 +1409,9 @@ h1 span {
    RESPONSIVE — PHONE (≤720px)
 ═══════════════════════════════════════════════ */
 @media (max-width: 720px) {
+  html {
+    scroll-padding-top: 72px; /* matches reduced navbar height on mobile */
+  }
   .nav-inner,
   .section {
     width: min(1160px, calc(100% - 1.5rem));
@@ -1448,8 +1459,14 @@ h1 span {
     padding: 0.35rem 0.6rem;
     width: 100%;
   }
+  /* Stack hero to single column on phones, hide avatar */
   .hero {
+    grid-template-columns: 1fr;
     padding-top: 5.5rem;
+    gap: 1.4rem;
+  }
+  .hero-visual {
+    display: none;
   }
   .section {
     padding: 4rem 0;
