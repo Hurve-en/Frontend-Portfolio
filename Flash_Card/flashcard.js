@@ -1,22 +1,23 @@
 // ═══════════════════════════════════════════
 //  STATE VARIABLES
 // ═══════════════════════════════════════════
-// Array to store the flashcard data (questions and answers)
+// Holds all parsed QA cards: {q, a}
 let cards = [];
-// Array to keep track of the order of cards during study
+// Order of card indexes used during study (can be shuffled)
 let studyOrder = [];
-// Current index in the study order
+// Current position inside studyOrder
 let idx = 0;
 
 // ═══════════════════════════════════════════
 //  INPUT SCREEN FUNCTIONS
 // ═══════════════════════════════════════════
-// Enable/disable the parse button based on textarea content
+// Watch the input box and only allow parsing when there is enough text
+// (prevents accidental empty parsing).
 document.getElementById("pasteArea").addEventListener("input", function () {
   document.getElementById("parseBtn").disabled = this.value.trim().length < 3;
 });
 
-// Clear the input textarea and disable the parse button
+// Reset input box and disable parse button for a clean new entry.
 function clearInput() {
   document.getElementById("pasteArea").value = "";
   document.getElementById("parseBtn").disabled = true;
@@ -25,14 +26,14 @@ function clearInput() {
 // ═══════════════════════════════════════════
 //  SMART PARSER FUNCTIONS
 // ═══════════════════════════════════════════
-// Parse the pasted text into question-answer pairs
+// Convert raw input text into cards by trying common formats.
 function parseInput() {
   const raw = document.getElementById("pasteArea").value.trim();
   if (!raw) return;
 
   let parsed = [];
 
-  // ── Strategy 1: Look for Q:/A: or Question:/Answer: labels ──
+  // ── Strategy 1: Find explicit labels like "Q:" followed by "A:".
   const qaPattern =
     /(?:Q(?:uestion)?[\s:.]+)(.+?)(?:\r?\n)(?:A(?:nswer)?[\s:.]+)(.+?)(?=\r?\n\s*\r?\n|\r?\n\s*Q(?:uestion)?[\s:.]|$)/gis;
   let m;
@@ -42,7 +43,8 @@ function parseInput() {
     if (q && a) parsed.push({ q, a });
   }
 
-  // ── Strategy 2: Split by blank lines and treat as Q&A blocks ──
+  // ── Strategy 2: If no labels, split on blank lines.
+  // Each block becomes one card: first line question, rest answer.
   if (parsed.length === 0) {
     const blocks = raw
       .split(/\r?\n\s*\r?\n/)
@@ -64,7 +66,7 @@ function parseInput() {
     }
   }
 
-  // ── Strategy 3: Pair consecutive lines as Q&A ──
+  // ── Strategy 3: As a fallback, take even-odd line pairs.
   if (parsed.length === 0) {
     const lines = raw
       .split(/\r?\n/)
@@ -82,7 +84,7 @@ function parseInput() {
     }
   }
 
-  // If no pairs found, show error message
+  // If still no cards found, notify user and stop.
   if (parsed.length === 0) {
     showToast("Couldn't detect Q&A pairs. Try using Q: / A: labels.", true);
     return;
@@ -97,15 +99,15 @@ function parseInput() {
 // ═══════════════════════════════════════════
 //  PREVIEW SCREEN FUNCTIONS
 // ═══════════════════════════════════════════
-// Display the parsed cards in a list for review
+// Show parsed cards so user can edit/delete before studying.
 function renderPreview() {
   const list = document.getElementById("previewList");
-  // Update the card count badge
+  // Update the count badge with pluralization.
   document.getElementById("previewBadge").textContent =
     `${cards.length} card${cards.length !== 1 ? "s" : ""}`;
 
   list.innerHTML = "";
-  // Create a preview item for each card
+  // Build UI items for each card
   cards.forEach((c, i) => {
     const el = document.createElement("div");
     el.className = "preview-item";
@@ -122,7 +124,7 @@ function renderPreview() {
   });
 }
 
-// Remove a card from the list
+// Remove a card and update preview screen.
 function delCard(i) {
   cards.splice(i, 1);
   if (cards.length === 0) {
@@ -136,10 +138,10 @@ function delCard(i) {
 // ═══════════════════════════════════════════
 //  STUDY SCREEN FUNCTIONS
 // ═══════════════════════════════════════════
-// Start the study session with the cards
+// Begin studying; set order and show first card.
 function startStudy() {
   if (cards.length === 0) return;
-  // Create study order (initially in original order)
+  // Default order is same as parsed order.
   studyOrder = [...Array(cards.length).keys()];
   idx = 0;
   removeDone();
@@ -147,17 +149,17 @@ function startStudy() {
   showCard();
 }
 
-// Display the current card in the study session
+// Render question/answer and controls for current study card.
 function showCard() {
   const c = cards[studyOrder[idx]];
 
-  // Set question and answer text
+  // Set question and answer text for current card
   document.getElementById("qText").textContent = c.q;
   document.getElementById("aText").textContent = c.a;
-  // Reset card to show question side
+  // Always start with question side up.
   document.getElementById("flipper").classList.remove("flipped");
 
-  // Update progress bar and text
+  // Update progress bar and counter label
   const pct = ((idx + 1) / studyOrder.length) * 100;
   document.getElementById("progFill").style.width = pct + "%";
   document.getElementById("progTxt").textContent =
@@ -177,12 +179,12 @@ function showCard() {
   }
 }
 
-// Flip the card to show answer or question
+// Toggle card face: question ⇄ answer.
 function flip() {
   document.getElementById("flipper").classList.toggle("flipped");
 }
 
-// Navigate to previous or next card
+// Move to previous/next card in study order.
 function navigate(dir) {
   const next = idx + dir;
   if (next < 0 || next >= studyOrder.length) return;
@@ -190,7 +192,7 @@ function navigate(dir) {
   showCard();
 }
 
-// Shuffle the order of cards
+// Shuffle the cards with Fisher-Yates and restart display.
 function shuffle() {
   // Fisher-Yates shuffle algorithm
   for (let i = studyOrder.length - 1; i > 0; i--) {
@@ -203,7 +205,7 @@ function shuffle() {
   showToast("Cards shuffled! 🔀");
 }
 
-// Show the completion overlay
+// Show congrats overlay after last card.
 function showDone() {
   if (document.getElementById("doneOverlay")) return;
   const scene = document.getElementById("scene");
@@ -222,13 +224,13 @@ function showDone() {
   scene.appendChild(done);
 }
 
-// Remove the done overlay
+// Remove the completion overlay if shown.
 function removeDone() {
   const d = document.getElementById("doneOverlay");
   if (d) d.remove();
 }
 
-// Restart the study session
+// Reset study state and repeat review.
 function restartStudy() {
   removeDone();
   studyOrder = [...Array(cards.length).keys()];
@@ -239,7 +241,7 @@ function restartStudy() {
 // ═══════════════════════════════════════════
 //  UTILITY FUNCTIONS
 // ═══════════════════════════════════════════
-// Switch to a different screen
+// Switch visible view by ID, hide all others.
 function goTo(id) {
   document
     .querySelectorAll(".screen")
@@ -247,12 +249,12 @@ function goTo(id) {
   document.getElementById(id).classList.add("active");
 }
 
-// Escape HTML characters for safe display
+// Escape HTML to prevent rendering issues or script injection.
 function esc(str) {
   return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
-// Show a temporary notification message
+// Show a small message at the bottom for user feedback.
 let toastTimer;
 function showToast(msg, isError = false) {
   clearTimeout(toastTimer);
