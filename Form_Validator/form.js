@@ -1,4 +1,4 @@
-// Simple comment: This file adds page behavior and interactions.
+// This file contains the JavaScript logic for form validation and interactions.
 
 // ============================================
 // FORMVAULT - PROFESSIONAL FORM VALIDATOR
@@ -154,6 +154,7 @@ const validationRules = {
 // PASSWORD STRENGTH CALCULATOR
 // ============================================
 
+// Calculates password strength based on various criteria
 function calculatePasswordStrength(password) {
   let strength = 0;
 
@@ -167,6 +168,7 @@ function calculatePasswordStrength(password) {
   return Math.min(strength, 100);
 }
 
+// Updates the password strength indicator UI
 function updatePasswordStrength(password) {
   const strengthBar = document.querySelector(".strength-bar");
   const strengthText = document.querySelector(".strength-text");
@@ -188,6 +190,7 @@ function updatePasswordStrength(password) {
   strengthBar.style.width = strength + "%";
 }
 
+// Updates the visual indicators for password requirements
 function updatePasswordRequirements(requirements) {
   Object.keys(requirements).forEach((key) => {
     const req = document.querySelector(`[data-requirement="${key}"]`);
@@ -205,6 +208,7 @@ function updatePasswordRequirements(requirements) {
 // VALIDATION HANDLER
 // ============================================
 
+// Validates a single input field based on its data-validation attribute
 function validateField(input) {
   const validationType = input.getAttribute("data-validation");
   const value = input.value.trim();
@@ -241,6 +245,7 @@ function validateField(input) {
   updateFieldValidation(input, formGroup, validationMessage, result);
 }
 
+// Updates the visual feedback for a field's validation result
 function updateFieldValidation(input, formGroup, validationMessage, result) {
   if (result.valid) {
     input.classList.remove("error");
@@ -259,6 +264,7 @@ function updateFieldValidation(input, formGroup, validationMessage, result) {
 // FORM VALIDATION
 // ============================================
 
+// Validates all form fields and returns overall validity
 function validateForm() {
   isFormValid = true;
 
@@ -291,6 +297,7 @@ function validateForm() {
 // EVENT LISTENERS
 // ============================================
 
+// Add validation event listeners to all form inputs
 formInputs.forEach((input) => {
   // Real-time validation
   input.addEventListener("input", () => {
@@ -318,7 +325,7 @@ formInputs.forEach((input) => {
   }
 });
 
-// Form submission
+// Handle form submission
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -353,6 +360,7 @@ form.addEventListener("submit", async (e) => {
 // RESET FORM
 // ============================================
 
+// Resets the form to its initial state
 function resetForm() {
   form.style.display = "grid";
   formStatus.classList.add("hidden");
@@ -391,6 +399,7 @@ function resetForm() {
 // SMOOTH SCROLL
 // ============================================
 
+// Enable smooth scrolling for anchor links
 document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
   anchor.addEventListener("click", function (e) {
     e.preventDefault();
@@ -405,6 +414,7 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
 // NAVBAR SCROLL EFFECT
 // ============================================
 
+// Add shadow to navbar when scrolling
 window.addEventListener("scroll", () => {
   const navbar = document.querySelector(".navbar");
   if (window.pageYOffset > 50) {
