@@ -1,19 +1,13 @@
-// This file contains the JavaScript logic for form validation and interactions.
+// JavaScript for form validation and interactions.
 
-// ============================================
-// FORMVAULT - PROFESSIONAL FORM VALIDATOR
-// ============================================
-
+// Form elements
 const form = document.getElementById("validationForm");
 const formInputs = form.querySelectorAll(".form-input");
 const formStatus = document.getElementById("formStatus");
 const btnSubmit = form.querySelector(".btn-submit");
 let isFormValid = false;
 
-// ============================================
-// VALIDATION RULES
-// ============================================
-
+// Validation rules for each input type
 const validationRules = {
   name: {
     pattern: /^[a-zA-Z\s]{2,}$|^[a-zA-Z\s]{2,}\s[a-zA-Z\s]{2,}$/,
@@ -150,11 +144,9 @@ const validationRules = {
   },
 };
 
-// ============================================
-// PASSWORD STRENGTH CALCULATOR
-// ============================================
+// Password strength functions
 
-// Calculates password strength based on various criteria
+// Calculate password strength score
 function calculatePasswordStrength(password) {
   let strength = 0;
 
@@ -168,7 +160,7 @@ function calculatePasswordStrength(password) {
   return Math.min(strength, 100);
 }
 
-// Updates the password strength indicator UI
+// Update password strength UI
 function updatePasswordStrength(password) {
   const strengthBar = document.querySelector(".strength-bar");
   const strengthText = document.querySelector(".strength-text");
@@ -190,7 +182,7 @@ function updatePasswordStrength(password) {
   strengthBar.style.width = strength + "%";
 }
 
-// Updates the visual indicators for password requirements
+// Update password requirement indicators
 function updatePasswordRequirements(requirements) {
   Object.keys(requirements).forEach((key) => {
     const req = document.querySelector(`[data-requirement="${key}"]`);
@@ -204,11 +196,9 @@ function updatePasswordRequirements(requirements) {
   });
 }
 
-// ============================================
-// VALIDATION HANDLER
-// ============================================
+// Validation functions
 
-// Validates a single input field based on its data-validation attribute
+// Validate a single input field
 function validateField(input) {
   const validationType = input.getAttribute("data-validation");
   const value = input.value.trim();
@@ -245,7 +235,7 @@ function validateField(input) {
   updateFieldValidation(input, formGroup, validationMessage, result);
 }
 
-// Updates the visual feedback for a field's validation result
+// Update validation UI for a field
 function updateFieldValidation(input, formGroup, validationMessage, result) {
   if (result.valid) {
     input.classList.remove("error");
@@ -260,11 +250,7 @@ function updateFieldValidation(input, formGroup, validationMessage, result) {
   }
 }
 
-// ============================================
-// FORM VALIDATION
-// ============================================
-
-// Validates all form fields and returns overall validity
+// Validate the entire form
 function validateForm() {
   isFormValid = true;
 
@@ -293,11 +279,9 @@ function validateForm() {
   return isFormValid;
 }
 
-// ============================================
-// EVENT LISTENERS
-// ============================================
+// Event listeners
 
-// Add validation event listeners to all form inputs
+// Add validation listeners to inputs
 formInputs.forEach((input) => {
   // Real-time validation
   input.addEventListener("input", () => {
@@ -356,11 +340,7 @@ form.addEventListener("submit", async (e) => {
   btnSubmit.disabled = false;
 });
 
-// ============================================
-// RESET FORM
-// ============================================
-
-// Resets the form to its initial state
+// Reset form function
 function resetForm() {
   form.style.display = "grid";
   formStatus.classList.add("hidden");
@@ -395,11 +375,7 @@ function resetForm() {
   document.getElementById("fullName").focus();
 }
 
-// ============================================
-// SMOOTH SCROLL
-// ============================================
-
-// Enable smooth scrolling for anchor links
+// Smooth scrolling for anchor links
 document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
   anchor.addEventListener("click", function (e) {
     e.preventDefault();
@@ -410,11 +386,7 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
   });
 });
 
-// ============================================
-// NAVBAR SCROLL EFFECT
-// ============================================
-
-// Add shadow to navbar when scrolling
+// Add shadow to navbar on scroll
 window.addEventListener("scroll", () => {
   const navbar = document.querySelector(".navbar");
   if (window.pageYOffset > 50) {
