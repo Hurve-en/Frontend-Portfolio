@@ -355,7 +355,13 @@ const setupAwwwardsCarousel = () => {
     if (!isHoverSupported) {
       card.addEventListener("click", (event) => {
         if (!card.classList.contains("active")) return;
+        if (!card.classList.contains("is-revealed")) {
+          event.preventDefault();
+        }
         event.stopPropagation();
+        cards.forEach((otherCard) => {
+          if (otherCard !== card) otherCard.classList.remove("is-revealed");
+        });
         card.classList.toggle("is-revealed");
       });
     }
