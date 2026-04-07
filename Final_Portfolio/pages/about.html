@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="About Hurve-en, a software engineering student focused on meaningful full-stack development."
+    />
+    <title>About | Hurve-en</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+  </head>
+  <body data-page="about">
+    <div class="scroll-progress" aria-hidden="true">
+      <div class="scroll-progress-bar" id="scrollProgressBar"></div>
+    </div>
+    <div class="bg-grid" aria-hidden="true"></div>
+
+    <nav class="navbar" aria-label="Primary navigation">
+      <div class="nav-inner">
+        <a href="../index.html" class="brand">Hurve-en</a>
+        <button
+          class="nav-toggle"
+          id="navToggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="primaryMenu"
+          aria-label="Toggle navigation menu"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+            <line x1="4" y1="7" x2="20" y2="7" />
+            <line x1="4" y1="12" x2="20" y2="12" />
+            <line x1="4" y1="17" x2="20" y2="17" />
+          </svg>
+        </button>
+        <ul class="nav-menu" id="primaryMenu">
+          <li><a href="../index.html" data-nav="home">Home</a></li>
+          <li><a href="work.html" data-nav="work">Work</a></li>
+          <li><a href="about.html" data-nav="about">About</a></li>
+          <li><a href="contact.html" data-nav="contact">Contact</a></li>
+        </ul>
+        <a
+          href="../resume.pdf"
+          class="button button-ghost nav-resume"
+          target="_blank"
+          rel="noopener noreferrer"
+          download
+        >
+          Resume
+        </a>
+      </div>
+    </nav>
+
+    <main>
+      <section class="section page-intro">
+        <header class="section-head" data-reveal>
+          <p class="eyebrow">About</p>
+          <h1 class="interactive-header">
+            Locally rooted. <em>Globally minded.</em>
+          </h1>
+          <p class="page-intro-copy">
+            I care about building technology that solves real problems, grows
+            communities, and keeps getting better after launch.
+          </p>
+        </header>
+      </section>
+
+      <section class="section split">
+        <div class="split-grid">
+          <p data-reveal>
+            Hi, I'm a software engineering student at iACADEMY with a passion
+            for building technology that matters. I am currently in my second
+            year of BSCS-SE, working toward solutions that create real impact in
+            Cebu, the city I call home.
+          </p>
+          <p data-reveal data-delay="90">
+            My stack includes JavaScript, HTML, CSS, React, Next.js, Node.js,
+            Supabase, Java, Python, Vite, Docker, Prisma, Vercel, Netlify,
+            Tailwind CSS, TensorFlow, Flutter, TypeScript, PostgreSQL, and
+            MySQL. I approach each day as a beginner so I can keep learning,
+            growing, and building technology with long-term local and global
+            value.
+          </p>
+        </div>
+      </section>
+
+      <section class="section">
+        <header class="section-head" data-reveal>
+          <p class="eyebrow">Focus</p>
+          <h2 class="interactive-header">How I like to <em>build</em></h2>
+        </header>
+        <div class="page-links-grid" data-reveal>
+          <article class="page-link-card">
+            <p class="page-link-label">Product Thinking</p>
+            <h3>I start from the real user problem.</h3>
+            <p>
+              The goal is not just to ship features, but to make the outcome
+              useful, sustainable, and understandable.
+            </p>
+          </article>
+          <article class="page-link-card">
+            <p class="page-link-label">Engineering</p>
+            <h3>I enjoy modern full-stack systems.</h3>
+            <p>
+              Frontend polish matters to me, but so do backend structure, clean
+              data flows, and maintainable implementation details.
+            </p>
+          </article>
+          <article class="page-link-card">
+            <p class="page-link-label">Growth</p>
+            <h3>I stay intentionally curious.</h3>
+            <p>
+              I treat every project as a chance to learn better patterns, work
+              with teams, and raise the quality of the next build.
+            </p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>2026 Hurve-en. Minimal portfolio, built for clarity.</p>
+    </footer>
+
+    <script src="../assets/js/script.js"></script>
+  </body>
+</html>
