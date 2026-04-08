@@ -1,4 +1,4 @@
-/* Simple comment: This file controls the page styles. */
+/* Styles for the Card Character page */
 
 * {
   margin: 0;
@@ -31,7 +31,7 @@ body {
   overflow-x: hidden;
 }
 
-/* BACKGROUND */
+/* Page background style */
 .background {
   position: fixed;
   top: 0;
@@ -60,7 +60,7 @@ body {
   }
 }
 
-/* HEADER */
+/* Header section */
 .header {
   padding: 60px 40px;
   text-align: center;
@@ -96,7 +96,7 @@ body {
   text-transform: uppercase;
 }
 
-/* GALLERY */
+/* Card gallery layout */
 .gallery-container {
   max-width: 1400px;
   margin: 40px auto;
@@ -109,7 +109,7 @@ body {
   gap: 20px;
 }
 
-/* CARD */
+/* Card container styles */
 .card {
   background: linear-gradient(135deg, var(--dark-light) 0%, #1a2a4a 100%);
   border: 1px solid var(--border);
@@ -186,7 +186,7 @@ body {
   box-shadow: 0 20px 60px rgba(0, 217, 255, 0.25);
 }
 
-/* CARD IMAGE */
+/* Card image section */
 .card-image {
   width: 100%;
   height: 200px;
@@ -242,7 +242,7 @@ body {
   }
 }
 
-/* CARD CONTENT */
+/* Card text content */
 .card-content {
   padding: 32px;
   flex: 1;
@@ -253,7 +253,7 @@ body {
   z-index: 2;
 }
 
-/* BADGE */
+/* Role badge styles */
 .badge {
   display: inline-block;
   width: fit-content;
@@ -272,7 +272,7 @@ body {
   border: 1px solid var(--primary);
 }
 
-/* CHARACTER NAME */
+/* Character name */
 .character-name {
   font-size: 24px;
   font-weight: 700;
@@ -289,7 +289,7 @@ body {
   letter-spacing: 0.1em;
 }
 
-/* DESCRIPTION */
+/* Character description text */
 .character-desc {
   font-size: 14px;
   color: var(--text-sub);
@@ -297,7 +297,7 @@ body {
   flex: 1;
 }
 
-/* POWERS */
+/* Power labels */
 .powers {
   display: flex;
   flex-wrap: wrap;
@@ -323,7 +323,7 @@ body {
   color: var(--primary);
 }
 
-/* FOOTER */
+/* Footer area */
 .footer {
   padding: 40px;
   text-align: center;
@@ -333,7 +333,7 @@ body {
   margin-top: 100px;
 }
 
-/* ANIMATIONS */
+/* Entrance animations */
 @keyframes slideInUp {
   from {
     opacity: 0;
@@ -356,9 +356,9 @@ body {
   }
 }
 
-/* RESPONSIVE - Mobile First */
+/* Mobile first responsive styles */
 
-/* Mobile default styles are already set above */
+/* Base mobile styles */
 .header {
   padding: 24px 16px;
 }
@@ -397,7 +397,7 @@ body {
   padding: 4px 8px;
 }
 
-/* Tablet - 2 columns */
+/* Tablet layout */
 @media (min-width: 768px) {
   .header {
     padding: 40px 20px;
@@ -443,7 +443,7 @@ body {
   }
 }
 
-/* Desktop - 3 columns */
+/* Desktop layout */
 @media (min-width: 1024px) {
   .header {
     padding: 60px 40px;
