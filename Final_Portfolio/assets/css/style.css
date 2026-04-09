@@ -522,6 +522,143 @@ h1 span {
   gap: 1.5rem;
 }
 
+.project-detail-shell {
+  display: grid;
+  gap: 1.6rem;
+}
+
+.project-detail-head {
+  max-width: 760px;
+}
+
+.project-detail-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+.project-detail-visual,
+.project-detail-panel,
+.project-detail-block,
+.project-page-link {
+  border: 1px solid rgba(18, 18, 18, 0.08);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.88)),
+    var(--panel);
+  box-shadow: 0 18px 38px rgba(18, 18, 18, 0.06);
+}
+
+.project-detail-visual {
+  min-height: 380px;
+  border-radius: 28px;
+  overflow: hidden;
+  position: relative;
+  background: linear-gradient(135deg, #ece6dc, #f7f4ef);
+}
+
+.project-detail-visual-clean {
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #d8f1ec, #edf8f5);
+}
+
+.project-detail-badge {
+  position: absolute;
+  left: 1.25rem;
+  bottom: 1.25rem;
+  padding: 0.55rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(18, 18, 18, 0.82);
+  color: #f9f8f5;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.project-detail-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.project-detail-image-coral {
+  object-position: left top;
+  transform: scale(1.02);
+  transform-origin: left top;
+}
+
+.project-detail-image-coffee {
+  object-position: left top;
+  transform: scale(1.03);
+  transform-origin: left top;
+}
+
+.project-detail-panel {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+  padding: 1.6rem;
+  border-radius: 28px;
+}
+
+.project-detail-panel h2 {
+  font-size: clamp(2rem, 4.2vw, 3.4rem);
+  line-height: 0.98;
+  max-width: 11ch;
+}
+
+.project-detail-panel p {
+  color: var(--muted);
+  max-width: 52ch;
+}
+
+.project-detail-sections {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.project-detail-block {
+  display: grid;
+  gap: 0.85rem;
+  padding: 1.35rem;
+  border-radius: 24px;
+}
+
+.project-detail-block p:last-child {
+  color: var(--muted);
+}
+
+.project-page-nav {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.project-page-link {
+  display: grid;
+  gap: 0.45rem;
+  padding: 1.2rem 1.25rem;
+  border-radius: 22px;
+  transition:
+    transform 240ms var(--ease-out),
+    border-color 240ms var(--ease-out),
+    box-shadow 240ms var(--ease-out);
+}
+
+.project-page-link:hover {
+  transform: translateY(-4px);
+  border-color: rgba(124, 106, 79, 0.25);
+  box-shadow: 0 24px 45px rgba(18, 18, 18, 0.1);
+}
+
+.project-page-link strong {
+  font-size: 1.08rem;
+}
+
 .work-detail-card {
   display: grid;
   grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
@@ -534,6 +671,7 @@ h1 span {
     linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.88)),
     var(--panel);
   box-shadow: 0 18px 38px rgba(18, 18, 18, 0.06);
+  scroll-margin-top: 120px;
 }
 
 .work-detail-visual {
@@ -1970,8 +2108,15 @@ h1 span {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .project-detail-hero,
+  .project-detail-sections,
+  .project-page-nav,
   .work-detail-card {
     grid-template-columns: 1fr;
+  }
+
+  .project-detail-panel h2 {
+    max-width: none;
   }
 }
 
@@ -1980,6 +2125,14 @@ h1 span {
     grid-template-columns: 1fr;
   }
 
+  .project-detail-visual {
+    min-height: 260px;
+    border-radius: 22px;
+  }
+
+  .project-detail-panel,
+  .project-detail-block,
+  .project-page-link,
   .work-detail-card {
     padding: 1.15rem;
     border-radius: 22px;
