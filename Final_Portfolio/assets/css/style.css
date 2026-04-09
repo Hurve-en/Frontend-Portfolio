@@ -617,15 +617,21 @@ h1 span {
 
 .project-detail-sections {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.25rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  align-items: start;
 }
 
 .project-detail-block {
   display: grid;
-  gap: 0.85rem;
-  padding: 1.35rem;
+  gap: 0.75rem;
+  padding: 1.2rem;
   border-radius: 24px;
+}
+
+.project-detail-block h3 {
+  font-size: clamp(1.3rem, 2vw, 1.8rem);
+  line-height: 1.15;
 }
 
 .project-detail-block p:last-child {
