@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Detailed project case studies by Hurve-en across AI, mobile, and full-stack product work."
+    />
+    <title>Work Details | Hurve-en</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+  </head>
+  <body data-page="work-details">
+    <div class="scroll-progress" aria-hidden="true">
+      <div class="scroll-progress-bar" id="scrollProgressBar"></div>
+    </div>
+    <div class="bg-grid" aria-hidden="true"></div>
+
+    <nav class="navbar" aria-label="Primary navigation">
+      <div class="nav-inner">
+        <a href="../index.html" class="brand">Hurve-en</a>
+        <button
+          class="nav-toggle"
+          id="navToggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="primaryMenu"
+          aria-label="Toggle navigation menu"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+            <line x1="4" y1="7" x2="20" y2="7" />
+            <line x1="4" y1="12" x2="20" y2="12" />
+            <line x1="4" y1="17" x2="20" y2="17" />
+          </svg>
+        </button>
+        <ul class="nav-menu" id="primaryMenu">
+          <li><a href="../index.html" data-nav="home">Home</a></li>
+          <li><a href="work.html" data-nav="work">Work</a></li>
+          <li>
+            <a href="work-details.html" data-nav="work-details"
+              >Work Details</a
+            >
+          </li>
+          <li><a href="about.html" data-nav="about">About</a></li>
+          <li><a href="contact.html" data-nav="contact">Contact</a></li>
+        </ul>
+        <a
+          href="../resume.pdf"
+          class="button button-ghost nav-resume"
+          target="_blank"
+          rel="noopener noreferrer"
+          download
+        >
+          Resume
+        </a>
+      </div>
+    </nav>
+
+    <main>
+      <section class="section page-intro">
+        <header class="section-head" data-reveal>
+          <p class="eyebrow">Work Details</p>
+          <h1 class="interactive-header">
+            A closer look at the projects behind the portfolio.
+          </h1>
+          <p class="page-intro-copy">
+            This page highlights the problem, stack, and implementation focus
+            behind each featured build.
+          </p>
+          <div class="page-intro-actions">
+            <a href="work.html" class="button button-solid">Back to Work</a>
+            <a href="contact.html" class="button button-ghost">Contact Me</a>
+          </div>
+        </header>
+      </section>
+
+      <section class="section">
+        <header class="section-head" data-reveal>
+          <div class="section-kicker">
+            <p class="eyebrow">Case Studies</p>
+            <span class="kicker-line" aria-hidden="true"></span>
+          </div>
+          <h2 class="interactive-header">Project breakdowns.</h2>
+        </header>
+
+        <div class="work-detail-grid">
+          <article class="work-detail-card" data-reveal>
+            <div class="work-detail-visual">
+              <img
+                src="../assets/images/CITA-CoralGuardAi.png"
+                alt="CITA-CoralGuardAI dashboard preview"
+                class="work-detail-image work-detail-image-coral"
+              />
+            </div>
+            <div class="work-detail-copy">
+              <p class="page-link-label">CITA-CoralGuardAI</p>
+              <h3>Community-powered reef monitoring with AI-assisted reporting.</h3>
+              <p>
+                Built to support reef observation workflows, this project turns
+                image uploads into structured health reports that are easier for
+                communities and local decision-makers to review.
+              </p>
+              <div class="detail-pill-row">
+                <span class="tech-tag">React</span>
+                <span class="tech-tag">Supabase</span>
+                <span class="tech-tag">Google Gemini</span>
+                <span class="tech-tag">Leaflet</span>
+              </div>
+              <ul class="work-detail-list">
+                <li>Focused on turning image-based submissions into usable reef insights.</li>
+                <li>Combined frontend mapping, cloud storage, and AI-assisted interpretation.</li>
+                <li>Designed for clarity so reports feel useful beyond a demo environment.</li>
+              </ul>
+              <div class="detail-links">
+                <a
+                  href="https://github.com/Hurve-en/CITA-CoralGuardAI"
+                  class="button button-solid"
+                  target="_blank"
+                  rel="noreferrer"
+                  >View Repository</a
+                >
+              </div>
+            </div>
+          </article>
+
+          <article class="work-detail-card" data-reveal>
+            <div class="work-detail-visual work-detail-clean">
+              <div class="card-visual-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
+              </div>
+            </div>
+            <div class="work-detail-copy">
+              <p class="page-link-label">CITA-CebuCleanAI</p>
+              <h3>Waste classification and routing support through mobile + AI.</h3>
+              <p>
+                This concept connects on-device classification, local incentives,
+                and barangay-level visibility into cleaner waste handling
+                workflows.
+              </p>
+              <div class="detail-pill-row">
+                <span class="tech-tag">Flutter</span>
+                <span class="tech-tag">TensorFlow Lite</span>
+                <span class="tech-tag">PostGIS</span>
+                <span class="tech-tag">IoT</span>
+              </div>
+              <ul class="work-detail-list">
+                <li>Centered the mobile experience around quick, practical user actions.</li>
+                <li>Paired AI classification with geographic and operational data.</li>
+                <li>Framed the system to support both residents and local responders.</li>
+              </ul>
+              <div class="detail-links">
+                <a
+                  href="https://github.com/Hurve-en/CITA-CebuCleanAI"
+                  class="button button-solid"
+                  target="_blank"
+                  rel="noreferrer"
+                  >View Repository</a
+                >
+              </div>
+            </div>
+          </article>
+
+          <article class="work-detail-card" data-reveal>
+            <div class="work-detail-visual">
+              <img
+                src="../assets/images/Mt_Apo_Coffee.png"
+                alt="Mt. Apos Best Coffee storefront preview"
+                class="work-detail-image"
+              />
+            </div>
+            <div class="work-detail-copy">
+              <p class="page-link-label">Mt. Apos Best Coffee</p>
+              <h3>Commerce, operations, and real-time order management in one build.</h3>
+              <p>
+                This project was shaped as a more production-minded product,
+                connecting storefront browsing, ordering, admin workflows, and
+                live operational updates.
+              </p>
+              <div class="detail-pill-row">
+                <span class="tech-tag">React</span>
+                <span class="tech-tag">TypeScript</span>
+                <span class="tech-tag">Prisma</span>
+                <span class="tech-tag">PostgreSQL</span>
+              </div>
+              <ul class="work-detail-list">
+                <li>Balanced user storefront experience with admin-side operations.</li>
+                <li>Focused on maintainable full-stack structure and real-time flows.</li>
+                <li>Treated the product as a working system, not just a visual mockup.</li>
+              </ul>
+              <div class="detail-links">
+                <a
+                  href="https://github.com/Hurve-en/Mt-Apos-Best-Coffee"
+                  class="button button-solid"
+                  target="_blank"
+                  rel="noreferrer"
+                  >View Repository</a
+                >
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>2026 Hurve-en. Minimal portfolio, built for clarity.</p>
+    </footer>
+
+    <script src="../assets/js/script.js"></script>
+  </body>
+</html>

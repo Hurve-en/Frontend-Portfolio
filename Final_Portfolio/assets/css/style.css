@@ -245,6 +245,13 @@ body.nav-open {
   color: var(--muted);
 }
 
+.page-intro-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin-top: 0.75rem;
+}
+
 /* ═══════════════════════════════════════════════
    TYPOGRAPHY — Instrument Serif for display
 ═══════════════════════════════════════════════ */
@@ -508,6 +515,89 @@ h1 span {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--accent);
+}
+
+.work-detail-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.work-detail-card {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  gap: 1.5rem;
+  align-items: stretch;
+  padding: 1.4rem;
+  border-radius: 28px;
+  border: 1px solid rgba(18, 18, 18, 0.08);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.88)),
+    var(--panel);
+  box-shadow: 0 18px 38px rgba(18, 18, 18, 0.06);
+}
+
+.work-detail-visual {
+  min-height: 280px;
+  border-radius: 22px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #ece6dc, #f7f4ef);
+  display: grid;
+  place-items: center;
+}
+
+.work-detail-clean {
+  position: relative;
+  background: linear-gradient(135deg, #d8f1ec, #edf8f5);
+}
+
+.work-detail-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.work-detail-image-coral {
+  object-position: 78% center;
+}
+
+.work-detail-copy {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+}
+
+.work-detail-copy h3 {
+  font-size: clamp(1.35rem, 2vw, 1.8rem);
+  line-height: 1.12;
+}
+
+.work-detail-copy p {
+  color: var(--muted);
+}
+
+.detail-pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.work-detail-list {
+  display: grid;
+  gap: 0.7rem;
+  padding-left: 1.15rem;
+  color: var(--text);
+}
+
+.work-detail-list li::marker {
+  color: var(--accent);
+}
+
+.detail-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin-top: 0.25rem;
 }
 
 .section-kicker {
@@ -1871,11 +1961,24 @@ h1 span {
   .page-links-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .work-detail-card {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 720px) {
   .page-links-grid {
     grid-template-columns: 1fr;
+  }
+
+  .work-detail-card {
+    padding: 1.15rem;
+    border-radius: 22px;
+  }
+
+  .work-detail-visual {
+    min-height: 220px;
   }
 }
 
