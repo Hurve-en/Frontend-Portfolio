@@ -558,7 +558,15 @@ h1 span {
 }
 
 .work-detail-image-coral {
-  object-position: 78% center;
+  object-position: left top;
+  transform: scale(1.02);
+  transform-origin: left top;
+}
+
+.work-detail-image-coffee {
+  object-position: left top;
+  transform: scale(1.03);
+  transform-origin: left top;
 }
 
 .work-detail-copy {
