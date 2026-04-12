@@ -1,6 +1,6 @@
 /* Simple comment: This file controls the page styles. */
 
-/* styles.css - complete, explicit dark-mode rules so nothing is left bright */
+/* CSS for calculator with dark mode support */
 
 /* ---------- Variables (light mode default) ---------- */
 :root {
@@ -229,8 +229,7 @@ body {
 }
 
 /* =============================
-   DARK MODE - applied via [data-theme="dark"] on <html>
-   (we set it early with the tiny inline script in index.html)
+   Dark mode styles
    ============================= */
 html[data-theme="dark"],
 html[data-theme="dark"] body {

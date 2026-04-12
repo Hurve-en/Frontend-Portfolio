@@ -1,15 +1,13 @@
 <!-- Simple comment: This file handles the page structure. -->
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Modern Calculator (Fixed Dark Mode)</title>
 
-    <!-- Tiny inline initializer: set theme BEFORE CSS loads to avoid flash/partial styling.
-       Only 6 lines and safe: reads 'calc_theme' from localStorage and sets data-theme on <html>.
-       This prevents the "bright header while rest is dark" flash. -->
+    <!-- Set theme before CSS loads to prevent flashing -->
     <script>
       (function () {
         try {
@@ -93,10 +91,3 @@
     <script src="Calculator.js" defer></script>
   </body>
 </html>
-
-
-
-
-
-
-
