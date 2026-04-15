@@ -1,4 +1,4 @@
-// Simple comment: This file adds page behavior and interactions.
+// This script handles the task list, timer, stats, and page interactions.
 
 // ==================== STATE MANAGEMENT ====================
 class AppState {
@@ -141,7 +141,7 @@ class PomodoroTimer {
         ? this.state.timerState.workDuration * 60
         : this.state.timerState.breakDuration * 60;
 
-    // Update mode buttons
+    // Highlight the selected mode button
     this.elements.modeBtns.forEach((btn) => {
       btn.classList.toggle("active", btn.dataset.mode === mode);
     });
@@ -187,7 +187,7 @@ class PomodoroTimer {
     const seconds = this.state.timerState.timeRemaining % 60;
     this.elements.timerDisplay.textContent = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 
-    // Update label
+    // Set timer label text
     let label =
       this.state.timerState.currentMode === "work"
         ? "Focus Time"
@@ -208,7 +208,7 @@ class PomodoroTimer {
     }
     this.elements.timerLabel.textContent = label;
 
-    // Update progress ring
+    // Update timer progress ring
     const totalSeconds =
       this.state.timerState.currentMode === "work"
         ? this.state.timerState.workDuration * 60
@@ -219,7 +219,7 @@ class PomodoroTimer {
     const offset = circumference * (1 - progress);
     this.elements.timerFill.style.strokeDashoffset = offset;
 
-    // Update stats
+    // Refresh timer stats
     const hours = Math.floor(this.state.timerState.totalFocusTime / 3600);
     const mins = Math.floor((this.state.timerState.totalFocusTime % 3600) / 60);
     this.elements.totalFocusTime.textContent = `${hours}h ${mins}m`;
@@ -319,7 +319,7 @@ class TodoManager {
     this.render();
     showToast("✅ Task added!", "success");
 
-    // Animate input
+    // Pulse the input field briefly to show feedback
     this.elements.todoInput.classList.add("pulse-animation");
     setTimeout(
       () => this.elements.todoInput.classList.remove("pulse-animation"),
@@ -383,15 +383,15 @@ class TodoManager {
   render() {
     const filteredTodos = this.getFilteredTodos();
 
-    // Update counts
+    // Update task counters
     const completedTodos = this.state.todos.filter((t) => t.completed).length;
     this.elements.taskCount.textContent = this.state.todos.length;
     this.elements.completedCount.textContent = completedTodos;
 
-    // Update clear button
+    // Disable clear button when there are no completed tasks
     this.elements.clearBtn.disabled = completedTodos === 0;
 
-    // Render list
+    // Render the current list of filtered todos
     if (filteredTodos.length === 0) {
       this.elements.todoList.innerHTML = `
                 <div class="empty-state">
@@ -509,13 +509,13 @@ class StatsManager {
     const hours = Math.floor(totalFocusMinutes / 60);
     const minutes = totalFocusMinutes % 60;
 
-    // Update completion rate
+    // Refresh completion progress
     this.elements.completionRate.textContent = `${completionRate}%`;
     const circumference = 2 * Math.PI * 45;
     const offset = circumference * (1 - completionRate / 100);
     this.elements.completionRing.style.strokeDashoffset = offset;
 
-    // Update stats
+    // Refresh stat values
     this.elements.totalFocusHours.textContent = `${hours}h ${minutes}m`;
     this.elements.totalCompleted.textContent = completedTasks;
     this.elements.currentStreak.textContent = `${this.state.stats.streakDays} days`;
@@ -540,15 +540,15 @@ let todoManager;
 let statsManager;
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Initialize app state
+  // Create app state and start the three main managers
   appState = new AppState();
 
-  // Initialize managers
+  // Timer, todo list, and stats manager
   pomodoroTimer = new PomodoroTimer(appState);
   todoManager = new TodoManager(appState);
   statsManager = new StatsManager(appState);
 
-  // Add SVG gradient for timer
+  // Add SVG gradient for the timer visualization
   const svg = document.querySelector(".timer-progress");
   if (svg && !document.querySelector("defs")) {
     const defs = document.createElement("defs");
@@ -575,7 +575,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Add smooth scroll behavior
   document.documentElement.style.scrollBehavior = "smooth";
 
-  // Log initialization
+  // Log that the app is ready
   console.log("🎯 Momentum App Initialized Successfully");
 });
 
@@ -605,7 +605,7 @@ if ("serviceWorker" in navigator) {
 }
 
 // ==================== ACCESSIBILITY ====================
-// Ensure all interactive elements are keyboard accessible
+// Keep keyboard interaction active for a better experience
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
     // Close any open modals/dropdowns here if needed
