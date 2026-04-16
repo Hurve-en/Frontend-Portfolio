@@ -1,4 +1,4 @@
-/* Simple comment: This file controls the page styles. */
+/* This CSS file styles the Udemy replica webpage, defining colors, layouts, and responsive design for all sections. */
 
 /* Reset and Base Styles */
 * {
@@ -36,7 +36,7 @@ body {
   padding: 0 16px;
 }
 
-/* HEADER */
+/* Header Styles: Positioning and layout for the sticky header at the top of the page */
 .header {
   position: sticky;
   top: 0;
@@ -184,7 +184,7 @@ body {
   }
 }
 
-/* TOPIC TAGS */
+/* Topic Tags Styles: Background and layout for the recommended categories section */
 .topic-tags {
   background-color: var(--color-surface);
   padding: 20px 0;
@@ -229,7 +229,7 @@ body {
   background-color: #ebebeb;
 }
 
-/* FILTER BAR */
+/* Filter Bar Styles: Sticky bar with filter buttons and sort dropdown */
 .filter-bar {
   position: sticky;
   top: 72px;
@@ -293,7 +293,7 @@ body {
   cursor: pointer;
 }
 
-/* COURSE GRID */
+/* Course Grid Styles: Layout for displaying courses in a responsive grid */
 .course-grid {
   padding: 32px 0 48px;
 }
@@ -310,7 +310,7 @@ body {
   align-items: stretch;
 }
 
-/* COURSE CARD */
+/* Course Card Styles: Design for individual course cards with hover effects */
 .course-card {
   background-color: var(--color-background);
   cursor: pointer;
@@ -468,7 +468,7 @@ body {
   box-shadow: 0 2px 6px rgba(86, 36, 208, 0.3);
 }
 
-/* FOOTER */
+/* Footer Styles: Dark footer with links organized in columns */
 .footer {
   background-color: var(--color-text-primary);
   color: white;
