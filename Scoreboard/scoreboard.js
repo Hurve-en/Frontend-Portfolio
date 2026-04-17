@@ -1,19 +1,20 @@
-// Simple comment: This file adds page behavior and interactions.
+// Scoreboard page behavior: create groups, update scores, and show the leading team.
 
 (function () {
-  // ------------------ DOM ------------------
+  // DOM elements used by the app
   const board = document.getElementById("board");
   const addBtn = document.getElementById("add-group");
   const resetAllBtn = document.getElementById("reset-all");
   const togglePresent = document.getElementById("toggle-present");
 
+  // Respect user preference for reduced motion
   const prefersReduced =
     window.matchMedia &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   let nextId = 1;
 
-  // ------------------ UTILITIES ------------------
+  // Helper for smooth number animation
   const easeOutExpo = (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t));
 
   function animateNumber(el, from, to, duration = 420) {
@@ -49,7 +50,6 @@
     );
   }
 
-  // ------------------ GROUP CREATION ------------------
   function createGroup(name = null, initial = 0) {
     const id = nextId++;
     const box = document.createElement("article");
@@ -80,7 +80,7 @@
     board.appendChild(box);
     attachListeners(box);
 
-    // Entrance animation
+    // Play entry animation unless motion is reduced
     if (!prefersReduced) {
       box.style.opacity = "0";
       box.style.transform = "translateY(12px)";
@@ -96,7 +96,6 @@
     updateLeading();
   }
 
-  // ------------------ SCORE HANDLING ------------------
   function readScore(box) {
     return parseInt(box.querySelector(".value").textContent, 10) || 0;
   }
@@ -116,7 +115,6 @@
     updateLeading();
   }
 
-  // ------------------ LISTENERS ------------------
   function attachListeners(box) {
     const add = box.querySelector(".btn-add");
     const minus = box.querySelector(".btn-minus");
@@ -151,7 +149,6 @@
     };
   }
 
-  // ------------------ LEADING GROUP ------------------
   function updateLeading() {
     const boxes = [...board.querySelectorAll(".group-box")];
     if (!boxes.length) return;
@@ -165,7 +162,6 @@
     });
   }
 
-  // ------------------ CONTROLS ------------------
   addBtn.onclick = () => createGroup();
 
   resetAllBtn.onclick = () => {
@@ -180,7 +176,6 @@
       : "Presentation: OFF";
   };
 
-  // ------------------ SHORTCUTS ------------------
   document.addEventListener("keydown", (e) => {
     if (document.activeElement.tagName === "INPUT") return;
 
@@ -189,6 +184,5 @@
     }
   });
 
-  // ------------------ INIT ------------------
   for (let i = 0; i < 5; i++) createGroup();
 })();
