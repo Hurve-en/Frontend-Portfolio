@@ -1,4 +1,8 @@
-<!-- Simple comment: This file handles the page structure. -->
+<!--
+  Personal Finance Dashboard HTML Structure
+  This file defines the layout and content of the financial dashboard.
+  It includes a sidebar for navigation and a main content area for displaying financial data.
+-->
 
 <!doctype html>
 <html lang="en">
@@ -9,12 +13,16 @@
     <link rel="stylesheet" href="Finance_Dashboard.css" />
   </head>
   <body>
+    <!-- Main layout container with sidebar and content -->
     <div class="layout">
+      <!-- Sidebar with navigation menu -->
       <aside class="sidebar">
+        <!-- Logo section -->
         <div class="logo">
           <h1>Fintech</h1>
           <p>Dashboard</p>
         </div>
+        <!-- Navigation menu with clickable items -->
         <nav class="menu">
           <a href="#" class="menu-item active">Overview</a>
           <a href="#" class="menu-item">Accounts</a>
@@ -22,13 +30,16 @@
           <a href="#" class="menu-item">Analytics</a>
           <a href="#" class="menu-item">Settings</a>
         </nav>
+        <!-- User information display -->
         <div class="user-info">
           <p>Alex Chen</p>
           <small>Premium</small>
         </div>
       </aside>
 
+      <!-- Main content area -->
       <div class="content">
+        <!-- Top header bar -->
         <header class="top-bar">
           <h2>Dashboard</h2>
           <div class="controls">
@@ -37,13 +48,16 @@
           </div>
         </header>
 
+        <!-- Main dashboard content -->
         <main class="dashboard">
+          <!-- Hero section showing total assets -->
           <div class="hero">
             <div class="hero-label">Total Assets</div>
             <div class="hero-amount">$847,250.00</div>
             <div class="hero-change">↑ 12.5% from last month</div>
           </div>
 
+          <!-- Grid of summary cards -->
           <div class="cards-grid">
             <div class="card">
               <div class="card-label">Liquid Assets</div>
@@ -67,6 +81,7 @@
             </div>
           </div>
 
+          <!-- Accounts section -->
           <h3 class="section-heading">Accounts</h3>
           <div class="accounts-grid">
             <div class="account-item">
@@ -95,6 +110,7 @@
             </div>
           </div>
 
+          <!-- Recent transactions section -->
           <h3 class="section-heading">Transactions</h3>
           <div class="transactions">
             <div class="transaction">
@@ -131,6 +147,7 @@
             </div>
           </div>
 
+          <!-- Financial insights section -->
           <h3 class="section-heading">Insights</h3>
           <div class="insights-grid">
             <div class="insight">

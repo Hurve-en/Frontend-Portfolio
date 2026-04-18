@@ -1,28 +1,36 @@
-/* Simple comment: This file controls the page styles. */
+/*
+  Personal Finance Dashboard Styles
+  This CSS file defines the visual appearance and layout of the financial dashboard.
+  It uses CSS custom properties (variables) for consistent colors and responsive design.
+*/
 
+/* Reset default browser margins and padding, use border-box for easier sizing */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* Define color variables for consistent theming throughout the dashboard */
 :root {
-  --dark: #0a0a0a;
-  --dark-2: #1a1a1a;
-  --dark-3: #2a2a2a;
-  --text: #ffffff;
-  --text-sub: #b0b0b0;
-  --text-muted: #808080;
-  --border: #333;
-  --green: #4ade80;
-  --red: #ef4444;
+  --dark: #0a0a0a; /* Main dark background */
+  --dark-2: #1a1a1a; /* Secondary dark background */
+  --dark-3: #2a2a2a; /* Tertiary dark background for hover states */
+  --text: #ffffff; /* Primary text color */
+  --text-sub: #b0b0b0; /* Secondary text color */
+  --text-muted: #808080; /* Muted text color */
+  --border: #333; /* Border color */
+  --green: #4ade80; /* Positive/green accent color */
+  --red: #ef4444; /* Negative/red accent color */
 }
 
+/* Base font size and smooth scrolling behavior */
 html {
   font-size: 16px;
   scroll-behavior: smooth;
 }
 
+/* Body styling with dark theme and system font stack */
 body {
   font-family:
     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -30,13 +38,13 @@ body {
   color: var(--text);
 }
 
-/* LAYOUT */
+/* MAIN LAYOUT - Flexbox layout with sidebar and content areas */
 .layout {
   display: flex;
   min-height: 100vh;
 }
 
-/* SIDEBAR */
+/* SIDEBAR - Fixed navigation panel on the left */
 .sidebar {
   width: 240px;
   background: var(--dark-2);
@@ -51,6 +59,7 @@ body {
   overflow-y: auto;
 }
 
+/* Logo styling in the sidebar */
 .logo h1 {
   font-size: 24px;
   font-weight: 700;
@@ -65,6 +74,7 @@ body {
   font-weight: 600;
 }
 
+/* Navigation menu styling */
 .menu {
   flex: 1;
   display: flex;
@@ -73,6 +83,7 @@ body {
   margin: 40px 0;
 }
 
+/* Individual menu item styling */
 .menu-item {
   padding: 12px 16px;
   background: transparent;
@@ -87,6 +98,7 @@ body {
   border-radius: 0 4px 4px 0;
 }
 
+/* Hover and active states for menu items */
 .menu-item:hover,
 .menu-item.active {
   color: var(--text);
@@ -94,6 +106,7 @@ body {
   border-left-color: var(--text);
 }
 
+/* User information section at bottom of sidebar */
 .user-info {
   padding-top: 24px;
   border-top: 1px solid var(--border);
@@ -110,7 +123,7 @@ body {
   color: var(--text-muted);
 }
 
-/* CONTENT */
+/* MAIN CONTENT AREA - Takes up remaining space after sidebar */
 .content {
   flex: 1;
   margin-left: 240px;
@@ -118,7 +131,7 @@ body {
   flex-direction: column;
 }
 
-/* TOP BAR */
+/* TOP HEADER BAR - Contains title and control buttons */
 .top-bar {
   padding: 24px 40px;
   border-bottom: 1px solid var(--border);
@@ -154,14 +167,14 @@ body {
   border-color: var(--text-sub);
 }
 
-/* DASHBOARD */
+/* DASHBOARD MAIN CONTENT - Scrollable area with all dashboard sections */
 .dashboard {
   flex: 1;
   padding: 40px;
   overflow-y: auto;
 }
 
-/* HERO */
+/* HERO SECTION - Large display of total assets */
 .hero {
   padding: 60px;
   border: 1px solid var(--border);
@@ -197,7 +210,7 @@ body {
   font-weight: 500;
 }
 
-/* CARDS GRID */
+/* SUMMARY CARDS GRID - Shows key financial metrics */
 .cards-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -240,14 +253,14 @@ body {
   font-weight: 600;
 }
 
-/* SECTION HEADING */
+/* SECTION HEADINGS - Used for major sections like Accounts, Transactions */
 .section-heading {
   font-size: 18px;
   font-weight: 400;
   margin: 40px 0 24px 0;
 }
 
-/* ACCOUNTS */
+/* ACCOUNTS SECTION - Grid of account information cards */
 .accounts-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -304,7 +317,7 @@ body {
   color: var(--text-muted);
 }
 
-/* TRANSACTIONS */
+/* TRANSACTIONS SECTION - List of recent financial transactions */
 .transactions {
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -368,7 +381,7 @@ body {
   color: var(--green);
 }
 
-/* INSIGHTS */
+/* INSIGHTS SECTION - Grid of financial insights and recommendations */
 .insights-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -409,7 +422,7 @@ body {
   color: var(--text-muted);
 }
 
-/* RESPONSIVE */
+/* RESPONSIVE DESIGN - Adjusts layout for smaller screens */
 @media (max-width: 1200px) {
   .cards-grid,
   .accounts-grid,
