@@ -1,65 +1,63 @@
-// Simple comment: This file adds page behavior and interactions.
-
-/* clock.js
-   Digital Clock with timezone support, 12/24 toggle, Analog view, Alarm (stop/snooze),
-   theme persistence, and accessible updates.
-
-   Structure:
-     - IIFE wraps everything to avoid globals.
-     - Settings persisted to localStorage: format24, timezone, viewMode, theme, alarmTime.
-     - Time display uses Intl.DateTimeFormat.formatToParts with timeZone option to extract parts robustly.
-     - Alarm compares HH:MM in the chosen timezone every second; supports next-day behavior.
-     - Audio beep via Web Audio API. If unavailable/blocked, falls back to <audio> or shows enable-sound notification.
-
-   Note on timezone: We obtain timezone-local hour/min/sec via formatToParts for the chosen zone.
-   This means we avoid creating Dates in arbitrary timezones; instead we use the runtime (UTC epoch)
-   and ask Intl to tell us the components in that zone for the current instant.
+/* Digital Clock - Timezone, 12/24 format, alarm, theme, and analog view support */
+/*
+  FEATURES:
+  - Display time in any timezone with 12/24 hour format
+  - Set alarms with snooze functionality
+  - Light/dark theme with persistence
+  - Analog and minimal view modes
+  - Uses localStorage for saving user preferences
+  - Web Audio API for alarm beeps
 */
 
 (function () {
-  // ---------- DOM refs ----------
-  const timeDisplay = document.getElementById('timeDisplay');
-  const dateDisplay = document.getElementById('dateDisplay');
-  const tzSelect = document.getElementById('tzSelect');
-  const tzLabel = document.getElementById('tzLabel');
-  const themeToggle = document.getElementById('themeToggle');
-  const formatToggle = document.getElementById('formatToggle');
-  const viewModeSelect = document.getElementById('viewMode');
-  const analogWrap = document.getElementById('analogWrap');
-  const alarmTimeInput = document.getElementById('alarmTime');
-  const setAlarmBtn = document.getElementById('setAlarm');
-  const clearAlarmBtn = document.getElementById('clearAlarm');
-  const alarmStateEl = document.getElementById('alarmState');
-  const snoozeBtn = document.getElementById('snoozeBtn');
-  const stopBtn = document.getElementById('stopBtn');
-  const appEl = document.querySelector('.app');
-  const beepSample = document.getElementById('beepSample');
+  // HTML Elements - Get references to all interactive elements
+  const timeDisplay = document.getElementById("timeDisplay");
+  const dateDisplay = document.getElementById("dateDisplay");
+  const tzSelect = document.getElementById("tzSelect");
+  const tzLabel = document.getElementById("tzLabel");
+  const themeToggle = document.getElementById("themeToggle");
+  const formatToggle = document.getElementById("formatToggle");
+  const viewModeSelect = document.getElementById("viewMode");
+  const analogWrap = document.getElementById("analogWrap");
+  const alarmTimeInput = document.getElementById("alarmTime");
+  const setAlarmBtn = document.getElementById("setAlarm");
+  const clearAlarmBtn = document.getElementById("clearAlarm");
+  const alarmStateEl = document.getElementById("alarmState");
+  const snoozeBtn = document.getElementById("snoozeBtn");
+  const stopBtn = document.getElementById("stopBtn");
+  const appEl = document.querySelector(".app");
+  const beepSample = document.getElementById("beepSample");
 
-  // Analog hands
-  const hourHand = document.getElementById('hourHand');
-  const minuteHand = document.getElementById('minuteHand');
-  const secondHand = document.getElementById('secondHand');
-  const ticksContainer = document.getElementById('ticks');
+  // Analog Clock Hands - Rotating SVG lines
+  const hourHand = document.getElementById("hourHand");
+  const minuteHand = document.getElementById("minuteHand");
+  const secondHand = document.getElementById("secondHand");
+  const ticksContainer = document.getElementById("ticks");
 
-  // ---------- Presets & defaults ----------
+  // Configuration - Timezone options and default settings
   const TZ_PRESETS = [
-    { id: 'local', label: 'Local' },
-    { id: 'UTC', label: 'UTC' },
-    { id: 'America/New_York', label: 'New York' },
-    { id: 'Europe/London', label: 'London' },
-    { id: 'Asia/Tokyo', label: 'Tokyo' }
+    { id: "local", label: "Local" },
+    { id: "UTC", label: "UTC" },
+    { id: "America/New_York", label: "New York" },
+    { id: "Europe/London", label: "London" },
+    { id: "Asia/Tokyo", label: "Tokyo" },
   ];
 
-  const LS_KEY = 'clock_settings_v1';
+  // Settings Storage - Key name and initial values
+  const LS_KEY = "clock_settings_v1";
   const DEFAULTS = {
     format24: false,
-    timezone: 'local',
-    viewMode: 'digital',
-    theme: (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light',
-    alarmTime: '', // 'HH:MM'
+    timezone: "local",
+    viewMode: "digital",
+    theme:
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light",
+    alarmTime: "", // 'HH:MM'
   };
 
-  // ---------- Runtime state ----------
+  // App State - Variables that change during execution
   let settings = {};
   let alarmActive = false;
   let alarmTriggered = false;
@@ -68,10 +66,10 @@
   let audioCtx = null;
   let beepNode = null;
 
-  // Keep track of last alarm day to avoid multiple triggers within same minute.
+  // Alarm Tracking - Prevents alarm from firing repeatedly in same minute
   let lastAlarmTriggerKey = null;
 
-  // ---------- Utilities: localStorage ----------
+  // Storage Utilities - Save and load settings from browser storage
   function loadSettings() {
     try {
       const raw = localStorage.getItem(LS_KEY);
@@ -86,22 +84,24 @@
   function saveSettings() {
     try {
       localStorage.setItem(LS_KEY, JSON.stringify(settings));
-    } catch (e) { /* ignore storage errors */ }
+    } catch (e) {
+      /* ignore storage errors */
+    }
   }
 
-  // ---------- Setup initial UI values ----------
+  // UI Setup - Populate dropdowns and apply saved settings
   function populateTimezoneSelect() {
-    tzSelect.innerHTML = '';
-    TZ_PRESETS.forEach(p => {
-      const opt = document.createElement('option');
+    tzSelect.innerHTML = "";
+    TZ_PRESETS.forEach((p) => {
+      const opt = document.createElement("option");
       opt.value = p.id;
       opt.textContent = p.label;
       tzSelect.appendChild(opt);
     });
     // allow manual entry: also include browser's Intl timeZone (if available)
     const guessed = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    if (guessed && !TZ_PRESETS.some(p => p.id === guessed)) {
-      const o = document.createElement('option');
+    if (guessed && !TZ_PRESETS.some((p) => p.id === guessed)) {
+      const o = document.createElement("option");
       o.value = guessed;
       o.textContent = guessed;
       tzSelect.appendChild(o);
@@ -109,110 +109,127 @@
   }
 
   function applySettingsToUI() {
-    themeToggle.checked = (settings.theme === 'dark');
-    if (settings.theme === 'dark') document.documentElement.setAttribute('data-theme','dark');
-    else document.documentElement.removeAttribute('data-theme');
+    themeToggle.checked = settings.theme === "dark";
+    if (settings.theme === "dark")
+      document.documentElement.setAttribute("data-theme", "dark");
+    else document.documentElement.removeAttribute("data-theme");
 
-    formatToggle.setAttribute('aria-pressed', String(!settings.format24));
-    formatToggle.dataset.format24 = settings.format24 ? '1' : '0';
+    formatToggle.setAttribute("aria-pressed", String(!settings.format24));
+    formatToggle.dataset.format24 = settings.format24 ? "1" : "0";
 
-    if (TZ_PRESETS.some(p => p.id === settings.timezone) || settings.timezone) {
+    if (
+      TZ_PRESETS.some((p) => p.id === settings.timezone) ||
+      settings.timezone
+    ) {
       tzSelect.value = settings.timezone;
     } else {
-      tzSelect.value = 'local';
-      settings.timezone = 'local';
+      tzSelect.value = "local";
+      settings.timezone = "local";
     }
-    tzLabel.textContent = (TZ_PRESETS.find(p=>p.id===settings.timezone) || {label:settings.timezone}).label;
+    tzLabel.textContent = (
+      TZ_PRESETS.find((p) => p.id === settings.timezone) || {
+        label: settings.timezone,
+      }
+    ).label;
 
-    viewModeSelect.value = settings.viewMode || 'digital';
-    if (settings.viewMode === 'minimal') appEl.classList.add('minimal'); else appEl.classList.remove('minimal');
+    viewModeSelect.value = settings.viewMode || "digital";
+    if (settings.viewMode === "minimal") appEl.classList.add("minimal");
+    else appEl.classList.remove("minimal");
 
-    alarmTimeInput.value = settings.alarmTime || '';
+    alarmTimeInput.value = settings.alarmTime || "";
   }
 
-  // ---------- Time / timezone helpers ----------
-  // Get date-time parts for a given instant and timezone using Intl.formatToParts
-  function getPartsForZone(date = new Date(), timeZone = 'local') {
+  // Time Utilities - Format and convert time for different timezones
+  function getPartsForZone(date = new Date(), timeZone = "local") {
     // if 'local', use default locale (no timeZone option) to get local parts
-    const opts = { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit', day: '2-digit', month: 'long', year: 'numeric', weekday: 'long' };
-    const parts = (timeZone === 'local') ?
-      new Intl.DateTimeFormat([], opts).formatToParts(date) :
-      new Intl.DateTimeFormat('en-US', Object.assign({}, opts, { timeZone })).formatToParts(date);
+    const opts = {
+      hour12: false,
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+      weekday: "long",
+    };
+    const parts =
+      timeZone === "local"
+        ? new Intl.DateTimeFormat([], opts).formatToParts(date)
+        : new Intl.DateTimeFormat(
+            "en-US",
+            Object.assign({}, opts, { timeZone }),
+          ).formatToParts(date);
 
     // convert parts to an object for quick lookup
     const out = {};
-    parts.forEach(p => { out[p.type] = p.value; });
+    parts.forEach((p) => {
+      out[p.type] = p.value;
+    });
     return out;
   }
 
-  // Format time string given parts and current format setting
+  // Format Time - Convert 24-hour time to 12 or 24-hour display format
   function formatTimeFromParts(parts) {
     // parts.hour is 00..23 string
     const h24 = parseInt(parts.hour, 10);
     let displayHour = h24;
-    let ampm = '';
+    let ampm = "";
     if (!settings.format24) {
-      ampm = (h24 >= 12) ? 'PM' : 'AM';
+      ampm = h24 >= 12 ? "PM" : "AM";
       displayHour = h24 % 12;
       if (displayHour === 0) displayHour = 12;
     }
-    const hh = String(displayHour).padStart(2, '0');
-    const mm = String(parts.minute || '00').padStart(2, '0');
-    const ss = String(parts.second || '00').padStart(2, '0');
+    const hh = String(displayHour).padStart(2, "0");
+    const mm = String(parts.minute || "00").padStart(2, "0");
+    const ss = String(parts.second || "00").padStart(2, "0");
     return { timeStr: `${hh}:${mm}:${ss}`, ampm };
   }
 
-  // Build date string: Weekday, Month Day, Year
+  // Format Date - Create readable date string from parts
   function formatDateFromParts(parts) {
-    const wk = parts.weekday || '';
-    const mon = parts.month || '';
-    const day = parts.day || '';
-    const yr = parts.year || '';
+    const wk = parts.weekday || "";
+    const mon = parts.month || "";
+    const day = parts.day || "";
+    const yr = parts.year || "";
     return `${wk}, ${mon} ${day}, ${yr}`;
   }
 
-  // ---------- Alarm logic ----------
-  // Determine whether the alarm should fire at the current moment.
-  // Uses timezone-local hour/minute. Snooze overrides alarm firing until snoozeUntil epoch time.
+  // Alarm Logic - Check and trigger alarms at the right time
   function checkAndTriggerAlarm(parts) {
     const alarmSet = settings.alarmTime && settings.alarmTime.length === 5;
     if (!alarmSet) return;
 
-    // If snoozed, only trigger if now >= snoozeUntil
+    // Check if snoozed - don't trigger if snooze is still active
     if (snoozeUntil && Date.now() < snoozeUntil) return;
 
-    const [ah, am] = settings.alarmTime.split(':').map(x => parseInt(x, 10));
+    const [ah, am] = settings.alarmTime.split(":").map((x) => parseInt(x, 10));
     const curH = parseInt(parts.hour, 10);
     const curM = parseInt(parts.minute, 10);
 
-    // create a key representing current day and alarm minute to prevent repeated triggers during same minute
-    const todayKey = `${parts.year}-${parts.month}-${parts.day}-${String(ah).padStart(2,'0')}:${String(am).padStart(2,'0')}`;
+    // Create unique key - prevents multiple triggers in the same minute
+    const todayKey = `${parts.year}-${parts.month}-${parts.day}-${String(ah).padStart(2, "0")}:${String(am).padStart(2, "0")}`;
 
-    // compute if alarm time equals current hour and minute
+    // Check if current time matches alarm time
     if (ah === curH && am === curM) {
-      // if it hasn't already triggered for this exact key, trigger
+      // Trigger alarm if it hasn't fired for this time yet
       if (lastAlarmTriggerKey !== todayKey) {
         triggerAlarm();
         lastAlarmTriggerKey = todayKey;
       }
-    } else {
-      // reset lastAlarmTriggerKey if time moved past minute
-      // (ensures next-day behavior when minutes match again)
-      // If alarm is in the past for the same day, we'll handle by matching next day when equal.
     }
   }
 
-  // Start alarm visual state and audio beep
+  // Trigger Alarm - Show alert and play sound
   function triggerAlarm() {
     alarmTriggered = true;
     alarmStateEl.hidden = false;
-    // start beep
+    // Play alarm sound
     startBeep();
-    // ensure focus for accessibility
-    alarmStateEl.querySelector('.alarm-message').focus?.();
+    // Focus alert for accessibility
+    alarmStateEl.querySelector(".alarm-message").focus?.();
   }
 
-  // Stop alarm and clear visual state
+  // Stop Alarm - Hide alert and mute sound
   function stopAlarm() {
     alarmTriggered = false;
     alarmStateEl.hidden = true;
@@ -220,7 +237,7 @@
     snoozeUntil = null;
   }
 
-  // Snooze: pause alarm for 5 minutes from now (system time)
+  // Snooze Alarm - Quiet for 5 minutes then trigger again
   function snoozeAlarm() {
     stopBeep();
     alarmTriggered = false;
@@ -228,53 +245,56 @@
     snoozeUntil = Date.now() + 5 * 60 * 1000;
   }
 
-  // Set or clear alarm
+  // Set Alarm - Save time from input field
   function setAlarmFromInput() {
     const val = alarmTimeInput.value; // 'HH:MM' or ''
     settings.alarmTime = val;
     saveSettings();
     if (val) {
-      // user sets alarm for chosen HH:MM; will trigger when timezone-local HH:MM matches
-      // if that time is in the past for today, the comparison logic ensures next-day trigger
+      // Alarm set - will trigger when local time matches
       showToast(`Alarm set for ${val}`);
     } else {
-      showToast('Alarm cleared');
+      showToast("Alarm cleared");
     }
   }
 
+  // Clear Alarm - Remove set time and stop any active alarm
   function clearAlarm() {
-    settings.alarmTime = '';
+    settings.alarmTime = "";
     saveSettings();
-    alarmTimeInput.value = '';
+    alarmTimeInput.value = "";
     stopAlarm();
   }
 
-  // ---------- Audio beep (Web Audio API with fallback) ----------
+  // Audio Beep - Play sound using Web Audio API or fallback audio element
   function startBeep() {
-    // try Web Audio API
+    // Try modern Web Audio API
     try {
-      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      // simple oscillator beep repeated via interval
+      if (!audioCtx)
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      // Create sine wave sound at 880Hz
       const o = audioCtx.createOscillator();
       const g = audioCtx.createGain();
-      o.type = 'sine';
+      o.type = "sine";
       o.frequency.value = 880; // A5
-      g.gain.value = 0.0001; // start very quiet to avoid autoplay issues
+      g.gain.value = 0.0001; // Start quiet for autoplay compatibility
       o.connect(g);
       g.connect(audioCtx.destination);
       o.start();
 
-      // ramp up quickly (user gesture likely required in some browsers)
+      // Ramp up volume quickly
       g.gain.exponentialRampToValueAtTime(0.08, audioCtx.currentTime + 0.02);
 
       beepNode = { oscillator: o, gain: g };
-      // continue beep until stopBeep
     } catch (e) {
-      // fallback to <audio> element
+      // Fallback - use HTML audio element if Web Audio fails
       try {
-        beepSample.play().catch(err => {
-          // autoplay blocked: notify user to interact
-          showToast('Audio blocked by browser. Interact to enable alarm sound.', true);
+        beepSample.play().catch((err) => {
+          // Audio blocked - tell user to interact with page
+          showToast(
+            "Audio blocked by browser. Interact to enable alarm sound.",
+            true,
+          );
         });
       } catch (err) {
         // ignore
@@ -285,58 +305,70 @@
   function stopBeep() {
     try {
       if (beepNode && beepNode.oscillator) {
-        beepNode.gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.02);
+        beepNode.gain.gain.exponentialRampToValueAtTime(
+          0.0001,
+          audioCtx.currentTime + 0.02,
+        );
         beepNode.oscillator.stop(audioCtx.currentTime + 0.03);
         beepNode = null;
       }
     } catch (e) {}
-    try { beepSample.pause(); beepSample.currentTime = 0; } catch (e) {}
+    try {
+      beepSample.pause();
+      beepSample.currentTime = 0;
+    } catch (e) {} // Stop audio element
   }
 
-  // ---------- Rendering / update loop ----------
+  // Update Clock Display - Main render loop that updates every second
   function updateTime() {
     const now = new Date();
-    // determine timezone to use
-    const tz = settings.timezone === 'local' ? 'local' : settings.timezone;
+    // Get timezone to display
+    const tz = settings.timezone === "local" ? "local" : settings.timezone;
 
-    // parts holds strings for hour/minute/second/day/month/year/weekday
+    // Get time parts as strings for selected timezone
     const parts = getPartsForZone(now, tz);
 
-    // update textual time and date
+    // Update digital time and date display
     const tf = formatTimeFromParts(parts);
-    timeDisplay.textContent = (settings.format24) ? `${parts.hour}:${parts.minute}:${parts.second}` : `${tf.timeStr} ${tf.ampm}`;
+    timeDisplay.textContent = settings.format24
+      ? `${parts.hour}:${parts.minute}:${parts.second}`
+      : `${tf.timeStr} ${tf.ampm}`;
     dateDisplay.textContent = formatDateFromParts(parts);
-    tzLabel.textContent = (TZ_PRESETS.find(p => p.id === settings.timezone) || { label: settings.timezone }).label;
+    tzLabel.textContent = (
+      TZ_PRESETS.find((p) => p.id === settings.timezone) || {
+        label: settings.timezone,
+      }
+    ).label;
 
-    // analog hands rotation
+    // Update analog clock hands
     updateAnalogHands(parts);
 
-    // check alarm
+    // Check if alarm should trigger
     if (settings.alarmTime) {
       checkAndTriggerAlarm(parts);
     }
 
-    // ensure we remain in sync (use next tick via setTimeout to align to next second)
+    // Schedule next update for top of next second
     scheduleNextTick();
   }
 
-  // align next tick to top of next second to avoid drift
+  // Schedule Next Update - Align to next second boundary
   let nextTickTimer = null;
   function scheduleNextTick() {
     if (nextTickTimer) clearTimeout(nextTickTimer);
     const now = Date.now();
-    const delay = 1000 - (now % 1000) + 5; // small offset
+    const delay = 1000 - (now % 1000) + 5; // Add small offset to hit next second
     nextTickTimer = setTimeout(updateTime, delay);
   }
 
-  // Update analog hands angle using parts (strings)
+  // Update Analog Hands - Rotate clock hands to show current time
   function updateAnalogHands(parts) {
-    // compute numeric values
+    // Convert time parts to numbers
     const h = parseInt(parts.hour, 10);
     const m = parseInt(parts.minute, 10);
     const s = parseInt(parts.second, 10);
 
-    // angles: hour = (h % 12 + m/60)*30
+    // Calculate rotation angles for each hand (30 degrees per hour/5 min, 6 degrees per min/sec)
     const hourAngle = ((h % 12) + m / 60) * 30;
     const minuteAngle = (m + s / 60) * 6;
     const secondAngle = s * 6;
@@ -346,178 +378,210 @@
     secondHand.style.transform = `rotate(${secondAngle}deg)`;
   }
 
-  // ---------- Helper: format/get parts ----------
+  // Get Time Parts - Extract date/time components for a timezone
   function getPartsForZone(date, timeZone) {
     const opts = {
       hour12: false,
-      hour: '2-digit', minute: '2-digit', second: '2-digit',
-      day: '2-digit', month: 'long', year: 'numeric', weekday: 'long'
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+      weekday: "long",
     };
     try {
-      const dtf = (timeZone === 'local') ? new Intl.DateTimeFormat([], opts) : new Intl.DateTimeFormat('en-US', Object.assign({}, opts, { timeZone }));
+      const dtf =
+        timeZone === "local"
+          ? new Intl.DateTimeFormat([], opts)
+          : new Intl.DateTimeFormat(
+              "en-US",
+              Object.assign({}, opts, { timeZone }),
+            );
       const parts = dtf.formatToParts(date);
       const out = {};
-      parts.forEach(p => out[p.type] = p.value);
-      // some locales produce non-numeric digits; ensure numeric hour/min are ASCII digits
-      if (out.hour) out.hour = out.hour.replace(/[^\d]/g, '').padStart(2,'0');
-      if (out.minute) out.minute = out.minute.replace(/[^\d]/g, '').padStart(2,'0');
-      if (out.second) out.second = out.second.replace(/[^\d]/g, '').padStart(2,'0');
+      parts.forEach((p) => (out[p.type] = p.value));
+      // Ensure digits are standard 0-9 format, not locale-specific
+      if (out.hour) out.hour = out.hour.replace(/[^\d]/g, "").padStart(2, "0");
+      if (out.minute)
+        out.minute = out.minute.replace(/[^\d]/g, "").padStart(2, "0");
+      if (out.second)
+        out.second = out.second.replace(/[^\d]/g, "").padStart(2, "0");
       return out;
     } catch (e) {
-      // fallback: return local parts
+      // Fallback - return local timezone if request fails
       const local = new Intl.DateTimeFormat([], opts).formatToParts(date);
-      const out = {}; local.forEach(p => out[p.type] = p.value);
+      const out = {};
+      local.forEach((p) => (out[p.type] = p.value));
       return out;
     }
   }
 
+  // Format Time String - Convert 24-hour to 12 or 24-hour format
   function formatTimeFromParts(parts) {
-    const h24 = parseInt(parts.hour || '0', 10);
+    const h24 = parseInt(parts.hour || "0", 10);
     let displayHour = h24;
-    let ampm = '';
+    let ampm = "";
     if (!settings.format24) {
-      ampm = (h24 >= 12) ? 'PM' : 'AM';
+      ampm = h24 >= 12 ? "PM" : "AM";
       displayHour = h24 % 12;
       if (displayHour === 0) displayHour = 12;
     }
-    const hh = String(displayHour).padStart(2, '0');
-    const mm = String(parts.minute || '00').padStart(2, '0');
-    const ss = String(parts.second || '00').padStart(2, '0');
+    const hh = String(displayHour).padStart(2, "0");
+    const mm = String(parts.minute || "00").padStart(2, "0");
+    const ss = String(parts.second || "00").padStart(2, "0");
     return { timeStr: `${hh}:${mm}:${ss}`, ampm };
   }
 
   function formatDateFromParts(parts) {
-    const wk = parts.weekday || '';
-    const mon = parts.month || '';
-    const day = parts.day || '';
-    const yr = parts.year || '';
+    const wk = parts.weekday || "";
+    const mon = parts.month || "";
+    const day = parts.day || "";
+    const yr = parts.year || "";
     return `${wk}, ${mon} ${day}, ${yr}`;
   }
 
-  // ---------- Small utility: toasts / notifications ----------
+  // Show Toast - Display temporary notification message
   let toastTimer = null;
   function showToast(msg, sticky = false) {
-    // simple use alert for now to avoid extra markup; non-blocking toast could be added
+    // Create temporary on-screen message
     if (!sticky) {
-      // transient: small overlay
-      const el = document.createElement('div');
+      // Non-sticky - auto-hide after 2.5 seconds
+      const el = document.createElement("div");
       el.textContent = msg;
-      el.style.position = 'fixed';
-      el.style.bottom = '18px';
-      el.style.left = '50%';
-      el.style.transform = 'translateX(-50%)';
-      el.style.background = 'rgba(6,10,25,0.9)';
-      el.style.color = 'white';
-      el.style.padding = '8px 12px';
-      el.style.borderRadius = '8px';
+      el.style.position = "fixed";
+      el.style.bottom = "18px";
+      el.style.left = "50%";
+      el.style.transform = "translateX(-50%)";
+      el.style.background = "rgba(6,10,25,0.9)";
+      el.style.color = "white";
+      el.style.padding = "8px 12px";
+      el.style.borderRadius = "8px";
       el.style.zIndex = 9999;
       document.body.appendChild(el);
       clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => { el.remove(); }, 2500);
+      toastTimer = setTimeout(() => {
+        el.remove();
+      }, 2500);
     } else {
+      // Sticky - show as alert until user closes
       alert(msg);
     }
   }
 
-  // ---------- Events: UI binding ----------
+  // Bind UI Events - Set up all user interactions
   function bindUI() {
-    // theme toggle
-    themeToggle.addEventListener('change', (e) => {
+    // Theme Toggle - Switch between light and dark
+    themeToggle.addEventListener("change", (e) => {
       const dark = e.target.checked;
-      settings.theme = dark ? 'dark' : 'light';
-      try { localStorage.setItem('clock_theme', settings.theme); } catch (err) {}
-      // apply immediately
-      if (settings.theme === 'dark') document.documentElement.setAttribute('data-theme','dark');
-      else document.documentElement.removeAttribute('data-theme');
+      settings.theme = dark ? "dark" : "light";
+      try {
+        localStorage.setItem("clock_theme", settings.theme);
+      } catch (err) {}
+      // Apply theme right away
+      if (settings.theme === "dark")
+        document.documentElement.setAttribute("data-theme", "dark");
+      else document.documentElement.removeAttribute("data-theme");
       saveSettings();
     });
 
-    // format toggle: toggles 12/24 preference
-    formatToggle.addEventListener('click', () => {
+    // Time Format - Toggle between 12 and 24-hour format
+    formatToggle.addEventListener("click", () => {
       settings.format24 = !settings.format24;
-      formatToggle.setAttribute('aria-pressed', String(!settings.format24));
+      formatToggle.setAttribute("aria-pressed", String(!settings.format24));
       saveSettings();
     });
 
-    // timezone select change
-    tzSelect.addEventListener('change', () => {
+    // Timezone Select - Change displayed timezone
+    tzSelect.addEventListener("change", () => {
       const tz = tzSelect.value;
       settings.timezone = tz;
-      tzLabel.textContent = (TZ_PRESETS.find(p => p.id === tz) || { label: tz }).label;
+      tzLabel.textContent = (
+        TZ_PRESETS.find((p) => p.id === tz) || { label: tz }
+      ).label;
       saveSettings();
     });
 
-    // view mode select (digital vs minimal)
-    viewModeSelect.addEventListener('change', () => {
+    // View Mode - Switch between digital+analog or minimal display
+    viewModeSelect.addEventListener("change", () => {
       settings.viewMode = viewModeSelect.value;
-      if (settings.viewMode === 'minimal') appEl.classList.add('minimal'); else appEl.classList.remove('minimal');
+      if (settings.viewMode === "minimal") appEl.classList.add("minimal");
+      else appEl.classList.remove("minimal");
       saveSettings();
     });
 
-    // set/clear alarm
-    setAlarmBtn.addEventListener('click', () => { setAlarmFromInput(); });
-    clearAlarmBtn.addEventListener('click', () => { clearAlarm(); });
+    // Alarm Buttons - Set or clear alarm
+    setAlarmBtn.addEventListener("click", () => {
+      setAlarmFromInput();
+    });
+    clearAlarmBtn.addEventListener("click", () => {
+      clearAlarm();
+    });
 
-    // snooze & stop
-    snoozeBtn.addEventListener('click', () => snoozeAlarm());
-    stopBtn.addEventListener('click', () => stopAlarm());
+    // Alarm Controls - Snooze or stop active alarm
+    snoozeBtn.addEventListener("click", () => snoozeAlarm());
+    stopBtn.addEventListener("click", () => stopAlarm());
 
-    // keyboard accessibility: Escape to clear input
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        // if focus in time input, clear it
-        if (document.activeElement === alarmTimeInput) alarmTimeInput.value = '';
+    // Keyboard Shortcut - Escape key clears alarm time input
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        // Clear input if focused
+        if (document.activeElement === alarmTimeInput)
+          alarmTimeInput.value = "";
       }
     });
 
-    // page visibility: when page becomes visible, update immediately to keep accurate
-    document.addEventListener('visibilitychange', () => {
+    // Page Visibility - Update clock immediately when page becomes visible
+    document.addEventListener("visibilitychange", () => {
       if (!document.hidden) updateTime();
     });
 
-    // allow user to click alarm state to stop
-    alarmStateEl.addEventListener('click', () => stopAlarm());
+    // Click to Stop - User can click alarm alert to stop it
+    alarmStateEl.addEventListener("click", () => stopAlarm());
   }
 
-  // ---------- analog ticks initial render ----------
+  // Render Ticks - Draw 60 tick marks on analog clock (every 6 degrees)
   function renderTicks() {
-    ticksContainer.innerHTML = '';
+    ticksContainer.innerHTML = "";
     for (let i = 0; i < 60; i++) {
       const angle = i * 6;
-      const len = (i % 5 === 0) ? 6 : 3;
-      const x1 = 0;
-      const y1 = -44;
-      // rotate via transform
-      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-      line.setAttribute('x1', '0');
-      line.setAttribute('y1', '-44');
-      line.setAttribute('x2', '0');
-      line.setAttribute('y2', String(-44 + len));
-      line.setAttribute('class', 'tick');
-      line.setAttribute('transform', `rotate(${angle})`);
+      const len = i % 5 === 0 ? 6 : 3; // Longer marks every 5 minutes
+      // Rotate line to show around clock
+      const line = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "line",
+      );
+      line.setAttribute("x1", "0");
+      line.setAttribute("y1", "-44");
+      line.setAttribute("x2", "0");
+      line.setAttribute("y2", String(-44 + len));
+      line.setAttribute("class", "tick");
+      line.setAttribute("transform", `rotate(${angle})`);
       ticksContainer.appendChild(line);
     }
   }
 
-  // ---------- init ----------
+  // Initialize App - Set up all components on page load
   function init() {
     loadSettings();
     populateTimezoneSelect();
     applySettingsToUI();
     bindUI();
     renderTicks();
-    // initial immediate update
+    // First clock update
     updateTime();
   }
 
-  // Kick off
+  // Start the app
   init();
 
-  // Expose minimal API for debugging
+  // Debug API - Exposed for testing in browser console
   window._clock = {
     settings,
     start: () => updateTime(),
-    stop: () => { if (nextTickTimer) clearTimeout(nextTickTimer); },
-    evaluateParts: getPartsForZone
+    stop: () => {
+      if (nextTickTimer) clearTimeout(nextTickTimer);
+    },
+    evaluateParts: getPartsForZone,
   };
 })();
