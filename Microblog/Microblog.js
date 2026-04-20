@@ -1,14 +1,14 @@
 /* Microblog app script
    - Handles posts, theme, storage, and UI actions
-   - No external libraries needed
+   - No libraries needed
 */
 
 (() => {
-  // localStorage keys
+  // Storage keys
   const STORAGE_KEY = "microblog-posts";
   const THEME_KEY = "microblog-theme";
 
-  // DOM references
+  // Page elements
   const searchInput = document.getElementById("searchInput");
   const moodFilter = document.getElementById("moodFilter");
   const themeBtn = document.getElementById("themeBtn");
@@ -38,7 +38,7 @@
 
   const fileImport = document.getElementById("fileImport");
 
-  // state
+  // App state
   let posts = [];
   let editingId = null;
   let deleteTargetId = null;
@@ -52,7 +52,7 @@
     { id: "love", emoji: "🤩" },
   ];
 
-  // init
+  // Start app
   function init() {
     loadTheme();
     loadPosts();
@@ -64,7 +64,7 @@
     updateCharCounter();
   }
 
-  // storage
+  // Load/save posts
   function loadPosts() {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
@@ -82,7 +82,7 @@
     }
   }
 
-  // theme
+  // Theme helpers
   function loadTheme() {
     const t = localStorage.getItem(THEME_KEY) || "light";
     document.body.setAttribute("data-theme", t);
@@ -96,7 +96,7 @@
     themeBtn.setAttribute("aria-pressed", String(next === "dark"));
   }
 
-  // moods UI
+  // Mood picker
   function renderMoodOptions() {
     moodFilter.innerHTML = `<option value="all">All moods</option>`;
     MOODS.forEach((m) => {
@@ -118,7 +118,7 @@
       btn.textContent = m.emoji || "✚";
       btn.dataset.mood = m.id;
       btn.addEventListener("click", () => {
-        // add emoji at cursor position
+        // insert emoji at cursor
         insertAtCursor(composeTxt, m.emoji || "");
         composeTxt.focus();
         updateCharCounter();
@@ -127,7 +127,7 @@
     });
   }
 
-  // utilities
+  // Utility helpers
   function insertAtCursor(field, value) {
     const start = field.selectionStart || 0;
     const end = field.selectionEnd || 0;
@@ -149,10 +149,10 @@
     return `${d}d`;
   }
 
-  // render list of posts
+  // Render posts
   function renderFeed(filter = {}) {
     feed.innerHTML = "";
-    // apply search and mood filter
+    // Filter posts
     let visible = posts.slice().sort((a, b) => b.createdAt - a.createdAt);
 
     const q = searchInput.value.trim().toLowerCase();
@@ -193,11 +193,11 @@
       </div>
       <div class="post-body">${escapeHtml(post.text || "")}</div>
     `;
-    // like animation handled via event delegation
+    // like button animation
     return card;
   }
 
-  // escape
+  // Escape HTML
   function escapeHtml(s) {
     return String(s).replace(
       /[&<>"']/g,
@@ -212,7 +212,7 @@
     );
   }
 
-  // add or update a post
+  // Create or edit post
   function submitPost() {
     const raw = composeTxt.value.trim();
     if (!raw) {
@@ -241,7 +241,7 @@
         mood: extractMoodFromText(raw),
       };
       posts.unshift(newPost);
-      // simple slide/fade-in handled by CSS: we can force reflow to animate if wanted
+      // post animation is handled by CSS
     }
     savePosts();
     composeTxt.value = "";
@@ -249,7 +249,7 @@
     renderFeed();
   }
 
-  // extract first mood emoji from text
+  // Find mood emoji in text
   function extractMoodFromText(text) {
     for (const m of MOODS) {
       if (!m.emoji) continue;
@@ -258,7 +258,7 @@
     return "";
   }
 
-  // post action buttons: like, edit, delete
+  // Handle post actions
   function handleFeedClick(e) {
     const likeBtn = e.target.closest(".like-btn");
     if (likeBtn) {
@@ -266,7 +266,7 @@
       const p = posts.find((x) => x.id === id);
       if (!p) return;
       p.likes = (p.likes || 0) + 1;
-      // small pop animation
+      // show like animation
       likeBtn.classList.add("anim");
       setTimeout(() => likeBtn.classList.remove("anim"), 180);
       savePosts();
@@ -295,7 +295,7 @@
     }
   }
 
-  // modal
+  // Modal helper
   function showModal(show = true) {
     if (show) {
       modalOverlay.classList.remove("hidden");
@@ -316,7 +316,7 @@
     showModal(false);
   }
 
-  // import/export
+  // Import/export posts
   function exportJSON() {
     const data = JSON.stringify(posts, null, 2);
     const blob = new Blob([data], { type: "application/json" });
@@ -334,7 +334,7 @@
       try {
         const arr = JSON.parse(reader.result);
         if (!Array.isArray(arr)) throw new Error("Invalid file");
-        posts = arr.concat(posts); // append imported posts (or replace if you prefer)
+        posts = arr.concat(posts); // add imported posts
         savePosts();
         renderFeed();
         updateCount();
@@ -346,7 +346,7 @@
     reader.readAsText(file);
   }
 
-  // helpers
+  // Small helpers
   function updateCount() {
     postCountEl.textContent = posts.length;
   }
@@ -357,7 +357,7 @@
       len > 280 ? "var(--danger)" : len > 240 ? "orange" : "var(--muted)";
   }
 
-  // search & filter events
+  // Event wiring
   function wireEvents() {
     postBtn.addEventListener("click", submitPost);
     composeBtn.addEventListener("click", () => composeTxt.focus());
@@ -380,7 +380,7 @@
       importInput.value = "";
     });
 
-    // modal buttons for delete confirmation
+    // Delete modal buttons
     const confirmDeleteBtn = document.getElementById("confirmDelete");
     const cancelDeleteBtn = document.getElementById("cancelDelete");
     if (confirmDeleteBtn)
@@ -388,12 +388,12 @@
     if (cancelDeleteBtn)
       cancelDeleteBtn.addEventListener("click", () => showModal(false));
 
-    // keyboard: Enter+Ctrl to post
+    // Ctrl+Enter posts
     composeTxt.addEventListener("keydown", (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key === "Enter") submitPost();
     });
 
-    // scroll top button
+    // Scroll-to-top button
     const scrollTop = document.getElementById("scrollTop");
     window.addEventListener("scroll", () => {
       if (window.scrollY > 300) scrollTop.classList.remove("hidden");
@@ -409,7 +409,7 @@
     field.style.height = field.scrollHeight + "px";
   }
 
-  // initial render helpers
+  // Initial sample post
   function renderInitialPostsIfEmpty() {
     if (!posts.length) {
       posts = [
@@ -426,7 +426,7 @@
     }
   }
 
-  // bootstrap
+  // Boot app
   renderInitialPostsIfEmpty();
   init();
 })();
