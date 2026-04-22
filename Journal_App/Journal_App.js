@@ -137,7 +137,7 @@
       btn.type = "button";
       btn.className = "mood-chip";
       btn.dataset.mood = m.id;
-      btn.innerHTML = `<span style="font-size:16px">${m.emoji}</span><span class="muted" style="margin-left:6px">${m.label}</span>`;
+      btn.innerHTML = `<span>${m.emoji}</span><span>${m.label}</span>`;
       btn.addEventListener("click", () => {
         btn.classList.toggle("active");
         renderEntriesList();
@@ -199,11 +199,11 @@
         <div class="entry-meta">
           <div>
             <div class="entry-title">${e.title || "(No title)"}</div>
-            <div class="entry-preview">${(e.body || "").split("\n")[0].slice(0, 120)}</div>
+            <div class="entry-preview">${(e.body || "").split("\n")[0].slice(0, 100)}</div>
           </div>
-          <div style="text-align:right">
-            <div class="muted">${new Date(e.date).toLocaleDateString()}</div>
-            <div style="font-size:20px;margin-top:6px">${m ? m.emoji : ""}</div>
+          <div style="text-align:right;flex-shrink:0">
+            <div class="entry-date">${new Date(e.date).toLocaleDateString()}</div>
+            <div class="entry-mood">${m ? m.emoji : "—"}</div>
           </div>
         </div>
       `;
@@ -222,7 +222,7 @@
       b.type = "button";
       b.className = "mood-btn";
       b.dataset.mood = m.id;
-      b.innerHTML = `<div style="font-size:18px">${m.emoji}</div><div class="muted small">${m.label}</div>`;
+      b.innerHTML = `<div>${m.emoji}</div><div>${m.label}</div>`;
       if (m.id === activeMood) b.classList.add("active");
       b.addEventListener("click", () => {
         // toggle active
@@ -316,10 +316,12 @@
     currentId = id;
     detailView.classList.add("hidden");
     entryForm.classList.remove("hidden");
+    const editorTitle = document.querySelector(".editor-title");
 
     if (id) {
       const e = entries.find((x) => x.id === id);
       if (!e) return;
+      editorTitle.textContent = "Edit Entry";
       titleInput.value = e.title || "";
       // set datetime-local to createdAt as default
       dateInput.value = new Date(e.createdAt).toISOString().slice(0, 16);
@@ -327,6 +329,7 @@
       bodyInput.value = e.body || "";
       renderMoodSelector(e.mood);
     } else {
+      editorTitle.textContent = "New Entry";
       titleInput.value = "";
       dateInput.value = new Date().toISOString().slice(0, 16);
       tagsInput.value = "";
