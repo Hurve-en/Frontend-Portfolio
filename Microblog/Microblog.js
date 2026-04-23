@@ -1,27 +1,43 @@
-/* Microblog app script
-   - Handles posts, theme, storage, and UI actions
-   - No libraries needed
+/* Modern Minimal Microblog App
+   - Favorites & Categories
+   - Toast notifications
+   - Polished UX with smooth animations
+   - Local storage persistence
 */
 
 (() => {
   // Storage keys
   const STORAGE_KEY = "microblog-posts";
   const THEME_KEY = "microblog-theme";
+  const FAV_FILTER_KEY = "microblog-fav-filter";
 
-  // Page elements
+  // Categories
+  const CATEGORIES = [
+    { id: "personal", label: "Personal", color: "accent" },
+    { id: "work", label: "Work", color: "accent" },
+    { id: "ideas", label: "Ideas", color: "accent" },
+    { id: "reflection", label: "Reflection", color: "accent" },
+  ];
+
+  // DOM elements
+  const toastContainer = document.getElementById("toastContainer");
   const searchInput = document.getElementById("searchInput");
-  const moodFilter = document.getElementById("moodFilter");
+  const categoryFilter = document.getElementById("categoryFilter");
+  const favoritesToggle = document.getElementById("favoritesToggle");
   const themeBtn = document.getElementById("themeBtn");
 
   const usernameEl = document.getElementById("username");
   const bioEl = document.getElementById("bio");
   const postCountEl = document.getElementById("postCount");
+  const favCountEl = document.getElementById("favCount");
 
   const composeTxt = document.getElementById("composeTxt");
-  const emojiPicker = document.getElementById("emojiPicker");
+  const categoryPicker = document.getElementById("categoryPicker");
   const charCounter = document.getElementById("charCounter");
   const postBtn = document.getElementById("postBtn");
+  const cancelBtn = document.getElementById("cancelBtn");
   const composeCard = document.getElementById("composeCard");
+  const emptyState = document.getElementById("emptyState");
 
   const feed = document.getElementById("feed");
   const composeBtn = document.getElementById("composeBtn");
@@ -32,39 +48,55 @@
 
   const modalOverlay = document.getElementById("modalOverlay");
   const confirmDelete = document.getElementById("confirmDelete");
-  const cancelDelete =
-    document.getElementById("cancelDelete") ||
-    document.getElementById("cancelDelete");
+  const cancelDelete = document.getElementById("cancelDelete");
 
-  const fileImport = document.getElementById("fileImport");
+  const scrollTopBtn = document.getElementById("scrollTop");
 
   // App state
   let posts = [];
   let editingId = null;
   let deleteTargetId = null;
+  let selectedCategory = null;
+  let showFavoritesOnly = false;
 
-  const MOODS = [
-    { id: "none", emoji: "" },
-    { id: "happy", emoji: "😊" },
-    { id: "neutral", emoji: "😐" },
-    { id: "sad", emoji: "😢" },
-    { id: "angry", emoji: "😡" },
-    { id: "love", emoji: "🤩" },
-  ];
-
-  // Start app
+  // ============================================
+  // INITIALIZATION
+  // ============================================
   function init() {
     loadTheme();
     loadPosts();
-    renderMoodOptions();
-    renderEmojiPicker();
+    renderCategoryOptions();
+    renderCategoryPicker();
     wireEvents();
     renderFeed();
-    updateCount();
-    updateCharCounter();
+    updateStats();
+    restoreFavFilter();
   }
 
-  // Load/save posts
+  // ============================================
+  // THEME MANAGEMENT
+  // ============================================
+  function loadTheme() {
+    const t = localStorage.getItem(THEME_KEY) || "light";
+    applyTheme(t);
+  }
+
+  function applyTheme(theme) {
+    document.body.setAttribute("data-theme", theme);
+    themeBtn.setAttribute("aria-pressed", String(theme === "dark"));
+  }
+
+  function toggleTheme() {
+    const current = document.body.getAttribute("data-theme") || "light";
+    const next = current === "light" ? "dark" : "light";
+    applyTheme(next);
+    localStorage.setItem(THEME_KEY, next);
+    showToast("Theme updated", "success");
+  }
+
+  // ============================================
+  // STORAGE MANAGEMENT
+  // ============================================
   function loadPosts() {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
@@ -72,230 +104,368 @@
     } catch (e) {
       posts = [];
       console.warn("Load failed", e);
+      showToast("Error loading posts", "error");
     }
   }
+
   function savePosts() {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
     } catch (e) {
-      console.warn(e);
+      console.warn("Save failed", e);
+      showToast("Error saving posts", "error");
     }
   }
 
-  // Theme helpers
-  function loadTheme() {
-    const t = localStorage.getItem(THEME_KEY) || "light";
-    document.body.setAttribute("data-theme", t);
-    themeBtn.setAttribute("aria-pressed", String(t === "dark"));
-  }
-  function toggleTheme() {
-    const current = document.body.getAttribute("data-theme") || "light";
-    const next = current === "light" ? "dark" : "light";
-    document.body.setAttribute("data-theme", next);
-    localStorage.setItem(THEME_KEY, next);
-    themeBtn.setAttribute("aria-pressed", String(next === "dark"));
+  // ============================================
+  // TOAST NOTIFICATIONS
+  // ============================================
+  function showToast(message, type = "success", duration = 3000) {
+    const toast = document.createElement("div");
+    toast.className = `toast ${type}`;
+    toast.textContent = message;
+    toast.setAttribute("role", "status");
+
+    toastContainer.appendChild(toast);
+
+    if (duration > 0) {
+      setTimeout(() => {
+        toast.classList.add("removing");
+        setTimeout(() => toast.remove(), 140);
+      }, duration);
+    }
   }
 
-  // Mood picker
-  function renderMoodOptions() {
-    moodFilter.innerHTML = `<option value="all">All moods</option>`;
-    MOODS.forEach((m) => {
-      if (!m.emoji) return;
+  // ============================================
+  // CATEGORY MANAGEMENT
+  // ============================================
+  function renderCategoryOptions() {
+    categoryFilter.innerHTML = '<option value="">All categories</option>';
+    CATEGORIES.forEach((cat) => {
       const opt = document.createElement("option");
-      opt.value = m.id;
-      opt.textContent = `${m.emoji} ${m.id}`;
-      moodFilter.appendChild(opt);
+      opt.value = cat.id;
+      opt.textContent = cat.label;
+      categoryFilter.appendChild(opt);
     });
   }
 
-  function renderEmojiPicker() {
-    emojiPicker.innerHTML = "";
-    MOODS.forEach((m) => {
+  function renderCategoryPicker() {
+    categoryPicker.innerHTML = "";
+    CATEGORIES.forEach((cat) => {
       const btn = document.createElement("button");
       btn.type = "button";
-      btn.className = "emoji";
-      btn.title = m.id;
-      btn.textContent = m.emoji || "✚";
-      btn.dataset.mood = m.id;
-      btn.addEventListener("click", () => {
-        // insert emoji at cursor
-        insertAtCursor(composeTxt, m.emoji || "");
-        composeTxt.focus();
-        updateCharCounter();
-      });
-      emojiPicker.appendChild(btn);
+      btn.className = "category-btn";
+      btn.textContent = cat.label;
+      btn.dataset.category = cat.id;
+      btn.addEventListener("click", () => toggleCategorySelection(cat.id));
+      categoryPicker.appendChild(btn);
     });
   }
 
-  // Utility helpers
-  function insertAtCursor(field, value) {
-    const start = field.selectionStart || 0;
-    const end = field.selectionEnd || 0;
-    const text = field.value;
-    field.value = text.slice(0, start) + value + text.slice(end);
-    const pos = start + value.length;
-    field.selectionStart = field.selectionEnd = pos;
-    field.dispatchEvent(new Event("input"));
+  function toggleCategorySelection(catId) {
+    selectedCategory = selectedCategory === catId ? null : catId;
+    updateCategoryButtons();
   }
 
-  function timeAgo(ts) {
-    const s = Math.floor((Date.now() - ts) / 1000);
-    if (s < 60) return `${s}s`;
-    const m = Math.floor(s / 60);
-    if (m < 60) return `${m}m`;
-    const h = Math.floor(m / 60);
-    if (h < 24) return `${h}h`;
-    const d = Math.floor(h / 24);
-    return `${d}d`;
+  function updateCategoryButtons() {
+    document.querySelectorAll(".category-btn").forEach((btn) => {
+      const isActive = btn.dataset.category === selectedCategory;
+      btn.classList.toggle("active", isActive);
+    });
   }
 
-  // Render posts
+  function getCategoryLabel(catId) {
+    return CATEGORIES.find((c) => c.id === catId)?.label || "";
+  }
+
+  // ============================================
+  // FAVORITES MANAGEMENT
+  // ============================================
+  function toggleFavoritesFilter() {
+    showFavoritesOnly = !showFavoritesOnly;
+    favoritesToggle.setAttribute("aria-pressed", String(showFavoritesOnly));
+    localStorage.setItem(FAV_FILTER_KEY, String(showFavoritesOnly));
+    renderFeed();
+  }
+
+  function restoreFavFilter() {
+    showFavoritesOnly = localStorage.getItem(FAV_FILTER_KEY) === "true";
+    favoritesToggle.setAttribute("aria-pressed", String(showFavoritesOnly));
+  }
+
+  function toggleFavorite(postId) {
+    const post = posts.find((p) => p.id === postId);
+    if (post) {
+      post.isFavorite = !post.isFavorite;
+      savePosts();
+      updateStats();
+      renderFeed();
+    }
+  }
+
+  // ============================================
+  // POST MANAGEMENT
+  // ============================================
+  function submitPost() {
+    const raw = composeTxt.value.trim();
+
+    if (!raw) {
+      showToast("Write something before posting", "warning");
+      return;
+    }
+
+    if (raw.length > 300) {
+      showToast("Post is too long (max 300 chars)", "error");
+      return;
+    }
+
+    if (editingId) {
+      const idx = posts.findIndex((p) => p.id === editingId);
+      if (idx >= 0) {
+        posts[idx].text = raw;
+        posts[idx].category = selectedCategory;
+        posts[idx].updatedAt = Date.now();
+        showToast("Post updated", "success");
+      }
+      editingId = null;
+      postBtn.textContent = "Post";
+      cancelBtn.classList.add("hidden");
+    } else {
+      const newPost = {
+        id: Date.now().toString(36),
+        text: raw,
+        category: selectedCategory,
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+        likes: 0,
+        isFavorite: false,
+      };
+      posts.unshift(newPost);
+      showToast("Post created", "success");
+    }
+
+    savePosts();
+    composeTxt.value = "";
+    selectedCategory = null;
+    updateCategoryButtons();
+    updateCharCounter();
+    renderFeed();
+    updateStats();
+  }
+
+  function editPost(postId) {
+    const post = posts.find((p) => p.id === postId);
+    if (!post) return;
+
+    editingId = postId;
+    composeTxt.value = post.text;
+    selectedCategory = post.category || null;
+    updateCategoryButtons();
+    composeTxt.focus();
+    postBtn.textContent = "Save";
+    cancelBtn.classList.remove("hidden");
+    updateCharCounter();
+
+    // Scroll to compose box
+    composeCard.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+
+  function cancelEdit() {
+    editingId = null;
+    composeTxt.value = "";
+    selectedCategory = null;
+    updateCategoryButtons();
+    postBtn.textContent = "Post";
+    cancelBtn.classList.add("hidden");
+    updateCharCounter();
+  }
+
+  function deletePost(postId) {
+    deleteTargetId = postId;
+    showModal(true);
+  }
+
+  function confirmDeletePost() {
+    if (!deleteTargetId) return showModal(false);
+    const post = posts.find((p) => p.id === deleteTargetId);
+    const title = post?.text?.substring(0, 30) || "post";
+    posts = posts.filter((p) => p.id !== deleteTargetId);
+    savePosts();
+    renderFeed();
+    updateStats();
+    showModal(false);
+    showToast(`"${title}..." deleted`, "success");
+  }
+
+  // ============================================
+  // RENDERING
+  // ============================================
   function renderFeed(filter = {}) {
     feed.innerHTML = "";
-    // Filter posts
+
     let visible = posts.slice().sort((a, b) => b.createdAt - a.createdAt);
 
+    // Search filter
     const q = searchInput.value.trim().toLowerCase();
-    if (q)
-      visible = visible.filter(
-        (p) =>
-          (p.text || "").toLowerCase().includes(q) ||
-          (p.tags || []).join(" ").toLowerCase().includes(q),
-      );
+    if (q) {
+      visible = visible.filter((p) => p.text.toLowerCase().includes(q));
+    }
 
-    const mood = moodFilter.value;
-    if (mood && mood !== "all")
-      visible = visible.filter((p) => p.mood === mood);
+    // Category filter
+    const cat = categoryFilter.value;
+    if (cat) {
+      visible = visible.filter((p) => p.category === cat);
+    }
 
-    visible.forEach((post) => feed.appendChild(renderPostCard(post)));
-    updateCount();
+    // Favorites filter
+    if (showFavoritesOnly) {
+      visible = visible.filter((p) => p.isFavorite);
+    }
+
+    // Render posts or empty state
+    if (visible.length === 0) {
+      emptyState.classList.remove("hidden");
+    } else {
+      emptyState.classList.add("hidden");
+      visible.forEach((post) => feed.appendChild(renderPostCard(post)));
+    }
+
+    updateStats();
   }
 
   function renderPostCard(post) {
     const card = document.createElement("article");
     card.className = "post";
     card.dataset.id = post.id;
+
+    const timeStr = timeAgo(post.createdAt);
+    const categoryBadge = post.category
+      ? `<span class="post-category">${getCategoryLabel(post.category)}</span>`
+      : "";
+
+    const heartIcon = post.isFavorite ? "♥" : "♡";
+    const heartClass = post.isFavorite ? "favorited" : "";
+
     card.innerHTML = `
-      <div class="post-head">
+      <div class="post-header">
         <div class="post-user">
-          <div class="avatar-sm" aria-hidden="true">${post.authorAvatar || "🙂"}</div>
+          <div class="avatar-sm" aria-hidden="true">✍</div>
           <div>
-            <div style="font-weight:700">${post.author || "You"}</div>
-            <div class="muted post-meta">${timeAgo(post.createdAt)} • ${post.mood ? post.mood : ""}</div>
+            <div class="post-username">${escapeHtml(usernameEl.textContent)}</div>
+            <div class="post-meta">
+              <span>${timeStr}</span>
+              ${categoryBadge}
+            </div>
           </div>
         </div>
+      </div>
 
+      <div class="post-body">${escapeHtml(post.text)}</div>
+
+      <div class="post-footer">
+        <div class="post-stats">
+          <span>${post.likes} like${post.likes !== 1 ? "s" : ""}</span>
+        </div>
         <div class="post-actions">
-          <button class="icon-btn like-btn" title="Like" data-id="${post.id}">❤ <span class="like-count">${post.likes || 0}</span></button>
+          <button class="icon-btn like-btn" title="Like" data-id="${post.id}">
+            ❤ <span class="like-count">${post.likes}</span>
+          </button>
+          <button class="icon-btn favorite-btn ${heartClass}" title="Favorite" data-id="${post.id}">
+            ${heartIcon}
+          </button>
           <button class="icon-btn edit-btn" title="Edit" data-id="${post.id}">✎</button>
           <button class="icon-btn delete-btn" title="Delete" data-id="${post.id}">🗑</button>
         </div>
       </div>
-      <div class="post-body">${escapeHtml(post.text || "")}</div>
     `;
-    // like button animation
+
     return card;
   }
 
-  // Escape HTML
   function escapeHtml(s) {
-    return String(s).replace(
-      /[&<>"']/g,
-      (c) =>
-        ({
-          "&": "&amp;",
-          "<": "&lt;",
-          ">": "&gt;",
-          '"': "&quot;",
-          "'": "&#39;",
-        })[c],
-    );
+    const div = document.createElement("div");
+    div.textContent = s;
+    return div.innerHTML;
   }
 
-  // Create or edit post
-  function submitPost() {
-    const raw = composeTxt.value.trim();
-    if (!raw) {
-      alert("Please write something before posting.");
-      return;
-    }
-    if (raw.length > 300) {
-      alert("Post exceeds 300 characters.");
-      return;
-    }
-    if (editingId) {
-      const idx = posts.findIndex((p) => p.id === editingId);
-      if (idx >= 0) {
-        posts[idx].text = raw;
-        posts[idx].updatedAt = Date.now();
-      }
-      editingId = null;
-      postBtn.textContent = "Post";
+  // ============================================
+  // UTILITIES
+  // ============================================
+  function timeAgo(ts) {
+    const s = Math.floor((Date.now() - ts) / 1000);
+    if (s < 60) return `${s}s ago`;
+    const m = Math.floor(s / 60);
+    if (m < 60) return `${m}m ago`;
+    const h = Math.floor(m / 60);
+    if (h < 24) return `${h}h ago`;
+    const d = Math.floor(h / 24);
+    if (d < 7) return `${d}d ago`;
+    const date = new Date(ts);
+    return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  }
+
+  function updateCharCounter() {
+    const len = composeTxt.value.length;
+    charCounter.textContent = `${len} / 300`;
+
+    if (len > 280) {
+      charCounter.classList.add("danger");
+      charCounter.classList.remove("warning");
+    } else if (len > 240) {
+      charCounter.classList.add("warning");
+      charCounter.classList.remove("danger");
     } else {
-      const newPost = {
-        id: Date.now().toString(36),
-        text: raw,
-        createdAt: Date.now(),
-        updatedAt: Date.now(),
-        likes: 0,
-        mood: extractMoodFromText(raw),
-      };
-      posts.unshift(newPost);
-      // post animation is handled by CSS
+      charCounter.classList.remove("warning", "danger");
     }
-    savePosts();
-    composeTxt.value = "";
-    updateCharCounter();
-    renderFeed();
   }
 
-  // Find mood emoji in text
-  function extractMoodFromText(text) {
-    for (const m of MOODS) {
-      if (!m.emoji) continue;
-      if (text.includes(m.emoji)) return m.id;
-    }
-    return "";
+  function updateStats() {
+    postCountEl.textContent = posts.length;
+    favCountEl.textContent = posts.filter((p) => p.isFavorite).length;
   }
 
-  // Handle post actions
+  // ============================================
+  // FEED INTERACTIONS
+  // ============================================
   function handleFeedClick(e) {
     const likeBtn = e.target.closest(".like-btn");
     if (likeBtn) {
       const id = likeBtn.dataset.id;
-      const p = posts.find((x) => x.id === id);
-      if (!p) return;
-      p.likes = (p.likes || 0) + 1;
-      // show like animation
-      likeBtn.classList.add("anim");
-      setTimeout(() => likeBtn.classList.remove("anim"), 180);
+      const post = posts.find((p) => p.id === id);
+      if (!post) return;
+      post.likes = (post.likes || 0) + 1;
+      likeBtn.classList.add("animate");
+      setTimeout(() => likeBtn.classList.remove("animate"), 240);
       savePosts();
       renderFeed();
+      return;
+    }
+
+    const favBtn = e.target.closest(".favorite-btn");
+    if (favBtn) {
+      const id = favBtn.dataset.id;
+      toggleFavorite(id);
       return;
     }
 
     const editBtn = e.target.closest(".edit-btn");
     if (editBtn) {
       const id = editBtn.dataset.id;
-      const p = posts.find((x) => x.id === id);
-      if (!p) return;
-      editingId = id;
-      composeTxt.value = p.text;
-      composeTxt.focus();
-      postBtn.textContent = "Save";
-      updateCharCounter();
+      editPost(id);
       return;
     }
 
     const delBtn = e.target.closest(".delete-btn");
     if (delBtn) {
-      deleteTargetId = delBtn.dataset.id;
-      showModal(true);
+      const id = delBtn.dataset.id;
+      deletePost(id);
       return;
     }
   }
 
-  // Modal helper
+  // ============================================
+  // MODAL
+  // ============================================
   function showModal(show = true) {
     if (show) {
       modalOverlay.classList.remove("hidden");
@@ -307,25 +477,19 @@
     }
   }
 
-  function confirmDeletePost() {
-    if (!deleteTargetId) return showModal(false);
-    posts = posts.filter((p) => p.id !== deleteTargetId);
-    savePosts();
-    renderFeed();
-    updateCount();
-    showModal(false);
-  }
-
-  // Import/export posts
+  // ============================================
+  // IMPORT / EXPORT
+  // ============================================
   function exportJSON() {
     const data = JSON.stringify(posts, null, 2);
     const blob = new Blob([data], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "microblog-posts.json";
+    a.download = `microblog-${new Date().toISOString().split("T")[0]}.json`;
     a.click();
     URL.revokeObjectURL(url);
+    showToast("Posts exported", "success");
   }
 
   function importJSON(file) {
@@ -334,92 +498,95 @@
       try {
         const arr = JSON.parse(reader.result);
         if (!Array.isArray(arr)) throw new Error("Invalid file");
-        posts = arr.concat(posts); // add imported posts
+        posts = arr.concat(posts);
         savePosts();
         renderFeed();
-        updateCount();
-        alert("Imported posts");
+        updateStats();
+        showToast(`${arr.length} posts imported`, "success");
       } catch (e) {
-        alert("Import failed: " + e.message);
+        showToast(`Import failed: ${e.message}`, "error");
       }
     };
     reader.readAsText(file);
   }
 
-  // Small helpers
-  function updateCount() {
-    postCountEl.textContent = posts.length;
-  }
-  function updateCharCounter() {
-    const len = composeTxt.value.length;
-    charCounter.textContent = `${len} / 300`;
-    charCounter.style.color =
-      len > 280 ? "var(--danger)" : len > 240 ? "orange" : "var(--muted)";
-  }
-
-  // Event wiring
+  // ============================================
+  // EVENT WIRING
+  // ============================================
   function wireEvents() {
     postBtn.addEventListener("click", submitPost);
+    cancelBtn.addEventListener("click", cancelEdit);
     composeBtn.addEventListener("click", () => composeTxt.focus());
+
     composeTxt.addEventListener("input", () => {
       autoResize(composeTxt);
       updateCharCounter();
     });
+
+    composeTxt.addEventListener("keydown", (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+        submitPost();
+      }
+    });
+
     feed.addEventListener("click", handleFeedClick);
 
     searchInput.addEventListener("input", () => renderFeed());
-    moodFilter.addEventListener("change", () => renderFeed());
+    categoryFilter.addEventListener("change", () => renderFeed());
+    favoritesToggle.addEventListener("click", toggleFavoritesFilter);
 
-    themeBtn.addEventListener("click", () => toggleTheme());
+    themeBtn.addEventListener("click", toggleTheme);
 
     exportBtn.addEventListener("click", exportJSON);
     importBtn.addEventListener("click", () => importInput.click());
     importInput.addEventListener("change", (e) => {
-      const f = e.target.files[0];
-      if (f) importJSON(f);
+      if (e.target.files[0]) importJSON(e.target.files[0]);
       importInput.value = "";
     });
 
-    // Delete modal buttons
-    const confirmDeleteBtn = document.getElementById("confirmDelete");
-    const cancelDeleteBtn = document.getElementById("cancelDelete");
-    if (confirmDeleteBtn)
-      confirmDeleteBtn.addEventListener("click", confirmDeletePost);
-    if (cancelDeleteBtn)
-      cancelDeleteBtn.addEventListener("click", () => showModal(false));
+    confirmDelete.addEventListener("click", confirmDeletePost);
+    cancelDelete.addEventListener("click", () => showModal(false));
 
-    // Ctrl+Enter posts
-    composeTxt.addEventListener("keydown", (e) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") submitPost();
-    });
-
-    // Scroll-to-top button
-    const scrollTop = document.getElementById("scrollTop");
+    // Scroll to top button
     window.addEventListener("scroll", () => {
-      if (window.scrollY > 300) scrollTop.classList.remove("hidden");
-      else scrollTop.classList.add("hidden");
+      if (window.scrollY > 300) {
+        scrollTopBtn.classList.remove("hidden");
+      } else {
+        scrollTopBtn.classList.add("hidden");
+      }
     });
-    scrollTop.addEventListener("click", () =>
-      window.scrollTo({ top: 0, behavior: "smooth" }),
-    );
+
+    scrollTopBtn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    // Make username editable
+    usernameEl.addEventListener("blur", () => {
+      if (!usernameEl.textContent.trim()) {
+        usernameEl.textContent = "You";
+      }
+    });
   }
 
   function autoResize(field) {
     field.style.height = "auto";
-    field.style.height = field.scrollHeight + "px";
+    field.style.height = Math.min(field.scrollHeight, 220) + "px";
   }
 
-  // Initial sample post
+  // ============================================
+  // INITIAL SETUP
+  // ============================================
   function renderInitialPostsIfEmpty() {
     if (!posts.length) {
       posts = [
         {
           id: "p1",
-          text: "Welcome to your microblog — write something short and sweet!",
+          text: "Welcome to your minimal microblog! Click the compose button to share your thoughts.",
+          category: "personal",
           createdAt: Date.now() - 1000 * 60 * 60,
           updatedAt: Date.now() - 1000 * 60 * 60,
-          likes: 2,
-          mood: "happy",
+          likes: 0,
+          isFavorite: false,
         },
       ];
       savePosts();

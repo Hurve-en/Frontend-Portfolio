@@ -8,12 +8,12 @@
     <title>Microblog — Minimal</title>
     <meta
       name="description"
-      content="A minimal microblog app (client-side) with localStorage persistence."
+      content="A minimal microblog app (client-side) with localStorage persistence and favorites."
     />
 
     <!-- Fonts -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
 
@@ -25,13 +25,21 @@
   </head>
   <body>
     <div class="app">
+      <!-- Toast notifications -->
+      <div
+        id="toastContainer"
+        class="toast-container"
+        aria-live="polite"
+        aria-atomic="true"
+      ></div>
+
       <!-- Header -->
       <header class="topbar">
         <div class="brand">
-          <div class="logo" aria-hidden="true">✦</div>
+          <div class="logo" aria-hidden="true">✨</div>
           <div>
             <div class="title">Microblog</div>
-            <div class="subtitle muted">Short thoughts — local only</div>
+            <div class="subtitle muted">Your minimal thoughts</div>
           </div>
         </div>
 
@@ -40,23 +48,32 @@
             <input
               id="searchInput"
               type="search"
-              placeholder="Search posts or hashtags..."
+              placeholder="Search posts..."
               aria-label="Search posts"
             />
           </div>
 
           <div class="actions-right">
-            <select id="moodFilter" aria-label="Filter by mood">
-              <option value="all">All moods</option>
+            <select id="categoryFilter" aria-label="Filter by category">
+              <option value="">All categories</option>
             </select>
 
             <button
+              id="favoritesToggle"
+              class="btn icon-btn"
+              title="Show only favorites"
+              aria-pressed="false"
+            >
+              ♡
+            </button>
+
+            <button
               id="themeBtn"
-              class="btn ghost"
+              class="btn icon-btn"
               aria-pressed="false"
               title="Toggle theme"
             >
-              Theme
+              ◐
             </button>
           </div>
         </div>
@@ -80,12 +97,16 @@
               <strong id="postCount">0</strong>
               <div class="muted">posts</div>
             </div>
+            <div>
+              <strong id="favCount">0</strong>
+              <div class="muted">favorites</div>
+            </div>
           </div>
 
           <div class="sidebar-actions">
             <button id="composeBtn" class="btn primary">Compose</button>
-            <button id="exportBtn" class="btn ghost">Export JSON</button>
-            <button id="importBtn" class="btn ghost">Import</button>
+            <button id="exportBtn" class="btn secondary">Export</button>
+            <button id="importBtn" class="btn secondary">Import</button>
             <input
               id="importInput"
               type="file"
@@ -102,26 +123,38 @@
             <textarea
               id="composeTxt"
               maxlength="300"
-              placeholder="What's happening? (max 300 chars)"
+              placeholder="What's on your mind? (max 300 chars)"
               aria-label="Compose post"
             ></textarea>
 
-            <div class="compose-row">
-              <div class="left">
+            <div class="compose-footer">
+              <div class="compose-left">
                 <div
-                  class="emoji-picker"
-                  id="emojiPicker"
+                  class="category-picker"
+                  id="categoryPicker"
                   role="listbox"
-                  aria-label="Pick mood"
+                  aria-label="Pick category"
                 >
-                  <!-- emojis injected -->
+                  <!-- categories injected -->
                 </div>
                 <div class="char-counter" id="charCounter">0 / 300</div>
               </div>
 
-              <div class="right">
+              <div class="compose-right">
+                <button id="cancelBtn" class="btn secondary hidden">
+                  Cancel
+                </button>
                 <button id="postBtn" class="btn primary">Post</button>
               </div>
+            </div>
+          </div>
+
+          <!-- Empty state -->
+          <div id="emptyState" class="empty-state hidden">
+            <div class="empty-icon">📝</div>
+            <div class="empty-title">No posts yet</div>
+            <div class="empty-text">
+              Start by writing your first thought above
             </div>
           </div>
 
@@ -135,6 +168,7 @@
             id="scrollTop"
             class="btn circle hidden"
             title="Scroll to top"
+            aria-label="Scroll to top"
           >
             ↑
           </button>
@@ -148,14 +182,18 @@
         role="dialog"
         aria-modal="true"
         aria-hidden="true"
+        aria-labelledby="modalTitle"
       >
         <div class="modal">
+          <div class="modal-header">
+            <h2 id="modalTitle">Delete post?</h2>
+          </div>
           <div class="modal-body">
-            <p>Delete this post? This can't be undone.</p>
+            <p>This action cannot be undone.</p>
           </div>
           <div class="modal-actions">
+            <button id="cancelDelete" class="btn secondary">Cancel</button>
             <button id="confirmDelete" class="btn danger">Delete</button>
-            <button id="cancelDelete" class="btn ghost">Cancel</button>
           </div>
         </div>
       </div>
