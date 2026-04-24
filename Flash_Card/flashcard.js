@@ -7,14 +7,68 @@ let cards = [];
 let studyOrder = [];
 // Current position inside studyOrder
 let idx = 0;
+// Card difficulty tracking: { cardIndex: 'easy' | 'hard' | null }
+let cardDifficulty = {};
+// Study statistics
+let studyStats = {
+  total: 0,
+  easy: 0,
+  hard: 0,
+  mastered: 0,
+};
 
 // ═══════════════════════════════════════════
-//  INPUT SCREEN FUNCTIONS
+//  INITIALIZATION & EVENT LISTENERS
 // ═══════════════════════════════════════════
-// Watch the input box and only allow parsing when there is enough text
-// (prevents accidental empty parsing).
+
+// Watch the input box and enable/disable parse button
 document.getElementById("pasteArea").addEventListener("input", function () {
   document.getElementById("parseBtn").disabled = this.value.trim().length < 3;
+});
+
+// Global keyboard shortcuts
+document.addEventListener("keydown", (e) => {
+  const activeScreen = document.querySelector(".screen.active").id;
+
+  // Space or Enter to flip in study mode
+  if (
+    (e.code === "Space" || e.code === "Enter") &&
+    activeScreen === "s-study"
+  ) {
+    e.preventDefault();
+    flip();
+  }
+
+  // Arrow keys for navigation
+  if (e.code === "ArrowRight" && activeScreen === "s-study") {
+    e.preventDefault();
+    navigate(1);
+  }
+  if (e.code === "ArrowLeft" && activeScreen === "s-study") {
+    e.preventDefault();
+    navigate(-1);
+  }
+
+  // E for Easy, H for Hard
+  if (e.code === "KeyE" && activeScreen === "s-study") {
+    e.preventDefault();
+    markEasy();
+  }
+  if (e.code === "KeyH" && activeScreen === "s-study") {
+    e.preventDefault();
+    markHard();
+  }
+
+  // Ctrl/Cmd+Shift+S to shuffle
+  if (
+    (e.ctrlKey || e.metaKey) &&
+    e.shiftKey &&
+    e.code === "KeyS" &&
+    activeScreen === "s-study"
+  ) {
+    e.preventDefault();
+    shuffle();
+  }
 });
 
 // Reset input box and disable parse button for a clean new entry.
@@ -24,12 +78,53 @@ function clearInput() {
 }
 
 // ═══════════════════════════════════════════
-//  SMART PARSER FUNCTIONS
+//  LOCAL STORAGE FUNCTIONS
 // ═══════════════════════════════════════════
+function saveStudySession() {
+  const session = {
+    cards,
+    cardDifficulty,
+    studyStats,
+    timestamp: Date.now(),
+  };
+  localStorage.setItem("flashcardSession", JSON.stringify(session));
+}
+
+function loadStudySession() {
+  const saved = localStorage.getItem("flashcardSession");
+  if (saved) {
+    try {
+      const session = JSON.parse(saved);
+      cards = session.cards || [];
+      cardDifficulty = session.cardDifficulty || {};
+      studyStats = session.studyStats || {
+        total: 0,
+        easy: 0,
+        hard: 0,
+        mastered: 0,
+      };
+      return true;
+    } catch (e) {
+      console.error("Failed to load session:", e);
+      return false;
+    }
+  }
+  return false;
+}
+
+function clearStudySession() {
+  localStorage.removeItem("flashcardSession");
+  cards = [];
+  cardDifficulty = {};
+  studyStats = { total: 0, easy: 0, hard: 0, mastered: 0 };
+}
 // Convert raw input text into cards by trying common formats.
 function parseInput() {
   const raw = document.getElementById("pasteArea").value.trim();
-  if (!raw) return;
+  if (!raw) {
+    showToast("Please paste some content first", true);
+    return;
+  }
 
   let parsed = [];
 
@@ -90,10 +185,14 @@ function parseInput() {
     return;
   }
 
-  // Store parsed cards and go to preview screen
+  // Store parsed cards and reset tracking
   cards = parsed;
+  cardDifficulty = {};
+  studyStats = { total: 0, easy: 0, hard: 0, mastered: 0 };
+  saveStudySession();
   renderPreview();
   goTo("s-preview");
+  showToast(`Parsed ${parsed.length} card${parsed.length !== 1 ? "s" : ""}! ✓`);
 }
 
 // ═══════════════════════════════════════════
@@ -127,12 +226,19 @@ function renderPreview() {
 // Remove a card and update preview screen.
 function delCard(i) {
   cards.splice(i, 1);
+  // Clean up difficulty tracking for deleted card
+  Object.keys(cardDifficulty).forEach((key) => {
+    if (parseInt(key) === i) delete cardDifficulty[key];
+  });
+
   if (cards.length === 0) {
     goTo("s-input");
     showToast("All cards removed. Paste new content.");
+    clearStudySession();
     return;
   }
   renderPreview();
+  saveStudySession();
 }
 
 // ═══════════════════════════════════════════
@@ -144,9 +250,35 @@ function startStudy() {
   // Default order is same as parsed order.
   studyOrder = [...Array(cards.length).keys()];
   idx = 0;
+  cardDifficulty = {};
+  studyStats = { total: 0, easy: 0, hard: 0, mastered: 0 };
   removeDone();
   goTo("s-study");
   showCard();
+  saveStudySession();
+}
+
+// ═══════════════════════════════════════════
+//  DIFFICULTY MARKING FUNCTIONS
+// ═══════════════════════════════════════════
+function markEasy() {
+  const cardIdx = studyOrder[idx];
+  cardDifficulty[cardIdx] = "easy";
+  studyStats.easy++;
+  saveStudySession();
+  showToast("Marked as Easy ✓", false);
+  // Auto-advance to next card
+  navigate(1);
+}
+
+function markHard() {
+  const cardIdx = studyOrder[idx];
+  cardDifficulty[cardIdx] = "hard";
+  studyStats.hard++;
+  saveStudySession();
+  showToast("Marked as Hard ⚡", false);
+  // Auto-advance to next card
+  navigate(1);
 }
 
 // Render question/answer and controls for current study card.
@@ -182,6 +314,7 @@ function showCard() {
 // Toggle card face: question ⇄ answer.
 function flip() {
   document.getElementById("flipper").classList.toggle("flipped");
+  saveStudySession();
 }
 
 // Move to previous/next card in study order.
@@ -190,6 +323,7 @@ function navigate(dir) {
   if (next < 0 || next >= studyOrder.length) return;
   idx = next;
   showCard();
+  saveStudySession();
 }
 
 // Shuffle the cards with Fisher-Yates and restart display.
@@ -202,23 +336,52 @@ function shuffle() {
   idx = 0;
   removeDone();
   showCard();
-  showToast("Cards shuffled! 🔀");
+  saveStudySession();
+  showToast("Cards shuffled 🔀", false);
 }
 
 // Show congrats overlay after last card.
 function showDone() {
   if (document.getElementById("doneOverlay")) return;
+
+  // Calculate final stats
+  studyStats.total = studyOrder.length;
+  studyStats.mastered = studyStats.easy;
+  saveStudySession();
+
   const scene = document.getElementById("scene");
   const done = document.createElement("div");
   done.className = "done-overlay";
   done.id = "doneOverlay";
+
+  const accuracyPercent =
+    studyStats.total > 0
+      ? Math.round((studyStats.easy / studyStats.total) * 100)
+      : 0;
+
   done.innerHTML = `
 <div class="done-icon">🎉</div>
-<div class="done-title">All Done!</div>
+<div class="done-title">Session Complete!</div>
 <div class="done-sub">You reviewed all ${cards.length} card${cards.length !== 1 ? "s" : ""}.</div>
+<div class="done-stats">
+  <div class="done-stat-row">
+    <div class="done-stat">
+      <div class="done-stat-value">${studyStats.easy}</div>
+      <div class="done-stat-label">Mastered</div>
+    </div>
+    <div class="done-stat">
+      <div class="done-stat-value">${studyStats.hard}</div>
+      <div class="done-stat-label">Need Practice</div>
+    </div>
+    <div class="done-stat">
+      <div class="done-stat-value">${accuracyPercent}%</div>
+      <div class="done-stat-label">Accuracy</div>
+    </div>
+  </div>
+</div>
 <div class="done-btns">
   <button class="btn-restart" onclick="restartStudy()">Study Again</button>
-  <button class="btn-sm" style="flex:1;padding:13px" onclick="removeDone();goTo('s-preview')">Edit Cards</button>
+  <button class="btn-sm" style="flex:1;padding:12px" onclick="removeDone();goTo('s-preview')">Edit Cards</button>
 </div>
 `;
   scene.appendChild(done);
@@ -235,7 +398,10 @@ function restartStudy() {
   removeDone();
   studyOrder = [...Array(cards.length).keys()];
   idx = 0;
+  cardDifficulty = {};
+  studyStats = { total: 0, easy: 0, hard: 0, mastered: 0 };
   showCard();
+  saveStudySession();
 }
 
 // ═══════════════════════════════════════════
@@ -247,6 +413,15 @@ function goTo(id) {
     .querySelectorAll(".screen")
     .forEach((s) => s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
+
+  // Trigger focus management for accessibility
+  const screen = document.getElementById(id);
+  if (screen) {
+    setTimeout(() => {
+      const firstButton = screen.querySelector("button");
+      if (firstButton) firstButton.focus();
+    }, 100);
+  }
 }
 
 // Escape HTML to prevent rendering issues or script injection.
@@ -262,7 +437,7 @@ function showToast(msg, isError = false) {
   if (existing) existing.remove();
 
   const t = document.createElement("div");
-  t.className = "toast" + (isError ? " error" : "");
+  t.className = "toast" + (isError ? " error" : " success");
   t.textContent = msg;
   document.body.appendChild(t);
   toastTimer = setTimeout(() => t && t.remove(), 3000);

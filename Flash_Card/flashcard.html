@@ -1,12 +1,16 @@
 <!doctype html>
-<!-- This is the main HTML document for the Flashcard app -->
+<!-- Flashcard Application - Modern, Minimalist Study Tool -->
 <html lang="en">
   <head>
     <!-- Meta tags for character encoding and responsive design -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Flashcard - A modern, minimalist flashcard study app with keyboard shortcuts and difficulty tracking"
+    />
     <!-- Title of the page -->
-    <title>FlashCards — Smart Paste</title>
+    <title>Flashcard — Smart Study</title>
     <!-- Link to the CSS stylesheet -->
     <link rel="stylesheet" href="flashcard.css" />
   </head>
@@ -18,51 +22,58 @@
         <!-- Top bar with logo -->
         <div class="top-bar">
           <div>
-            <div class="logo-sub">smart paste</div>
+            <div class="logo-sub">Study Companion</div>
             <div class="logo">Flash<span>·</span>Cards</div>
           </div>
         </div>
 
         <!-- Hint text explaining supported formats -->
         <div class="format-hint">
-          📋 <strong>Paste anything — one big block of text.</strong><br />
-          Supported formats: &nbsp;<strong>Q: … &nbsp;A: …</strong>
-          &nbsp;·&nbsp; <strong>1. Question↵Answer</strong> &nbsp;·&nbsp;
+          📋 <strong>Paste your questions and answers.</strong><br />
+          Supported formats: &nbsp;<strong>Q: … A: …</strong> &nbsp;·&nbsp;
+          <strong>1. Question↵Answer</strong> &nbsp;·&nbsp;
           <strong>Question?↵Answer.</strong><br />
-          Mixed or messy text is fine. The parser figures it out automatically.
+          Supports any format. The parser auto-detects and extracts Q&A pairs.
         </div>
 
         <!-- Textarea for pasting content -->
         <textarea
           class="paste-area"
           id="pasteArea"
-          placeholder="Paste your questions and answers here…
+          placeholder="Paste your study material here…
 
-Example formats:
+Examples:
 
 Q: What is photosynthesis?
-A: The process plants use to convert sunlight into energy.
+A: The process by which plants convert sunlight into chemical energy
 
-Q: What year did World War II end?
-A: 1945
+Q: Who wrote Romeo and Juliet?
+A: William Shakespeare
 
-1. Capital of Japan?
-Tokyo
+Capital of France?
+Paris
 
 What is the powerhouse of the cell?
-The mitochondria."
+The mitochondria"
         ></textarea>
 
         <!-- Buttons for clearing input and parsing -->
         <div class="input-actions">
-          <button class="btn btn-clear" onclick="clearInput()">Clear</button>
+          <button
+            class="btn btn-clear"
+            onclick="clearInput()"
+            aria-label="Clear all text"
+          >
+            Clear
+          </button>
           <button
             class="btn btn-parse"
             id="parseBtn"
             onclick="parseInput()"
             disabled
+            aria-label="Parse and create flashcards"
           >
-            Parse Cards →
+            Create Cards →
           </button>
         </div>
       </div>
@@ -93,40 +104,88 @@ The mitochondria."
       <div class="screen" id="s-study">
         <!-- Top bar with navigation and progress -->
         <div class="study-top">
-          <button class="btn-sm" onclick="goTo('s-preview')">← Cards</button>
+          <button
+            class="btn-sm"
+            onclick="goTo('s-preview')"
+            title="Go back to card list (Esc)"
+          >
+            ← Back
+          </button>
           <div class="progress-wrap">
             <div class="progress-bar">
               <div class="progress-fill" id="progFill" style="width: 0%"></div>
             </div>
             <div class="progress-txt" id="progTxt">1 of 1</div>
           </div>
-          <button class="btn-sm" onclick="shuffle()">⇄ Shuffle</button>
+          <button
+            class="btn-sm"
+            onclick="shuffle()"
+            title="Shuffle cards (Ctrl+Shift+S)"
+          >
+            🔀 Shuffle
+          </button>
         </div>
 
         <!-- Flippable card area -->
-        <div class="scene" id="scene" onclick="flip()">
+        <div
+          class="scene"
+          id="scene"
+          onclick="flip()"
+          role="region"
+          aria-label="Flashcard"
+        >
           <div class="flipper" id="flipper">
             <!-- Front of the card (question) -->
             <div class="face face-front">
               <div class="face-tag">Question</div>
               <div class="face-text" id="qText"></div>
-              <div class="flip-hint">tap to reveal answer</div>
+              <div class="flip-hint">Press Space or Tap to reveal answer</div>
             </div>
             <!-- Back of the card (answer) -->
             <div class="face face-back">
               <div class="face-tag">Answer</div>
               <div class="face-text" id="aText"></div>
-              <div class="flip-hint">tap to flip back</div>
+              <div class="flip-hint">Press Space or Tap to flip back</div>
             </div>
           </div>
         </div>
 
+        <!-- Card difficulty marking -->
+        <div class="card-difficulty-row">
+          <button
+            class="difficulty-btn easy"
+            id="easyBtn"
+            onclick="markEasy()"
+            title="Mark as Easy (E)"
+          >
+            ✓ Easy
+          </button>
+          <button
+            class="difficulty-btn hard"
+            id="hardBtn"
+            onclick="markHard()"
+            title="Mark as Hard (H)"
+          >
+            ⚡ Hard
+          </button>
+        </div>
+
         <!-- Navigation buttons for previous and next -->
         <div class="nav-row">
-          <button class="nav-btn" id="prevBtn" onclick="navigate(-1)">
+          <button
+            class="nav-btn"
+            id="prevBtn"
+            onclick="navigate(-1)"
+            title="Previous card (← Arrow)"
+          >
             ← Prev
           </button>
-          <button class="nav-btn" id="nextBtn" onclick="navigate(1)">
+          <button
+            class="nav-btn"
+            id="nextBtn"
+            onclick="navigate(1)"
+            title="Next card (→ Arrow)"
+          >
             Next →
           </button>
         </div>
