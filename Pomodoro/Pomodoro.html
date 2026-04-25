@@ -1,212 +1,377 @@
-<!-- This file defines the page layout and structure. -->
+<!-- Polished Pomodoro Timer - Focus Edition -->
 
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Pomodoro — Focus Timer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Professional Pomodoro timer with focus mode, task management, and productivity analytics."
+    />
+    <title>Pomodoro Timer — Focus & Productivity</title>
     <link rel="stylesheet" href="Pomodoro.css" />
   </head>
   <body>
     <div class="app">
-      <!-- Ambient background shapes -->
-      <div class="ambient">
-        <div class="blob b1" aria-hidden="true"></div>
-        <div class="blob b2" aria-hidden="true"></div>
-        <div class="blob b3" aria-hidden="true"></div>
-      </div>
-
-      <header class="topbar">
+      <header class="topbar" role="banner">
         <div class="brand">
-          <h1>Pomodoro</h1>
-          <p class="muted"></p>
+          <h1>⏲ Pomodoro</h1>
+          <p class="tagline">Stay focused, stay productive</p>
         </div>
 
-        <div class="controls">
+        <nav class="header-controls" role="navigation">
           <button
-            id="mode-toggle"
+            id="focus-mode-btn"
             class="icon-btn"
-            aria-pressed="false"
-            title="Toggle light / dark"
+            aria-label="Toggle focus mode"
+            title="Focus Mode (Minimize distractions)"
           >
-            <span class="sr-only">Toggle theme</span>
-            🌗
+            👁
           </button>
-          <button id="open-settings" class="icon-btn" title="Settings">
+          <button
+            id="stats-toggle"
+            class="icon-btn"
+            aria-label="View statistics"
+            title="Session Statistics"
+          >
+            📊
+          </button>
+          <button
+            id="theme-toggle"
+            class="icon-btn"
+            aria-label="Toggle theme"
+            title="Dark / Light Theme"
+            aria-pressed="false"
+          >
+            🌙
+          </button>
+          <button
+            id="settings-btn"
+            class="icon-btn"
+            aria-label="Settings"
+            title="Settings (Ctrl+,)"
+          >
             ⚙️
           </button>
-        </div>
+        </nav>
       </header>
 
       <main class="main">
+        <!-- Primary Timer Section -->
         <section
-          class="timer-card card"
+          class="timer-section card"
           role="region"
           aria-label="Pomodoro timer"
         >
           <div class="session-tabs" role="tablist" aria-label="Session types">
-            <button class="tab active" data-mode="focus" role="tab">
-              Focus
+            <button
+              class="tab active"
+              data-mode="focus"
+              role="tab"
+              aria-selected="true"
+            >
+              🎯 Focus
             </button>
-            <button class="tab" data-mode="short" role="tab">
-              Short Break
+            <button
+              class="tab"
+              data-mode="short"
+              role="tab"
+              aria-selected="false"
+            >
+              ☕ Short Break
             </button>
-            <button class="tab" data-mode="long" role="tab">Long Break</button>
+            <button
+              class="tab"
+              data-mode="long"
+              role="tab"
+              aria-selected="false"
+            >
+              🏖️ Long Break
+            </button>
           </div>
 
-          <div class="clock-wrap">
-            <!-- SVG circular progress -->
-            <svg
-              class="progress-ring"
-              width="220"
-              height="220"
-              viewBox="0 0 120 120"
-              aria-hidden="true"
-            >
-              <defs></defs>
+          <!-- Circular Timer Display -->
+          <div class="timer-display">
+            <svg class="progress-ring" viewBox="0 0 120 120" aria-hidden="true">
+              <defs>
+                <linearGradient
+                  id="ring-grad"
+                  x1="0%"
+                  y1="0%"
+                  x2="100%"
+                  y2="100%"
+                >
+                  <stop
+                    offset="0%"
+                    style="stop-color: #16a34a; stop-opacity: 1"
+                  />
+                  <stop
+                    offset="100%"
+                    style="stop-color: #059669; stop-opacity: 1"
+                  />
+                </linearGradient>
+              </defs>
               <g transform="rotate(-90 60 60)">
                 <circle class="ring-bg" cx="60" cy="60" r="48" />
-                <circle
-                  class="ring"
-                  cx="60"
-                  cy="60"
-                  r="48"
-                  stroke-linecap="round"
-                />
+                <circle class="ring" cx="60" cy="60" r="48" />
               </g>
             </svg>
 
-            <div class="clock" aria-live="polite">
-              <div id="time-display" class="time">25:00</div>
-              <div id="session-label" class="label">Focus</div>
+            <div class="timer-content" aria-live="polite" aria-atomic="true">
+              <div class="time-display" id="time-display">25:00</div>
+              <div class="session-label" id="session-label">Focus Session</div>
             </div>
           </div>
 
-          <div class="actions">
-            <button id="start-btn" class="btn primary">Start</button>
-            <button id="pause-btn" class="btn" disabled>Pause</button>
-            <button id="reset-btn" class="btn" disabled>Reset</button>
+          <!-- Control Buttons -->
+          <div class="control-buttons">
+            <button
+              id="start-btn"
+              class="btn btn-primary"
+              aria-label="Start timer (Space)"
+            >
+              ▶ Start
+            </button>
+            <button
+              id="pause-btn"
+              class="btn btn-secondary"
+              disabled
+              aria-label="Pause timer (Space)"
+            >
+              ⏸ Pause
+            </button>
+            <button
+              id="reset-btn"
+              class="btn btn-secondary"
+              disabled
+              aria-label="Reset timer (R)"
+            >
+              ↻ Reset
+            </button>
           </div>
 
-          <div class="meta-row">
-            <div class="stat">
-              <div class="stat-value" id="counter-done">0</div>
-              <div class="stat-label">Pomodoros today</div>
+          <!-- Quick Stats -->
+          <div class="quick-stats">
+            <div class="stat-item">
+              <div class="stat-number" id="sessions-today">0</div>
+              <div class="stat-label">Sessions Today</div>
             </div>
-
-            <div class="stat">
-              <div class="stat-value" id="task-progress">0%</div>
-              <div class="stat-label">Task completion</div>
+            <div class="stat-item">
+              <div class="stat-number" id="minutes-today">0</div>
+              <div class="stat-label">Minutes Focused</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number" id="tasks-progress">0%</div>
+              <div class="stat-label">Tasks Done</div>
             </div>
           </div>
         </section>
 
-        <aside class="side panel">
-          <div class="tasks card">
-            <div class="tasks-header">
-              <h3>Tasks</h3>
-              <button id="clear-completed" class="btn small">Clear done</button>
+        <!-- Side Panel with Tasks & Stats -->
+        <aside class="sidebar">
+          <!-- Tasks Panel -->
+          <div class="panel card" id="tasks-panel">
+            <div class="panel-header">
+              <h2 class="panel-title">📝 Today's Tasks</h2>
+              <button
+                id="clear-tasks-btn"
+                class="btn btn-sm btn-ghost"
+                aria-label="Clear completed tasks"
+              >
+                Clear
+              </button>
             </div>
 
-            <form id="task-form" class="task-form" aria-label="Add task">
+            <form
+              id="task-form"
+              class="task-input-form"
+              aria-label="Add new task"
+            >
               <input
                 id="task-input"
                 type="text"
-                placeholder="Add a task (press Enter)"
-                aria-label="Task"
+                class="task-input"
+                placeholder="Add task + Enter"
+                aria-label="New task description"
+                maxlength="100"
               />
             </form>
 
-            <ul id="task-list" class="task-list" aria-live="polite"></ul>
+            <ul
+              id="task-list"
+              class="task-list"
+              aria-live="polite"
+              aria-label="Task list"
+            ></ul>
+            <div id="empty-tasks" class="empty-state hidden">
+              <p>No tasks yet. Add one to get started!</p>
+            </div>
           </div>
 
-          <div class="settings-card card">
-            <h3>Quick Controls</h3>
-            <div class="quick">
-              <label class="quick-item">
-                <input type="radio" name="quick-mode" value="focus" checked />
-                Focus
-              </label>
-              <label class="quick-item">
-                <input type="radio" name="quick-mode" value="short" /> Short
-                Break
-              </label>
-              <label class="quick-item">
-                <input type="radio" name="quick-mode" value="long" /> Long Break
-              </label>
+          <!-- Statistics Panel -->
+          <div class="panel card hidden" id="stats-panel">
+            <div class="panel-header">
+              <h2 class="panel-title">📈 Statistics</h2>
+              <select id="stats-period" class="btn btn-sm btn-ghost">
+                <option value="today">Today</option>
+                <option value="week">This Week</option>
+                <option value="all">All Time</option>
+              </select>
             </div>
-            <button id="add-pomodoro" class="btn full">
-              Mark Pomodoro Done
+
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-value" id="total-sessions">0</div>
+                <div class="stat-label">Sessions</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value" id="total-focus-time">0h</div>
+                <div class="stat-label">Focus Time</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value" id="best-streak">0</div>
+                <div class="stat-label">Best Streak</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value" id="avg-session">0m</div>
+                <div class="stat-label">Avg Session</div>
+              </div>
+            </div>
+
+            <div class="stats-chart">
+              <h3 class="chart-title">7-Day Activity</h3>
+              <div
+                id="activity-chart"
+                class="activity-chart"
+                aria-label="Activity chart"
+              ></div>
+            </div>
+
+            <button
+              id="export-stats-btn"
+              class="btn btn-sm btn-secondary"
+              style="width: 100%; margin-top: 12px"
+            >
+              📥 Export Data
             </button>
           </div>
         </aside>
       </main>
+    </div>
 
-      <!-- Settings modal -->
-      <div
-        id="settings-modal"
-        class="modal hidden"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="settings-title"
-      >
-        <div class="modal-card card">
-          <h2 id="settings-title">Timer Settings</h2>
+    <!-- Settings Modal -->
+    <div
+      id="settings-modal"
+      class="modal hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="settings-title"
+    >
+      <div class="modal-overlay"></div>
+      <div class="modal-content card">
+        <div class="modal-header">
+          <h2 id="settings-title">⚙️ Settings</h2>
+          <button
+            id="close-settings-btn"
+            class="btn-close"
+            aria-label="Close settings"
+          >
+            ✕
+          </button>
+        </div>
 
-          <form id="settings-form" class="settings-form">
-            <label
-              >Focus duration (minutes)
+        <form id="settings-form" class="settings-form">
+          <fieldset>
+            <legend>Session Durations</legend>
+            <div class="form-group">
+              <label for="focus-duration">Focus Time (minutes)</label>
               <input
-                id="setting-focus"
+                id="focus-duration"
                 type="number"
                 min="1"
                 max="180"
-                step="1"
                 value="25"
+                aria-label="Focus duration in minutes"
               />
-            </label>
-
-            <label
-              >Short break (minutes)
+            </div>
+            <div class="form-group">
+              <label for="short-break-duration">Short Break (minutes)</label>
               <input
-                id="setting-short"
+                id="short-break-duration"
                 type="number"
                 min="1"
                 max="60"
-                step="1"
                 value="5"
+                aria-label="Short break duration in minutes"
               />
-            </label>
-
-            <label
-              >Long break (minutes)
+            </div>
+            <div class="form-group">
+              <label for="long-break-duration">Long Break (minutes)</label>
               <input
-                id="setting-long"
+                id="long-break-duration"
                 type="number"
                 min="1"
                 max="180"
-                step="1"
                 value="15"
+                aria-label="Long break duration in minutes"
               />
-            </label>
-
-            <label
-              >Auto-reset to Focus after break
-              <input id="setting-auto" type="checkbox" checked />
-            </label>
-
-            <div class="modal-actions">
-              <button id="save-settings" class="btn primary">Save</button>
-              <button id="close-settings" class="btn">Cancel</button>
             </div>
-          </form>
-        </div>
-      </div>
+          </fieldset>
 
-      <footer class="footer muted"></footer>
+          <fieldset>
+            <legend>Behavior</legend>
+            <label class="checkbox-label">
+              <input id="auto-reset-check" type="checkbox" checked />
+              <span>Auto-advance to next session</span>
+            </label>
+            <label class="checkbox-label">
+              <input id="sound-enabled-check" type="checkbox" checked />
+              <span>Sound notifications</span>
+            </label>
+          </fieldset>
+
+          <div class="modal-actions">
+            <button type="submit" class="btn btn-primary">Save Settings</button>
+            <button
+              type="button"
+              id="settings-cancel-btn"
+              class="btn btn-secondary"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
 
-    <script src="Pomodoro.js"></script>
+    <!-- Focus Mode Overlay -->
+    <div
+      id="focus-mode-overlay"
+      class="focus-overlay hidden"
+      aria-hidden="true"
+    >
+      <div class="focus-content">
+        <div class="focus-header">
+          <h1 id="focus-timer" class="focus-display">25:00</h1>
+          <p id="focus-mode-label" class="focus-subtitle">Focus Session</p>
+        </div>
+        <div class="focus-controls">
+          <button id="focus-pause-btn" class="btn btn-primary">
+            ⏸ Pause (Space)
+          </button>
+          <button id="focus-exit-btn" class="btn btn-secondary">
+            Exit Focus
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <footer class="app-footer">
+      <p class="footer-text">
+        ⌨️ Shortcuts: <kbd>Space</kbd> Start/Pause · <kbd>R</kbd> Reset ·
+        <kbd>F</kbd> Focus Mode
+      </p>
+    </footer>
   </body>
 </html>
