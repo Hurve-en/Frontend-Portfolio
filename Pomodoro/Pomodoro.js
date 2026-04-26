@@ -2,8 +2,56 @@
 // Enhanced with task management, statistics, focus mode, and analytics
 
 /* ============================================
-   CONSTANTS & INITIALIZATION
+   PERFORMANCE UTILITIES
    ============================================ */
+
+/**
+ * Simple debounce implementation
+ * @param {Function} func - Function to debounce
+ * @param {number} wait - Wait time in milliseconds
+ * @returns {Function} Debounced function
+ */
+function debounce(func, wait = 300) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
+/**
+ * Throttle implementation for scroll and resize events
+ * @param {Function} func - Function to throttle
+ * @param {number} limit - Minimum time between calls in milliseconds
+ * @returns {Function} Throttled function
+ */
+function throttle(func, limit = 100) {
+  let inThrottle;
+  return function (...args) {
+    if (!inThrottle) {
+      func.apply(this, args);
+      inThrottle = true;
+      setTimeout(() => (inThrottle = false), limit);
+    }
+  };
+}
+
+// Performance optimization: Batch DOM updates
+const pendingUpdates = new Set();
+
+function scheduleUpdate(updateFn) {
+  pendingUpdates.add(updateFn);
+  if (pendingUpdates.size === 1) {
+    requestAnimationFrame(() => {
+      pendingUpdates.forEach((fn) => fn());
+      pendingUpdates.clear();
+    });
+  }
+}
 const LS_KEY = "pomodoro-pro-v2";
 const MODES = {
   FOCUS: "focus",
@@ -94,7 +142,7 @@ const DOM = {
 
   // Focus Mode
   focusModeBtn: document.getElementById("focus-mode-btn"),
-  focusOverlay: document.getElementById("focus-overlay-overlay"),
+  focusOverlay: document.getElementById("focus-mode-overlay"),
   focusTimer: document.getElementById("focus-timer"),
   focusModeLabel: document.getElementById("focus-mode-label"),
   focusPauseBtn: document.getElementById("focus-pause-btn"),
@@ -107,54 +155,134 @@ const DOM = {
   ring: document.querySelector(".progress-ring .ring"),
 };
 
+/**
+ * Verify all required DOM elements are present
+ * @returns {boolean} True if all critical elements exist
+ */
+function validateDOMElements() {
+  const required = [
+    "timeDisplay",
+    "sessionLabel",
+    "startBtn",
+    "pauseBtn",
+    "resetBtn",
+    "taskForm",
+    "taskInput",
+    "taskList",
+    "settingsModal",
+    "statsPanel",
+    "focusOverlay",
+    "themeToggle",
+  ];
+
+  const missing = required.filter((key) => !DOM[key]);
+
+  if (missing.length > 0) {
+    console.error(
+      "Missing critical DOM elements:",
+      missing,
+      "The page may not be fully loaded.",
+    );
+    return false;
+  }
+
+  return true;
+}
+
 /* ============================================
    INITIALIZATION
    ============================================ */
 document.addEventListener("DOMContentLoaded", () => {
-  initializeApp();
-  setupEventListeners();
-  renderInitialUI();
-  setupKeyboardShortcuts();
+  try {
+    // Validate DOM before initialization
+    if (!validateDOMElements()) {
+      console.error("Failed to initialize: Missing required DOM elements");
+      return;
+    }
+
+    initializeApp();
+    setupEventListeners();
+    renderInitialUI();
+    setupKeyboardShortcuts();
+
+    console.log("Pomodoro app initialized successfully");
+  } catch (e) {
+    console.error("Failed to initialize Pomodoro app:", e);
+  }
 });
 
 function initializeApp() {
-  // Ensure daily record is current
-  const today = getTodayDate();
-  if (appState.daily.date !== today) {
-    appState.daily = { date: today, sessionsCompleted: 0, focusMinutes: 0 };
-  }
+  try {
+    // Ensure daily record is current
+    const today = getTodayDate();
+    if (appState.daily.date !== today) {
+      appState.daily = { date: today, sessionsCompleted: 0, focusMinutes: 0 };
+    }
 
-  // Set timer duration
-  setTimerMode(MODES.FOCUS, true);
-  applyTheme();
+    // Set timer duration
+    setTimerMode(MODES.FOCUS, true);
+    applyTheme();
+  } catch (e) {
+    console.error("Error during app initialization:", e);
+  }
 }
 
 function renderInitialUI() {
-  renderTasks();
-  updateStatsDisplay();
-  updateQuickStats();
-  drawProgressRing();
+  try {
+    renderTasks();
+    updateStatsDisplay();
+    updateQuickStats();
+    drawProgressRing();
+  } catch (e) {
+    console.error("Error rendering initial UI:", e);
+  }
 }
 
 /* ============================================
    LOCAL STORAGE
    ============================================ */
+
+/**
+ * Check if localStorage is available
+ * @returns {boolean} True if localStorage is available
+ */
+function isLocalStorageAvailable() {
+  try {
+    const test = "__ls_test__";
+    localStorage.setItem(test, test);
+    localStorage.removeItem(test);
+    return true;
+  } catch (e) {
+    console.warn("localStorage is not available:", e);
+    return false;
+  }
+}
+
 function loadAppState() {
   try {
+    if (!isLocalStorageAvailable()) {
+      console.warn("Using default state - localStorage not available");
+      return JSON.parse(JSON.stringify(DEFAULT_STATE));
+    }
+
     const stored = localStorage.getItem(LS_KEY);
     if (!stored) {
+      console.log("No saved state found, using defaults");
       saveAppState(DEFAULT_STATE);
       return JSON.parse(JSON.stringify(DEFAULT_STATE));
     }
 
     const parsed = JSON.parse(stored);
-    // Merge with defaults to handle new fields
-    return {
-      settings: { ...DEFAULT_STATE.settings, ...parsed.settings },
+    // Merge with defaults to handle new fields and ensure data integrity
+    const merged = {
+      settings: { ...DEFAULT_STATE.settings, ...(parsed.settings || {}) },
       tasks: Array.isArray(parsed.tasks) ? parsed.tasks : [],
       sessions: Array.isArray(parsed.sessions) ? parsed.sessions : [],
       daily: parsed.daily || DEFAULT_STATE.daily,
     };
+
+    console.log("App state loaded successfully");
+    return merged;
   } catch (e) {
     console.error("Failed to load app state:", e);
     return JSON.parse(JSON.stringify(DEFAULT_STATE));
@@ -163,9 +291,18 @@ function loadAppState() {
 
 function saveAppState(state = appState) {
   try {
+    if (!isLocalStorageAvailable()) {
+      console.warn("Cannot save state - localStorage not available");
+      return;
+    }
+
     localStorage.setItem(LS_KEY, JSON.stringify(state));
+    console.log("App state saved successfully");
   } catch (e) {
     console.error("Failed to save app state:", e);
+    if (e.name === "QuotaExceededError") {
+      console.warn("localStorage quota exceeded");
+    }
   }
 }
 
@@ -205,173 +342,271 @@ function formatDuration(minutes) {
    TIMER CONTROL
    ============================================ */
 function setTimerMode(mode, shouldReset = true) {
-  timerState.mode = mode;
+  try {
+    if (!Object.values(MODES).includes(mode)) {
+      console.error("Invalid timer mode:", mode);
+      return;
+    }
 
-  const durations = {
-    [MODES.FOCUS]: appState.settings.focus,
-    [MODES.SHORT_BREAK]: appState.settings.short,
-    [MODES.LONG_BREAK]: appState.settings.long,
-  };
+    timerState.mode = mode;
 
-  timerState.duration = durations[mode] * 60; // convert to seconds
-  if (shouldReset) {
-    timerState.remaining = timerState.duration;
-    timerState.pausedTime = 0;
-  }
+    const durations = {
+      [MODES.FOCUS]: appState.settings.focus,
+      [MODES.SHORT_BREAK]: appState.settings.short,
+      [MODES.LONG_BREAK]: appState.settings.long,
+    };
 
-  updateTimerDisplay();
-  drawProgressRing();
-  updateTabsUI();
-}
-
-function startTimer() {
-  if (timerState.running) return;
-
-  timerState.running = true;
-  timerState.startTime = Date.now();
-  if (!timerState.sessionStartedAt) {
-    timerState.sessionStartedAt = Date.now();
-  }
-
-  timerState.interval = setInterval(() => {
-    const elapsed = Math.floor((Date.now() - timerState.startTime) / 1000);
-    timerState.remaining = Math.max(
-      0,
-      timerState.duration - timerState.pausedTime - elapsed,
-    );
+    timerState.duration = (durations[mode] || 25) * 60; // convert to seconds
+    if (shouldReset) {
+      timerState.remaining = timerState.duration;
+      timerState.pausedTime = 0;
+      timerState.sessionStartedAt = null;
+    }
 
     updateTimerDisplay();
     drawProgressRing();
+    updateTabsUI();
 
-    if (timerState.remaining <= 0) {
-      completeTimer();
+    console.log("Timer mode set to:", mode, "Duration:", timerState.duration);
+  } catch (e) {
+    console.error("Error setting timer mode:", e);
+  }
+}
+
+function startTimer() {
+  try {
+    if (timerState.running) {
+      console.warn("Timer is already running");
+      return;
     }
-  }, 100);
 
-  updateControlsUI();
+    timerState.running = true;
+    timerState.startTime = Date.now();
+    if (!timerState.sessionStartedAt) {
+      timerState.sessionStartedAt = Date.now();
+    }
+
+    timerState.interval = setInterval(() => {
+      try {
+        const elapsed = Math.floor((Date.now() - timerState.startTime) / 1000);
+        timerState.remaining = Math.max(
+          0,
+          timerState.duration - timerState.pausedTime - elapsed,
+        );
+
+        updateTimerDisplay();
+        drawProgressRing();
+
+        if (timerState.remaining <= 0) {
+          completeTimer();
+        }
+      } catch (e) {
+        console.error("Error in timer interval:", e);
+        pauseTimer();
+      }
+    }, 100);
+
+    updateControlsUI();
+    console.log("Timer started");
+  } catch (e) {
+    console.error("Error starting timer:", e);
+  }
 }
 
 function pauseTimer() {
-  if (!timerState.running) return;
+  try {
+    if (!timerState.running) {
+      console.warn("Timer is not running");
+      return;
+    }
 
-  timerState.running = false;
-  clearInterval(timerState.interval);
-  timerState.interval = null;
-  timerState.pausedTime += Math.floor(
-    (Date.now() - timerState.startTime) / 1000,
-  );
+    timerState.running = false;
+    if (timerState.interval) {
+      clearInterval(timerState.interval);
+      timerState.interval = null;
+    }
 
-  updateControlsUI();
+    timerState.pausedTime += Math.floor(
+      (Date.now() - timerState.startTime) / 1000,
+    );
+
+    updateControlsUI();
+    console.log("Timer paused. Remaining:", timerState.remaining);
+  } catch (e) {
+    console.error("Error pausing timer:", e);
+  }
 }
 
 function resetTimer() {
-  pauseTimer();
-  timerState.remaining = timerState.duration;
-  timerState.pausedTime = 0;
-  timerState.sessionStartedAt = null;
-  updateTimerDisplay();
-  drawProgressRing();
-  updateControlsUI();
+  try {
+    pauseTimer();
+    timerState.remaining = timerState.duration;
+    timerState.pausedTime = 0;
+    timerState.sessionStartedAt = null;
+    updateTimerDisplay();
+    drawProgressRing();
+    updateControlsUI();
+    console.log("Timer reset");
+  } catch (e) {
+    console.error("Error resetting timer:", e);
+  }
 }
 
 function completeTimer() {
-  pauseTimer();
-  playNotificationSound();
+  try {
+    pauseTimer();
+    playNotificationSound();
 
-  if (timerState.mode === MODES.FOCUS) {
-    recordSession();
+    if (timerState.mode === MODES.FOCUS) {
+      recordSession();
+    }
+
+    // Auto-advance if enabled
+    if (appState.settings.autoReset) {
+      const nextMode =
+        timerState.mode === MODES.FOCUS ? MODES.SHORT_BREAK : MODES.FOCUS;
+      setTimeout(() => setTimerMode(nextMode, true), 500);
+    } else {
+      timerState.remaining = 0;
+      updateTimerDisplay();
+    }
+
+    updateStatsDisplay();
+    updateQuickStats();
+    console.log("Timer completed. Mode was:", timerState.mode);
+  } catch (e) {
+    console.error("Error completing timer:", e);
   }
-
-  // Auto-advance if enabled
-  if (appState.settings.autoReset) {
-    const nextMode =
-      timerState.mode === MODES.FOCUS ? MODES.SHORT_BREAK : MODES.FOCUS;
-    setTimerMode(nextMode, true);
-  } else {
-    timerState.remaining = 0;
-    updateTimerDisplay();
-  }
-
-  updateStatsDisplay();
-  updateQuickStats();
 }
 
 function recordSession() {
-  const duration = Math.round(timerState.duration / 60); // duration in minutes
-  const session = {
-    id: Date.now().toString(),
-    date: getTodayDate(),
-    timestamp: Date.now(),
-    duration: duration,
-    completed: true,
-  };
+  try {
+    const duration = Math.round(timerState.duration / 60); // duration in minutes
+    const session = {
+      id: Date.now().toString(),
+      date: getTodayDate(),
+      timestamp: Date.now(),
+      duration: duration,
+      completed: true,
+    };
 
-  appState.sessions.push(session);
-  appState.daily.sessionsCompleted += 1;
-  appState.daily.focusMinutes += duration;
+    appState.sessions.push(session);
+    appState.daily.sessionsCompleted += 1;
+    appState.daily.focusMinutes += duration;
 
-  saveAppState();
+    saveAppState();
+    console.log("Session recorded:", session);
+  } catch (e) {
+    console.error("Error recording session:", e);
+  }
 }
 
 /* ============================================
    TIMER DISPLAY & UI
    ============================================ */
 function updateTimerDisplay() {
-  DOM.timeDisplay.textContent = formatTime(timerState.remaining);
-  if (DOM.focusTimer) {
-    DOM.focusTimer.textContent = formatTime(timerState.remaining);
+  try {
+    const formattedTime = formatTime(timerState.remaining);
+
+    if (DOM.timeDisplay) {
+      DOM.timeDisplay.textContent = formattedTime;
+    }
+
+    if (DOM.focusTimer) {
+      DOM.focusTimer.textContent = formattedTime;
+    }
+  } catch (e) {
+    console.error("Error updating timer display:", e);
   }
 }
 
 function updateControlsUI() {
-  DOM.startBtn.disabled = timerState.running;
-  DOM.pauseBtn.disabled = !timerState.running;
-  DOM.resetBtn.disabled =
-    !timerState.running && timerState.remaining === timerState.duration;
+  try {
+    if (!DOM.startBtn || !DOM.pauseBtn || !DOM.resetBtn) {
+      console.warn("Timer control buttons not found");
+      return;
+    }
 
-  DOM.startBtn.textContent = timerState.running ? "⏸ Running..." : "▶ Start";
+    DOM.startBtn.disabled = timerState.running;
+    DOM.pauseBtn.disabled = !timerState.running;
+    DOM.resetBtn.disabled =
+      !timerState.running && timerState.remaining === timerState.duration;
+
+    DOM.startBtn.textContent = timerState.running ? "⏸ Running..." : "▶ Start";
+  } catch (e) {
+    console.error("Error updating controls UI:", e);
+  }
 }
 
 function updateTabsUI() {
-  DOM.tabs.forEach((tab) => {
-    const isActive = tab.dataset.mode === timerState.mode;
-    tab.classList.toggle("active", isActive);
-    tab.setAttribute("aria-selected", isActive);
-  });
+  try {
+    DOM.tabs.forEach((tab) => {
+      const isActive = tab.dataset.mode === timerState.mode;
+      tab.classList.toggle("active", isActive);
+      tab.setAttribute("aria-selected", isActive.toString());
+    });
 
-  const labels = {
-    [MODES.FOCUS]: "Focus Session",
-    [MODES.SHORT_BREAK]: "Short Break",
-    [MODES.LONG_BREAK]: "Long Break",
-  };
+    const labels = {
+      [MODES.FOCUS]: "Focus Session",
+      [MODES.SHORT_BREAK]: "Short Break",
+      [MODES.LONG_BREAK]: "Long Break",
+    };
 
-  DOM.sessionLabel.textContent = labels[timerState.mode];
-  if (DOM.focusModeLabel) {
-    DOM.focusModeLabel.textContent = labels[timerState.mode];
+    if (DOM.sessionLabel) {
+      DOM.sessionLabel.textContent = labels[timerState.mode] || "Session";
+    }
+
+    if (DOM.focusModeLabel) {
+      DOM.focusModeLabel.textContent = labels[timerState.mode] || "Session";
+    }
+  } catch (e) {
+    console.error("Error updating tabs UI:", e);
   }
 }
 
 function drawProgressRing() {
-  if (!DOM.ring) return;
+  try {
+    if (!DOM.ring) {
+      console.warn("Progress ring element not found");
+      return;
+    }
 
-  const circumference = 2 * Math.PI * 48; // radius = 48
-  const progress =
-    timerState.duration === 0 ? 0 : timerState.remaining / timerState.duration;
-  const offset = circumference * (1 - progress);
+    const circumference = 2 * Math.PI * 48; // radius = 48
+    const progress =
+      timerState.duration === 0
+        ? 0
+        : timerState.remaining / timerState.duration;
+    const offset = circumference * (1 - Math.max(0, Math.min(1, progress)));
 
-  DOM.ring.style.strokeDasharray = `${circumference} ${circumference}`;
-  DOM.ring.style.strokeDashoffset = offset;
+    DOM.ring.style.strokeDasharray = `${circumference} ${circumference}`;
+    DOM.ring.style.strokeDashoffset = offset;
+  } catch (e) {
+    console.error("Error drawing progress ring:", e);
+  }
 }
 
 /* ============================================
    TASK MANAGEMENT
    ============================================ */
 function addTask(text) {
-  if (!text || !text.trim()) return;
+  // Validate input
+  if (!text || typeof text !== "string") {
+    console.warn("Invalid task text:", text);
+    return;
+  }
+
+  const trimmedText = text.trim();
+  if (trimmedText.length === 0 || trimmedText.length > 100) {
+    console.warn(
+      "Task text must be between 1 and 100 characters:",
+      trimmedText.length,
+    );
+    return;
+  }
 
   const task = {
     id: `task_${Date.now()}`,
-    text: text.trim(),
+    text: trimmedText,
     completed: false,
     createdAt: Date.now(),
   };
@@ -407,19 +642,30 @@ function clearCompletedTasks() {
 }
 
 function renderTasks() {
-  DOM.taskList.innerHTML = "";
+  try {
+    if (!DOM.taskList) {
+      console.warn("Task list element not found");
+      return;
+    }
 
-  if (appState.tasks.length === 0) {
-    DOM.emptyTasks?.classList.remove("hidden");
-    return;
-  }
+    DOM.taskList.innerHTML = "";
 
-  DOM.emptyTasks?.classList.add("hidden");
+    if (appState.tasks.length === 0) {
+      if (DOM.emptyTasks) {
+        DOM.emptyTasks.classList.remove("hidden");
+      }
+      return;
+    }
 
-  appState.tasks.forEach((task) => {
-    const li = document.createElement("li");
-    li.className = `task-item ${task.completed ? "done" : ""}`;
-    li.innerHTML = `
+    if (DOM.emptyTasks) {
+      DOM.emptyTasks.classList.add("hidden");
+    }
+
+    appState.tasks.forEach((task) => {
+      try {
+        const li = document.createElement("li");
+        li.className = `task-item ${task.completed ? "done" : ""}`;
+        li.innerHTML = `
       <input 
         type="checkbox" 
         ${task.completed ? "checked" : ""} 
@@ -429,14 +675,24 @@ function renderTasks() {
       <button class="btn-remove" aria-label="Delete task">✕</button>
     `;
 
-    const checkbox = li.querySelector("input[type=checkbox]");
-    const removeBtn = li.querySelector(".btn-remove");
+        const checkbox = li.querySelector("input[type=checkbox]");
+        const removeBtn = li.querySelector(".btn-remove");
 
-    checkbox.addEventListener("change", () => toggleTask(task.id));
-    removeBtn.addEventListener("click", () => deleteTask(task.id));
+        if (checkbox) {
+          checkbox.addEventListener("change", () => toggleTask(task.id));
+        }
+        if (removeBtn) {
+          removeBtn.addEventListener("click", () => deleteTask(task.id));
+        }
 
-    DOM.taskList.appendChild(li);
-  });
+        DOM.taskList.appendChild(li);
+      } catch (e) {
+        console.error("Error rendering task:", task, e);
+      }
+    });
+  } catch (e) {
+    console.error("Error in renderTasks:", e);
+  }
 }
 
 function escapeHtml(text) {
@@ -449,147 +705,210 @@ function escapeHtml(text) {
    STATISTICS & ANALYTICS
    ============================================ */
 function updateQuickStats() {
-  const completedTasks = appState.tasks.filter((t) => t.completed).length;
-  const totalTasks = appState.tasks.length;
-  const progress =
-    totalTasks === 0 ? 0 : Math.round((completedTasks / totalTasks) * 100);
+  try {
+    const completedTasks = appState.tasks.filter((t) => t.completed).length;
+    const totalTasks = appState.tasks.length;
+    const progress =
+      totalTasks === 0 ? 0 : Math.round((completedTasks / totalTasks) * 100);
 
-  DOM.sessionsToday.textContent = appState.daily.sessionsCompleted;
-  DOM.minutesToday.textContent = appState.daily.focusMinutes;
-  DOM.tasksProgress.textContent = `${progress}%`;
+    if (DOM.sessionsToday) {
+      DOM.sessionsToday.textContent = appState.daily.sessionsCompleted || 0;
+    }
+    if (DOM.minutesToday) {
+      DOM.minutesToday.textContent = appState.daily.focusMinutes || 0;
+    }
+    if (DOM.tasksProgress) {
+      DOM.tasksProgress.textContent = `${progress}%`;
+    }
+  } catch (e) {
+    console.error("Error updating quick stats:", e);
+  }
 }
 
 function updateStatsDisplay(period = "today") {
-  let stats = calculateStats(period);
+  try {
+    const stats = calculateStats(period);
 
-  DOM.totalSessions.textContent = stats.totalSessions;
-  DOM.totalFocusTime.textContent = formatDuration(stats.totalMinutes);
-  DOM.bestStreak.textContent = stats.bestStreak;
-  DOM.avgSession.textContent = stats.avgDuration;
+    if (DOM.totalSessions) {
+      DOM.totalSessions.textContent = stats.totalSessions || 0;
+    }
+    if (DOM.totalFocusTime) {
+      DOM.totalFocusTime.textContent = stats.totalMinutes
+        ? formatDuration(stats.totalMinutes)
+        : "0m";
+    }
+    if (DOM.bestStreak) {
+      DOM.bestStreak.textContent = stats.bestStreak || 0;
+    }
+    if (DOM.avgSession) {
+      DOM.avgSession.textContent = stats.avgDuration || "0m";
+    }
 
-  renderActivityChart(period);
+    renderActivityChart(period);
+  } catch (e) {
+    console.error("Error updating stats display:", e);
+  }
 }
 
 function calculateStats(period = "today") {
-  let relevantSessions = [];
+  try {
+    let relevantSessions = [];
 
-  if (period === "today") {
-    relevantSessions = appState.sessions.filter(
-      (s) => s.date === getTodayDate(),
+    if (period === "today") {
+      relevantSessions = appState.sessions.filter(
+        (s) => s.date === getTodayDate(),
+      );
+    } else if (period === "week") {
+      const weekDates = getWeekDates(7);
+      relevantSessions = appState.sessions.filter((s) =>
+        weekDates.includes(s.date),
+      );
+    } else {
+      relevantSessions = appState.sessions;
+    }
+
+    const totalSessions = relevantSessions.length;
+    const totalMinutes = relevantSessions.reduce(
+      (sum, s) => sum + (s.duration || 0),
+      0,
     );
-  } else if (period === "week") {
-    const weekDates = getWeekDates(7);
-    relevantSessions = appState.sessions.filter((s) =>
-      weekDates.includes(s.date),
-    );
-  } else {
-    relevantSessions = appState.sessions;
+    const avgDuration =
+      totalSessions > 0 ? Math.round(totalMinutes / totalSessions) + "m" : "0m";
+
+    // Calculate best streak (consecutive days with sessions)
+    let bestStreak = 0;
+    if (appState.sessions.length > 0) {
+      const dates = getWeekDates(7);
+      let currentStreak = 0;
+
+      dates.forEach((date) => {
+        const hasSession = appState.sessions.some((s) => s.date === date);
+        if (hasSession) {
+          currentStreak++;
+          bestStreak = Math.max(bestStreak, currentStreak);
+        } else {
+          currentStreak = 0;
+        }
+      });
+    }
+
+    return {
+      totalSessions,
+      totalMinutes,
+      avgDuration,
+      bestStreak,
+    };
+  } catch (e) {
+    console.error("Error calculating stats:", e);
+    return {
+      totalSessions: 0,
+      totalMinutes: 0,
+      avgDuration: "0m",
+      bestStreak: 0,
+    };
   }
-
-  const totalSessions = relevantSessions.length;
-  const totalMinutes = relevantSessions.reduce((sum, s) => sum + s.duration, 0);
-  const avgDuration =
-    totalSessions > 0 ? Math.round(totalMinutes / totalSessions) + "m" : "0m";
-
-  // Calculate best streak (consecutive days with sessions)
-  let bestStreak = 0;
-  if (appState.sessions.length > 0) {
-    const dates = getWeekDates(7);
-    let currentStreak = 0;
-
-    dates.forEach((date) => {
-      const hasSession = appState.sessions.some((s) => s.date === date);
-      if (hasSession) {
-        currentStreak++;
-        bestStreak = Math.max(bestStreak, currentStreak);
-      } else {
-        currentStreak = 0;
-      }
-    });
-  }
-
-  return {
-    totalSessions,
-    totalMinutes,
-    avgDuration,
-    bestStreak,
-  };
 }
 
 function renderActivityChart(period = "today") {
-  DOM.activityChart.innerHTML = "";
+  try {
+    if (!DOM.activityChart) {
+      console.warn("Activity chart element not found");
+      return;
+    }
 
-  let dates = [];
-  if (period === "today") {
-    dates = [getTodayDate()];
-  } else if (period === "week") {
-    dates = getWeekDates(7);
-  } else {
-    dates = getWeekDates(30);
-  }
+    DOM.activityChart.innerHTML = "";
 
-  const maxSessions = Math.max(
-    ...dates.map(
-      (d) => appState.sessions.filter((s) => s.date === d).length || 1,
-    ),
-    3,
-  );
+    let dates = [];
+    if (period === "today") {
+      dates = [getTodayDate()];
+    } else if (period === "week") {
+      dates = getWeekDates(7);
+    } else {
+      dates = getWeekDates(30);
+    }
 
-  dates.forEach((date, i) => {
-    const sessionsOnDate = appState.sessions.filter(
-      (s) => s.date === date,
-    ).length;
-    const percentage = (sessionsOnDate / maxSessions) * 100 || 5;
-
-    const bar = document.createElement("div");
-    bar.className = "chart-bar";
-    bar.style.height = `${Math.max(percentage, 8)}%`;
-    bar.setAttribute(
-      "title",
-      `${date}: ${sessionsOnDate} session${sessionsOnDate !== 1 ? "s" : ""}`,
+    const sessionCounts = dates.map(
+      (d) => appState.sessions.filter((s) => s.date === d).length,
     );
+    const maxSessions = Math.max(...sessionCounts, 3);
 
-    DOM.activityChart.appendChild(bar);
-  });
+    dates.forEach((date, i) => {
+      const sessionsOnDate = sessionCounts[i];
+      const percentage = (sessionsOnDate / maxSessions) * 100 || 5;
+
+      const bar = document.createElement("div");
+      bar.className = "chart-bar";
+      bar.style.height = `${Math.max(percentage, 8)}%`;
+      bar.setAttribute(
+        "title",
+        `${date}: ${sessionsOnDate} session${sessionsOnDate !== 1 ? "s" : ""}`,
+      );
+
+      DOM.activityChart.appendChild(bar);
+    });
+  } catch (e) {
+    console.error("Error rendering activity chart:", e);
+  }
 }
 
 function exportData() {
-  const exportObj = {
-    exportDate: new Date().toISOString(),
-    summary: calculateStats("all"),
-    sessions: appState.sessions,
-    tasks: appState.tasks,
-  };
+  try {
+    const exportObj = {
+      exportDate: new Date().toISOString(),
+      summary: calculateStats("all"),
+      sessions: appState.sessions,
+      tasks: appState.tasks,
+    };
 
-  const json = JSON.stringify(exportObj, null, 2);
-  const blob = new Blob([json], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = `pomodoro-data-${getTodayDate()}.json`;
-  link.click();
-  URL.revokeObjectURL(url);
+    const json = JSON.stringify(exportObj, null, 2);
+    const blob = new Blob([json], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `pomodoro-data-${getTodayDate()}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    console.log("Data exported successfully");
+  } catch (e) {
+    console.error("Error exporting data:", e);
+    alert("Failed to export data. Please check the console.");
+  }
 }
 
 /* ============================================
    FOCUS MODE
    ============================================ */
 function toggleFocusMode() {
-  const focusOverlay = document.getElementById("focus-mode-overlay");
-  if (!focusOverlay) return;
+  try {
+    if (!DOM.focusOverlay) {
+      console.warn("Focus overlay element not found");
+      return;
+    }
 
-  const isHidden = focusOverlay.classList.contains("hidden");
-  focusOverlay.classList.toggle("hidden", !isHidden);
+    const isHidden = DOM.focusOverlay.classList.contains("hidden");
 
-  if (!isHidden && timerState.running) {
-    pauseTimer();
+    if (isHidden) {
+      // Entering focus mode
+      DOM.focusOverlay.classList.remove("hidden");
+    } else {
+      // Exiting focus mode
+      DOM.focusOverlay.classList.add("hidden");
+    }
+  } catch (e) {
+    console.error("Error toggling focus mode:", e);
   }
 }
 
 function exitFocusMode() {
-  const focusOverlay = document.getElementById("focus-mode-overlay");
-  if (focusOverlay) {
-    focusOverlay.classList.add("hidden");
+  try {
+    if (DOM.focusOverlay) {
+      DOM.focusOverlay.classList.add("hidden");
+    }
+  } catch (e) {
+    console.error("Error exiting focus mode:", e);
   }
 }
 
@@ -597,67 +916,116 @@ function exitFocusMode() {
    SETTINGS & PREFERENCES
    ============================================ */
 function openSettings() {
-  DOM.focusDuration.value = appState.settings.focus;
-  DOM.shortBreakDuration.value = appState.settings.short;
-  DOM.longBreakDuration.value = appState.settings.long;
-  DOM.autoResetCheck.checked = appState.settings.autoReset;
-  DOM.soundEnabledCheck.checked = appState.settings.soundEnabled;
+  try {
+    if (!DOM.settingsModal) {
+      console.warn("Settings modal not found");
+      return;
+    }
 
-  DOM.settingsModal.classList.remove("hidden");
+    if (DOM.focusDuration) DOM.focusDuration.value = appState.settings.focus;
+    if (DOM.shortBreakDuration)
+      DOM.shortBreakDuration.value = appState.settings.short;
+    if (DOM.longBreakDuration)
+      DOM.longBreakDuration.value = appState.settings.long;
+    if (DOM.autoResetCheck)
+      DOM.autoResetCheck.checked = appState.settings.autoReset;
+    if (DOM.soundEnabledCheck)
+      DOM.soundEnabledCheck.checked = appState.settings.soundEnabled;
+
+    DOM.settingsModal.classList.remove("hidden");
+  } catch (e) {
+    console.error("Error opening settings:", e);
+  }
 }
 
 function closeSettings() {
-  DOM.settingsModal.classList.add("hidden");
+  try {
+    if (DOM.settingsModal) {
+      DOM.settingsModal.classList.add("hidden");
+    }
+  } catch (e) {
+    console.error("Error closing settings:", e);
+  }
 }
 
 function saveSettings(e) {
-  e.preventDefault();
+  try {
+    e.preventDefault();
 
-  appState.settings.focus = Math.max(
-    1,
-    parseInt(DOM.focusDuration.value) || 25,
-  );
-  appState.settings.short = Math.max(
-    1,
-    parseInt(DOM.shortBreakDuration.value) || 5,
-  );
-  appState.settings.long = Math.max(
-    1,
-    parseInt(DOM.longBreakDuration.value) || 15,
-  );
-  appState.settings.autoReset = DOM.autoResetCheck.checked;
-  appState.settings.soundEnabled = DOM.soundEnabledCheck.checked;
+    // Validate and parse settings with constraints
+    const focusVal = parseInt(DOM.focusDuration?.value) || 25;
+    const shortVal = parseInt(DOM.shortBreakDuration?.value) || 5;
+    const longVal = parseInt(DOM.longBreakDuration?.value) || 15;
 
-  saveAppState();
-  setTimerMode(timerState.mode, true);
-  closeSettings();
+    appState.settings.focus = Math.max(1, Math.min(180, focusVal));
+    appState.settings.short = Math.max(1, Math.min(60, shortVal));
+    appState.settings.long = Math.max(1, Math.min(180, longVal));
+    appState.settings.autoReset = DOM.autoResetCheck?.checked ?? true;
+    appState.settings.soundEnabled = DOM.soundEnabledCheck?.checked ?? true;
+
+    saveAppState();
+    setTimerMode(timerState.mode, true);
+    closeSettings();
+
+    console.log("Settings saved successfully");
+  } catch (e) {
+    console.error("Error saving settings:", e);
+  }
 }
 
 /* ============================================
    THEME MANAGEMENT
    ============================================ */
 function toggleTheme() {
-  const root = document.documentElement;
-  const isLight = root.classList.contains("light");
-  const newTheme = isLight ? "dark" : "light";
+  try {
+    const root = document.documentElement;
+    if (!root) {
+      console.error("Could not find document root element");
+      return;
+    }
 
-  root.classList.toggle("light", !isLight);
-  appState.settings.theme = newTheme;
-  saveAppState();
+    const isLight = root.classList.contains("light");
+    const newTheme = isLight ? "dark" : "light";
 
-  DOM.themeToggle.setAttribute("aria-pressed", !isLight);
+    root.classList.toggle("light", !isLight);
+    appState.settings.theme = newTheme;
+    saveAppState();
+
+    if (DOM.themeToggle) {
+      DOM.themeToggle.setAttribute("aria-pressed", (!isLight).toString());
+    }
+
+    console.log("Theme changed to:", newTheme);
+  } catch (e) {
+    console.error("Error toggling theme:", e);
+  }
 }
 
 function applyTheme() {
-  const theme = appState.settings.theme || "dark";
-  const root = document.documentElement;
+  try {
+    const theme = appState.settings.theme || "dark";
+    const root = document.documentElement;
 
-  if (theme === "light") {
-    root.classList.add("light");
-    DOM.themeToggle?.setAttribute("aria-pressed", "true");
-  } else {
-    root.classList.remove("light");
-    DOM.themeToggle?.setAttribute("aria-pressed", "false");
+    if (!root) {
+      console.error("Could not find document root element");
+      return;
+    }
+
+    if (theme === "light") {
+      root.classList.add("light");
+      if (DOM.themeToggle) {
+        DOM.themeToggle.setAttribute("aria-pressed", "true");
+      }
+    } else {
+      root.classList.remove("light");
+      if (DOM.themeToggle) {
+        DOM.themeToggle.setAttribute("aria-pressed", "false");
+      }
+    }
+
+    console.log("Theme applied:", theme);
+  } catch (e) {
+    console.error("Error applying theme:", e);
   }
 }
 
@@ -665,10 +1033,19 @@ function applyTheme() {
    AUDIO NOTIFICATION
    ============================================ */
 function playNotificationSound() {
-  if (!appState.settings.soundEnabled) return;
+  if (!appState.settings.soundEnabled) {
+    console.log("Sound notifications disabled");
+    return;
+  }
 
   try {
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContext) {
+      console.warn("AudioContext not supported");
+      return;
+    }
+
+    const audioCtx = new AudioContext();
     const freq = 880; // A5 note
 
     const osc = audioCtx.createOscillator();
@@ -686,6 +1063,8 @@ function playNotificationSound() {
 
     osc.start(audioCtx.currentTime);
     osc.stop(audioCtx.currentTime + 0.8);
+
+    console.log("Notification sound played");
   } catch (e) {
     console.warn("Audio notification failed:", e);
   }
@@ -695,71 +1074,114 @@ function playNotificationSound() {
    EVENT LISTENERS
    ============================================ */
 function setupEventListeners() {
-  // Timer Controls
-  DOM.startBtn.addEventListener("click", () => {
-    timerState.running ? pauseTimer() : startTimer();
-  });
-  DOM.pauseBtn.addEventListener("click", pauseTimer);
-  DOM.resetBtn.addEventListener("click", resetTimer);
+  try {
+    // Timer Controls
+    if (DOM.startBtn) {
+      DOM.startBtn.addEventListener("click", () => {
+        timerState.running ? pauseTimer() : startTimer();
+      });
+    }
+    if (DOM.pauseBtn) {
+      DOM.pauseBtn.addEventListener("click", pauseTimer);
+    }
+    if (DOM.resetBtn) {
+      DOM.resetBtn.addEventListener("click", resetTimer);
+    }
 
-  // Tab Switching
-  DOM.tabs.forEach((tab) => {
-    tab.addEventListener("click", () => {
-      if (!timerState.running) {
-        setTimerMode(tab.dataset.mode, true);
+    // Tab Switching
+    DOM.tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        if (!timerState.running) {
+          setTimerMode(tab.dataset.mode, true);
+        }
+      });
+    });
+
+    // Task Management
+    if (DOM.taskForm) {
+      DOM.taskForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const taskText = DOM.taskInput?.value.trim();
+        if (taskText) {
+          addTask(taskText);
+          if (DOM.taskInput) {
+            DOM.taskInput.value = "";
+            DOM.taskInput.focus();
+          }
+        }
+      });
+    }
+
+    if (DOM.clearTasksBtn) {
+      DOM.clearTasksBtn.addEventListener("click", clearCompletedTasks);
+    }
+
+    // Settings
+    if (DOM.settingsBtn) {
+      DOM.settingsBtn.addEventListener("click", openSettings);
+    }
+    if (DOM.closeSettingsBtn) {
+      DOM.closeSettingsBtn.addEventListener("click", closeSettings);
+    }
+    if (DOM.settingsCancelBtn) {
+      DOM.settingsCancelBtn.addEventListener("click", closeSettings);
+    }
+    if (DOM.settingsForm) {
+      DOM.settingsForm.addEventListener("submit", saveSettings);
+    }
+
+    // Theme
+    if (DOM.themeToggle) {
+      DOM.themeToggle.addEventListener("click", toggleTheme);
+    }
+
+    // Statistics
+    if (DOM.statsToggle) {
+      DOM.statsToggle.addEventListener("click", () => {
+        if (DOM.statsPanel) DOM.statsPanel.classList.toggle("hidden");
+        if (DOM.tasksPanel) DOM.tasksPanel.classList.toggle("hidden");
+      });
+    }
+
+    if (DOM.statsPeriod) {
+      DOM.statsPeriod.addEventListener("change", (e) => {
+        updateStatsDisplay(e.target.value);
+      });
+    }
+
+    if (DOM.exportStatsBtn) {
+      DOM.exportStatsBtn.addEventListener("click", exportData);
+    }
+
+    // Focus Mode
+    if (DOM.focusModeBtn) {
+      DOM.focusModeBtn.addEventListener("click", toggleFocusMode);
+    }
+    if (DOM.focusExitBtn) {
+      DOM.focusExitBtn.addEventListener("click", exitFocusMode);
+    }
+    if (DOM.focusPauseBtn) {
+      DOM.focusPauseBtn.addEventListener("click", pauseTimer);
+    }
+
+    // Modal overlay click to close
+    if (DOM.settingsModal) {
+      DOM.settingsModal.addEventListener("click", (e) => {
+        if (e.target === DOM.settingsModal) closeSettings();
+      });
+    }
+
+    // Tab visibility - pause timer if tab becomes hidden
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden && timerState.running) {
+        pauseTimer();
       }
     });
-  });
 
-  // Task Management
-  DOM.taskForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    if (DOM.taskInput.value.trim()) {
-      addTask(DOM.taskInput.value);
-      DOM.taskInput.value = "";
-      DOM.taskInput.focus();
-    }
-  });
-
-  DOM.clearTasksBtn.addEventListener("click", clearCompletedTasks);
-
-  // Settings
-  DOM.settingsBtn.addEventListener("click", openSettings);
-  DOM.closeSettingsBtn.addEventListener("click", closeSettings);
-  DOM.settingsCancelBtn.addEventListener("click", closeSettings);
-  DOM.settingsForm.addEventListener("submit", saveSettings);
-
-  // Theme
-  DOM.themeToggle.addEventListener("click", toggleTheme);
-
-  // Statistics
-  DOM.statsToggle.addEventListener("click", () => {
-    DOM.statsPanel.classList.toggle("hidden");
-    DOM.tasksPanel.classList.toggle("hidden");
-  });
-
-  DOM.statsPeriod.addEventListener("change", (e) => {
-    updateStatsDisplay(e.target.value);
-  });
-
-  DOM.exportStatsBtn.addEventListener("click", exportData);
-
-  // Focus Mode
-  DOM.focusModeBtn.addEventListener("click", toggleFocusMode);
-  DOM.focusExitBtn.addEventListener("click", exitFocusMode);
-  DOM.focusPauseBtn.addEventListener("click", pauseTimer);
-
-  // Modal overlay click to close
-  DOM.settingsModal.addEventListener("click", (e) => {
-    if (e.target === DOM.settingsModal) closeSettings();
-  });
-
-  // Tab visibility - pause timer if tab becomes hidden
-  document.addEventListener("visibilitychange", () => {
-    if (document.hidden && timerState.running) {
-      pauseTimer();
-    }
-  });
+    console.log("Event listeners set up successfully");
+  } catch (e) {
+    console.error("Error setting up event listeners:", e);
+  }
 }
 
 /* ============================================
@@ -767,36 +1189,51 @@ function setupEventListeners() {
    ============================================ */
 function setupKeyboardShortcuts() {
   document.addEventListener("keydown", (e) => {
-    // Prevent shortcuts if user is typing in input
-    if (e.target.tagName === "INPUT" && e.target.id !== "task-input") {
-      return;
-    }
+    try {
+      // Prevent shortcuts if user is typing in text input (except task input for Space)
+      if (
+        e.target.tagName === "INPUT" &&
+        e.target.id !== "task-input" &&
+        e.key !== ","
+      ) {
+        return;
+      }
 
-    switch (e.key) {
-      case " ":
-        e.preventDefault();
-        timerState.running ? pauseTimer() : startTimer();
-        break;
-      case "r":
-      case "R":
-        e.preventDefault();
-        resetTimer();
-        break;
-      case "f":
-      case "F":
-        e.preventDefault();
-        toggleFocusMode();
-        break;
-      case ",":
-        if (e.ctrlKey || e.metaKey) {
+      // Allow task input only for space bar (start/pause)
+      if (e.target.id === "task-input" && e.key !== " ") {
+        return;
+      }
+
+      switch (e.key.toLowerCase()) {
+        case " ":
           e.preventDefault();
-          openSettings();
-        }
-        break;
+          timerState.running ? pauseTimer() : startTimer();
+          break;
+        case "r":
+          e.preventDefault();
+          resetTimer();
+          break;
+        case "f":
+          e.preventDefault();
+          toggleFocusMode();
+          break;
+        case ",":
+          if (e.ctrlKey || e.metaKey) {
+            e.preventDefault();
+            openSettings();
+          }
+          break;
+      }
+    } catch (e) {
+      console.error("Error in keyboard shortcut handler:", e);
     }
   });
 }
 
 window.addEventListener("beforeunload", () => {
-  saveAppState();
+  try {
+    saveAppState();
+  } catch (e) {
+    console.error("Error saving state before unload:", e);
+  }
 });

@@ -199,6 +199,23 @@ body {
   background-color: var(--color-accent-primary);
   color: white;
   border-color: var(--color-accent-primary);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.2);
+  transition: left var(--transition-fast);
+}
+
+.btn-primary:hover:not(:disabled)::before {
+  left: 100%;
 }
 
 .btn-primary:hover:not(:disabled) {
@@ -753,6 +770,39 @@ legend {
   }
 }
 
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes completionGlow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(22, 163, 74, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(22, 163, 74, 0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .focus-content {
   text-align: center;
   display: flex;
@@ -931,14 +981,25 @@ kbd {
 
   .topbar {
     padding: var(--spacing-sm);
+    gap: var(--spacing-sm);
   }
 
-  .card {
-    padding: var(--spacing-md);
+  .brand {
+    flex-direction: column;
+    gap: var(--spacing-xs);
   }
 
   .brand h1 {
     font-size: var(--font-size-lg);
+    line-height: 1.2;
+  }
+
+  .tagline {
+    font-size: 11px;
+  }
+
+  .card {
+    padding: var(--spacing-md);
   }
 
   .timer-display {
@@ -963,10 +1024,14 @@ kbd {
 
   .control-buttons {
     flex-direction: column;
+    gap: var(--spacing-sm);
+    width: 100%;
   }
 
   .control-buttons .btn {
     width: 100%;
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-md) var(--spacing-sm);
   }
 
   .quick-stats {
@@ -982,10 +1047,18 @@ kbd {
     font-size: 10px;
   }
 
+  .stat-item {
+    padding: var(--spacing-sm);
+  }
+
   .panel-header {
     flex-direction: column;
     align-items: flex-start;
     gap: var(--spacing-sm);
+  }
+
+  .panel-header h2 {
+    font-size: var(--font-size-base);
   }
 
   .task-input {
@@ -998,12 +1071,42 @@ kbd {
 
   .app-footer {
     font-size: 11px;
+    padding: var(--spacing-md);
   }
 
   kbd {
     padding: 1px 4px;
     font-size: 10px;
     margin: 0 1px;
+  }
+
+  .icon-btn {
+    width: 36px;
+    height: 36px;
+    font-size: var(--font-size-base);
+  }
+
+  .header-controls {
+    gap: var(--spacing-xs);
+  }
+
+  .focus-display {
+    font-size: clamp(48px, 12vw, 80px);
+    margin: 0;
+  }
+
+  .focus-controls {
+    flex-direction: column;
+    gap: var(--spacing-md);
+    width: 90vw;
+    max-width: 100%;
+  }
+
+  .focus-controls .btn {
+    width: 100%;
+    min-width: auto;
+    font-size: var(--font-size-base);
+    padding: var(--spacing-lg) var(--spacing-md);
   }
 }
 
