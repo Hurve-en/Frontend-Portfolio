@@ -1,6 +1,6 @@
-// JavaScript for calculator functionality
+// Modern Calculator Pro - Enhanced JavaScript
 
-/* Calculator app with safe math evaluation and theme toggle */
+/* Calculator app with safe math evaluation, theme toggle, and history tracking */
 
 (function () {
   // ---------- DOM refs ----------
@@ -8,6 +8,94 @@
   const secondaryEl = document.getElementById("secondary");
   const keysEl = document.querySelector(".keys");
   const themeToggle = document.getElementById("themeToggle");
+  const historyBtn = document.getElementById("historyBtn");
+  const historyPanel = document.getElementById("historyPanel");
+  const historyList = document.getElementById("historyList");
+  const clearHistoryBtn = document.getElementById("clearHistoryBtn");
+  const toastEl = document.getElementById("toast");
+
+  // ---------- History Management ----------
+  const HISTORY_KEY = "calc_history";
+  const MAX_HISTORY = 15;
+
+  function getHistory() {
+    try {
+      const data = localStorage.getItem(HISTORY_KEY);
+      return data ? JSON.parse(data) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveHistory(history) {
+    try {
+      localStorage.setItem(
+        HISTORY_KEY,
+        JSON.stringify(history.slice(0, MAX_HISTORY)),
+      );
+    } catch (e) {
+      // ignore storage errors
+    }
+  }
+
+  function addToHistory(expr, result) {
+    const history = getHistory();
+    history.unshift({ expr, result, timestamp: new Date().getTime() });
+    saveHistory(history);
+    renderHistory();
+  }
+
+  function renderHistory() {
+    const history = getHistory();
+    historyList.innerHTML = "";
+    if (history.length === 0) {
+      historyList.innerHTML =
+        '<div style="padding: 16px; text-align: center; color: var(--muted); font-size: 13px;">No history yet</div>';
+      return;
+    }
+    history.forEach((item) => {
+      const div = document.createElement("div");
+      div.className = "history-item";
+      div.innerHTML = `
+        <span class="history-item-expr">${escapeHtml(item.expr)}</span>
+        <span class="history-item-result">${escapeHtml(item.result)}</span>
+      `;
+      div.addEventListener("click", () => {
+        expr = item.expr;
+        renderPrimary(expr);
+        historyPanel.setAttribute("hidden", "");
+      });
+      historyList.appendChild(div);
+    });
+  }
+
+  function escapeHtml(text) {
+    const map = {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#039;",
+    };
+    return String(text).replace(/[&<>"']/g, (m) => map[m]);
+  }
+
+  function clearHistory() {
+    if (confirm("Clear all history?")) {
+      localStorage.removeItem(HISTORY_KEY);
+      renderHistory();
+      showToast("History cleared");
+    }
+  }
+
+  // ---------- Toast Notification ----------
+  function showToast(message, duration = 2000) {
+    toastEl.textContent = message;
+    toastEl.classList.add("show");
+    setTimeout(() => {
+      toastEl.classList.remove("show");
+    }, duration);
+  }
 
   // ---------- Theme init & handling ----------
   const THEME_KEY = "calc_theme";
@@ -37,6 +125,33 @@
   } catch (e) {
     // ignore storage/permission errors
   }
+
+  // ---------- History Panel Toggle ----------
+  if (historyBtn) {
+    historyBtn.addEventListener("click", () => {
+      if (historyPanel.hasAttribute("hidden")) {
+        historyPanel.removeAttribute("hidden");
+        renderHistory();
+      } else {
+        historyPanel.setAttribute("hidden", "");
+      }
+    });
+  }
+
+  if (clearHistoryBtn) {
+    clearHistoryBtn.addEventListener("click", clearHistory);
+  }
+
+  // Close history panel when clicking outside
+  document.addEventListener("click", (e) => {
+    if (
+      !historyPanel.hasAttribute("hidden") &&
+      !historyPanel.contains(e.target) &&
+      !historyBtn.contains(e.target)
+    ) {
+      historyPanel.setAttribute("hidden", "");
+    }
+  });
 
   // ---------- Calculator state ----------
   let expr = ""; // expression shown
@@ -94,9 +209,12 @@
       lastResult = formatNumber(value);
       renderSecondary();
       renderPrimary(String(lastResult));
+      addToHistory(expr, lastResult);
       expr = String(lastResult);
+      showToast("✓ Calculated");
     } catch (err) {
       renderPrimary(err.message || "Error", true);
+      showToast("✗ Invalid expression");
     } finally {
       evaluating = false;
     }
@@ -294,10 +412,12 @@
       clearAll();
       lastResult = null;
       renderSecondary();
+      showToast("Cleared");
       return;
     }
     if (action === "back") {
       deleteLast();
+      showToast("⌫");
       return;
     }
     if (action === "percent") {
@@ -362,6 +482,7 @@
   function init() {
     renderPrimary("0");
     renderSecondary();
+    renderHistory();
   }
 
   init();
