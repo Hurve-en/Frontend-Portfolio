@@ -91,8 +91,8 @@
         <div class="modal-card card">
           <h2 id="modal-title">Add Event</h2>
           <form id="event-form" class="event-form">
-            <label
-              >Title
+            <label>
+              Title
               <input
                 id="evt-title"
                 type="text"
@@ -102,13 +102,23 @@
               />
             </label>
 
-            <label
-              >Time
+            <label>
+              Category
+              <select id="evt-category">
+                <option value="other">Other</option>
+                <option value="work">Work</option>
+                <option value="personal">Personal</option>
+                <option value="health">Health</option>
+              </select>
+            </label>
+
+            <label>
+              Time
               <input id="evt-time" type="time" />
             </label>
 
-            <label
-              >Description
+            <label>
+              Description
               <textarea
                 id="evt-desc"
                 rows="3"
@@ -119,14 +129,14 @@
             <input id="evt-date" type="date" required style="display: none" />
 
             <div class="modal-actions">
-              <button id="save-event" class="btn primary" type="submit">
-                Save
-              </button>
               <button id="cancel-event" class="btn" type="button">
                 Cancel
               </button>
               <button id="delete-event" class="btn danger hidden" type="button">
                 Delete
+              </button>
+              <button id="save-event" class="btn primary" type="submit">
+                Save
               </button>
             </div>
           </form>
