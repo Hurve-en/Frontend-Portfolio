@@ -5,18 +5,22 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Emoji Mood Logger — Aesthetic UI</title>
+    <meta name="theme-color" content="#f6f8fb" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Emoji Mood Logger — Track your daily emotions</title>
     <meta
       name="description"
-      content="Aesthetic Emoji Mood Logger — record daily mood with emoji, notes, and see trends."
+      content="A beautiful mood tracking app with emoji logging, historical trends, and emotional insights. Track your daily feelings with style."
     />
+    <meta name="keywords" content="mood tracker, emotion log, daily journal, emoji, wellness, mental health" />
+    <meta name="author" content="Senior Developer" />
     <link rel="stylesheet" href="Mood.css" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
   </head>
-  <body data-theme="light" class="reduced-motion-check">
+  <body data-theme="light" class="reduced-motion-check" role="application" aria-label="Emoji Mood Logger Application">
     <div id="app" class="app-shell">
       <!-- Header with app name, theme switcher, and settings -->
       <header class="topbar">
@@ -39,19 +43,19 @@
       </header>
 
       <!-- Main content layout (3 columns) -->
-      <main class="grid">
+      <main class="grid" role="main">
         <!-- Left: Record today's mood and notes -->
         <section class="card dashboard" aria-labelledby="todayTitle">
           <div class="card-header">
             <h2 id="todayTitle">Today's Mood</h2>
-            <div class="small muted">Tap an emoji to record</div>
+            <div class="small muted">Express how you're feeling</div>
           </div>
 
-          <div class="mood-pad" role="list" aria-label="Emoji mood choices">
+          <div class="mood-pad" role="group" aria-label="Select your mood for today">
             <!-- Mood buttons added by JavaScript -->
           </div>
 
-          <div class="today-summary" id="todaySummary" aria-live="polite">
+          <div class="today-summary" id="todaySummary" aria-live="polite" aria-atomic="true">
             <!-- Shows today's recorded mood -->
             <div class="empty">
               No mood recorded today — pick an emoji above.
@@ -60,44 +64,93 @@
 
           <div class="note-area">
             <label for="noteInput" class="label muted"
-              >Add a short note (optional)</label
+              >Add a note about your day</label
             >
             <textarea
               id="noteInput"
-              placeholder="Why do you feel this way? (private)"
+              placeholder="What's on your mind? (private &amp; encrypted)"
+              aria-describedby="noteHelp"
             ></textarea>
+            <div id="noteHelp" class="note-help muted small">Your notes are stored locally in your browser only.</div>
           </div>
 
           <div class="controls-row">
-            <button id="saveToday" class="btn-primary">Save Mood</button>
-            <button id="openEditModal" class="btn-ghost">Edit Recent</button>
+            <button id="saveToday" class="btn-primary" aria-label="Save today's mood entry">Save Mood</button>
+            <button id="openEditModal" class="btn-ghost" aria-label="Edit a previous mood entry">Edit Recent</button>
+            <button id="exportData" class="btn-ghost" aria-label="Export your mood data as CSV">Export</button>
           </div>
         </section>
 
         <!-- Center: View mood history and trends -->
         <section class="card history" aria-labelledby="historyTitle">
           <div class="card-header">
-            <h2 id="historyTitle">Mood History</h2>
-            <div class="small muted">Swipe or scroll →</div>
+            <h2 id="historyTitle">Mood Insights</h2>
+            <div class="small muted">Your emotional patterns</div>
           </div>
 
-          <div
-            class="history-preview"
-            id="historyPreview"
-            aria-label="Mood history (recent days)"
-          >
+          <!-- Weekly Statistics -->
+          <div class="stats-row" id="weeklyStats" aria-label="Weekly mood statistics">
+            <div class="stat-item">
+              <div class="stat-label">This Week's Average</div>
+              <div class="stat-value" id="avgMood">—</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">Current Streak</div>
+              <div class="stat-value" id="streak">0 🔥</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">Most Common</div>
+              <div class="stat-value" id="mostCommon">—</div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <!-- Mood Distribution Pie Chart -->
+          <div class="chart-container">
+            <div class="chart-title">Mood Distribution</div>
+            <canvas id="distributionCanvas" width="200" height="200" aria-label="Pie chart showing mood distribution" role="img"></canvas>
+          </div>
+
+          <!-- Historical Preview -->
+          <div class="history-preview" id="historyPreview" aria-label="Recent mood history">
             <!-- Recent days shown left to right -->
           </div>
 
           <div class="trend-section">
             <div class="trend-header">
               <div class="label">7-day trend</div>
-              <div class="muted small">Quick snapshot</div>
+              <div class="muted small">Your mood progression</div>
             </div>
             <!-- Graph showing mood trend over 7 days -->
             <canvas
               id="trendCanvas"
               width="560"
+              height="120"
+              aria-label="Line chart showing 7-day mood trend"
+              role="img"
+            ></canvas>
+          </div>
+
+          <div class="history-actions">
+            <button id="openHistory" class="btn-ghost">
+              📅 Full Calendar
+            </button>
+            <button id="viewWeekly" class="btn-ghost">
+              📊 Weekly Report
+            </button>
+            <div class="muted small">Filter:</div>
+            <select id="filterMood" aria-label="Filter history by mood">
+              <option value="all">All Moods</option>
+              <option value="happy">😊 Happy</option>
+              <option value="neutral">😐 Neutral</option>
+              <option value="sad">😢 Sad</option>
+              <option value="angry">😡 Angry</option>
+              <option value="excited">🤩 Excited</option>
+              <option value="tired">😴 Tired</option>
+            </select>
+          </div>
+        </section>
               height="120"
               aria-hidden="true"
             ></canvas>
@@ -123,13 +176,13 @@
         <!-- Right: Settings and options -->
         <aside class="card side" aria-labelledby="settingsTitle">
           <div class="card-header">
-            <h3 id="settingsTitle">Quick Settings</h3>
+            <h3 id="settingsTitle">⚙️ Settings</h3>
           </div>
 
           <div class="side-row">
             <div>
-              <div class="label">Dark mode</div>
-              <div class="muted small">Switch theme</div>
+              <div class="label">Dark Mode</div>
+              <div class="muted small">System or manual</div>
             </div>
             <label class="switch">
               <input
@@ -143,33 +196,69 @@
 
           <div class="side-row">
             <div>
-              <div class="label">Show charts</div>
-              <div class="muted small">Enable trend charts</div>
+              <div class="label">Show Charts</div>
+              <div class="muted small">Visualizations</div>
             </div>
             <label class="switch">
-              <input type="checkbox" id="showCharts" checked />
+              <input type="checkbox" id="showCharts" checked aria-label="Show mood charts" />
               <span></span>
             </label>
           </div>
 
           <div class="side-row">
             <div>
-              <div class="label">Font size</div>
-              <div class="muted small">Comfortable reading</div>
+              <div class="label">Data Privacy</div>
+              <div class="muted small">100% local storage</div>
             </div>
-            <select id="fontSize">
+            <span class="badge">✓ Secure</span>
+          </div>
+
+          <div class="side-row">
+            <div>
+              <div class="label">Font Size</div>
+              <div class="muted small">Accessibility</div>
+            </div>
+            <select id="fontSize" aria-label="Choose font size">
               <option value="14">14px</option>
               <option value="15" selected>15px</option>
               <option value="16">16px</option>
               <option value="18">18px</option>
+              <option value="20">20px</option>
             </select>
           </div>
 
+          <div class="side-row">
+            <div>
+              <div class="label">Language</div>
+              <div class="muted small">Display language</div>
+            </div>
+            <select id="language" aria-label="Select language">
+              <option value="en" selected>English</option>
+              <option value="es">Español</option>
+              <option value="fr">Français</option>
+              <option value="de">Deutsch</option>
+            </select>
+          </div>
+
+          <div class="divider"></div>
+
           <div class="side-actions">
-            <button id="addMoodFab" class="fab" aria-label="Add mood">
+            <button id="addMoodFab" class="fab" aria-label="Add mood entry (quick)">
               ➕
             </button>
-            <button id="clearAll" class="btn-ghost">Clear All</button>
+            <button id="downloadBackup" class="btn-ghost" aria-label="Download data backup">📥 Backup</button>
+            <button id="uploadBackup" class="btn-ghost" aria-label="Restore from backup">📤 Restore</button>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="side-actions">
+            <button id="resetData" class="btn-danger" aria-label="Clear all mood data">🗑️ Clear All</button>
+          </div>
+
+          <div class="app-info">
+            <div class="muted small">v2.0 • Senior Developer Edition</div>
+            <div class="muted small">💾 Total entries: <span id="totalEntries">0</span></div>
           </div>
         </aside>
       </main>
@@ -180,38 +269,82 @@
         class="modal"
         aria-labelledby="historyModalTitle"
       >
-        <h3 id="historyModalTitle">Full Mood History</h3>
+        <div class="modal-header">
+          <h3 id="historyModalTitle">📅 Full Mood Calendar</h3>
+          <button id="closeHistoryBtn" class="btn-icon" aria-label="Close modal">✕</button>
+        </div>
         <div class="modal-body">
-          <div
-            class="calendar"
-            id="calendarGrid"
-            role="grid"
-            aria-label="Mood calendar"
-          >
-            <!-- calendar days injected by JS -->
+          <div class="calendar-wrapper">
+            <div class="calendar" id="calendarGrid" role="grid" aria-label="Mood history calendar"></div>
           </div>
         </div>
-        <div class="modal-actions">
-          <button id="closeHistory" class="btn-ghost">Close</button>
+      </dialog>
+
+      <!-- WEEKLY REPORT MODAL -->
+      <dialog
+        id="weeklyModal"
+        class="modal"
+        aria-labelledby="weeklyModalTitle"
+      >
+        <div class="modal-header">
+          <h3 id="weeklyModalTitle">📊 Weekly Report</h3>
+          <button id="closeWeeklyBtn" class="btn-icon" aria-label="Close modal">✕</button>
+        </div>
+        <div class="modal-body">
+          <div id="weeklyReportContent">
+            <!-- Generated by JavaScript -->
+          </div>
         </div>
       </dialog>
 
       <!-- ADD / EDIT MOOD MODAL -->
       <dialog id="moodModal" class="modal" aria-labelledby="moodModalTitle">
-        <h3 id="moodModalTitle">Add / Edit Mood</h3>
+        <div class="modal-header">
+          <h3 id="moodModalTitle">😊 Record Your Mood</h3>
+          <button id="closeMoodModalBtn" class="btn-icon" aria-label="Close modal">✕</button>
+        </div>
         <div class="modal-body">
-          <div class="mood-pad modal-pad" id="modalMoodPad" role="list"></div>
-          <label for="modalNote" class="label muted">Note (optional)</label>
-          <textarea id="modalNote" placeholder="Write a short note…"></textarea>
+          <div class="mood-pad modal-pad" id="modalMoodPad" role="group" aria-label="Select mood"></div>
+          <div class="modal-date" id="modalDateInfo">Today</div>
+          <label for="modalNote" class="label muted">Add a note</label>
+          <textarea id="modalNote" placeholder="What's on your mind?"></textarea>
         </div>
         <div class="modal-actions">
-          <button id="saveModal" class="btn-primary">Save</button>
+          <button id="saveModal" class="btn-primary">💾 Save</button>
           <button id="cancelModal" class="btn-ghost">Cancel</button>
         </div>
       </dialog>
 
-      <!-- TOAST -->
-      <div id="toast" class="toast" role="status" aria-live="polite"></div>
+      <!-- IMPORT/EXPORT MODAL -->
+      <dialog id="dataModal" class="modal" aria-labelledby="dataModalTitle">
+        <div class="modal-header">
+          <h3 id="dataModalTitle">📦 Data Management</h3>
+          <button id="closeDataModalBtn" class="btn-icon" aria-label="Close modal">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="data-section">
+            <h4>Export Your Data</h4>
+            <p class="muted small">Download your mood data as CSV or JSON for backup or analysis.</p>
+            <button id="exportCSV" class="btn-ghost">📄 Export as CSV</button>
+            <button id="exportJSON" class="btn-ghost">📋 Export as JSON</button>
+          </div>
+          <div class="divider"></div>
+          <div class="data-section">
+            <h4>Import Data</h4>
+            <p class="muted small">Restore from a previous backup.</p>
+            <input type="file" id="importFile" accept=".json,.csv" aria-label="Select file to import" />
+            <button id="importData" class="btn-primary">📥 Import</button>
+          </div>
+        </div>
+      </dialog>
+
+      <!-- TOAST NOTIFICATIONS -->
+      <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+      <!-- LOADING INDICATOR -->
+      <div id="loadingSpinner" class="loading-spinner" role="status" aria-label="Loading">
+        <div class="spinner"></div>
+      </div>
     </div>
 
     <!-- App script -->
