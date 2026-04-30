@@ -1,10 +1,60 @@
 // This script handles the task list, timer, stats, and page interactions.
 
+// ==================== UNDO/REDO MANAGER ====================
+class UndoRedoManager {
+  constructor(maxHistory = 50) {
+    this.history = [];
+    this.currentIndex = -1;
+    this.maxHistory = maxHistory;
+  }
+
+  push(state) {
+    this.history = this.history.slice(0, this.currentIndex + 1);
+    this.history.push(JSON.parse(JSON.stringify(state)));
+    this.currentIndex++;
+
+    if (this.history.length > this.maxHistory) {
+      this.history.shift();
+      this.currentIndex--;
+    }
+  }
+
+  undo() {
+    if (this.currentIndex > 0) {
+      this.currentIndex--;
+      return JSON.parse(JSON.stringify(this.history[this.currentIndex]));
+    }
+    return null;
+  }
+
+  redo() {
+    if (this.currentIndex < this.history.length - 1) {
+      this.currentIndex++;
+      return JSON.parse(JSON.stringify(this.history[this.currentIndex]));
+    }
+    return null;
+  }
+
+  canUndo() {
+    return this.currentIndex > 0;
+  }
+
+  canRedo() {
+    return this.currentIndex < this.history.length - 1;
+  }
+
+  clear() {
+    this.history = [];
+    this.currentIndex = -1;
+  }
+}
+
 // ==================== STATE MANAGEMENT ====================
 class AppState {
   constructor() {
     this.todos = this.loadTodos();
     this.stats = this.loadStats();
+    this.undoRedo = new UndoRedoManager();
     this.timerState = {
       isRunning: false,
       isPaused: false,
@@ -16,6 +66,9 @@ class AppState {
       sessionsCompleted: 0,
     };
     this.currentFilter = "all";
+    this.quickPriority = "medium";
+    this.quickCategory = "general";
+    this.quickDueDate = null;
   }
 
   loadTodos() {
@@ -25,6 +78,9 @@ class AppState {
 
   saveTodos() {
     localStorage.setItem("todos", JSON.stringify(this.todos));
+    // Push current state to undo history
+    this.undoRedo.push(this.todos);
+    this.updateUndoRedoButtons();
   }
 
   loadStats() {
@@ -42,6 +98,13 @@ class AppState {
 
   saveStats() {
     localStorage.setItem("stats", JSON.stringify(this.stats));
+  }
+
+  updateUndoRedoButtons() {
+    const undoBtn = document.getElementById("undoBtn");
+    const redoBtn = document.getElementById("redoBtn");
+    if (undoBtn) undoBtn.disabled = !this.undoRedo.canUndo();
+    if (redoBtn) redoBtn.disabled = !this.undoRedo.canRedo();
   }
 }
 
@@ -285,6 +348,17 @@ class TodoManager {
       clearBtn: document.getElementById("clearCompleted"),
       taskCount: document.getElementById("taskCount"),
       completedCount: document.getElementById("completedCount"),
+      quickPriority: document.getElementById("quickPriority"),
+      quickCategory: document.getElementById("quickCategory"),
+      quickDueDate: document.getElementById("quickDueDate"),
+      undoBtn: document.getElementById("undoBtn"),
+      redoBtn: document.getElementById("redoBtn"),
+      helpBtn: document.getElementById("helpBtn"),
+      exportBtn: document.getElementById("exportBtn"),
+      importBtn: document.getElementById("importBtn"),
+      importFile: document.getElementById("importFile"),
+      helpModal: document.getElementById("helpModal"),
+      closeHelpModal: document.getElementById("closeHelpModal"),
     };
   }
 
@@ -299,6 +373,39 @@ class TodoManager {
     this.elements.clearBtn.addEventListener("click", () =>
       this.clearCompleted(),
     );
+
+    // Quick controls
+    this.elements.quickPriority.addEventListener("change", (e) => {
+      this.state.quickPriority = e.target.value;
+    });
+    this.elements.quickCategory.addEventListener("change", (e) => {
+      this.state.quickCategory = e.target.value;
+    });
+    this.elements.quickDueDate.addEventListener("change", (e) => {
+      this.state.quickDueDate = e.target.value;
+    });
+
+    // Undo/Redo
+    this.elements.undoBtn.addEventListener("click", () => this.undo());
+    this.elements.redoBtn.addEventListener("click", () => this.redo());
+
+    // Help modal
+    this.elements.helpBtn.addEventListener("click", () => this.showHelpModal());
+    this.elements.closeHelpModal.addEventListener("click", () =>
+      this.hideHelpModal(),
+    );
+    this.elements.helpModal.addEventListener("click", (e) => {
+      if (e.target === this.elements.helpModal) this.hideHelpModal();
+    });
+
+    // Import/Export
+    this.elements.exportBtn.addEventListener("click", () => this.exportTasks());
+    this.elements.importBtn.addEventListener("click", () => {
+      this.elements.importFile.click();
+    });
+    this.elements.importFile.addEventListener("change", (e) =>
+      this.importTasks(e),
+    );
   }
 
   addTodo() {
@@ -310,7 +417,9 @@ class TodoManager {
       text,
       completed: false,
       createdAt: new Date().toISOString(),
-      priority: "medium", // default priority
+      priority: this.state.quickPriority || "medium",
+      category: this.state.quickCategory || "general",
+      dueDate: this.state.quickDueDate || null,
     };
 
     this.state.todos.unshift(todo);
@@ -375,9 +484,109 @@ class TodoManager {
       filtered = filtered.filter(
         (t) => new Date(t.createdAt).toDateString() === today,
       );
+    } else if (this.state.currentFilter === "overdue") {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      filtered = filtered.filter((t) => {
+        if (!t.dueDate || t.completed) return false;
+        const dueDate = new Date(t.dueDate);
+        dueDate.setHours(0, 0, 0, 0);
+        return dueDate < today;
+      });
     }
 
     return filtered;
+  }
+
+  getDueDateClass(dueDate) {
+    if (!dueDate) return "";
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const due = new Date(dueDate);
+    due.setHours(0, 0, 0, 0);
+
+    if (due < today) return "overdue";
+    if (due.getTime() === today.getTime()) return "today";
+    return "upcoming";
+  }
+
+  getDueDateLabel(dueDate) {
+    if (!dueDate) return "";
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const due = new Date(dueDate);
+    due.setHours(0, 0, 0, 0);
+
+    if (due < today) return `📛 ${dueDate}`;
+    if (due.getTime() === today.getTime()) return "📌 Today";
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    if (due.getTime() === tomorrow.getTime()) return "🔔 Tomorrow";
+    return `📅 ${dueDate}`;
+  }
+
+  undo() {
+    const previousState = this.state.undoRedo.undo();
+    if (previousState) {
+      this.state.todos = previousState;
+      this.state.saveTodos();
+      this.render();
+      showToast("↶ Undo successful", "info");
+    }
+  }
+
+  redo() {
+    const nextState = this.state.undoRedo.redo();
+    if (nextState) {
+      this.state.todos = nextState;
+      this.state.saveTodos();
+      this.render();
+      showToast("↷ Redo successful", "info");
+    }
+  }
+
+  showHelpModal() {
+    this.elements.helpModal.classList.add("active");
+  }
+
+  hideHelpModal() {
+    this.elements.helpModal.classList.remove("active");
+  }
+
+  exportTasks() {
+    const dataStr = JSON.stringify(this.state.todos, null, 2);
+    const dataBlob = new Blob([dataStr], { type: "application/json" });
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `momentum-tasks-${new Date().toISOString().split("T")[0]}.json`;
+    link.click();
+    URL.revokeObjectURL(url);
+    showToast("📥 Tasks exported successfully", "success");
+  }
+
+  importTasks(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const importedTodos = JSON.parse(e.target.result);
+        if (Array.isArray(importedTodos)) {
+          this.state.todos = [...importedTodos, ...this.state.todos];
+          this.state.saveTodos();
+          this.render();
+          showToast("📤 Tasks imported successfully", "success");
+        } else {
+          showToast("❌ Invalid file format", "error");
+        }
+      } catch (error) {
+        showToast("❌ Failed to import tasks", "error");
+      }
+    };
+    reader.readAsText(file);
+    event.target.value = "";
   }
 
   render() {
@@ -411,7 +620,9 @@ class TodoManager {
     this.elements.todoList.innerHTML = filteredTodos
       .map(
         (todo) => `
-            <div class="todo-item ${todo.completed ? "completed" : ""}" data-id="${todo.id}">
+            <div class="todo-item ${todo.completed ? "completed" : ""}" 
+                 data-id="${todo.id}"
+                 draggable="true">
                 <input
                     type="checkbox"
                     class="checkbox"
@@ -423,6 +634,8 @@ class TodoManager {
                     <div class="todo-text">${this.escapeHtml(todo.text)}</div>
                     <div class="todo-meta">
                         <span class="todo-time">📅 ${this.formatDate(todo.createdAt)}</span>
+                        ${todo.dueDate ? `<span class="todo-due-date ${this.getDueDateClass(todo.dueDate)}">${this.getDueDateLabel(todo.dueDate)}</span>` : ""}
+                        <span class="todo-category-badge">${todo.category || "general"}</span>
                         <span class="todo-priority ${todo.priority}">${todo.priority.toUpperCase()}</span>
                     </div>
                 </div>
@@ -433,6 +646,67 @@ class TodoManager {
         `,
       )
       .join("");
+
+    // Add drag and drop listeners
+    this.attachDragDropListeners();
+    this.state.updateUndoRedoButtons();
+  }
+
+  attachDragDropListeners() {
+    const todoItems = document.querySelectorAll(".todo-item");
+
+    todoItems.forEach((item) => {
+      item.addEventListener("dragstart", (e) => {
+        e.dataTransfer.effectAllowed = "move";
+        item.classList.add("dragging");
+      });
+
+      item.addEventListener("dragend", () => {
+        item.classList.remove("dragging");
+        document.querySelectorAll(".todo-item").forEach((el) => {
+          el.classList.remove("drag-over");
+        });
+      });
+
+      item.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = "move";
+        if (
+          e.target.closest(".todo-item") &&
+          e.target.closest(".todo-item") !== item
+        ) {
+          e.target.closest(".todo-item").classList.add("drag-over");
+        }
+      });
+
+      item.addEventListener("dragleave", () => {
+        item.classList.remove("drag-over");
+      });
+
+      item.addEventListener("drop", (e) => {
+        e.preventDefault();
+        const draggedId = parseInt(
+          document.querySelector(".todo-item.dragging").dataset.id,
+        );
+        const targetId = parseInt(item.dataset.id);
+
+        if (draggedId !== targetId) {
+          const draggedIndex = this.state.todos.findIndex(
+            (t) => t.id === draggedId,
+          );
+          const targetIndex = this.state.todos.findIndex(
+            (t) => t.id === targetId,
+          );
+          [this.state.todos[draggedIndex], this.state.todos[targetIndex]] = [
+            this.state.todos[targetIndex],
+            this.state.todos[draggedIndex],
+          ];
+          this.state.saveTodos();
+          this.render();
+          showToast("📍 Task reordered", "info");
+        }
+      });
+    });
   }
 
   escapeHtml(text) {
@@ -526,7 +800,7 @@ class StatsManager {
 function showToast(message, type = "info") {
   const toast = document.getElementById("toast");
   toast.textContent = message;
-  toast.className = `toast show`;
+  toast.className = `toast show ${type}`;
 
   setTimeout(() => {
     toast.classList.remove("show");
@@ -547,6 +821,9 @@ document.addEventListener("DOMContentLoaded", () => {
   pomodoroTimer = new PomodoroTimer(appState);
   todoManager = new TodoManager(appState);
   statsManager = new StatsManager(appState);
+
+  // Initialize undo/redo buttons
+  appState.updateUndoRedoButtons();
 
   // Add SVG gradient for the timer visualization
   const svg = document.querySelector(".timer-progress");
@@ -576,7 +853,9 @@ document.addEventListener("DOMContentLoaded", () => {
   document.documentElement.style.scrollBehavior = "smooth";
 
   // Log that the app is ready
-  console.log("🎯 Momentum App Initialized Successfully");
+  console.log(
+    "🎯 Momentum App Initialized Successfully with Enhanced Features",
+  );
 });
 
 // ==================== KEYBOARD SHORTCUTS ====================
@@ -594,6 +873,33 @@ document.addEventListener("keydown", (e) => {
     } else {
       pomodoroTimer.start();
     }
+  }
+
+  // Ctrl/Cmd + Z to undo
+  if ((e.ctrlKey || e.metaKey) && e.key === "z") {
+    e.preventDefault();
+    todoManager.undo();
+  }
+
+  // Ctrl/Cmd + Y or Ctrl/Cmd + Shift + Z to redo
+  if (
+    (e.ctrlKey || e.metaKey) &&
+    (e.key === "y" || (e.shiftKey && e.key === "z"))
+  ) {
+    e.preventDefault();
+    todoManager.redo();
+  }
+
+  // Ctrl/Cmd + E to export
+  if ((e.ctrlKey || e.metaKey) && e.key === "e") {
+    e.preventDefault();
+    todoManager.exportTasks();
+  }
+
+  // ? or Shift+/ to show help
+  if (e.key === "?" || (e.shiftKey && e.key === "/")) {
+    e.preventDefault();
+    todoManager.showHelpModal();
   }
 });
 
