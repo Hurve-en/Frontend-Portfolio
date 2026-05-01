@@ -1,0 +1,41 @@
+/* ============================================
+   RESPONSIVE - Mobile & tablet styling
+   ============================================ */
+
+@media (max-width: 420px) {
+  :root {
+    --key-size: 64px;
+    --key-gap: 8px;
+  }
+
+  .primary {
+    font-size: 28px;
+  }
+
+  .calculator {
+    padding: 16px;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --key-size: 68px;
+  }
+
+  .brand {
+    font-size: 16px;
+  }
+
+  .history-panel {
+    width: 240px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
