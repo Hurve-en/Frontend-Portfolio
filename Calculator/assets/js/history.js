@@ -25,7 +25,7 @@ const HistoryManager = (function () {
     try {
       localStorage.setItem(
         HISTORY_KEY,
-        JSON.stringify(history.slice(0, MAX_HISTORY))
+        JSON.stringify(history.slice(0, MAX_HISTORY)),
       );
     } catch (e) {
       console.warn("History save failed:", e);
@@ -73,7 +73,7 @@ const HistoryManager = (function () {
         window.dispatchEvent(
           new CustomEvent("history-select", {
             detail: { expr: item.expr },
-          })
+          }),
         );
         historyPanel.setAttribute("hidden", "");
       });
