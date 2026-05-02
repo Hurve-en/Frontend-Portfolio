@@ -12,24 +12,12 @@ const HistoryManager = (function () {
   const clearHistoryBtn = document.getElementById("clearHistoryBtn");
 
   function getHistory() {
-    try {
-      const data = localStorage.getItem(HISTORY_KEY);
-      return data ? JSON.parse(data) : [];
-    } catch (e) {
-      console.warn("History retrieval failed:", e);
-      return [];
-    }
+    const data = Utils.getFromStorage(HISTORY_KEY);
+    return data || [];
   }
 
   function saveHistory(history) {
-    try {
-      localStorage.setItem(
-        HISTORY_KEY,
-        JSON.stringify(history.slice(0, MAX_HISTORY)),
-      );
-    } catch (e) {
-      console.warn("History save failed:", e);
-    }
+    Utils.setToStorage(HISTORY_KEY, history.slice(0, MAX_HISTORY));
   }
 
   function addEntry(expr, result) {
@@ -37,17 +25,6 @@ const HistoryManager = (function () {
     history.unshift({ expr, result, timestamp: new Date().getTime() });
     saveHistory(history);
     render();
-  }
-
-  function escapeHtml(text) {
-    const map = {
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#039;",
-    };
-    return String(text).replace(/[&<>"']/g, (m) => map[m]);
   }
 
   function render() {
@@ -64,8 +41,8 @@ const HistoryManager = (function () {
       const div = document.createElement("div");
       div.className = "history-item";
       div.innerHTML = `
-        <span class="history-item-expr">${escapeHtml(item.expr)}</span>
-        <span class="history-item-result">${escapeHtml(item.result)}</span>
+        <span class="history-item-expr">${Utils.escapeHtml(item.expr)}</span>
+        <span class="history-item-result">${Utils.escapeHtml(item.result)}</span>
       `;
 
       div.addEventListener("click", () => {
@@ -84,7 +61,7 @@ const HistoryManager = (function () {
 
   function clear() {
     if (confirm("Clear all history?")) {
-      localStorage.removeItem(HISTORY_KEY);
+      Utils.removeFromStorage(HISTORY_KEY);
       render();
       UIManager.showToast("History cleared");
     }

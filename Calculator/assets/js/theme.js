@@ -15,10 +15,8 @@ const ThemeManager = (function () {
 
   function init() {
     try {
-      const saved = localStorage.getItem(THEME_KEY);
-      const prefersDark =
-        window.matchMedia &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const saved = Utils.getFromStorage(THEME_KEY);
+      const prefersDark = Utils.prefersDarkMode();
       const initialTheme = saved || (prefersDark ? "dark" : "light");
 
       apply(initialTheme);
@@ -29,11 +27,7 @@ const ThemeManager = (function () {
         themeToggle.addEventListener("change", (e) => {
           const newTheme = e.target.checked ? "dark" : "light";
           apply(newTheme);
-          try {
-            localStorage.setItem(THEME_KEY, newTheme);
-          } catch (e) {
-            console.warn("Theme storage failed:", e);
-          }
+          Utils.setToStorage(THEME_KEY, newTheme);
         });
       }
     } catch (e) {

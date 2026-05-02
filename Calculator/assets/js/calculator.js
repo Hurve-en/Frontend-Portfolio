@@ -5,14 +5,6 @@
 const CalculatorEngine = (function () {
   /* Safe expression evaluation using Shunting Yard algorithm */
 
-  function formatNumber(n) {
-    if (!isFinite(n)) throw new Error("Non-finite result");
-    const rounded = Math.round((n + Number.EPSILON) * 1e12) / 1e12;
-    if (Math.abs(rounded - Math.round(rounded)) < 1e-12)
-      return Math.round(rounded);
-    return String(rounded).replace(/(?:\.0+|(\.\d+?)0+)$/, "$1");
-  }
-
   function tokenize(s) {
     const tokens = [];
     let i = 0;
@@ -40,7 +32,7 @@ const CalculatorEngine = (function () {
       // Unary +/-
       if (
         (ch === "+" || ch === "-") &&
-        (i === 0 || s[i - 1] === "(" || isOperator(s[i - 1]))
+        (i === 0 || s[i - 1] === "(" || Utils.isOperator(s[i - 1]))
       ) {
         const next = s[i + 1];
         if (next && /[0-9.]/.test(next)) {
@@ -186,23 +178,6 @@ const CalculatorEngine = (function () {
     return st[0];
   }
 
-  function isOperator(ch) {
-    return ["+", "-", "*", "/"].includes(ch);
-  }
-
-  function getLastNumberSegment(s) {
-    let i = s.length - 1,
-      seg = "";
-    while (i >= 0) {
-      const ch = s[i];
-      if (/[0-9.]/.test(ch)) {
-        seg = ch + seg;
-        i--;
-      } else break;
-    }
-    return seg;
-  }
-
   function evaluate(expression) {
     const tokens = tokenize(expression);
     const rpn = toRPN(tokens);
@@ -211,8 +186,8 @@ const CalculatorEngine = (function () {
 
   return {
     evaluate,
-    formatNumber,
-    isOperator,
-    getLastNumberSegment,
+    formatNumber: Utils.formatNumber,
+    isOperator: Utils.isOperator,
+    getLastNumberSegment: Utils.getLastNumberSegment,
   };
 })();
