@@ -20,12 +20,13 @@ Calculator/
 │   │   ├── components.css  # Reusable UI component styles
 │   │   └── responsive.css  # Mobile/tablet responsive styles
 │   └── js/
-│       ├── utils.js        # Shared utility functions (LOAD FIRST)
-│       ├── calculator.js   # Core math engine (Shunting Yard algorithm)
-│       ├── ui.js           # UI rendering and display management
-│       ├── theme.js        # Dark/Light theme management
-│       ├── history.js      # Calculation history tracking
-│       └── app.js          # Main application controller (LOAD LAST)
+│       ├── utils.js            # Shared utility functions (LOAD FIRST)
+│       ├── calculator.js       # Core math engine (Shunting Yard algorithm)
+│       ├── ui.js              # UI rendering and display management
+│       ├── input-validator.js  # Input validation logic (NEW)
+│       ├── theme.js            # Dark/Light theme management
+│       ├── history.js          # Calculation history tracking
+│       └── app.js              # Main application controller (LOAD LAST)
 ```
 
 ---
@@ -79,12 +80,34 @@ Handles all DOM manipulation and display updates.
 - `UIManager.renderPrimary(text, isError)` - Update main display
 - `UIManager.renderSecondary(value)` - Update secondary display
 - `UIManager.showToast(message, duration)` - Show toast notifications
+- `UIManager.updateState(state)` - Centralized state update helper (NEW)
 
 **Dependencies:** None (uses direct DOM access)
 
 ---
 
-### 4. **theme.js** 🌓 (Theme Management)
+### 4. **input-validator.js** ⌨️ (Input Validation) — NEW
+
+Validates and processes user input (keyboard & button clicks).
+
+**Exports:**
+
+- `InputValidator.validateAppendChar(ch, expr)` - Validate character append
+- `InputValidator.validateApplyPercent(expr)` - Validate percent operation
+- `InputValidator.validateKeyboardInput(key)` - Parse keyboard keys to actions
+
+**Features:**
+
+- Prevents duplicate decimals
+- Handles operator replacement logic
+- Maps keyboard keys to calculator actions
+- Validates expression state before mutations
+
+**Dependencies:** `CalculatorEngine` (for operator validation)
+
+---
+
+### 5. **theme.js** 🌓 (Theme Management)
 
 Manages dark/light theme switching with localStorage persistence.
 
@@ -103,7 +126,7 @@ Manages dark/light theme switching with localStorage persistence.
 
 ---
 
-### 5. **history.js** 📋 (History Management)
+### 6. **history.js** 📋 (History Management)
 
 Manages calculation history with localStorage persistence.
 
@@ -119,30 +142,31 @@ Manages calculation history with localStorage persistence.
 - Click history to reload expression
 - Clear all history option
 - Auto-closes panel on click outside
+- **Uses event delegation** for efficient memory usage
 
 **Dependencies:** `Utils`, `UIManager`
 
 ---
 
-### 6. **app.js** 🚀 (Application Controller)
+### 7. **app.js** 🚀 (Application Controller)
 
 Main application orchestrator - coordinates all modules.
 
 **Key Functions:**
 
-- `appendChar(ch)` - Handle character input
+- `appendChar(ch)` - Handle character input (delegates to InputValidator)
 - `deleteLast()` - Handle backspace
 - `clearAll()` - Handle clear
-- `applyPercent()` - Handle percentage
+- `applyPercent()` - Handle percentage (delegates to InputValidator)
 - `evaluateNow()` - Trigger calculation
 
 **Event Handlers:**
 
 - `handleKeyClick(ev)` - Button click events
-- `handleKeyboardInput(e)` - Keyboard events
+- `handleKeyboardInput(e)` - Keyboard events (delegates to InputValidator)
 - `handleHistorySelect(e)` - History selection
 
-**Dependencies:** `CalculatorEngine`, `UIManager`, `ThemeManager`, `HistoryManager`
+**Dependencies:** `CalculatorEngine`, `UIManager`, `InputValidator`, `ThemeManager`, `HistoryManager`
 
 ---
 
@@ -153,9 +177,10 @@ Scripts load in this specific order in `calculator.html`:
 1. ✅ `utils.js` - Must load first (other modules depend on it)
 2. ✅ `calculator.js` - Math engine (no dependencies)
 3. ✅ `ui.js` - UI manager (no module dependencies)
-4. ✅ `theme.js` - Theme manager (depends on Utils)
-5. ✅ `history.js` - History manager (depends on Utils, UIManager)
-6. ✅ `app.js` - Main app (depends on all other modules)
+4. ✅ `input-validator.js` - Input validation (depends on CalculatorEngine)
+5. ✅ `theme.js` - Theme manager (depends on Utils)
+6. ✅ `history.js` - History manager (depends on Utils, UIManager)
+7. ✅ `app.js` - Main app (depends on all other modules)
 
 _All scripts use `defer` attribute for proper loading_
 
