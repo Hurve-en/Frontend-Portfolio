@@ -40,21 +40,11 @@ const HistoryManager = (function () {
     history.forEach((item) => {
       const div = document.createElement("div");
       div.className = "history-item";
+      div.setAttribute("data-expr", item.expr);
       div.innerHTML = `
         <span class="history-item-expr">${Utils.escapeHtml(item.expr)}</span>
         <span class="history-item-result">${Utils.escapeHtml(item.result)}</span>
       `;
-
-      div.addEventListener("click", () => {
-        // Dispatch custom event to notify app
-        window.dispatchEvent(
-          new CustomEvent("history-select", {
-            detail: { expr: item.expr },
-          }),
-        );
-        historyPanel.setAttribute("hidden", "");
-      });
-
       historyList.appendChild(div);
     });
   }
@@ -82,6 +72,20 @@ const HistoryManager = (function () {
     if (clearHistoryBtn) {
       clearHistoryBtn.addEventListener("click", clear);
     }
+
+    // Use event delegation for history items (avoids attaching listeners to each item)
+    historyList.addEventListener("click", (e) => {
+      const item = e.target.closest(".history-item");
+      if (item) {
+        const expr = item.getAttribute("data-expr");
+        window.dispatchEvent(
+          new CustomEvent("history-select", {
+            detail: { expr },
+          }),
+        );
+        historyPanel.setAttribute("hidden", "");
+      }
+    });
 
     // Close panel when clicking outside
     document.addEventListener("click", (e) => {

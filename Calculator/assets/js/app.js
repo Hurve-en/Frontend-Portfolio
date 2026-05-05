@@ -16,25 +16,7 @@ const CalculatorApp = (function () {
   /* Input Operations */
 
   function appendChar(ch) {
-    if (ch === ".") {
-      const lastNum = engine.getLastNumberSegment(expr);
-      if (lastNum.includes(".")) return;
-      if (lastNum === "") expr += "0";
-    }
-
-    const last = expr.slice(-1);
-    if (
-      engine.isOperator(last) &&
-      engine.isOperator(ch) &&
-      ch !== "(" &&
-      ch !== ")"
-    ) {
-      if (!(ch === "-" && (last === "(" || last === ""))) {
-        expr = expr.slice(0, -1);
-      }
-    }
-
-    expr += ch;
+    expr = InputValidator.validateAppendChar(ch, expr);
     ui.renderPrimary(expr);
   }
 
@@ -49,10 +31,7 @@ const CalculatorApp = (function () {
   }
 
   function applyPercent() {
-    if (expr === "") return;
-    const last = expr.slice(-1);
-    if (last === "%" || last === "(" || engine.isOperator(last)) return;
-    expr += "%";
+    expr = InputValidator.validateApplyPercent(expr);
     ui.renderPrimary(expr);
   }
 
@@ -115,54 +94,25 @@ const CalculatorApp = (function () {
   }
 
   function handleKeyboardInput(e) {
-    const k = e.key;
+    const input = InputValidator.validateKeyboardInput(e.key);
+    if (!input) return; // Unrecognized key
 
-    if (/^[0-9]$/.test(k)) {
-      appendChar(k);
-      e.preventDefault();
-      return;
-    }
+    e.preventDefault();
 
-    if (k === ".") {
-      appendChar(".");
-      e.preventDefault();
-      return;
-    }
-
-    if (k === "+" || k === "-" || k === "*" || k === "/") {
-      appendChar(k);
-      e.preventDefault();
-      return;
-    }
-
-    if (k === "(" || k === ")") {
-      appendChar(k);
-      e.preventDefault();
-      return;
-    }
-
-    if (k === "Enter" || k === "=") {
+    if (input.action === "append") {
+      appendChar(input.value);
+    } else if (input.action === "equals") {
       evaluateNow();
-      e.preventDefault();
-      return;
-    }
-
-    if (k === "Backspace") {
+    } else if (input.action === "back") {
       deleteLast();
-      e.preventDefault();
-      return;
-    }
-
-    if (k === "Escape") {
+      ui.showToast("⌫");
+    } else if (input.action === "clear") {
       clearAll();
-      e.preventDefault();
-      return;
-    }
-
-    if (k === "%") {
+      lastResult = null;
+      ui.renderSecondary(null);
+      ui.showToast("Cleared");
+    } else if (input.action === "percent") {
       applyPercent();
-      e.preventDefault();
-      return;
     }
   }
 
