@@ -7,7 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Aesthetic Chat Simulator" />
     <title>Sturya</title>
-    <link rel="stylesheet" href="Chat.css" />
+    <!-- Modular CSS Files -->
+    <link rel="stylesheet" href="assets/css/variables.css" />
+    <link rel="stylesheet" href="assets/css/layout.css" />
+    <link rel="stylesheet" href="assets/css/components.css" />
+    <link rel="stylesheet" href="assets/css/responsive.css" />
   </head>
   <body>
     <!-- MAIN CONTAINER -->
@@ -105,6 +109,12 @@
       </main>
     </div>
 
-    <script src="Chat.js"></script>
+    <!-- Modular JavaScript Files (Load order matters!) -->
+    <script src="assets/js/utils.js" defer></script>
+    <script src="assets/js/data.js" defer></script>
+    <script src="assets/js/ui.js" defer></script>
+    <script src="assets/js/messages.js" defer></script>
+    <script src="assets/js/search.js" defer></script>
+    <script src="assets/js/app.js" defer></script>
   </body>
 </html>
