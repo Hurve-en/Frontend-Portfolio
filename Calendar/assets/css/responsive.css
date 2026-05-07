@@ -1,0 +1,185 @@
+/* ===========================
+   RESPONSIVE.CSS - Mobile & tablet styles
+   =========================== */
+
+@media (max-width: 900px) {
+  .main {
+    grid-template-columns: 1fr;
+  }
+
+  .panel {
+    order: 2;
+    top: auto !important;
+    position: static;
+  }
+
+  .calendar {
+    order: 1;
+  }
+
+  .month-label {
+    min-width: 120px;
+  }
+
+  .topbar {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .brand h1 {
+    font-size: 20px;
+  }
+
+  .weekdays {
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  .day {
+    min-height: 90px;
+    font-size: 14px;
+  }
+
+  .modal-card {
+    padding: 24px 20px;
+    width: 95%;
+  }
+}
+
+@media (max-width: 640px) {
+  body {
+    padding: 12px;
+  }
+
+  .app {
+    gap: 12px;
+  }
+
+  .topbar {
+    padding: 12px 16px;
+    gap: 8px;
+  }
+
+  .brand h1 {
+    font-size: 18px;
+  }
+
+  .top-controls {
+    gap: 6px;
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .nav {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .month-label {
+    min-width: 100px;
+    font-size: 14px;
+  }
+
+  .btn {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .icon-btn {
+    width: 40px;
+    height: 40px;
+    padding: 4px;
+  }
+
+  .main {
+    gap: 12px;
+  }
+
+  .calendar {
+    min-height: auto;
+  }
+
+  .weekdays {
+    gap: 4px;
+    padding: 8px 4px;
+    font-size: 11px;
+  }
+
+  .days-grid {
+    gap: 6px;
+  }
+
+  .day {
+    min-height: 80px;
+    padding: 8px;
+    font-size: 13px;
+  }
+
+  .day .num {
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+
+  .event-dot {
+    width: 8px;
+    height: 8px;
+  }
+
+  .panel {
+    padding: 14px;
+    top: auto !important;
+  }
+
+  .panel-header {
+    gap: 8px;
+  }
+
+  .selected-date {
+    font-size: 16px;
+  }
+
+  .btn.primary {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .events-list {
+    min-height: 150px;
+    max-height: 300px;
+  }
+
+  .event-item {
+    padding: 10px;
+    gap: 6px;
+  }
+
+  .event-item .meta {
+    gap: 6px;
+  }
+
+  .event-time {
+    font-size: 12px;
+  }
+
+  .modal-card {
+    width: 95%;
+    padding: 20px 16px;
+  }
+
+  .modal-card h2 {
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+
+  .event-form {
+    gap: 12px;
+  }
+
+  .event-form label {
+    font-size: 13px;
+  }
+
+  .footer {
+    font-size: 12px;
+  }
+}

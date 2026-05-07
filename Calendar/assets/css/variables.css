@@ -1,0 +1,49 @@
+/* ===========================
+   VARIABLES.CSS - Design tokens
+   =========================== */
+
+:root {
+  /* Light mode */
+  --bg: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  --card: #ffffff;
+  --card-hover: #f9fafb;
+  --muted: #6b7280;
+  --accent: #1f2937; /* dark charcoal */
+  --accent-2: #06b6d4; /* cyan - modern accent */
+  --accent-3: #8b5cf6; /* purple */
+  --accent-4: #ec4899; /* pink */
+  --danger: #ef4444;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --glass-border: rgba(15, 23, 42, 0.08);
+  --glass-border-hover: rgba(15, 23, 42, 0.12);
+  --radius: 12px;
+  --radius-lg: 16px;
+  --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  --shadow-hover: 0 20px 40px rgba(15, 23, 42, 0.12);
+  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.06);
+  --max-width: 1100px;
+  --gap: 16px;
+  --weekday-bg: linear-gradient(90deg, #f9fafb 0%, #f3f4f6 100%);
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Category colors */
+  --cat-work: #3b82f6;
+  --cat-personal: #ec4899;
+  --cat-health: #10b981;
+  --cat-other: #8b5cf6;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    --card: #1e293b;
+    --card-hover: #334155;
+    --muted: #94a3b8;
+    --accent: #f1f5f9;
+    --glass-border: rgba(248, 250, 252, 0.08);
+    --glass-border-hover: rgba(248, 250, 252, 0.12);
+    --weekday-bg: linear-gradient(90deg, #334155 0%, #475569 100%);
+  }
+}

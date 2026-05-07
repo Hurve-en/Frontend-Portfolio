@@ -6,7 +6,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Calendar</title>
-    <link rel="stylesheet" href="Calendar.css" />
+    <!-- Modular CSS: Variables, Layout, Components, Responsive -->
+    <link rel="stylesheet" href="assets/css/variables.css" />
+    <link rel="stylesheet" href="assets/css/layout.css" />
+    <link rel="stylesheet" href="assets/css/components.css" />
+    <link rel="stylesheet" href="assets/css/responsive.css" />
   </head>
   <body>
     <div class="app">
@@ -148,6 +152,11 @@
       </footer>
     </div>
 
-    <script src="Calendar.js"></script>
+    <!-- Modular JavaScript (load in order) -->
+    <script src="assets/js/utils.js" defer></script>
+    <script src="assets/js/storage.js" defer></script>
+    <script src="assets/js/calendar.js" defer></script>
+    <script src="assets/js/events.js" defer></script>
+    <script src="assets/js/app.js" defer></script>
   </body>
 </html>
