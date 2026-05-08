@@ -1,0 +1,184 @@
+/* ============================================================================
+   RESPONSIVE DESIGN
+   ============================================================================ */
+
+@media (max-width: 1200px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .side {
+    grid-column: 1 / -1;
+    order: 3;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-shell {
+    margin: 16px auto;
+    padding: 8px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .topbar {
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .brand {
+    width: 100%;
+  }
+
+  .top-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .mood-pad {
+    gap: 8px;
+  }
+
+  .mood-btn {
+    width: 64px;
+    height: 64px;
+    font-size: 28px;
+  }
+
+  .stats-row,
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  dialog {
+    width: 95vw;
+    max-height: 90vh;
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .modal-header {
+    gap: 8px;
+  }
+
+  .calendar {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+  }
+
+  .calendar-day {
+    min-height: 60px;
+    font-size: 12px;
+  }
+
+  .history-day {
+    min-width: 72px;
+    height: 72px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-shell {
+    margin: 8px auto;
+  }
+
+  .logo {
+    width: 48px;
+    height: 48px;
+    font-size: 20px;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+
+  .card {
+    border-radius: 12px;
+    padding: 12px;
+  }
+
+  .mood-pad {
+    gap: 6px;
+  }
+
+  .mood-btn {
+    width: 56px;
+    height: 56px;
+    font-size: 24px;
+  }
+
+  .modal-pad .mood-btn {
+    width: 70px;
+    height: 70px;
+    font-size: 32px;
+  }
+
+  .controls-row,
+  .side-actions {
+    flex-direction: column;
+  }
+
+  .controls-row button,
+  .side-actions button {
+    width: 100%;
+  }
+
+  .fab {
+    width: 48px;
+    height: 48px;
+    font-size: 20px;
+  }
+
+  .modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .modal-actions button {
+    width: 100%;
+  }
+
+  .history-day {
+    min-width: 64px;
+    height: 64px;
+  }
+
+  .calendar {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ============================================================================
+   PRINT STYLES
+   ============================================================================ */
+
+@media print {
+  body {
+    background: white;
+  }
+
+  .topbar,
+  .btn-icon,
+  .fab,
+  dialog {
+    display: none;
+  }
+}
+
+/* ============================================================================
+   REDUCED MOTION
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

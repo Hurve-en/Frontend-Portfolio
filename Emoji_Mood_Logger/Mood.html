@@ -14,7 +14,11 @@
     />
     <meta name="keywords" content="mood tracker, emotion log, daily journal, emoji, wellness, mental health" />
     <meta name="author" content="Senior Developer" />
-    <link rel="stylesheet" href="Mood.css" />
+    <!-- Modular CSS Files -->
+    <link rel="stylesheet" href="assets/css/variables.css" />
+    <link rel="stylesheet" href="assets/css/layout.css" />
+    <link rel="stylesheet" href="assets/css/components.css" />
+    <link rel="stylesheet" href="assets/css/responsive.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800&display=swap"
       rel="stylesheet"
@@ -347,7 +351,13 @@
       </div>
     </div>
 
-    <!-- App script -->
-    <script src="Mood.js"></script>
+    <!-- Modular JavaScript Files (Load order matters!) -->
+    <script src="assets/js/config.js" defer></script>
+    <script src="assets/js/utils.js" defer></script>
+    <script src="assets/js/storage.js" defer></script>
+    <script src="assets/js/statistics.js" defer></script>
+    <script src="assets/js/charts.js" defer></script>
+    <script src="assets/js/ui.js" defer></script>
+    <script src="assets/js/app.js" defer></script>
   </body>
 </html>

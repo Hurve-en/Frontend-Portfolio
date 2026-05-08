@@ -1,134 +1,5 @@
-/**
- * EMOJI MOOD LOGGER v2.0 - CSS
- * Modern, Professional Design with UI/UX Best Practices
- * Theme support: Light, Dark, Pastel
- * Accessibility: WCAG 2.1 AA compliant
- */
-
 /* ============================================================================
-   CSS VARIABLES & THEMING
-   ============================================================================ */
-
-:root {
-  /* Spacing */
-  --gap: 14px;
-  --card-pad: 16px;
-  --radius-lg: 16px;
-  --radius-md: 12px;
-  --radius-sm: 8px;
-  --max-width: 1100px;
-
-  /* Animations */
-  --ui-duration: 220ms;
-  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
-
-  /* Light Theme */
-  --bg: #f6f8fb;
-  --panel: #ffffff;
-  --muted: #718096;
-  --text: #0b1220;
-  --border: rgba(0, 0, 0, 0.06);
-  --accent-1: #ffd6a5;
-  --accent-2: #c7d8ff;
-  --shadow-1: 0 8px 30px rgba(9, 10, 18, 0.06);
-  --shadow-2: 0 2px 8px rgba(9, 10, 18, 0.04);
-  
-  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-}
-
-/* Dark Theme */
-body[data-theme='dark'] {
-  --bg: linear-gradient(180deg, #071025 0%, #071022 100%);
-  --panel: rgba(8, 12, 20, 0.7);
-  --muted: #9aa3ad;
-  --text: #e6eef6;
-  --border: rgba(255, 255, 255, 0.08);
-  --accent-1: linear-gradient(135deg, #6be4b4, #7cc5ff);
-  --accent-2: #6be4b4;
-  --shadow-1: 0 10px 40px rgba(2, 6, 12, 0.6);
-  --shadow-2: 0 4px 12px rgba(2, 6, 12, 0.3);
-}
-
-/* Pastel Theme */
-body[data-theme='pastel'] {
-  --bg: linear-gradient(180deg, #fff8fb 0%, #fff5f8 100%);
-  --panel: #ffffff;
-  --muted: #9aa3a1;
-  --text: #2b2b2b;
-  --border: rgba(0, 0, 0, 0.04);
-  --accent-1: linear-gradient(135deg, #ffd6e0, #ffdbe8);
-  --accent-2: #ffb6c1;
-  --shadow-1: 0 8px 30px rgba(9, 10, 18, 0.04);
-  --shadow-2: 0 2px 8px rgba(9, 10, 18, 0.02);
-}
-
-/* ============================================================================
-   GLOBAL STYLES & RESET
-   ============================================================================ */
-
-* {
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
-}
-
-html,
-body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  font-family: var(--font-family);
-  background: var(--bg);
-  color: var(--text);
-  font-size: 15px;
-  line-height: 1.6;
-  letter-spacing: -0.3px;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Scrollbar styling */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--muted);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--text);
-}
-
-body.reduced-motion-check * {
-  animation-duration: 0ms !important;
-  transition-duration: 0ms !important;
-}
-
-/* ============================================================================
-   LAYOUT
-   ============================================================================ */
-
-.app-shell {
-  max-width: var(--max-width);
-  margin: 32px auto;
-  padding: 12px;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-main {
-  flex: 1;
-}
-
-/* ============================================================================
-   HEADER / TOPBAR
+   TOPBAR / HEADER
    ============================================================================ */
 
 .topbar {
@@ -161,8 +32,13 @@ main {
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
 }
 
 .title {
@@ -255,7 +131,7 @@ button {
 }
 
 .btn-danger {
-  background: #F87171;
+  background: #f87171;
   border: none;
   padding: 10px 16px;
   border-radius: var(--radius-md);
@@ -266,7 +142,7 @@ button {
 }
 
 .btn-danger:hover {
-  background: #EF4444;
+  background: #ef4444;
   box-shadow: 0 8px 16px rgba(220, 38, 38, 0.2);
 }
 
@@ -295,57 +171,6 @@ button {
 }
 
 /* ============================================================================
-   GRID LAYOUT
-   ============================================================================ */
-
-.grid {
-  display: grid;
-  grid-template-columns: 1fr 1.2fr 320px;
-  gap: 16px;
-  align-items: start;
-}
-
-/* ============================================================================
-   CARDS & SECTIONS
-   ============================================================================ */
-
-.card {
-  background: var(--panel);
-  border-radius: var(--radius-lg);
-  padding: var(--card-pad);
-  box-shadow: var(--shadow-1);
-  border: 1px solid var(--border);
-  animation: slideUp 0.4s var(--ease-smooth);
-  backdrop-filter: blur(10px);
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.card-header {
-  margin-bottom: 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 8px;
-}
-
-.card-header h2,
-.card-header h3 {
-  margin: 0 0 4px 0;
-  font-size: 18px;
-  font-weight: 700;
-}
-
-/* ============================================================================
    MOOD PAD & BUTTONS
    ============================================================================ */
 
@@ -366,7 +191,11 @@ button {
   font-size: 32px;
   cursor: pointer;
   border: 2px solid transparent;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.4));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.8),
+    rgba(255, 255, 255, 0.4)
+  );
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
   transition: all var(--ui-duration) var(--ease-smooth);
   position: relative;
@@ -379,7 +208,9 @@ button {
 
 .mood-btn.active {
   border-color: var(--accent-2);
-  box-shadow: 0 0 0 3px rgba(124, 197, 255, 0.2), 0 8px 24px rgba(124, 197, 255, 0.2);
+  box-shadow:
+    0 0 0 3px rgba(124, 197, 255, 0.2),
+    0 8px 24px rgba(124, 197, 255, 0.2);
   transform: scale(1.12);
 }
 
@@ -398,7 +229,11 @@ button {
    ============================================================================ */
 
 .today-summary {
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.03),
+    rgba(255, 255, 255, 0.01)
+  );
   border-radius: var(--radius-md);
   padding: 16px;
   margin: 12px 0;
@@ -498,7 +333,11 @@ textarea:focus {
 }
 
 .stat-item {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.08),
+    rgba(255, 255, 255, 0.02)
+  );
   border-radius: var(--radius-md);
   padding: 12px;
   text-align: center;
@@ -525,7 +364,11 @@ textarea:focus {
    ============================================================================ */
 
 .chart-container {
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.03),
+    rgba(255, 255, 255, 0.01)
+  );
   border-radius: var(--radius-md);
   padding: 16px;
   margin: 12px 0;
@@ -580,7 +423,11 @@ canvas {
   min-width: 84px;
   height: 84px;
   border-radius: var(--radius-md);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.08),
+    rgba(255, 255, 255, 0.02)
+  );
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -672,8 +519,12 @@ dialog::backdrop {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .modal-header {
@@ -779,19 +630,15 @@ dialog::backdrop {
 }
 
 .stat-box {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.02)
+  );
   border-radius: var(--radius-md);
   padding: 16px;
   text-align: center;
   border: 1px solid var(--border);
-}
-
-.stat-label {
-  font-size: 12px;
-  color: var(--muted);
-  margin-bottom: 4px;
-  text-transform: uppercase;
-  font-weight: 600;
 }
 
 .distribution-list {
@@ -948,7 +795,7 @@ dialog::backdrop {
 
 .switch span:before {
   position: absolute;
-  content: '';
+  content: "";
   height: 18px;
   width: 18px;
   left: 3px;
@@ -1027,189 +874,4 @@ button:focus-visible {
 
 .muted {
   color: var(--muted);
-}
-
-/* ============================================================================
-   RESPONSIVE DESIGN
-   ============================================================================ */
-
-@media (max-width: 1200px) {
-  .grid {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .side {
-    grid-column: 1 / -1;
-    order: 3;
-  }
-}
-
-@media (max-width: 768px) {
-  .app-shell {
-    margin: 16px auto;
-    padding: 8px;
-  }
-
-  .grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  .topbar {
-    flex-direction: column;
-    gap: 12px;
-    margin-bottom: 12px;
-  }
-
-  .brand {
-    width: 100%;
-  }
-
-  .top-actions {
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  .mood-pad {
-    gap: 8px;
-  }
-
-  .mood-btn {
-    width: 64px;
-    height: 64px;
-    font-size: 28px;
-  }
-
-  .stats-row,
-  .stats-grid {
-    grid-template-columns: 1fr;
-  }
-
-  dialog {
-    width: 95vw;
-    max-height: 90vh;
-    padding: 16px;
-    border-radius: 12px;
-  }
-
-  .modal-header {
-    gap: 8px;
-  }
-
-  .calendar {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 6px;
-  }
-
-  .calendar-day {
-    min-height: 60px;
-    font-size: 12px;
-  }
-
-  .history-day {
-    min-width: 72px;
-    height: 72px;
-  }
-}
-
-@media (max-width: 480px) {
-  .app-shell {
-    margin: 8px auto;
-  }
-
-  .logo {
-    width: 48px;
-    height: 48px;
-    font-size: 20px;
-  }
-
-  .title {
-    font-size: 18px;
-  }
-
-  .card {
-    border-radius: 12px;
-    padding: 12px;
-  }
-
-  .mood-pad {
-    gap: 6px;
-  }
-
-  .mood-btn {
-    width: 56px;
-    height: 56px;
-    font-size: 24px;
-  }
-
-  .modal-pad .mood-btn {
-    width: 70px;
-    height: 70px;
-    font-size: 32px;
-  }
-
-  .controls-row,
-  .side-actions {
-    flex-direction: column;
-  }
-
-  .controls-row button,
-  .side-actions button {
-    width: 100%;
-  }
-
-  .fab {
-    width: 48px;
-    height: 48px;
-    font-size: 20px;
-  }
-
-  .modal-actions {
-    flex-direction: column-reverse;
-  }
-
-  .modal-actions button {
-    width: 100%;
-  }
-
-  .history-day {
-    min-width: 64px;
-    height: 64px;
-  }
-
-  .calendar {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-/* ============================================================================
-   PRINT STYLES
-   ============================================================================ */
-
-@media print {
-  body {
-    background: white;
-  }
-
-  .topbar,
-  .btn-icon,
-  .fab,
-  dialog {
-    display: none;
-  }
-}
-
-/* ============================================================================
-   REDUCED MOTION
-   ============================================================================ */
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
 }
