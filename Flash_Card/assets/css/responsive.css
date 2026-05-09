@@ -1,0 +1,70 @@
+/* ===========================
+   RESPONSIVE.CSS - Mobile & tablet styles
+   =========================== */
+
+@media (max-width: 600px) {
+  .app {
+    max-height: none;
+    height: 100%;
+    padding: 20px;
+    border-radius: 0;
+    box-shadow: none;
+    margin: auto;
+  }
+
+  body {
+    padding: 12px;
+  }
+
+  .screen {
+    padding: 20px;
+  }
+
+  .face {
+    padding: 28px 20px;
+  }
+
+  .face-text {
+    font-size: 1.2rem;
+  }
+
+  .preview-list {
+    gap: 8px;
+  }
+
+  .done-overlay {
+    padding: 28px 20px;
+  }
+
+  .logo {
+    font-size: 1.5rem;
+  }
+
+  .preview-title {
+    font-size: 1.4rem;
+  }
+
+  .done-title {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .screen {
+    padding: 16px;
+  }
+
+  .face {
+    padding: 20px 16px;
+  }
+
+  .face-text {
+    font-size: 1rem;
+  }
+
+  .toast {
+    font-size: 0.8rem;
+    padding: 10px 16px;
+    width: calc(100% - 24px);
+  }
+}

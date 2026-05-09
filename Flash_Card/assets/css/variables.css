@@ -1,0 +1,25 @@
+/* ===========================
+   VARIABLES.CSS - Design tokens & colors
+   =========================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600;700&display=swap");
+
+:root {
+  --bg: #fafafa;
+  --surface: #ffffff;
+  --surface-alt: #f5f5f5;
+  --border: #e0e0e0;
+  --border-light: #f0f0f0;
+  --text: #1a1a1a;
+  --text-secondary: #666666;
+  --text-muted: #999999;
+  --accent: #1a1a1a;
+  --accent-light: #333333;
+  --success: #2d7e3e;
+  --warning: #d97706;
+  --error: #dc2626;
+  --easy: #10b981;
+  --hard: #f59e0b;
+  --radius: 12px;
+  --transition: all 0.25s ease;
+}
