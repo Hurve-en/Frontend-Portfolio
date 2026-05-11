@@ -33,6 +33,7 @@ Journal_App/
 ### CSS Modules
 
 #### `variables.css` (60 lines)
+
 - Font imports from Google Fonts (Inter)
 - CSS custom properties (design tokens):
   - Color variables (light and dark modes)
@@ -43,6 +44,7 @@ Journal_App/
 - **Load order**: First (required by all other CSS files)
 
 #### `layout.css` (200 lines)
+
 - CSS reset and base styles
 - App shell and container layout
 - Utility classes (visually-hidden, small)
@@ -55,6 +57,7 @@ Journal_App/
 - **Load order**: Second
 
 #### `components.css` (350 lines)
+
 - Button styles (.btn-primary, .btn-ghost, .btn-icon, .btn-danger)
 - Focus/accessibility styles
 - Search and filter input styling
@@ -68,6 +71,7 @@ Journal_App/
 - **Load order**: Third
 
 #### `responsive.css` (50 lines)
+
 - Webkit scrollbar styling for all scrollable containers
 - Media queries for responsive breakpoints:
   - @media (max-width: 968px): Single-column layout
@@ -78,9 +82,11 @@ Journal_App/
 ### JavaScript Modules
 
 #### `utils.js` (35 lines)
+
 **Responsibility**: Shared utility functions used across the app
 
 **Public API**:
+
 - `uid()` - Generate unique ID for entries
 - `todayKey(d)` - Get date in YYYY-MM-DD format
 - `nowLocalISO()` - Get current datetime for HTML datetime-local input
@@ -90,9 +96,11 @@ Journal_App/
 **Load order**: First (no dependencies)
 
 #### `storage.js` (120 lines)
+
 **Responsibility**: Entry CRUD operations and localStorage persistence
 
 **Key functions**:
+
 - `loadStore()` - Load all entries from localStorage
 - `saveStore()` - Save all entries to localStorage
 - `createEntry(data)` - Create new entry with title, body, date, mood, tags
@@ -106,15 +114,18 @@ Journal_App/
 - `importEntries(arr)` - Import entries from JSON array
 
 **Storage keys**:
+
 - `"daily-journal-v1"` - Main entries storage
 - `"daily-journal-draft"` - Current draft entry
 
 **Load order**: Second (depends on Utils only)
 
 #### `ui.js` (200 lines)
+
 **Responsibility**: Display and rendering functions
 
 **Key functions**:
+
 - `updateGreeting()` - Update time-based greeting and date display
 - `renderMoodFilters()` - Create mood selector buttons in sidebar
 - `renderEntriesList(filtered)` - Render list of entries with search/filter applied
@@ -126,18 +137,22 @@ Journal_App/
 - `gatherForm()` - Collect all form input data
 
 **Exports**:
+
 - `moods` - Array of 6 mood objects with emoji and labels (happy, neutral, sad, angry, excited, tired)
 
 **Load order**: Third (called by other modules)
 
 #### `filters.js` (50 lines)
+
 **Responsibility**: Entry filtering and searching logic
 
 **Key functions**:
+
 - `renderEntriesList()` - Apply filters and display filtered entries
 - `getActiveMoodFilters()` - Get array of selected mood IDs
 
 **Filter types applied**:
+
 - Quick filters: all, today, 7days, month
 - Date range: from/to dates
 - Mood filters: multiple mood selection
@@ -147,44 +162,54 @@ Journal_App/
 **Load order**: Fourth (depends on UI, Storage, Utils)
 
 #### `export.js` (100 lines)
+
 **Responsibility**: PDF export and JSON backup/import
 
 **Key functions**:
+
 - `exportEntriesToPDF(list, filename)` - Export entries as formatted PDF using jsPDF
 - `downloadJSON()` - Download all entries as JSON backup file
 - `importJSON(file)` - Import entries from JSON file
 
 **Export format**:
+
 - PDF: Formatted document with title, mood emoji, timestamp, body, tags
 - JSON: Pretty-printed array of entry objects
 
 **Load order**: Fifth (depends on Utils, UI, Storage)
 
 #### `theme.js` (25 lines)
+
 **Responsibility**: Dark/light mode toggle and persistence
 
 **Key functions**:
+
 - `loadTheme()` - Load saved theme preference from localStorage
 - `toggleTheme()` - Toggle between light and dark mode
 
 **Storage key**:
+
 - `"journal-theme"` - Saved theme preference (light or dark)
 
 **Implementation**:
+
 - Sets `data-theme` attribute on body element
 - CSS variables automatically adjust for dark/light mode
 
 **Load order**: Sixth (depends on Utils)
 
 #### `actions.js` (180 lines)
+
 **Responsibility**: High-level entry operations and state management
 
 **Key variables**:
+
 - `currentId` - ID of entry being edited
 - `autoSaveEnabled` - Boolean for auto-save state
 - `autoSaveTimer` - Timer for debounced auto-save
 
 **Key functions**:
+
 - `isAutoSaveEnabled()` - Check if auto-save is on
 - `scheduleAutoSave()` - Debounced auto-save to draft (800ms delay)
 - `loadDraftIfAny()` - Restore draft form data if it exists
@@ -201,13 +226,16 @@ Journal_App/
 **Load order**: Seventh (depends on UI, Storage, Filters, Export, Utils)
 
 #### `app.js` (130 lines)
+
 **Responsibility**: Event listener setup and initialization
 
 **Key functions**:
+
 - `init()` - Initialize app with data loading and rendering
 - `wireListeners()` - Attach all event listeners to elements
 
 **Event listeners wired**:
+
 - Header buttons: new entry, export all, import, backup, theme toggle
 - Search and filters: input, select changes trigger re-render
 - Editor buttons: save, cancel, delete, export entry
@@ -217,6 +245,7 @@ Journal_App/
   - `/` - Focus search input
 
 **Initialization sequence**:
+
 1. Load entries from storage
 2. Load saved theme preference
 3. Update greeting and date display
@@ -249,6 +278,7 @@ The `defer` attribute ensures scripts load after DOM is parsed but in the correc
 ## Core Features
 
 ### Entry Management
+
 - Create entries with title, body, date, mood, tags
 - Edit existing entries
 - Delete entries with confirmation
@@ -256,6 +286,7 @@ The `defer` attribute ensures scripts load after DOM is parsed but in the correc
 - Load draft on app start
 
 ### Display and Filtering
+
 - Search entries by title or body text
 - Quick filters: today, last 7 days, this month
 - Date range filtering
@@ -264,17 +295,20 @@ The `defer` attribute ensures scripts load after DOM is parsed but in the correc
 - Sort by newest first
 
 ### Data Persistence
+
 - All entries saved to localStorage (key: `"daily-journal-v1"`)
 - Auto-save drafts during editing (key: `"daily-journal-draft"`)
 - Theme preference saved (key: `"journal-theme"`)
 
 ### Export/Import
+
 - Export entries as PDF (single or filtered list)
 - Download all entries as JSON backup
 - Import entries from JSON file
 - Auto-save drafts to localStorage
 
 ### Theme and Accessibility
+
 - Dark and light modes with theme toggle
 - Theme preference persisted to localStorage
 - CSS custom properties for easy theming
@@ -283,6 +317,7 @@ The `defer` attribute ensures scripts load after DOM is parsed but in the correc
 - Focus management and accessibility attributes
 
 ### Mood Tracking
+
 - 6 mood options: happy, neutral, sad, angry, excited, tired
 - Mood emoji indicators
 - Multi-select mood filtering
@@ -291,6 +326,7 @@ The `defer` attribute ensures scripts load after DOM is parsed but in the correc
 ## Data Structure
 
 ### Entry Object
+
 ```javascript
 {
   id: "unique-id",           // Generated by uid()
@@ -305,6 +341,7 @@ The `defer` attribute ensures scripts load after DOM is parsed but in the correc
 ```
 
 ### Draft Object
+
 ```javascript
 {
   title: "string",
@@ -346,31 +383,33 @@ The `defer` attribute ensures scripts load after DOM is parsed but in the correc
 ## Migration Notes
 
 **Before deleting original files:**
+
 1. ✅ All modular CSS files created and verified
 2. ✅ All modular JS files created with full functionality preserved
 3. ✅ HTML updated with new file paths in correct order
 4. ✅ Test all functionality thoroughly on different devices
 
 **Safe to delete:**
+
 - `Journal_App.css` (original - functionality moved to `assets/css/*`)
 - `Journal_App.js` (original - functionality moved to `assets/js/*`)
 
 ## File Sizes
 
-| File | Lines | Purpose |
-|------|-------|---------|
-| variables.css | 60 | Design tokens |
-| layout.css | 200 | Base structure |
-| components.css | 350 | UI components |
-| responsive.css | 50 | Responsive & scrollbars |
-| utils.js | 35 | Common utilities |
-| storage.js | 120 | Entry CRUD & persistence |
-| ui.js | 200 | Display functions |
-| filters.js | 50 | Filtering logic |
-| export.js | 100 | PDF & JSON export |
-| theme.js | 25 | Theme toggle |
-| actions.js | 180 | High-level operations |
-| app.js | 130 | Event orchestration |
+| File           | Lines | Purpose                  |
+| -------------- | ----- | ------------------------ |
+| variables.css  | 60    | Design tokens            |
+| layout.css     | 200   | Base structure           |
+| components.css | 350   | UI components            |
+| responsive.css | 50    | Responsive & scrollbars  |
+| utils.js       | 35    | Common utilities         |
+| storage.js     | 120   | Entry CRUD & persistence |
+| ui.js          | 200   | Display functions        |
+| filters.js     | 50    | Filtering logic          |
+| export.js      | 100   | PDF & JSON export        |
+| theme.js       | 25    | Theme toggle             |
+| actions.js     | 180   | High-level operations    |
+| app.js         | 130   | Event orchestration      |
 
 **Total**: ~1,500 lines across 12 files (well-organized compared to monolithic)
 
