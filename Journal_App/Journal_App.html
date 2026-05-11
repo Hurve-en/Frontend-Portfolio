@@ -18,27 +18,26 @@
       content="A calm, accessible daily journal app with mood tagging, search, and PDF export."
     />
 
-    <!-- Styles -->
-    <link rel="stylesheet" href="Journal_App.css" />
-
-    <!-- Fonts -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <!-- Styles - Modular CSS -->
+    <link rel="stylesheet" href="assets/css/variables.css" />
+    <link rel="stylesheet" href="assets/css/layout.css" />
+    <link rel="stylesheet" href="assets/css/components.css" />
+    <link rel="stylesheet" href="assets/css/responsive.css" />
 
     <!-- jsPDF for PDF export (deferred) -->
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
       defer
     ></script>
-    <!-- dayjs (optional) -->
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.11/dayjs.min.js"
-      defer
-    ></script>
-    <!-- App script (deferred) -->
-    <script src="Journal_App.js" defer></script>
+    <!-- Modular app scripts (deferred) - Load order is critical -->
+    <script src="assets/js/utils.js" defer></script>
+    <script src="assets/js/storage.js" defer></script>
+    <script src="assets/js/ui.js" defer></script>
+    <script src="assets/js/filters.js" defer></script>
+    <script src="assets/js/export.js" defer></script>
+    <script src="assets/js/theme.js" defer></script>
+    <script src="assets/js/actions.js" defer></script>
+    <script src="assets/js/app.js" defer></script>
   </head>
   <body data-theme="light">
     <div

@@ -1,0 +1,91 @@
+/* Responsive Design and Scrollbars */
+
+/* Scrollbar styling */
+
+.entries-list::-webkit-scrollbar,
+.entry-form::-webkit-scrollbar,
+.detail-view::-webkit-scrollbar {
+  width: 6px;
+}
+
+.entries-list::-webkit-scrollbar-track,
+.entry-form::-webkit-scrollbar-track,
+.detail-view::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.entries-list::-webkit-scrollbar-thumb,
+.entry-form::-webkit-scrollbar-thumb,
+.detail-view::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+.entries-list::-webkit-scrollbar-thumb:hover,
+.entry-form::-webkit-scrollbar-thumb:hover,
+.detail-view::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Responsive breakpoints */
+
+@media (max-width: 968px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .list-panel {
+    max-height: 300px;
+  }
+
+  .entry-form {
+    max-height: none;
+  }
+
+  .detail-view {
+    max-height: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .app-shell {
+    padding: var(--space-lg) var(--space-md);
+  }
+
+  .topbar {
+    flex-direction: column;
+    gap: var(--space-lg);
+    align-items: flex-start;
+  }
+
+  .header-actions {
+    width: 100%;
+    gap: var(--space-sm);
+  }
+
+  .header-actions button {
+    flex: 1;
+    font-size: var(--text-xs);
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .mood-selector {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .entry-form,
+  .detail-view {
+    max-height: none;
+    max-height: calc(100vh - 200px);
+  }
+}
+
+/* Reduced motion preference */
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+  }
+}
