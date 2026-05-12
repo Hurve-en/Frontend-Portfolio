@@ -1,0 +1,123 @@
+@media (max-width: 768px) {
+  .app {
+    padding: 16px;
+  }
+
+  .topbar {
+    gap: 12px;
+  }
+
+  .title {
+    font-size: 16px;
+  }
+
+  .search-wrap input {
+    min-width: 140px;
+  }
+
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .sidebar {
+    position: static;
+    top: auto;
+  }
+
+  .compose-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .compose-left {
+    width: 100%;
+  }
+
+  .compose-right {
+    width: 100%;
+  }
+
+  .compose-right .btn {
+    flex: 1;
+  }
+
+  .post-header {
+    flex-wrap: wrap;
+  }
+
+  .modal {
+    max-width: 90%;
+  }
+
+  .btn.circle {
+    right: 16px;
+    bottom: 16px;
+  }
+
+  .toast-container {
+    right: 16px;
+    top: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app {
+    padding: 12px;
+  }
+
+  .topbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .search-wrap input {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .header-actions {
+    width: 100%;
+  }
+
+  .actions-right {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .logo {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+
+  .title {
+    font-size: 16px;
+  }
+
+  .compose-card {
+    padding: 12px;
+  }
+
+  .compose-card textarea {
+    min-height: 70px;
+    padding: 10px;
+  }
+
+  .post {
+    padding: 12px;
+  }
+
+  .btn {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

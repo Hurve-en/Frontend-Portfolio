@@ -11,17 +11,22 @@
       content="A minimal microblog app (client-side) with localStorage persistence and favorites."
     />
 
-    <!-- Fonts -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <!-- Fonts (handled in variables.css) -->
 
-    <!-- Styles -->
-    <link rel="stylesheet" href="Microblog.css" />
+    <!-- Styles - modular -->
+    <link rel="stylesheet" href="assets/css/variables.css" />
+    <link rel="stylesheet" href="assets/css/layout.css" />
+    <link rel="stylesheet" href="assets/css/components.css" />
+    <link rel="stylesheet" href="assets/css/responsive.css" />
 
-    <!-- Script -->
-    <script src="Microblog.js" defer></script>
+    <!-- Scripts - modular (load order matters) -->
+    <script src="assets/js/utils.js" defer></script>
+    <script src="assets/js/storage.js" defer></script>
+    <script src="assets/js/ui.js" defer></script>
+    <script src="assets/js/actions.js" defer></script>
+    <script src="assets/js/export.js" defer></script>
+    <script src="assets/js/theme.js" defer></script>
+    <script src="assets/js/app.js" defer></script>
   </head>
   <body>
     <div class="app">
