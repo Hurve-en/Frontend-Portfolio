@@ -1,0 +1,35 @@
+:root {
+  --bg: #f4f7fb;
+  --card: #ffffff;
+  --text: #072033;
+  --muted: #5b6472;
+  --accent: #4b63f2;
+  --danger: #e11d48;
+  --radius: 12px;
+  --gap: 12px;
+  --control-size: 44px;
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    Arial;
+  font-size: 16px;
+}
+
+html[data-theme="dark"] {
+  --bg: #03050a;
+  --card-bg: rgba(255, 255, 255, 0.02);
+  --card-border: 1px solid rgba(255, 255, 255, 0.03);
+  --text: #dfe9ff;
+  --muted: #9fb0d4;
+  --accent: #6b8cff;
+  --text-display: #eaf4ff;
+  --time-display: #eaf4ff;
+  --face-stroke: rgba(255, 255, 255, 0.02);
+  --hand-stroke: #dfe9ff;
+  --hand-second: #ff9b9b;
+  --alarm-bg: rgba(255, 58, 79, 0.06);
+  --alarm-border: 1px solid rgba(255, 58, 79, 0.08);
+}

@@ -1,0 +1,14 @@
+@media (max-width: 540px) {
+  .clock-area {
+    flex-direction: column;
+  }
+
+  .analog-wrap {
+    width: 180px;
+    height: 180px;
+  }
+
+  .time-display {
+    font-size: 40px;
+  }
+}

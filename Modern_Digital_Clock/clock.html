@@ -18,7 +18,11 @@
       })();
     </script>
 
-    <link rel="stylesheet" href="clock.css" />
+    <!-- Styles - modular -->
+    <link rel="stylesheet" href="assets/css/variables.css" />
+    <link rel="stylesheet" href="assets/css/layout.css" />
+    <link rel="stylesheet" href="assets/css/components.css" />
+    <link rel="stylesheet" href="assets/css/responsive.css" />
   </head>
   <body>
     <main class="app" role="application" aria-label="Digital clock application">
@@ -155,6 +159,13 @@
       />
     </audio>
 
-    <script src="clock.js" defer></script>
+    <!-- Scripts - modular (load order matters) -->
+    <script src="assets/js/utils.js" defer></script>
+    <script src="assets/js/storage.js" defer></script>
+    <script src="assets/js/ui.js" defer></script>
+    <script src="assets/js/theme.js" defer></script>
+    <script src="assets/js/alarm.js" defer></script>
+    <script src="assets/js/actions.js" defer></script>
+    <script src="assets/js/app.js" defer></script>
   </body>
 </html>

@@ -1,0 +1,215 @@
+/* Theme Toggle Switch */
+.switch {
+  position: relative;
+  width: 46px;
+  height: 26px;
+  display: inline-block;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: #dfe6ff;
+  border-radius: 999px;
+  transition: all 0.18s;
+}
+
+.slider::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 3px;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  transition: all 0.18s;
+  box-shadow: 0 4px 10px rgba(11, 22, 60, 0.06);
+}
+
+.switch input:checked + .slider {
+  background: linear-gradient(90deg, var(--accent), #6b8cff);
+}
+
+.switch input:checked + .slider::before {
+  transform: translateX(18px);
+}
+
+/* Controls */
+select,
+input[type="time"] {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(6, 10, 25, 0.06);
+  background: transparent;
+  min-width: 120px;
+}
+
+select:focus,
+input[type="time"]:focus {
+  outline: 3px solid rgba(75, 99, 242, 0.12);
+  outline-offset: 2px;
+}
+
+html[data-theme="dark"] select,
+html[data-theme="dark"] input[type="time"] {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  color: var(--text);
+}
+
+/* Buttons */
+.btn {
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, var(--accent), #6b8cff);
+  color: white;
+  border: 0;
+  cursor: pointer;
+  min-height: var(--control-size);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn.ghost {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid rgba(6, 10, 25, 0.06);
+}
+
+.btn.danger {
+  background: linear-gradient(90deg, #ff6b6b, #ff4b6b);
+}
+
+button:focus,
+.btn:focus,
+select:focus,
+input:focus {
+  outline: 3px solid rgba(75, 99, 242, 0.14);
+  outline-offset: 2px;
+}
+
+/* Time Display */
+.time-display {
+  font-weight: 900;
+  font-size: 48px;
+  letter-spacing: 1px;
+}
+
+html[data-theme="dark"] .time-display {
+  color: var(--time-display);
+}
+
+.date-display {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+html[data-theme="dark"] .date-display {
+  color: var(--muted);
+}
+
+.tz-label {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+html[data-theme="dark"] .tz-label {
+  color: var(--muted);
+}
+
+/* Analog Clock Face */
+.face {
+  fill: none;
+  stroke: rgba(6, 10, 25, 0.06);
+  stroke-width: 1.2;
+}
+
+html[data-theme="dark"] .face {
+  stroke: var(--face-stroke);
+}
+
+/* Clock Hands */
+.hand {
+  stroke: var(--text);
+  stroke-width: 2.6;
+  transform-origin: center;
+  transition: transform 0.2s linear;
+}
+
+.hand.hour {
+  stroke-width: 3.2;
+}
+
+.hand.second {
+  stroke: #ff6b6b;
+  stroke-width: 1.6;
+}
+
+html[data-theme="dark"] .hand {
+  stroke: var(--hand-stroke);
+}
+
+html[data-theme="dark"] .hand.second {
+  stroke: var(--hand-second);
+}
+
+/* Clock Hub */
+.hub {
+  fill: var(--accent);
+}
+
+/* Clock Ticks */
+.tick {
+  stroke: rgba(6, 10, 25, 0.06);
+  stroke-width: 1.2;
+}
+
+html[data-theme="dark"] .tick {
+  stroke: var(--face-stroke);
+}
+
+/* Alarm State */
+.alarm-state {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #fff6f6, #fff9f9);
+  border: 1px solid rgba(225, 29, 72, 0.06);
+}
+
+html[data-theme="dark"] .alarm-state {
+  background: var(--alarm-bg);
+  border: var(--alarm-border);
+}
+
+.alarm-state .alarm-message {
+  font-weight: 800;
+  color: var(--danger);
+}
+
+.alarm-actions .btn {
+  min-width: 88px;
+}
+
+/* Minimal Mode */
+.app.minimal .analog-wrap {
+  display: none;
+}
+
+.app.minimal .time-display {
+  font-size: 64px;
+}
