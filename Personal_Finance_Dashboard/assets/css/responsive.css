@@ -1,0 +1,47 @@
+@media (max-width: 1200px) {
+  .cards-grid,
+  .accounts-grid,
+  .insights-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    position: relative;
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .content {
+    margin-left: 0;
+  }
+
+  .dashboard {
+    padding: 24px;
+  }
+
+  .hero {
+    padding: 40px 24px;
+  }
+
+  .top-bar {
+    padding: 16px 24px;
+  }
+
+  .hero-amount {
+    font-size: 48px;
+  }
+
+  .cards-grid,
+  .accounts-grid,
+  .insights-grid {
+    grid-template-columns: 1fr;
+  }
+}
