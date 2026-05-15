@@ -1,0 +1,275 @@
+/* ============================================================================
+   RESPONSIVE - Media queries and mobile optimization
+   ============================================================================ */
+
+@media (max-width: 1024px) {
+  .main {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    max-width: 100%;
+  }
+
+  .quick-stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: var(--spacing-md);
+  }
+
+  .topbar {
+    flex-direction: column;
+    gap: var(--spacing-md);
+    text-align: center;
+  }
+
+  .header-controls {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .timer-display {
+    width: 220px;
+    height: 220px;
+  }
+
+  .timer-section {
+    min-height: 400px;
+  }
+
+  .control-buttons {
+    width: 100%;
+    gap: var(--spacing-sm);
+  }
+
+  .control-buttons .btn {
+    flex: 1;
+    min-width: auto;
+  }
+
+  .quick-stats {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+  }
+
+  .stat-item {
+    padding: var(--spacing-md);
+  }
+
+  .session-tabs {
+    width: 100%;
+  }
+
+  .tab {
+    flex: 1;
+    padding: var(--spacing-md);
+    font-size: var(--font-size-xs);
+  }
+
+  .modal-content {
+    width: 95%;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .focus-display {
+    font-size: 60px;
+  }
+
+  .focus-controls {
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  .focus-controls .btn {
+    width: 100%;
+    min-width: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: var(--spacing-sm);
+  }
+
+  .topbar {
+    padding: var(--spacing-sm);
+    gap: var(--spacing-sm);
+  }
+
+  .brand {
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+
+  .brand h1 {
+    font-size: var(--font-size-lg);
+    line-height: 1.2;
+  }
+
+  .tagline {
+    font-size: 11px;
+  }
+
+  .card {
+    padding: var(--spacing-md);
+  }
+
+  .timer-display {
+    width: 180px;
+    height: 180px;
+    margin: var(--spacing-lg) 0;
+  }
+
+  .time-display {
+    font-size: 36px;
+  }
+
+  .session-label {
+    font-size: var(--font-size-xs);
+  }
+
+  .timer-section {
+    padding: var(--spacing-md);
+    min-height: auto;
+    gap: var(--spacing-lg);
+  }
+
+  .control-buttons {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    width: 100%;
+  }
+
+  .control-buttons .btn {
+    width: 100%;
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-md) var(--spacing-sm);
+  }
+
+  .quick-stats {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-xs);
+  }
+
+  .stat-number {
+    font-size: var(--font-size-lg);
+  }
+
+  .stat-label {
+    font-size: 10px;
+  }
+
+  .stat-item {
+    padding: var(--spacing-sm);
+  }
+
+  .panel-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+  }
+
+  .panel-header h2 {
+    font-size: var(--font-size-base);
+  }
+
+  .task-input {
+    font-size: 16px;
+  }
+
+  .task-list {
+    max-height: 250px;
+  }
+
+  .app-footer {
+    font-size: 11px;
+    padding: var(--spacing-md);
+  }
+
+  kbd {
+    padding: 1px 4px;
+    font-size: 10px;
+    margin: 0 1px;
+  }
+
+  .icon-btn {
+    width: 36px;
+    height: 36px;
+    font-size: var(--font-size-base);
+  }
+
+  .header-controls {
+    gap: var(--spacing-xs);
+  }
+
+  .focus-display {
+    font-size: clamp(48px, 12vw, 80px);
+    margin: 0;
+  }
+
+  .focus-controls {
+    flex-direction: column;
+    gap: var(--spacing-md);
+    width: 90vw;
+    max-width: 100%;
+  }
+
+  .focus-controls .btn {
+    width: 100%;
+    min-width: auto;
+    font-size: var(--font-size-base);
+    padding: var(--spacing-lg) var(--spacing-md);
+  }
+}
+
+/* ACCESSIBILITY & UTILITIES */
+.hidden {
+  display: none !important;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Print styles */
+@media print {
+  .topbar,
+  .header-controls,
+  .control-buttons,
+  .app-footer {
+    display: none;
+  }
+
+  .modal {
+    display: none;
+  }
+
+  body {
+    background-color: white;
+    color: black;
+  }
+}

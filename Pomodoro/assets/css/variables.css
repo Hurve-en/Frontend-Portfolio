@@ -1,0 +1,80 @@
+/* ============================================================================
+   DESIGN TOKENS - Colors, spacing, typography, animations
+   ============================================================================ */
+
+:root {
+  /* Primary Colors */
+  --color-bg-dark: #1a1a1a;
+  --color-bg-light: #2d2d2d;
+  --color-surface: #353535;
+  --color-surface-light: #4a4a4a;
+
+  /* Text Colors */
+  --color-text: #e0e0e0;
+  --color-text-muted: #a8a8a8;
+  --color-text-light: #f5f5f5;
+
+  /* Accent Colors */
+  --color-accent-primary: #16a34a; /* Green */
+  --color-accent-secondary: #059669; /* Dark Green */
+  --color-accent-warning: #f97316; /* Orange */
+  --color-accent-danger: #ef4444; /* Red */
+
+  /* Interactive */
+  --color-hover: rgba(255, 255, 255, 0.08);
+  --color-focus: rgba(22, 163, 74, 0.2);
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 24px;
+  --spacing-2xl: 32px;
+
+  /* Typography */
+  --font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-base: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 24px;
+  --font-size-2xl: 32px;
+  --font-size-3xl: 48px;
+
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.12);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.16);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.24);
+
+  /* Transitions */
+  --transition-fast: 150ms ease-out;
+  --transition-base: 250ms ease-out;
+  --transition-slow: 350ms ease-out;
+
+  --max-width: 1200px;
+}
+
+/* Light Mode Override */
+:root.light {
+  --color-bg-dark: #f8f8f8;
+  --color-bg-light: #f0f0f0;
+  --color-surface: #ffffff;
+  --color-surface-light: #f5f5f5;
+  --color-text: #2d2d2d;
+  --color-text-muted: #5a5a5a;
+  --color-text-light: #1a1a1a;
+  --color-hover: rgba(0, 0, 0, 0.04);
+  --color-focus: rgba(22, 163, 74, 0.1);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.16);
+}
