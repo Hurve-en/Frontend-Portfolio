@@ -1,0 +1,28 @@
+@media (max-width: 560px) {
+  .quote-text {
+    font-size: 18px;
+  }
+
+  header h1 {
+    font-size: 20px;
+  }
+
+  .controls {
+    gap: 8px;
+  }
+
+  .left-controls {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .add-quote-wrap {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+  }
+
+  .add-quote-wrap input[type="text"] {
+    width: 100%;
+  }
+}
