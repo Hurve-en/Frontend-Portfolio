@@ -7,8 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>CW score board</title>
     <link rel="icon" href="iACAD_logo.png" />
-    <!-- Link external stylesheet -->
-    <link rel="stylesheet" href="Scoreboard.css" />
+    <!-- Modular CSS Files -->
+    <link rel="stylesheet" href="assets/css/variables.css" />
+    <link rel="stylesheet" href="assets/css/layout.css" />
+    <link rel="stylesheet" href="assets/css/components.css" />
+    <link rel="stylesheet" href="assets/css/responsive.css" />
   </head>
   <body>
     <main>
@@ -37,7 +40,10 @@
       </section>
     </main>
 
-    <!-- External JS -->
-    <script src="Scoreboard.js" defer></script>
+    <!-- Modular JavaScript Files (Load order matters!) -->
+    <script src="assets/js/utils.js" defer></script>
+    <script src="assets/js/state.js" defer></script>
+    <script src="assets/js/ui.js" defer></script>
+    <script src="assets/js/app.js" defer></script>
   </body>
 </html>

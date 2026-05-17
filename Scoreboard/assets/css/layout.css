@@ -1,0 +1,68 @@
+/* Structural layout */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    Arial;
+  background: linear-gradient(180deg, var(--bg-900), var(--bg-800));
+  color: #eaf4ff;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+main {
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 8px;
+}
+
+header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 20px;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+
+header .small {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+#board {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 8px;
+  align-items: flex-start;
+  align-content: flex-start;
+}
+
+.hidden {
+  display: none !important;
+}

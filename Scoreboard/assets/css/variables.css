@@ -1,0 +1,29 @@
+/* Design tokens */
+:root {
+  --bg-900: #061226;
+  --bg-800: #071842;
+  --panel: #071422;
+  --accent: #ffd85a;
+  --accent-2: #7bd7ff;
+  --muted: #9aa5bf;
+  --card-bg: rgba(255, 255, 255, 0.03);
+  --glass: rgba(255, 255, 255, 0.02);
+  --radius: 14px;
+  --container: 1200px;
+  --shadow-soft: 0 10px 30px rgba(4, 8, 20, 0.55);
+  --shadow-card: 0 10px 30px rgba(2, 6, 18, 0.6);
+  --focus: 0 0 0 4px rgba(123, 215, 255, 0.08);
+  --transition-fast: 180ms;
+  --transition-med: 300ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --transition-fast: 0ms;
+    --transition-med: 0ms;
+  }
+  .value.pop {
+    animation: none !important;
+    transform: none !important;
+  }
+}
